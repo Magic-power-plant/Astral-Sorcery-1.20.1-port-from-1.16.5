@@ -1,0 +1,95 @@
+package hellfirepvp.astralsorcery.common.advancement;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+
+public abstract class ListenerCriterionTrigger<T extends CriterionTriggerInstance> implements CriterionTrigger<T> {
+
+    protected final Map<PlayerAdvancements, Listeners<T>> listeners = Maps.newHashMap();
+    private final ResourceLocation id;
+
+    public ListenerCriterionTrigger(ResourceLocation id) {
+        this.id = id;
+    }
+
+    @Override
+    public final ResourceLocation getId() {
+        return id;
+    }
+
+    @Override
+    public final void addPlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<T> listener) {
+        Listeners<T> listeners = this.listeners.get(playerAdvancementsIn);
+
+        if (listeners == null) {
+            listeners = new Listeners<>(playerAdvancementsIn);
+            this.listeners.put(playerAdvancementsIn, listeners);
+        }
+
+        listeners.add(listener);
+    }
+
+    @Override
+    public final void removePlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<T> listener) {
+        Listeners<T> listeners = this.listeners.get(playerAdvancementsIn);
+
+        if (listeners != null) {
+            listeners.remove(listener);
+
+            if (listeners.isEmpty()) {
+                this.listeners.remove(playerAdvancementsIn);
+            }
+        }
+    }
+
+    @Override
+    public final void removePlayerListeners(PlayerAdvancements playerAdvancementsIn) {
+        this.listeners.remove(playerAdvancementsIn);
+    }
+
+    public static class Listeners<T extends CriterionTriggerInstance> {
+
+        private final PlayerAdvancements playerAdvancements;
+        private final Set<CriterionTrigger.Listener<T>> listeners = Sets.newHashSet();
+
+        public Listeners(PlayerAdvancements playerAdvancementsIn) {
+            this.playerAdvancements = playerAdvancementsIn;
+        }
+
+        public final boolean isEmpty() {
+            return this.listeners.isEmpty();
+        }
+
+        public final void add(CriterionTrigger.Listener<T> listener) {
+            this.listeners.add(listener);
+        }
+
+        public final void remove(CriterionTrigger.Listener<T> listener) {
+            this.listeners.remove(listener);
+        }
+
+        public final void trigger(Predicate<T> test) {
+            List<CriterionTrigger.Listener<T>> list = new java.util.ArrayList<>();
+
+            for (CriterionTrigger.Listener<T> listener : this.listeners) {
+                if (test.test(listener.getTriggerInstance())) {
+                    list.add(listener);
+                }
+            }
+
+            for (CriterionTrigger.Listener<T> listener1 : list) {
+                listener1.run(this.playerAdvancements);
+            }
+        }
+    }
+}

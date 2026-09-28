@@ -1,0 +1,68 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.crafting.nojson;
+
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.FormCelestialCrystalClusterRecipe;
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.FormGemCrystalClusterRecipe;
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.GrowCrystalSizeRecipe;
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.InfusedWoodRecipe;
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.LiquidStarlightRecipe;
+import hellfirepvp.astralsorcery.common.crafting.nojson.starlight.MergeCrystalsRecipe;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: LiquidStarlightCraftingRegistry
+ * Created by HellFirePvP
+ * Date: 30.09.2019 / 20:27
+ */
+public class LiquidStarlightCraftingRegistry extends CustomRecipeRegistry<LiquidStarlightRecipe> {
+
+    public static final LiquidStarlightCraftingRegistry INSTANCE = new LiquidStarlightCraftingRegistry();
+
+    @Override
+    public void init() {
+        this.register(new InfusedWoodRecipe());
+        this.register(new GrowCrystalSizeRecipe());
+        this.register(new FormCelestialCrystalClusterRecipe());
+        this.register(new FormGemCrystalClusterRecipe());
+        this.register(new MergeCrystalsRecipe());
+    }
+
+    @Nullable
+    public LiquidStarlightRecipe getRecipeFor(ItemEntity itemEntity, Level world, BlockPos at) {
+        return this.getRecipes()
+                .stream()
+                .filter(recipe -> recipe.doesStartRecipe(itemEntity.getItem()))
+                .filter(recipes -> recipes.matches(itemEntity, world, at))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static void tryCraft(ItemEntity itemEntity, BlockPos at) {
+        if (!itemEntity.isAlive()) {
+            return;
+        }
+        Level world = itemEntity.level();
+
+        LiquidStarlightRecipe recipe = LiquidStarlightCraftingRegistry.INSTANCE.getRecipeFor(itemEntity, world, at);
+        if (recipe != null) {
+            if (!world.isClientSide()) {
+                recipe.doServerCraftTick(itemEntity, world, at);
+            } else {
+                recipe.doClientEffectTick(itemEntity, world, at);
+            }
+        }
+    }
+}

@@ -1,0 +1,393 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.client.screen;
+
+import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import hellfirepvp.astralsorcery.client.ClientScheduler;
+import hellfirepvp.astralsorcery.client.lib.TexturesAS;
+import hellfirepvp.astralsorcery.client.screen.base.ConstellationDiscoveryScreen;
+import hellfirepvp.astralsorcery.client.screen.base.SkyScreen;
+import hellfirepvp.astralsorcery.client.screen.base.TileConstellationDiscoveryScreen;
+import hellfirepvp.astralsorcery.client.screen.telescope.FullScreenDrawArea;
+import hellfirepvp.astralsorcery.client.screen.telescope.PlayerAngledConstellationInformation;
+import hellfirepvp.astralsorcery.client.util.*;
+import hellfirepvp.astralsorcery.common.constellation.IConstellation;
+import hellfirepvp.astralsorcery.common.constellation.SkyHandler;
+import hellfirepvp.astralsorcery.common.constellation.star.StarLocation;
+import hellfirepvp.astralsorcery.common.constellation.world.WorldContext;
+import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
+import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.event.EventFlags;
+import hellfirepvp.astralsorcery.common.tile.TileObservatory;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fml.LogicalSide;
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ScreenObservatory
+ * Created by HellFirePvP
+ * Date: 15.02.2020 / 18:27
+ */
+//1.16.5: IHasContainer<T> (getContainer()) -> 1.20.1: MenuAccess<T> (getMenu()); same single-method contract that
+//lets the screen be opened for a container by ScreenManager/MenuScreens.
+public class ScreenObservatory extends TileConstellationDiscoveryScreen<TileObservatory, ConstellationDiscoveryScreen.DrawArea> implements MenuAccess<ContainerObservatory> {
+
+    private static final Random RAND = new Random();
+    private static final int FRAME_TEXTURE_SIZE = 16;
+
+    private static final int randomStars = 220;
+    private final List<Point.Float> usedStars = new ArrayList<>(randomStars);
+    private final ContainerObservatory container;
+
+    public ScreenObservatory(ContainerObservatory container) {
+        //TODO_PORT[AS-SCR-02]: 1.16.5 called super(container.getTileEntity(), h, w) and let
+        //TileConstellationDiscoveryScreen read the title off the tile's NamedInventoryTile#getDisplayName()
+        //(1.16.5 ScreenObservatory.java:63-65). That base class had to widen its type bound here because
+        //TileTelescope lost NamedInventoryTile, so the very same call is spelled out explicitly. TileObservatory
+        //does still implement NamedInventoryTile, so this is the identical component.
+        //1.16.5: Minecraft#getMainWindow() -> 1.20.1: Minecraft#getWindow();
+        //        Window#getScaledHeight()/#getScaledWidth() -> Window#getGuiScaledHeight()/#getGuiScaledWidth()
+        super(container.getTileEntity(),
+                container.getTileEntity().getDisplayName(),
+                Minecraft.getInstance().getWindow().getGuiScaledHeight() - FRAME_TEXTURE_SIZE * 2,
+                Minecraft.getInstance().getWindow().getGuiScaledWidth() - FRAME_TEXTURE_SIZE * 2);
+        this.container = container;
+
+        //1.16.5: PlayerEntity -> 1.20.1: Player
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            TileObservatory observatory = this.getTile();
+            //1.16.5: Entity#rotationPitch/#rotationYaw -> 1.20.1: Entity#setXRot(float)/#setYRot(float);
+            //        Entity#prevRotationPitch/#prevRotationYaw -> Entity#xRotO/#yRotO
+            player.setXRot(observatory.observatoryPitch);
+            player.xRotO = observatory.prevObservatoryPitch;
+            player.setYRot(observatory.observatoryYaw);
+            player.yRotO = observatory.prevObservatoryYaw;
+        }
+    }
+
+    //1.16.5: IHasContainer#getContainer() -> 1.20.1: MenuAccess#getMenu()
+    @Override
+    public ContainerObservatory getMenu() {
+        return container;
+    }
+
+    @Nonnull
+    @Override
+    protected List<DrawArea> createDrawAreas() {
+        return Lists.newArrayList(new FullScreenDrawArea());
+    }
+
+    @Override
+    protected void fillConstellations(WorldContext ctx, List<DrawArea> drawAreas) {
+        DrawArea area = drawAreas.get(0);
+        Random gen = ctx.getDayRandom();
+
+        Map<IConstellation, Point.Float> placed = new HashMap<>();
+        for (IConstellation cst : ctx.getActiveCelestialsHandler().getActiveConstellations()) {
+            Point.Float foundPoint;
+            do {
+                foundPoint = tryEmptyPlace(placed.values(), gen);
+            } while (foundPoint == null);
+            area.addConstellationToArea(cst, new PlayerAngledConstellationInformation(DEFAULT_CONSTELLATION_SIZE, foundPoint.y, foundPoint.x));
+            placed.put(cst, foundPoint);
+        }
+
+        for (int i = 0; i < randomStars; i++) {
+            usedStars.add(new Point.Float(FRAME_TEXTURE_SIZE + gen.nextFloat() * this.getGuiWidth(), FRAME_TEXTURE_SIZE + gen.nextFloat() * this.getGuiHeight()));
+        }
+    }
+
+    private Point.Float tryEmptyPlace(Collection<Point.Float> placed, Random gen) {
+        double constellationGap = 12.0;
+        constellationGap = Math.sqrt(constellationGap * constellationGap * 2);
+
+        float rPitch = -25F + gen.nextFloat() * - 50F;
+        float rYaw = gen.nextFloat() * 360F;
+        for (Point.Float point : placed) {
+            if (point.distance(rPitch, rYaw) <= constellationGap ||
+                    point.distance(rPitch, rYaw - 360F) <= constellationGap) {
+                return null;
+            }
+        }
+        return new Point.Float(rPitch, rYaw);
+    }
+
+    /**
+     * 1.16.5 overrode {@code Screen#closeScreen()}, the "close me now" entry point. 1.20.1 renamed that exact
+     * method to {@code Screen#onClose()} (and gave the old {@code onClose()} name to what is now
+     * {@code removed()}), so the observatory dismount has to hang off this method to keep firing at the same time.
+     */
+    @Override
+    public void onClose() {
+        super.onClose();
+        //1.16.5: PlayerEntity#closeScreen() -> 1.20.1: Player#closeContainer()
+        EventFlags.GUI_CLOSING.executeWithFlag(() -> Minecraft.getInstance().player.closeContainer());
+    }
+
+    //1.16.5 received the raw MatrixStack; 1.20.1 hands screens a GuiGraphics that owns the very same pose stack.
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float pTicks) {
+        PoseStack renderStack = guiGraphics.pose();
+
+        RenderSystem.enableDepthTest();
+        super.render(guiGraphics, mouseX, mouseY, pTicks);
+
+        //1.16.5: Minecraft#gameSettings#setPointOfView(PointOfView) -> 1.20.1: Minecraft#options#setCameraType(CameraType)
+        Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+
+        //1.16.5: Window#getGuiScaleFactor() -> 1.20.1: Window#getGuiScale()
+        double guiFactor = Minecraft.getInstance().getWindow().getGuiScale();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        //1.16.5: MathHelper -> 1.20.1: Mth
+        GL11.glScissor(Mth.floor((FRAME_TEXTURE_SIZE - 2) * guiFactor),
+                Mth.floor((FRAME_TEXTURE_SIZE - 2) * guiFactor),
+                Mth.floor((this.getGuiWidth() + 2) * guiFactor),
+                Mth.floor((this.getGuiHeight() + 2) * guiFactor));
+        this.drawObservatoryScreen(renderStack, pTicks);
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+        this.drawFrame(renderStack);
+    }
+
+    //1.16.5: MatrixStack -> 1.20.1: PoseStack
+    private void drawObservatoryScreen(PoseStack renderStack, float pTicks) {
+        //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
+        boolean canSeeSky = this.canObserverSeeSky(this.getTile().getBlockPos(), 2);
+        double guiFactor = Minecraft.getInstance().getWindow().getGuiScale();
+        //1.16.5: Entity#getPitch(float) -> 1.20.1: Entity#getViewXRot(float)
+        float pitch = Minecraft.getInstance().player.getViewXRot(pTicks);
+        float angleOpacity = 0F;
+        if (pitch < -30F) {
+            angleOpacity = 1F;
+        } else if (pitch <= -9F) {
+            angleOpacity = 0.2F + 0.8F * ((Math.abs(pitch) - 10F) / 20F);
+            angleOpacity = Mth.sqrt(angleOpacity);
+        }
+        float brMultiplier = angleOpacity;
+
+        //1.16.5 ran RenderSystem.disableAlphaTest() here and RenderSystem.enableAlphaTest() at every exit of this
+        //method. 1.20.1 removed the fixed-function alpha test entirely - the position_color_tex core shader used by
+        //RenderingUtils/RenderingGuiUtils does its own alpha handling - so those calls drop out.
+        RenderSystem.enableBlend();
+        Blending.DEFAULT.apply();
+
+        this.setBlitOffset(-10);
+        this.drawSkyBackground(renderStack, pTicks, canSeeSky, angleOpacity);
+
+        if (!this.isInitialized()) {
+            this.setBlitOffset(0);
+
+            Blending.DEFAULT.apply();
+            RenderSystem.disableBlend();
+            return;
+        }
+
+        //1.16.5: Entity#rotationYaw -> 1.20.1: Entity#getYRot()
+        float playerYaw = Minecraft.getInstance().player.getYRot() % 360F;
+        if (playerYaw < 0) {
+            playerYaw += 360F;
+        }
+        if (playerYaw >= 180F) {
+            playerYaw -= 360F;
+        }
+        //1.16.5: Entity#rotationPitch -> 1.20.1: Entity#getXRot()
+        float playerPitch = Minecraft.getInstance().player.getXRot();
+        //1.16.5: World#getRainStrength(float) -> 1.20.1: Level#getRainLevel(float)
+        float rainBr = 1F - Minecraft.getInstance().level.getRainLevel(pTicks);
+
+        //1.16.5: Minecraft#world -> 1.20.1: Minecraft#level
+        WorldContext ctx = SkyHandler.getContext(Minecraft.getInstance().level, LogicalSide.CLIENT);
+        if (ctx != null && canSeeSky) {
+            Random gen = ctx.getDayRandom();
+
+            this.setBlitOffset(-9);
+            TexturesAS.TEX_STAR_1.bindTexture();
+            //1.16.5: DefaultVertexFormats -> 1.20.1: com.mojang.blaze3d.vertex.DefaultVertexFormat
+            RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+                for (Point.Float star : usedStars) {
+                    float size = 3 + gen.nextFloat() * 3F;
+                    float brightness = 0.4F + (RenderingConstellationUtils.stdFlicker(ClientScheduler.getClientTick(), pTicks, 10 + gen.nextInt(20))) * 0.5F;
+                    brightness = this.multiplyStarBrightness(pTicks, brightness);
+                    brightness *= brMultiplier;
+
+                    RenderingGuiUtils.rect(buf, renderStack, this)
+                            .at(FRAME_TEXTURE_SIZE + star.x, FRAME_TEXTURE_SIZE + star.y)
+                            .dim(size, size)
+                            .color(brightness, brightness, brightness, brightness)
+                            .draw();
+                }
+            });
+
+            this.setBlitOffset(-7);
+            for (DrawArea area : this.getVisibleDrawAreas()) {
+                for (IConstellation cst : area.getDisplayMap().keySet()) {
+                    ConstellationDisplayInformation info = area.getDisplayMap().get(cst);
+                    info.getFrameDrawInformation().clear();
+                    if (!(info instanceof PlayerAngledConstellationInformation)) {
+                        continue;
+                    }
+                    PlayerAngledConstellationInformation cstInfo = (PlayerAngledConstellationInformation) info;
+                    float size = cstInfo.getRenderSize();
+                    float diffYaw = playerYaw - cstInfo.getYaw();
+                    float diffPitch = playerPitch - cstInfo.getPitch();
+
+                    if ((Math.abs(diffYaw) <= size || Math.abs(diffYaw += 360F) <= size) &&
+                            Math.abs(diffPitch) <= size) {
+                        int wPart = Mth.floor(this.getGuiWidth() * 0.1F);
+                        int hPart = Mth.floor(this.getGuiHeight() * 0.1F);
+                        float xFactor = diffYaw   / 8F;
+                        float yFactor = diffPitch / 8F;
+
+                        Map<StarLocation, Rectangle.Float> cstRenderInfo = RenderingConstellationUtils.renderConstellationIntoGUI(
+                                cst, renderStack,
+                                this.getGuiLeft() + wPart + Mth.floor((xFactor / guiFactor) * this.getGuiWidth()),
+                                this.getGuiTop() + hPart + Mth.floor((yFactor / guiFactor) * this.getGuiHeight()),
+                                this.getGuiZLevel(),
+                                Mth.floor(this.getGuiHeight() * 0.6F),
+                                Mth.floor(this.getGuiHeight() * 0.6F),
+                                2F,
+                                () -> (0.2F + 0.7F * RenderingConstellationUtils.conCFlicker(ClientScheduler.getClientTick(), pTicks, 5 + gen.nextInt(15)) * rainBr) * brMultiplier,
+                                ResearchHelper.getClientProgress().hasConstellationDiscovered(cst),
+                                true
+                        );
+
+                        cstInfo.getFrameDrawInformation().putAll(cstRenderInfo);
+                    }
+                }
+            }
+
+            this.setBlitOffset(-5);
+            this.renderDrawnLines(renderStack, gen, pTicks);
+        }
+
+        this.setBlitOffset(0);
+        Blending.DEFAULT.apply();
+        RenderSystem.disableBlend();
+    }
+
+    private void drawFrame(PoseStack renderStack) {
+        this.setBlitOffset(10);
+        TexturesAS.TEX_GUI_OBSERVATORY.bindTexture();
+
+        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+            //Unused in 1.16.5 as well - the DrawBuilder pulls the matrix off the pose stack itself.
+            //1.16.5: MatrixStack#getLast()#getMatrix() -> 1.20.1: PoseStack#last()#pose() (org.joml.Matrix4f)
+            Matrix4f offset = renderStack.last().pose();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(0, 0).dim(FRAME_TEXTURE_SIZE, FRAME_TEXTURE_SIZE)
+                    .tex(0, 0, 8F / 20F, 8F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(this.getGuiWidth() + FRAME_TEXTURE_SIZE, 0).dim(FRAME_TEXTURE_SIZE, FRAME_TEXTURE_SIZE)
+                    .tex(8F / 20F, 0, 8F / 20F, 8F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(this.getGuiWidth() + FRAME_TEXTURE_SIZE, this.getGuiHeight() + FRAME_TEXTURE_SIZE).dim(FRAME_TEXTURE_SIZE, FRAME_TEXTURE_SIZE)
+                    .tex(8F / 20F, 8F / 20F, 8F / 20F, 8F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(0, this.getGuiHeight() + FRAME_TEXTURE_SIZE).dim(FRAME_TEXTURE_SIZE, FRAME_TEXTURE_SIZE)
+                    .tex(0, 8F / 20F, 8F / 20F, 8F / 20F).draw();
+
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(FRAME_TEXTURE_SIZE, 0).dim(this.getGuiWidth(), FRAME_TEXTURE_SIZE)
+                    .tex(16F / 20F, 0, 1F / 20F, 8F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(this.getGuiWidth() + FRAME_TEXTURE_SIZE, FRAME_TEXTURE_SIZE).dim(FRAME_TEXTURE_SIZE, this.getGuiHeight())
+                    .tex(0, 17F / 20F, 8F / 20F, 1F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(FRAME_TEXTURE_SIZE, this.getGuiHeight() + FRAME_TEXTURE_SIZE).dim(this.getGuiWidth(), FRAME_TEXTURE_SIZE)
+                    .tex(17F / 20F, 0, 1F / 20F, 8F / 20F).draw();
+            RenderingGuiUtils.rect(buf, renderStack, this)
+                    .at(0, FRAME_TEXTURE_SIZE).dim(FRAME_TEXTURE_SIZE, this.getGuiHeight())
+                    .tex(0, 16F / 20F, 8F / 20F, 1F / 20F).draw();
+        });
+        this.setBlitOffset(0);
+    }
+
+    private void drawSkyBackground(PoseStack renderStack, float pTicks, boolean canSeeSky, float angleOpacity) {
+        Tuple<Color, Color> rgbFromTo = SkyScreen.getSkyGradient(canSeeSky, angleOpacity, pTicks);
+        RenderingDrawUtils.drawGradientRect(renderStack, this.getGuiZLevel(),
+                this.guiLeft, this.guiTop,
+                this.guiLeft + this.guiWidth, this.guiTop + this.guiHeight,
+                rgbFromTo.getA().getRGB(), rgbFromTo.getB().getRGB());
+    }
+
+    @Override
+    public void mouseMoved(double xPos, double yPos) {
+        //1.16.5: Minecraft#mouseHelper -> 1.20.1: Minecraft#mouseHandler
+        if (!Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
+            return;
+        }
+
+        int offsetX = 6, offsetY = 6;
+        int width = guiWidth - 12, height = guiHeight - 12;
+
+        Minecraft mc = Minecraft.getInstance();
+        //1.16.5: MouseHelper#getMouseX()/#getMouseY() -> 1.20.1: MouseHandler#xpos()/#ypos();
+        //        Window#getScaledWidth()/#getScaledHeight() -> Window#getGuiScaledWidth()/#getGuiScaledHeight()
+        double xDiff = mc.mouseHandler.xpos() - (xPos / ((double) mc.getWindow().getGuiScaledWidth()  / mc.getWindow().getWidth()));
+        double yDiff = mc.mouseHandler.ypos() - (yPos / ((double) mc.getWindow().getGuiScaledHeight() / mc.getWindow().getHeight()));
+
+        //1.16.5: Entity#rotationPitch -> 1.20.1: Entity#getXRot()/#setXRot(float)
+        float pitch = Minecraft.getInstance().player.getXRot();
+        if (pitch <= -89.99F && yDiff > 0) {
+            yDiff = 0;
+        }
+        if (pitch >= -10F) {
+            Minecraft.getInstance().player.setXRot(-10F);
+            yDiff = 0;
+        }
+        if (pitch <= -75F) {
+            Minecraft.getInstance().player.setXRot(-75F);
+            yDiff = 0;
+        }
+
+        for (Point.Float sl : usedStars) {
+            sl.x -= xDiff;
+            sl.y += yDiff;
+
+            if (sl.x < offsetX) {
+                sl.x += width;
+            } else if (sl.x > (offsetX + width)) {
+                sl.x -= width;
+            }
+            if (sl.y < offsetY) {
+                sl.y += height;
+            } else if (sl.y > (offsetY + height)) {
+                sl.y -= height;
+            }
+        }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+    @Override
+    protected boolean shouldRightClickCloseScreen(double mouseX, double mouseY) {
+        return true;
+    }
+}

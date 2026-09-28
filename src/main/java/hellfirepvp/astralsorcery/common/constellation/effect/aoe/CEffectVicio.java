@@ -1,0 +1,149 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
+
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
+import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect;
+import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
+import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectStatus;
+import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
+import hellfirepvp.astralsorcery.common.event.helper.EventHelperTemporaryFlight;
+import hellfirepvp.astralsorcery.common.lib.ColorsAS;
+import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
+import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: CEffectVicio
+ * Created by HellFirePvP
+ * Date: 11.06.2019 / 20:46
+ */
+public class CEffectVicio extends ConstellationEffect implements ConstellationEffectStatus {
+
+    public static PlayerAffectionFlags.AffectionFlag FLAG = makeAffectionFlag("vicio");
+    public static VicioConfig CONFIG = new VicioConfig();
+
+    public CEffectVicio(@Nonnull ILocatable origin) {
+        super(origin, ConstellationsAS.vicio);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+        if (rand.nextInt(3) == 0) {
+            Vector3 r = new Vector3(
+                    pos.getX() + rand.nextFloat() * 4 * (rand.nextBoolean() ? 1 : -1) + 0.5,
+                    pos.getY() + rand.nextFloat() * 2 + 0.5,
+                    pos.getZ() + rand.nextFloat() * 4 * (rand.nextBoolean() ? 1 : -1) + 0.5);
+
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(r)
+                    .setMotion(Vector3.random().setY(0).multiply(0.03F))
+                    .setScaleMultiplier(0.45F)
+                    .color(VFXColorFunction.constant(ColorsAS.RITUAL_CONSTELLATION_VICIO))
+                    .setGravityStrength(-0.002F)
+                    .setMaxAge(40);
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(r)
+                    .setMotion(new Vector3(0, rand.nextFloat() * 0.03F, 0))
+                    .setScaleMultiplier(0.45F)
+                    .color(VFXColorFunction.constant(ColorsAS.RITUAL_CONSTELLATION_VICIO))
+                    .setGravityStrength(-0.002F)
+                    .setMaxAge(40);
+        }
+    }
+
+    @Override
+    public boolean playEffect(Level world, BlockPos pos, ConstellationEffectProperties properties, @Nullable IMinorConstellation trait) {
+        return false;
+    }
+
+    @Override
+    public boolean runStatusEffect(Level world, BlockPos pos, int mirrorAmount, ConstellationEffectProperties modified, @Nullable IMinorConstellation possibleTraitEffect) {
+        boolean foundPlayer = false;
+        double range = modified.getSize();
+        if (modified.isCorrupted()) {
+            //1.16.5: World#getEntitiesWithinAABB -> 1.20.1: Level#getEntitiesOfClass;
+            //AxisAlignedBB#offset(Vector3i)/#grow -> AABB#move(Vec3i)/#inflate.
+            List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, BOX.move(pos).inflate(range));
+            for (LivingEntity entity : entities) {
+                if (entity instanceof ServerPlayer) {
+                    ServerPlayer pl = (ServerPlayer) entity;
+                    //1.16.5: pl.interactionManager.getGameType().isSurvivalOrAdventure(). 1.20.1 renamed the field
+                    //to ServerPlayer#gameMode (ServerPlayerGameMode#getGameModeForPlayer) and GameType#isSurvival()
+                    //is the exact same test (SURVIVAL || ADVENTURE).
+                    if (pl.gameMode.getGameModeForPlayer().isSurvival()) {
+                        //1.16.5: pl.abilities.allowFlying/isFlying + pl.sendPlayerAbilities() ->
+                        //1.20.1: pl.getAbilities().mayfly/flying + pl.onUpdateAbilities()
+                        boolean prev = pl.getAbilities().mayfly;
+                        pl.getAbilities().mayfly = false;
+                        pl.getAbilities().flying = false;
+                        if (prev) {
+                            pl.onUpdateAbilities();
+                        }
+                    }
+                    markPlayerAffected(pl);
+                }
+                foundPlayer = true;
+                //1.16.5: Effects.SLOWNESS -> MobEffects.MOVEMENT_SLOWDOWN, Effects.MINING_FATIGUE -> MobEffects.DIG_SLOWDOWN
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 9));
+                entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 200, 9));
+            }
+        } else {
+            List<ServerPlayer> entities = world.getEntitiesOfClass(ServerPlayer.class, BOX.move(pos).inflate(range));
+            for (ServerPlayer pl : entities) {
+                if (EventHelperTemporaryFlight.allowFlight(pl)) {
+                    boolean prev = pl.getAbilities().mayfly;
+                    pl.getAbilities().mayfly = true;
+                    foundPlayer = true;
+                    if (!prev) {
+                        pl.onUpdateAbilities();
+                    }
+                }
+                markPlayerAffected(pl);
+            }
+        }
+        return foundPlayer;
+    }
+
+    @Override
+    public Config getConfig() {
+        return CONFIG;
+    }
+
+    @Override
+    public PlayerAffectionFlags.AffectionFlag getPlayerAffectionFlag() {
+        return FLAG;
+    }
+
+    private static class VicioConfig extends Config {
+
+        private VicioConfig() {
+            super("vicio", 24D, 16D);
+        }
+    }
+}

@@ -1,0 +1,236 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+version = "${mod_version}"
+group = "${mod_group_id}"
+
+base {
+    archivesName = mod_name
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+
+    // Ported 1:1 from the 1.16.5 access transformer (see src/main/resources/META-INF/accesstransformer.cfg).
+    // Declared here (and in mods.toml via [[accessTransformers]]) exactly like ObserverLib 1.20.1 does.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            // Jump straight into run/saves/"New World" instead of stopping at the title screen.
+            // This is not a convenience: the Rosetta remote debug bridge only starts on
+            // ServerStartedEvent, i.e. once a world is loaded, so at the title screen there is no
+            // control plane at all and the world has to be entered by hand before anything can be
+            // probed. --quickPlaySingleplayer is vanilla 1.20 (net.minecraft.client.quickplay.QuickPlay).
+            args '--quickPlaySingleplayer', 'New World'
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+            // Mixin's ModLauncher transformation service is named "mixin" and declares the "config"
+            // option, so ModLauncher exposes it as --mixin.config. MixinGradle's `mixin { config ... }`
+            // block adds the same argument to every run; a duplicate registration is a no-op because
+            // Mixins#registerConfiguration skips names that are already in registeredConfigs.
+            args '--mixin.config=astralsorcery.mixins.json'
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "astralsorcery.refmap.json"
+    // Must match the resource-root path of the config (src/main/resources/astralsorcery.mixins.json):
+    // MixinGradle writes it into the jar manifest as MixinConfigs and appends
+    // "--mixin.config astralsorcery.mixins.json" to every ForgeGradle run configuration.
+    config 'astralsorcery.mixins.json'
+}
+
+repositories {
+    maven { url = 'https://maven.aliyun.com/repository/public' }
+    maven { url = 'https://maven.minecraftforge.net/' }
+    // JEI. Not mirrored by the aliyun proxy above, so it has to be declared explicitly.
+    maven {
+        url = 'https://maven.blamejared.com'
+        // JEI's own pom pulls net.mezzdev.config:mezz_config-*-config-api, which lives here too.
+        content {
+            includeGroup 'mezz.jei'
+            includeGroupByRegex 'net\\.mezzdev.*'
+        }
+    }
+    // KubeJS and its Rhino script engine. maven.latvian.dev carries both; saps.dev is missing rhino-forge.
+    maven {
+        url = 'https://maven.latvian.dev/releases'
+        content { includeGroup 'dev.latvian.mods' }
+    }
+    // Architectury, which kubejs-forge's own pom declares as a dependency.
+    maven {
+        url = 'https://maven.architectury.dev'
+        content { includeGroup 'dev.architectury' }
+    }
+    mavenCentral()
+}
+
+// kubejs-forge's pom pins rhino-forge 2001.2.2-build.17, which is no longer published; ForgeGradle resolves
+// that transitive even for a compileOnly dependency, so the build fails without this. rhino_version is the
+// oldest build still on maven.latvian.dev.
+//
+// This redirects ONLY that one dead version and must not be a blanket
+// `force "dev.latvian.mods:rhino-forge:${rhino_version}"`. fg.deobf() rewrites a dependency's version to
+// "<version>_mapped_<channel>_<mappingsVersion>" and serves the remapped artifact under that coordinate; a
+// plain force overrides that version too, so the *production* rhino jar ends up on the run classpath. It then
+// dies applying its own mixins, because their refmap holds SRG names and nothing remapped it:
+//     InvalidMixinException: @Shadow method m_131274_ in rhino-common.mixins.json:TextColorMixin was not
+//     located in the target class net.minecraft.network.chat.TextColor
+// Matching on the requested version leaves the _mapped_ coordinate untouched, which is what lets
+// -PwithKubeJS=true actually boot.
+configurations.configureEach {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'dev.latvian.mods'
+                    && details.requested.name == 'rhino-forge'
+                    && details.requested.version == '2001.2.2-build.17') {
+                details.useVersion rhino_version
+                details.because 'rhino-forge 2001.2.2-build.17 is not published; see the note above.'
+            }
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    runtimeOnly 'org.slf4j:slf4j-simple:2.0.13'
+
+    // Plain JUnit tests under src/test: they exercise mod logic against the mapped Minecraft classes
+    // without starting FML, so anything that needs registries or a level belongs in a runtime test instead.
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JEI. The two api artifacts are compileOnly because the integration must compile and ship without
+    // JEI installed - Mods.JEI#isPresent guards every call site and @JeiPlugin is only read by JEI itself.
+    // The full forge jar is runtimeOnly so the dev client can actually show the custom categories.
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    // KubeJS. compileOnly for the same reason as JEI: the plugin class is discovered through the
+    // kubejs.plugins service file, so an install without KubeJS never loads it.
+    // transitive = false on purpose - kubejs-forge's pom pins architectury-forge, rhino-forge and
+    // mixinextras, none of which is needed to COMPILE against the KubeJS API, and rhino-forge is not
+    // published where the pom says it is.
+    // The runtime side is opt-in with -PwithKubeJS=true, because those transitives are a large surface to
+    // add to the dev run that every other slice is verified against. If you enable it, confirm the
+    // rhino-forge coordinate first; the version in kubejs-forge's pom (2001.2.2-build.17) does not resolve.
+    compileOnly(fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")) { transitive = false }
+    if (project.hasProperty('withKubeJS')) {
+        runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+        runtimeOnly fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
+        runtimeOnly(fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")) { transitive = false }
+    }
+
+    // ObserverLib is NOT a dependency of this port. Everything Astral Sorcery used from it
+    // (structure matching, change subscribers, BlockChangeNotifier, the LevelChunk mixin, ...)
+    // is embedded into hellfirepvp.astralsorcery.*, ObserverLib 1.20.1 being a source-only reference.
+
+    // 1.16.5 additionally declared:
+    //     compileOnly 'top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1:api'
+    //     runtimeOnly fg.deobf('top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1')
+    // The 1.20.1 tree does not import top.theillusivec4.* anywhere yet
+    // (hellfirepvp.astralsorcery.common.integration.IntegrationCurios is still a stub, and
+    //  Mods.CURIOS#executeIfPresent guards every call site), so no Curios artifact is required
+    // to compile. See TODO_PORT[AS-INT-01] in IntegrationHelper/IntegrationCurios.
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version, forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors: mod_authors, mod_description: mod_description,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                // Production fallback for mixin config discovery: MixinConnectorManager picks this up
+                // from the jar manifest (org.spongepowered.asm.util.Constants$ManifestAttributes#MIXINCONNECTOR)
+                // once FML offers the mod jar to Mixin's launch plugin. The MixinConfigs attribute written by
+                // MixinGradle covers the same ground; registering the same config twice is a no-op.
+                'MixinConnector'          : 'hellfirepvp.astralsorcery.MixinConnector'
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+}
+
+// The mixin annotation processor breaks IntelliJ's gradle sync; mirror ObserverLib and drop it during sync only.
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType(JavaCompile).all {
+            it.options.annotationProcessorPath = files()
+        }
+    }
+}

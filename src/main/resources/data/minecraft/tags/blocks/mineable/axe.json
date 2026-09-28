@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "astralsorcery:infused_wood",
+    "astralsorcery:infused_wood_arch",
+    "astralsorcery:infused_wood_column",
+    "astralsorcery:infused_wood_engraved",
+    "astralsorcery:infused_wood_enriched",
+    "astralsorcery:infused_wood_infused",
+    "astralsorcery:infused_wood_planks",
+    "astralsorcery:infused_wood_slab",
+    "astralsorcery:infused_wood_stairs",
+    "astralsorcery:tree_beacon",
+    "astralsorcery:telescope",
+    "astralsorcery:refraction_table",
+    "astralsorcery:fountain"
+  ]
+}

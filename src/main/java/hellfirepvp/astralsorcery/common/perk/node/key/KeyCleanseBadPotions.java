@@ -1,0 +1,83 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.perk.node.key;
+
+import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.lib.PerkAttributeTypesAS;
+import hellfirepvp.astralsorcery.common.perk.PerkAttributeHelper;
+import hellfirepvp.astralsorcery.common.perk.node.KeyPerk;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: KeyCleanseBadPotions
+ * Created by HellFirePvP
+ * Date: 31.08.2019 / 16:39
+ */
+public class KeyCleanseBadPotions extends KeyPerk {
+
+    public KeyCleanseBadPotions(ResourceLocation name, float x, float y) {
+        super(name, x, y);
+    }
+
+    @Override
+    public void attachListeners(LogicalSide side, IEventBus bus) {
+        super.attachListeners(side, bus);
+
+        bus.addListener(EventPriority.LOW, this::onHeal);
+    }
+
+    private void onHeal(LivingHealEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity instanceof Player && !entity.level().isClientSide()) {
+            Player player = (Player) entity;
+            List<MobEffectInstance> badEffects = player.getActiveEffects()
+                    .stream()
+                    .filter(p -> p.getEffect().getCategory() != null && p.getEffect().getCategory() == MobEffectCategory.HARMFUL)
+                    .collect(Collectors.toList());
+            if (badEffects.isEmpty()) {
+                return;
+            }
+            MobEffectInstance effect = badEffects.get(rand.nextInt(badEffects.size()));
+            PlayerProgress prog = ResearchHelper.getProgress(player, LogicalSide.SERVER);
+            if (prog.getPerkData().hasPerkEffect(this)) {
+                float inclChance = 0.1F;
+                inclChance = PerkAttributeHelper.getOrCreateMap(player, LogicalSide.SERVER)
+                        .modifyValue(player, prog, PerkAttributeTypesAS.ATTR_TYPE_INC_PERK_EFFECT, inclChance);
+                float chance = getChance(event.getAmount()) * inclChance;
+                if (rand.nextFloat() < chance) {
+                    player.removeEffect(effect.getEffect());
+                }
+            }
+        }
+    }
+
+    private float getChance(float healed) {
+        if (healed <= 0) {
+            return 0;
+        }
+        float chance = ((3F / (healed * -0.66666667F)) + 5F) / 5F;
+        return Mth.clamp(chance, 0F, 1F);
+    }
+}
+

@@ -1,0 +1,388 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.perk;
+
+import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
+import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalPerkTree;
+import hellfirepvp.astralsorcery.common.data.research.PerkAllocationType;
+import hellfirepvp.astralsorcery.common.data.research.PlayerPerkData;
+import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.perk.source.ModifierManager;
+import hellfirepvp.astralsorcery.common.perk.source.ModifierSource;
+import hellfirepvp.astralsorcery.common.perk.tree.PerkTreePoint;
+import hellfirepvp.astralsorcery.common.util.CacheEventBus;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: AbstractPerk
+ * Created by HellFirePvP
+ * Date: 02.06.2019 / 01:59
+ */
+//1.16.5 types every text-returning member here as IFormattableTextComponent (1.20.1: MutableComponent) -
+//getName(), getDescription(), getLocalizedTooltip(), addLocalizedTooltip(), getSource(), the tooltipCache field and
+//PerkCategory#getName(). This tree hands out the Component supertype instead; the values are still the very same
+//MutableComponent instances, only the compile-time type is wider, and every consumer
+//(client/screen/journal/ScreenJournalPerkTree:339-343, 860) is written against Component already. Left as-is
+//because narrowing it back would have to change the client screens, which are not this slice's files.
+public class AbstractPerk implements ModifierSource {
+
+    protected static final Random rand = new Random();
+
+    public static final PerkCategory CATEGORY_BASE = new PerkCategory("base", ChatFormatting.WHITE);
+    public static final PerkCategory CATEGORY_ROOT = new PerkCategory("root", ChatFormatting.WHITE);
+    public static final PerkCategory CATEGORY_MAJOR = new PerkCategory("major", ChatFormatting.WHITE);
+    public static final PerkCategory CATEGORY_KEY = new PerkCategory("key", ChatFormatting.GOLD);
+    public static final PerkCategory CATEGORY_EPIPHANY = new PerkCategory("epiphany", ChatFormatting.GOLD);
+    public static final PerkCategory CATEGORY_FOCUS = new PerkCategory("focus", ChatFormatting.GOLD);
+
+    private final ResourceLocation registryName;
+    private final CacheEventBus busWrapper;
+    protected final Point.Float offset;
+    private String unlocalizedKey;
+    private PerkCategory category = CATEGORY_BASE;
+    private boolean hiddenUnlessAllocated = false;
+    private PerkTreePoint<? extends AbstractPerk> treePoint = null;
+
+    private ResourceLocation customPerkType = null;
+
+    private List<Component> tooltipCache = null;
+    private boolean cacheTooltip = true;
+
+    public AbstractPerk(ResourceLocation name, float x, float y) {
+        this.registryName = name;
+        this.busWrapper = CacheEventBus.of(MinecraftForge.EVENT_BUS);
+        this.offset = new Point.Float(x, y);
+        this.unlocalizedKey = String.format("perk.%s.%s", name.getNamespace(), name.getPath());
+    }
+
+    protected PerkTreePoint<? extends AbstractPerk> initPerkTreePoint() {
+        return new PerkTreePoint<>(this, this.getOffset());
+    }
+
+    protected void invalidate(LogicalSide side) {
+        this.busWrapper.unregisterAll();
+        PerkCooldownHelper.removePerkCooldowns(side, this);
+    }
+
+    protected void validate(LogicalSide side) {
+        this.attachListeners(side, busWrapper);
+    }
+
+    protected void attachListeners(LogicalSide side, IEventBus bus) {}
+
+    @Nonnull
+    public Point.Float getOffset() {
+        return offset;
+    }
+
+    public final PerkTreePoint<? extends AbstractPerk> getPoint() {
+        if (treePoint == null) {
+            treePoint = initPerkTreePoint();
+        }
+        return treePoint;
+    }
+
+    public ResourceLocation getRegistryName() {
+        return this.registryName;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T setCategory(PerkCategory category) {
+        this.category = category;
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T setHiddenUnlessAllocated(boolean hiddenUnlessAllocated) {
+        this.hiddenUnlessAllocated = hiddenUnlessAllocated;
+        return (T) this;
+    }
+
+    @Override
+    public boolean canApplySource(Player player, LogicalSide dist) {
+        return !ResearchHelper.getProgress(player, dist).getPerkData().isPerkSealed(this);
+    }
+
+    @Override
+    public final void onApply(Player player, LogicalSide dist) {
+        this.applyPerkLogic(player, dist);
+    }
+
+    @Override
+    public final void onRemove(Player player, LogicalSide dist) {
+        this.removePerkLogic(player, dist);
+    }
+
+    protected void applyPerkLogic(Player player, LogicalSide dist) {}
+
+    protected void removePerkLogic(Player player, LogicalSide dist) {}
+
+    protected LogicalSide getSide(Entity entity) {
+        return entity.level().isClientSide() ? LogicalSide.CLIENT : LogicalSide.SERVER;
+    }
+
+    @Nullable
+    public CompoundTag getPerkData(Player player, LogicalSide dist) {
+        return ResearchHelper.getProgress(player, dist).getPerkData().getData(this);
+    }
+
+    /**
+     * Called ONCE when the perk is unlocked
+     * You may use the CompoundTag to save data to remove it again later
+     * The player might be null for root perks on occasion.
+     */
+    public void onUnlockPerkServer(@Nullable Player player, PerkAllocationType allocationType, PlayerProgress progress, CompoundTag dataStorage) {}
+
+    /**
+     * Clean up and remove the perk from that single player.
+     * Data in the dataStorage is filled with the data set in onUnlockPerkServer
+     * Called after the perk is already removed from the player, but still in the player's perkData
+     */
+    public void onRemovePerkServer(Player player, PerkAllocationType allocationType, PlayerProgress progress, CompoundTag dataStorage) {}
+
+    @SuppressWarnings("unchecked")
+    public <T extends AbstractPerk> T setName(String name) {
+        this.unlocalizedKey = name;
+        return (T) this;
+    }
+
+    @Nonnull
+    public PerkCategory getCategory() {
+        return category;
+    }
+
+    public AllocationStatus getPerkStatus(@Nullable Player player, LogicalSide side) {
+        if (player == null) {
+            return AllocationStatus.UNALLOCATED;
+        }
+        PlayerProgress progress = ResearchHelper.getProgress(player, side);
+        if (!progress.isValid()) {
+            return AllocationStatus.UNALLOCATED;
+        }
+        PlayerPerkData perkData = progress.getPerkData();
+        if (perkData.hasPerkAllocation(this, PerkAllocationType.UNLOCKED)) {
+            return AllocationStatus.ALLOCATED;
+        }
+        if (perkData.hasPerkAllocation(this)) {
+            return AllocationStatus.GRANTED;
+        }
+
+        return mayUnlockPerk(progress, player) ? AllocationStatus.UNLOCKABLE : AllocationStatus.UNALLOCATED;
+    }
+
+    public boolean mayUnlockPerk(PlayerProgress progress, Player player) {
+        PlayerPerkData perkData = progress.getPerkData();
+        if (!perkData.hasFreeAllocationPoint(player, getSide(player))) return false;
+
+        for (AbstractPerk otherPerks : PerkTree.PERK_TREE.getConnectedPerks(getSide(player), this)) {
+            if (perkData.hasPerkAllocation(otherPerks, PerkAllocationType.UNLOCKED)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean isVisible(PlayerProgress progress, Player player) {
+        return !this.hiddenUnlessAllocated || progress.getPerkData().hasPerkAllocation(this);
+    }
+
+    public Component getName() {
+        return Component.translatable(this.unlocalizedKey + ".name").withStyle(this.getCategory().getTextFormatting());
+    }
+
+    @Nonnull
+    @OnlyIn(Dist.CLIENT)
+    public Collection<Component> getDescription() {
+        List<Component> toolTip = new ArrayList<>();
+        if (I18n.exists(this.unlocalizedKey + ".desc.1")) {
+            int count = 1;
+            while (I18n.exists(this.unlocalizedKey + ".desc." + count)) {
+                toolTip.add(Component.translatable(this.unlocalizedKey + ".desc." + count));
+                count++;
+            }
+            toolTip.add(Component.literal(""));
+        } else if (I18n.exists(this.unlocalizedKey + ".desc")) {
+            toolTip.add(Component.translatable(this.unlocalizedKey + ".desc"));
+            toolTip.add(Component.literal(""));
+        }
+        return toolTip;
+    }
+
+    protected void disableTooltipCaching() {
+        this.cacheTooltip = false;
+        this.tooltipCache = null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public final Collection<Component> getLocalizedTooltip() {
+        if (cacheTooltip && tooltipCache != null) {
+            return tooltipCache;
+        }
+        tooltipCache = Lists.newArrayList();
+
+        if (!(this instanceof ProgressGatedPerk) || ((ProgressGatedPerk) this).canSeeClient()) {
+            tooltipCache.add(this.getName());
+
+            int prevLength = tooltipCache.size();
+            boolean shouldAdd = addLocalizedTooltip(tooltipCache);
+            if (shouldAdd && prevLength != tooltipCache.size()) {
+                tooltipCache.add(Component.literal(""));
+            }
+            tooltipCache.addAll(this.getDescription());
+        } else {
+            tooltipCache.add(Component.translatable("perk.info.astralsorcery.missing_progress")
+                    .withStyle(ChatFormatting.RED));
+        }
+        return tooltipCache;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean addLocalizedTooltip(Collection<Component> tooltip) {
+        return false;
+    }
+
+    @Nullable
+    @OnlyIn(Dist.CLIENT)
+    public Collection<Component> getSource() {
+        String modid = getRegistryName().getNamespace();
+        ModContainer mod = ModList.get().getModContainerById(modid).orElse(null);
+        if (mod != null) {
+            return Lists.newArrayList(Component.literal(mod.getModInfo().getDisplayName()));
+        }
+        return null;
+    }
+
+    public void clearCaches(LogicalSide side) {}
+
+    @OnlyIn(Dist.CLIENT)
+    public void clearClientTextCaches() {
+        this.tooltipCache = null;
+    }
+
+    @Override
+    public ResourceLocation getProviderName() {
+        return ModifierManager.PERK_PROVIDER_KEY;
+    }
+
+    @Override
+    public boolean isEqual(ModifierSource other) {
+        return this.equals(other);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractPerk)) return false;
+        AbstractPerk that = (AbstractPerk) o;
+        return Objects.equals(getRegistryName(), that.getRegistryName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRegistryName());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean handleMouseClick(ScreenJournalPerkTree gui, double mouseX, double mouseY) {
+        return false;
+    }
+
+    /**
+     * Deserialize data from Json to the perk.
+     */
+    public void deserializeData(JsonObject perkData) {}
+
+    /**
+     * Push the perk's custom additional data into the jsonObject given.
+     */
+    public void serializeData(JsonObject perkData) {}
+
+    @Nullable
+    public final ResourceLocation getCustomPerkType() {
+        return customPerkType;
+    }
+
+    public final void setCustomPerkType(ResourceLocation customPerkType) {
+        this.customPerkType = customPerkType;
+    }
+
+    public final JsonObject serializePerk() {
+        JsonObject data = new JsonObject();
+
+        data.addProperty("registry_name", this.getRegistryName().toString());
+        if (this.getCustomPerkType() != null) {
+            data.addProperty("perk_class", this.getCustomPerkType().toString());
+        }
+        data.addProperty("x", this.getOffset().x);
+        data.addProperty("y", this.getOffset().y);
+        data.addProperty("name", this.unlocalizedKey);
+        data.addProperty("hiddenUnlessAllocated", this.hiddenUnlessAllocated);
+
+        JsonObject perkData = new JsonObject();
+        this.serializeData(perkData);
+        data.add("data", perkData);
+        return data;
+    }
+
+    public static class PerkCategory {
+
+        private final Component name;
+        private final ChatFormatting color;
+
+        public PerkCategory(@Nonnull String unlocName, @Nonnull ChatFormatting color) {
+            this.name = Component.translatable("perk.category.astralsorcery." + unlocName + ".name");
+            this.color = color;
+        }
+
+        public ChatFormatting getTextFormatting() {
+            return color;
+        }
+
+        public Component getName() {
+            return this.name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PerkCategory that = (PerkCategory) o;
+            return Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
+        }
+    }
+}

@@ -1,0 +1,76 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.item.quality;
+
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ItemDazzlingGem
+ * Created by HellFirePvP
+ * Date: 07.12.2020 / 19:48
+ */
+public class ItemDazzlingGem extends Item {
+
+    // 1.16.5 built its own Properties here with maxStackSize(1).group(CommonProxy.ITEM_GROUP_AS).
+    // 1.20.1 has no Properties#group, so the properties (incl. the stack size) are supplied by ItemsAS
+    // and the creative tab is applied centrally.
+    public ItemDazzlingGem(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flag) {
+        getQuality(stack).ifPresent(quality -> tooltip.add(quality.getDisplayName()));
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return true;
+    }
+
+    public static boolean setQuality(ItemStack stack, GemQuality quality) {
+        if (stack.isEmpty() || !(stack.getItem() instanceof ItemDazzlingGem)) {
+            return false;
+        }
+        CompoundTag tag = NBTHelper.getPersistentData(stack);
+        tag.putInt("quality", quality.ordinal());
+        return true;
+    }
+
+    public static Optional<GemQuality> getQuality(ItemStack stack) {
+        if (stack.isEmpty() || !(stack.getItem() instanceof ItemDazzlingGem)) {
+            return Optional.empty();
+        }
+        CompoundTag tag = NBTHelper.getPersistentData(stack);
+        if (!tag.contains("quality", Tag.TAG_INT)) {
+            return Optional.empty();
+        }
+        int qualityId = tag.getInt("quality");
+        if (qualityId < 0 || qualityId >= GemQuality.values().length) {
+            return Optional.empty();
+        }
+        return Optional.of(GemQuality.values()[qualityId]);
+    }
+}

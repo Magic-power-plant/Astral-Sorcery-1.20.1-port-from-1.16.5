@@ -1,0 +1,160 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.item.lens;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.data.config.entry.GeneralConfig;
+import hellfirepvp.astralsorcery.common.lib.ColorsAS;
+import hellfirepvp.astralsorcery.common.lib.ItemsAS;
+import hellfirepvp.astralsorcery.common.network.PacketChannel;
+import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
+import hellfirepvp.astralsorcery.common.util.PartialEffectExecutor;
+import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Random;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ItemColoredLensFire
+ * Created by HellFirePvP
+ * Date: 21.09.2019 / 17:51
+ */
+public class ItemColoredLensFire extends ItemColoredLens {
+
+    // 1.16.5 used the inherited static Item#random, which no longer exists in 1.20.1.
+    private static final Random random = new Random();
+
+    private static final ColorTypeFire COLOR_TYPE_FIRE = new ColorTypeFire();
+
+    public ItemColoredLensFire(Properties properties) {
+        super(COLOR_TYPE_FIRE, properties);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void playParticles(PktPlayEffect event) {
+        Vector3 at = ByteBufUtils.readVector(event.getExtraData());
+        for (int i = 0; i < 5; i++) {
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(at.clone().add(random.nextFloat(), 0.2, random.nextFloat()))
+                    .setMotion(new Vector3(0, 0.016 + random.nextFloat() * 0.02, 0))
+                    .setScaleMultiplier(0.2F)
+                    .color(VFXColorFunction.constant(ColorsAS.COLORED_LENS_FIRE));
+        }
+    }
+
+    private static class ColorTypeFire extends LensColorType {
+
+        private ColorTypeFire() {
+            super(AstralSorcery.key("fire"),
+                    TargetType.ANY,
+                    () -> new ItemStack(ItemsAS.COLORED_LENS_FIRE.get()),
+                    ColorsAS.COLORED_LENS_FIRE,
+                    0.1F,
+                    false);
+        }
+
+        @Override
+        public void entityInBeam(Level world, Vector3 origin, Vector3 target, Entity entity, PartialEffectExecutor executor) {
+            if (world.isClientSide()) {
+                return;
+            }
+            if (entity instanceof ItemEntity) {
+                ItemStack current = ((ItemEntity) entity).getItem();
+
+                ItemStack result = RecipeHelper.findSmeltingResult(entity.level(), current).map(Tuple::getA).orElse(ItemStack.EMPTY);
+                if (result.isEmpty()) {
+                    return;
+                }
+                while (executor.canExecute()) {
+                    executor.markExecution();
+
+                    if (random.nextInt(10) != 0) {
+                        continue;
+                    }
+                    Vector3 entityPos = Vector3.atEntityCorner(entity);
+                    ItemUtils.dropItemNaturally(entity.level(), entityPos.getX(), entityPos.getY(), entityPos.getZ(), ItemUtils.copyStackWithSize(result, result.getCount()));
+                    if (current.getCount() > 1) {
+                        current.shrink(1);
+                        ((ItemEntity) entity).setItem(current);
+                    } else {
+                        entity.discard();
+                    }
+                    return;
+                }
+            } else if (entity instanceof LivingEntity) {
+                if (entity instanceof Player) {
+                    if (!GeneralConfig.CONFIG.doColoredLensesAffectPlayers.get() ||
+                            entity.getServer() == null ||
+                            !entity.getServer().isPvpAllowed()) {
+                        return;
+                    }
+                }
+                // 1.16.5 DamageSource.ON_FIRE; 1.20.1 routes vanilla damage types through Level#damageSources().
+                entity.hurt(world.damageSources().onFire(), 0.5F);
+                entity.setSecondsOnFire(5);
+            }
+        }
+
+        @Override
+        public void blockInBeam(Level world, BlockPos pos, BlockState state, PartialEffectExecutor executor) {
+            if (!(world instanceof ServerLevel)) {
+                return;
+            }
+
+            ItemStack blockStack = ItemUtils.createBlockStack(state);
+            if (blockStack.isEmpty()) {
+                return;
+            }
+            ItemStack result = RecipeHelper.findSmeltingResult(world, blockStack).map(Tuple::getA).orElse(ItemStack.EMPTY);
+            if (result.isEmpty()) {
+                return;
+            }
+
+            PktPlayEffect ev = new PktPlayEffect(PktPlayEffect.Type.MELT_BLOCK)
+                    .addData(buf -> ByteBufUtils.writeVector(buf, new Vector3(pos)));
+            PacketChannel.sendToAllAround(ev, world, new Vector3(pos).toVector3d(), 16);
+
+            while (executor.canExecute()) {
+                executor.markExecution();
+                if (random.nextInt(6) != 0) {
+                    continue;
+                }
+
+                BlockState resState = ItemUtils.createBlockState(result);
+                if (resState != null) {
+                    world.setBlock(pos, resState, Block.UPDATE_ALL);
+                } else if (world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL)) {
+                    ItemUtils.dropItemNaturally(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, result);
+                }
+                return;
+            }
+        }
+    }
+}

@@ -1,0 +1,114 @@
+package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
+
+import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
+import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
+import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
+import hellfirepvp.astralsorcery.common.lib.ItemsAS;
+import hellfirepvp.astralsorcery.common.util.time.TimeStopController;
+import hellfirepvp.astralsorcery.common.util.time.TimeStopZone;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+
+public class MantleEffectHorologium extends MantleEffect {
+
+    public static HorologiumConfig CONFIG = new HorologiumConfig();
+
+    public MantleEffectHorologium() {
+        super(ConstellationsAS.horologium);
+    }
+
+    @Override
+    public void attachEventListeners(IEventBus bus) {
+        super.attachEventListeners(bus);
+        bus.addListener(this::onHurt);
+    }
+
+    @Override
+    protected boolean usesTickMethods() {
+        return true;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected void tickClient(Player player) {
+        super.tickClient(player);
+
+        if (!player.getCooldowns().isOnCooldown(ItemsAS.MANTLE.get())) {
+            this.playCapeSparkles(player, 0.4F);
+        } else {
+            this.playCapeSparkles(player, 0.2F);
+        }
+    }
+
+    private void onHurt(LivingHurtEvent event) {
+        if (ItemMantle.getEffect(event.getEntity(), ConstellationsAS.horologium) != null &&
+                event.getEntity() instanceof Player player &&
+                !event.getEntity().level().isClientSide() &&
+                !event.getSource().is(DamageTypeTags.IS_FIRE)) {
+
+            if (!player.getCooldowns().isOnCooldown(ItemsAS.MANTLE.get()) &&
+                    AlignmentChargeHandler.INSTANCE.hasCharge(player, LogicalSide.SERVER, CONFIG.chargeCostPerFreeze.get())) {
+                TimeStopController.freezeWorldAt(
+                        TimeStopZone.EntityTargetController.allExcept(player),
+                        player.level(),
+                        player.blockPosition(),
+                        CONFIG.effectRange.get().floatValue(),
+                        CONFIG.effectDuration.get());
+                player.getCooldowns().addCooldown(ItemsAS.MANTLE.get(), CONFIG.cooldown.get());
+                AlignmentChargeHandler.INSTANCE.drainCharge(player, LogicalSide.SERVER, CONFIG.chargeCostPerFreeze.get(), false);
+            }
+        }
+    }
+
+    @Override
+    public Config getConfig() {
+        return CONFIG;
+    }
+
+    public static class HorologiumConfig extends Config {
+
+        private final double defaultEffectRange = 20.0;
+        private final int defaultEffectDuration = 180;
+        private final int defaultCooldown = 1000;
+        private final int defaultChargeCostPerFreeze = 400;
+
+        public ForgeConfigSpec.DoubleValue effectRange;
+        public ForgeConfigSpec.IntValue effectDuration;
+        public ForgeConfigSpec.IntValue cooldown;
+        public ForgeConfigSpec.IntValue chargeCostPerFreeze;
+
+        public HorologiumConfig() {
+            super("horologium");
+        }
+
+        @Override
+        public void createEntries(ForgeConfigSpec.Builder cfgBuilder) {
+            super.createEntries(cfgBuilder);
+
+            this.effectRange = cfgBuilder
+                    .comment("Defines the range of the time-freeze bubble.")
+                    .translation(translationKey("effectRange"))
+                    .defineInRange("effectRange", this.defaultEffectRange, 4.0, 64.0);
+            this.effectDuration = cfgBuilder
+                    .comment("Defines the duration of the time-freeze bubble.")
+                    .translation(translationKey("effectDuration"))
+                    .defineInRange("effectDuration", this.defaultEffectDuration, 40, 1000);
+            this.cooldown = cfgBuilder
+                    .comment("Defines the cooldown for the time-freeze effect after it triggered (should be longer than duration maybe)")
+                    .translation(translationKey("cooldown"))
+                    .defineInRange("cooldown", this.defaultCooldown, 40, 20_000);
+
+            this.chargeCostPerFreeze = cfgBuilder
+                    .comment("Set the amount alignment charge consumed per created time stop zone")
+                    .translation(translationKey("chargeCostPerFreeze"))
+                    .defineInRange("chargeCostPerFreeze", this.defaultChargeCostPerFreeze, 0, 1000);
+        }
+    }
+}

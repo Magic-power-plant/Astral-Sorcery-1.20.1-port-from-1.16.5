@@ -1,0 +1,215 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.constellation.mantle;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.ITickHandler;
+import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
+import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
+import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
+import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
+import hellfirepvp.astralsorcery.common.util.MiscUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.function.Consumer;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: MantleEffect
+ * Created by HellFirePvP
+ * Date: 17.02.2020 / 20:13
+ */
+// 1.16.5 had this extend ForgeRegistryEntry<MantleEffect> and call setRegistryName(constellation name),
+// with lookups going through RegistriesAS.REGISTRY_MANTLE_EFFECT. IForgeRegistryEntry/setRegistryName are
+// gone in 1.20.1 and a custom forge registry is not needed for a constellation-keyed lookup, so the
+// instances register themselves into MantleEffectHelper instead (see IWeakConstellation#getMantleEffect).
+public abstract class MantleEffect implements ITickHandler {
+
+    protected static final Random rand = new Random();
+
+    private final PlayerAffectionFlags.AffectionFlag playerAffectionFlag;
+    private final IWeakConstellation constellation;
+
+    public MantleEffect(IWeakConstellation constellation) {
+        this.constellation = constellation;
+        this.playerAffectionFlag = new PlayerAffectionFlags.NoOpAffectionFlag(
+                AstralSorcery.key("mantle_effect_" + constellation.getSimpleName()));
+        MantleEffectHelper.register(constellation, this);
+
+        // 1.16.5 also ran this.attachEventListeners(MinecraftForge.EVENT_BUS) here; in this tree
+        // RegistryMantleEffects#attachEventListeners drives that from CommonProxy#attachEventHandlers
+        // with the very same MinecraftForge.EVENT_BUS, so doing it here as well would double-register.
+        this.attachTickHandlers(AstralSorcery.getProxy().getTickManager()::register);
+    }
+
+    public final IWeakConstellation getAssociatedConstellation() {
+        return this.constellation;
+    }
+
+    public abstract Config getConfig();
+
+    public final PlayerAffectionFlags.AffectionFlag getPlayerAffectionFlag() {
+        return playerAffectionFlag;
+    }
+
+    // 1.16.5: protected. Public here because RegistryMantleEffects (a different package) calls it.
+    public void attachEventListeners(IEventBus bus) {}
+
+    protected void attachTickHandlers(Consumer<ITickHandler> registrar) {
+        if (this.usesTickMethods()) {
+            registrar.accept(this);
+        }
+    }
+
+    protected void tickServer(Player player) {}
+
+    @OnlyIn(Dist.CLIENT)
+    protected void tickClient(Player player) {}
+
+    protected boolean usesTickMethods() {
+        return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    protected void playCapeSparkles(Player player, float chance) {
+        // 1.16.5: gameSettings.getPointOfView().func_243192_a() -> CameraType#isFirstPerson()
+        if (player == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            chance *= 0.1F;
+        }
+        if (rand.nextFloat() < chance) {
+            Color c = this.getAssociatedConstellation().getConstellationColor();
+            if (c != null) {
+                float width = player.getBbWidth() * 0.8F;
+                double x = player.getX() + rand.nextFloat() * width * (rand.nextBoolean() ? 1 : -1);
+                double y = player.getY() + rand.nextFloat() * (player.getBbHeight() / 3);
+                double z = player.getZ() + rand.nextFloat() * width * (rand.nextBoolean() ? 1 : -1);
+                Vector3 pos = new Vector3(x, y, z);
+
+                FXFacingParticle fx = this.spawnFacingParticle(player, pos)
+                        .color(VFXColorFunction.constant(c))
+                        .alpha(VFXAlphaFunction.FADE_OUT)
+                        .setScaleMultiplier(0.4F + rand.nextFloat() * 0.4F)
+                        .setMaxAge(20 + rand.nextInt(10));
+                if (rand.nextInt(3) == 0) {
+                    fx.color(VFXColorFunction.constant(this.getAssociatedConstellation().getTierRenderColor()));
+                }
+
+                if (rand.nextFloat() > 0.35F) {
+                    this.spawnFacingParticle(player, pos)
+                            .color(VFXColorFunction.WHITE)
+                            .alpha(VFXAlphaFunction.FADE_OUT)
+                            .setScaleMultiplier(0.2F + rand.nextFloat() * 0.2F)
+                            .setMaxAge(10 + rand.nextInt(10));
+                }
+            }
+        }
+    }
+
+    @Nonnull
+    @OnlyIn(Dist.CLIENT)
+    protected FXFacingParticle spawnFacingParticle(Player player, Vector3 at) {
+        return EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                .setOwner(player.getUUID())
+                .spawn(at);
+    }
+
+    @Override
+    public final void tick(TickEvent.Type type, Object... context) {
+        if (!this.getConfig().enabled.get()) {
+            return;
+        }
+
+        Player pl = (Player) context[0];
+        LogicalSide side = (LogicalSide) context[1];
+        boolean hasMantle = ItemMantle.getEffect(pl, this.getAssociatedConstellation()) != null;
+        if (!hasMantle) {
+            return;
+        }
+
+        if (side.isServer()) {
+            if (!(pl instanceof ServerPlayer) || MiscUtils.isPlayerFakeMP((ServerPlayer) pl)) {
+                return;
+            }
+            PlayerAffectionFlags.markPlayerAffected(pl, this.playerAffectionFlag);
+            this.tickServer(pl);
+        } else {
+            this.tickClient(pl);
+        }
+    }
+
+    @Nonnull
+    protected CompoundTag getData(LivingEntity entity) {
+        if (entity == null) {
+            return new CompoundTag();
+        }
+        ItemStack stack = entity.getItemBySlot(EquipmentSlot.CHEST);
+        if (stack.isEmpty() || !(stack.getItem() instanceof ItemMantle)) {
+            return new CompoundTag();
+        }
+        return NBTHelper.getPersistentData(stack);
+    }
+
+    @Override
+    public EnumSet<TickEvent.Type> getHandledTypes() {
+        return EnumSet.of(TickEvent.Type.PLAYER);
+    }
+
+    @Override
+    public boolean canFire(TickEvent.Phase phase) {
+        return phase == TickEvent.Phase.END;
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getName();
+    }
+
+    public static class Config extends ConfigEntry {
+
+        private final boolean defaultEnabled = true;
+
+        public ForgeConfigSpec.BooleanValue enabled;
+
+        public Config(String constellationName) {
+            super(String.format("constellation.mantle.%s", constellationName));
+        }
+
+        @Override
+        public void createEntries(ForgeConfigSpec.Builder cfgBuilder) {
+            this.enabled = cfgBuilder
+                    .comment("Set this to false to disable this mantle effect")
+                    .translation(translationKey("enabled"))
+                    .define("enabled", this.defaultEnabled);
+        }
+    }
+}

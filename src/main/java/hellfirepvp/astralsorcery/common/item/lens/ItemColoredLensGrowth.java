@@ -1,0 +1,78 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.item.lens;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.common.auxiliary.CropHelper;
+import hellfirepvp.astralsorcery.common.lib.ColorsAS;
+import hellfirepvp.astralsorcery.common.lib.ItemsAS;
+import hellfirepvp.astralsorcery.common.network.PacketChannel;
+import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
+import hellfirepvp.astralsorcery.common.util.PartialEffectExecutor;
+import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Random;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ItemColoredLensGrowth
+ * Created by HellFirePvP
+ * Date: 21.09.2019 / 19:19
+ */
+public class ItemColoredLensGrowth extends ItemColoredLens {
+
+    // 1.16.5 used the inherited static Item#random, which no longer exists in 1.20.1.
+    private static final Random random = new Random();
+
+    private static final ColoredTypeGrowth COLORED_TYPE_GROWTH = new ColoredTypeGrowth();
+
+    public ItemColoredLensGrowth(Properties properties) {
+        super(COLORED_TYPE_GROWTH, properties);
+    }
+
+    private static class ColoredTypeGrowth extends LensColorType {
+
+        private ColoredTypeGrowth() {
+            super(AstralSorcery.key("growth"),
+                    TargetType.BLOCK,
+                    () -> new ItemStack(ItemsAS.COLORED_LENS_GROWTH.get()),
+                    ColorsAS.COLORED_LENS_GROWTH,
+                    0.1F,
+                    false);
+        }
+
+        @Override
+        public void entityInBeam(Level world, Vector3 origin, Vector3 target, Entity entity, PartialEffectExecutor executor) {}
+
+        @Override
+        public void blockInBeam(Level world, BlockPos pos, BlockState state, PartialEffectExecutor executor) {
+            if (world.isClientSide()) {
+                return;
+            }
+            CropHelper.GrowablePlant plant = CropHelper.wrapPlant(world, pos);
+            if (plant != null) {
+                executor.executeAll(() -> {
+                    if (random.nextInt(18) == 0) {
+                        plant.tryGrow(world, random);
+                        PktPlayEffect packet = new PktPlayEffect(PktPlayEffect.Type.CROP_GROWTH)
+                                .addData(buf -> ByteBufUtils.writeVector(buf, new Vector3(pos)));
+                        PacketChannel.sendToAllAround(packet, world, new Vector3(pos).toVector3d(), 16);
+                    }
+                });
+            }
+        }
+    }
+}

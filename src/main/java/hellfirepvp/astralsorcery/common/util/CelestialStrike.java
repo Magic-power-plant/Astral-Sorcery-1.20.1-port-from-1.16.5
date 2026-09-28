@@ -1,0 +1,198 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.util;
+
+import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
+import hellfirepvp.astralsorcery.client.effect.vfx.FXLightning;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.client.lib.TexturesAS;
+import hellfirepvp.astralsorcery.client.resource.AbstractRenderableTexture;
+import hellfirepvp.astralsorcery.common.CommonProxy;
+import hellfirepvp.astralsorcery.common.lib.ColorsAS;
+import hellfirepvp.astralsorcery.common.network.PacketChannel;
+import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
+import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.world.SkyCollectionHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: CelestialStrike
+ * Created by HellFirePvP
+ * Date: 04.04.2020 / 13:05
+ */
+public class CelestialStrike {
+
+    private static final AABB EMPTY = new AABB(0, 0, 0, 0, 0, 0);
+
+    private CelestialStrike() {}
+
+    public static void play(@Nullable LivingEntity attacker, ServerLevel world, Vector3 at, Vector3 displayPosition) {
+        double radius = 16D;
+        // 1.16.5: getEntitiesWithinAABB + AxisAlignedBB#grow/offset + EntityPredicates.IS_ALIVE
+        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class,
+                EMPTY.inflate(radius, radius / 2, radius)
+                        .move(at.toBlockPos()), EntitySelector.ENTITY_STILL_ALIVE);
+        if (attacker != null) {
+            livingEntities.remove(attacker);
+        }
+
+        DamageSource ds = CommonProxy.DAMAGE_SOURCE_STELLAR;
+        if (attacker != null) {
+            // 1.16.5 DamageSource.causeMobDamage/causePlayerDamage; 1.20.1 routes those through Level#damageSources().
+            ds = world.damageSources().mobAttack(attacker);
+            if (attacker instanceof Player) {
+                ds = world.damageSources().playerAttack((Player) attacker);
+            }
+        }
+        float dmg = 25F;
+        dmg += SkyCollectionHelper.getSkyNoiseDistribution(world, at.toBlockPos()) * 10F;
+        for (LivingEntity living : livingEntities) {
+            if ((living instanceof Player) &&
+                    (living.isSpectator() || ((Player) living).isCreative() ||
+                            (attacker != null && living.isAlliedTo(attacker)))) {
+                continue;
+            }
+            float dstPerc = (float) (Vector3.atEntityCenter(living).distance(at) / radius);
+            dstPerc = 1F - Mth.clamp(dstPerc, 0F, 1F);
+            float dmgDealt = dstPerc * dmg;
+            if (dmgDealt > 0.5) {
+                DamageUtil.attackEntityFrom(living, ds, dmgDealt);
+
+                if (attacker != null) {
+                    // 1.16.5 EnchantmentHelper.getMaxEnchantmentLevel(Enchantment, Entity)
+                    int fireAspectLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker);
+                    if (fireAspectLevel > 0 && !living.isOnFire()) {
+                        living.setSecondsOnFire(fireAspectLevel * 4);
+                    }
+                }
+            }
+        }
+        PktPlayEffect pkt = new PktPlayEffect(PktPlayEffect.Type.CELESTIAL_STRIKE)
+                .addData(buf -> {
+                    ByteBufUtils.writeVector(buf, displayPosition);
+                });
+        // 1.16.5 built a TargetPoint from a BlockPos; the ported PacketChannel helper takes a Vec3, so the
+        // block corner is used to keep the same integer coordinates.
+        PacketChannel.sendToAllAround(pkt, world, Vec3.atLowerCornerOf(at.toBlockPos()), 96);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void playEffect(PktPlayEffect effect) {
+        Random r = new Random();
+        Vector3 vec = ByteBufUtils.readVector(effect.getExtraData());
+        Vector3 effectPos = vec.clone();
+
+        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                .spawn(effectPos.clone().addY(-4))
+                .setup(effectPos.clone().addY(16), 9, 6)
+                .alpha(VFXAlphaFunction.FADE_OUT)
+                .color(VFXColorFunction.WHITE)
+                .setAlphaMultiplier(1F)
+                .setMaxAge(25);
+
+        effectPos.add(r.nextFloat() - r.nextFloat(), 0, r.nextFloat() - r.nextFloat());
+        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                .spawn(effectPos.clone().addY(-4))
+                .setup(effectPos.clone().addY(16).addY(r.nextFloat() * 2F), 9, 6)
+                .alpha(VFXAlphaFunction.FADE_OUT)
+                .color(VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_LIGHT))
+                .setAlphaMultiplier(1F)
+                .setMaxAge(24 + r.nextInt(6));
+
+        effectPos.add(r.nextFloat() - r.nextFloat(), 0, r.nextFloat() - r.nextFloat());
+        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                .spawn(effectPos.clone().addY(-4))
+                .setup(effectPos.clone().addY(16).addY(r.nextFloat() * 2F), 9, 6)
+                .alpha(VFXAlphaFunction.FADE_OUT)
+                .color(VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_DARK))
+                .setAlphaMultiplier(1F)
+                .setMaxAge(24 + r.nextInt(6));
+
+        AbstractRenderableTexture tex = MiscUtils.eitherOf(r,
+                TexturesAS.TEX_SMOKE_1, TexturesAS.TEX_SMOKE_2, TexturesAS.TEX_SMOKE_3, TexturesAS.TEX_SMOKE_4);
+        EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+                .spawn(vec.clone().addY(0.1F))
+                .setAxis(Vector3.RotAxis.Y_AXIS.clone().negate())
+                .setSprite(tex)
+                .setNoRotation(r.nextFloat() * 360F)
+                .setAlphaMultiplier(0.4F)
+                .alpha(VFXAlphaFunction.FADE_OUT)
+                .setScaleMultiplier(17F)
+                .setMaxAge(30 + r.nextInt(10));
+
+        for (int i = 0; i < 43; i++) {
+            Vector3 randTo = new Vector3((r.nextDouble() * 9) - (r.nextDouble() * 9), r.nextDouble() * 5, (r.nextDouble() * 9) - (r.nextDouble() * 9));
+            randTo.add(vec.clone());
+            FXLightning lightning = EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+                    .spawn(vec.clone())
+                    .makeDefault(randTo);
+            lightning.color(MiscUtils.eitherOf(r,
+                    VFXColorFunction.constant(Color.WHITE),
+                    VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_LIGHT),
+                    VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_DARK)));
+        }
+
+        for (int i = 0; i < 40; i++) {
+            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(vec.clone().add((r.nextFloat() - r.nextFloat()) * 4, r.nextFloat() * 9, (r.nextFloat() - r.nextFloat()) * 4))
+                    .setGravityStrength(-0.005F)
+                    .setScaleMultiplier(0.85F)
+                    .setMaxAge(14 + r.nextInt(6));
+            p.color(MiscUtils.eitherOf(r,
+                    VFXColorFunction.constant(Color.WHITE),
+                    VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_LIGHT),
+                    VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_DARK)));
+        }
+
+        List<Vector3> circle = MiscUtils.getCirclePositions(vec, Vector3.RotAxis.Y_AXIS, 7.5F + r.nextFloat(), 200 + r.nextInt(40));
+        for (Vector3 at : circle) {
+            Vector3 dir = at.clone().subtract(vec).normalize().multiply(0.3 + 0.4 * r.nextFloat());
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(at)
+                    .setAlphaMultiplier(0.4F)
+                    .setMotion(dir)
+                    .color(VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_LIGHT))
+                    .setScaleMultiplier(1.2F)
+                    .setMaxAge(14 + r.nextInt(6));
+        }
+        circle = MiscUtils.getCirclePositions(vec, Vector3.RotAxis.Y_AXIS, 7.5F + r.nextFloat(), 100 + r.nextInt(40));
+        for (Vector3 at : circle) {
+            Vector3 dir = at.clone().subtract(vec).normalize().multiply(0.2 + 0.1 * r.nextFloat());
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(at)
+                    .setAlphaMultiplier(0.4F)
+                    .setMotion(dir)
+                    .color(VFXColorFunction.constant(ColorsAS.EFFECT_BLUE_DARK))
+                    .setScaleMultiplier(1.5F)
+                    .setMaxAge(14 + r.nextInt(6));
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "astralsorcery:desert_shrine",
+  "biomes": "#astralsorcery:has_structure/desert_shrine",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

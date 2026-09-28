@@ -1,0 +1,12 @@
+{
+  "type": "astralsorcery:rock_crystal",
+  "config": {
+    "target": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:base_stone_overworld"
+    },
+    "state": {
+      "Name": "astralsorcery:rock_crystal_ore"
+    }
+  }
+}

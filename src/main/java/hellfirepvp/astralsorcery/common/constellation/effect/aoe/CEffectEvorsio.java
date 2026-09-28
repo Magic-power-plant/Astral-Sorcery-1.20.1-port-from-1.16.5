@@ -1,0 +1,212 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
+
+import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
+import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
+import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
+import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
+import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
+import hellfirepvp.astralsorcery.common.lib.BlocksAS;
+import hellfirepvp.astralsorcery.common.lib.ColorsAS;
+import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
+import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.util.BlockDropCaptureAssist;
+import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
+import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.util.block.iterator.BlockPositionGenerator;
+import hellfirepvp.astralsorcery.common.util.block.iterator.BlockSpherePositionGenerator;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: CEffectEvorsio
+ * Created by HellFirePvP
+ * Date: 24.11.2019 / 10:03
+ */
+public class CEffectEvorsio extends CEffectAbstractList<ListEntries.PosEntry> {
+
+    public static PlayerAffectionFlags.AffectionFlag FLAG = makeAffectionFlag("evorsio");
+    public static EvorsioConfig CONFIG = new EvorsioConfig();
+
+    public CEffectEvorsio(@Nonnull ILocatable origin) {
+        super(origin, ConstellationsAS.evorsio, 1, (world, pos, state) -> true);
+        this.excludeRitualPositions();
+    }
+
+    @Nonnull
+    @Override
+    protected BlockPositionGenerator createPositionStrategy() {
+        return new BlockSpherePositionGenerator();
+    }
+
+    @Nullable
+    @Override
+    public ListEntries.PosEntry recreateElement(CompoundTag tag, BlockPos pos) {
+        return new ListEntries.PosEntry(pos);
+    }
+
+    @Nullable
+    @Override
+    public ListEntries.PosEntry createElement(Level world, BlockPos pos) {
+        return new ListEntries.PosEntry(pos);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+        float addY = 1F;
+        //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
+        if (!pedestal.getBlockPos().equals(pos)) {
+            addY = 0F;
+        }
+        Vector3 motion = Vector3.random().multiply(0.1);
+        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                .spawn(new Vector3(pos).add(0.5, 0.5, 0.5).addY(addY))
+                .alpha(VFXAlphaFunction.FADE_OUT)
+                .setMotion(motion)
+                .color(VFXColorFunction.constant(ColorsAS.CONSTELLATION_EVORSIO))
+                .setScaleMultiplier(0.3F + rand.nextFloat() * 0.4F)
+                .setMaxAge(50);
+    }
+
+    @Override
+    public boolean playEffect(Level world, BlockPos pos, ConstellationEffectProperties properties, @Nullable IMinorConstellation trait) {
+        if (!(world instanceof ServerLevel serverWorld)) {
+            return false;
+        }
+
+        return this.peekNewPosition(world, pos, properties).mapLeft(newEntry -> {
+            BlockPos at = newEntry.getPos();
+
+            if (properties.isCorrupted()) {
+                //1.16.5: World#isAirBlock -> 1.20.1: Level#isEmptyBlock; BlockPos#distanceSq(Vector3i) ->
+                //BlockPos#distSqr(Vec3i); Block#getDefaultState -> Block#defaultBlockState
+                if (at.getY() < pos.getY() && world.isEmptyBlock(at)) {
+                    double distance = pos.distSqr(at) / (properties.getSize() * properties.getSize());
+                    BlockState state = Blocks.COBBLESTONE.defaultBlockState();
+                    if (distance >= 0.85F && rand.nextInt(4) == 0) {
+                        state = Blocks.DIRT.defaultBlockState();
+                    }
+                    if (distance <= 0.25F) {
+                        state = Blocks.STONE.defaultBlockState();
+                    } else if (distance <= 0.1F && rand.nextInt(5) == 0) {
+                        state = Blocks.OBSIDIAN.defaultBlockState();
+                    }
+                    //1.16.5: Constants.BlockFlags.DEFAULT_AND_RERENDER (= NOTIFY_NEIGHBORS | BLOCK_UPDATE |
+                    //RERENDER_MAIN_THREAD = 11). Forge's Constants class is gone in 1.20.1; the vanilla
+                    //Block.UPDATE_ALL_IMMEDIATE constant is the same value 11.
+                    world.setBlock(at, state, Block.UPDATE_ALL_IMMEDIATE);
+                }
+                return false;
+            }
+
+            TileRitualPedestal pedestal = getPedestal(world, pos);
+            if (pedestal != null) {
+                BlockState state = world.getBlockState(at);
+                if (this.canBreakBlock(world, at, state, buildFilter(pedestal))) {
+                    BlockDropCaptureAssist.startCapturing();
+                    try {
+                        //1.16.5 called breakBlockWithoutPlayer(world, at, state, ItemStack.EMPTY,
+                        //breakBlock = true, ignoreHarvestRestrictions = true). This tree's BlockUtils declares
+                        //(world, pos, state, tool, dropBlocks, doDrops, spawnParticles), so dropping the block's
+                        //items is requested with dropBlocks/doDrops and the effect flag is left enabled.
+                        BlockUtils.breakBlockWithoutPlayer(serverWorld, at, state, ItemStack.EMPTY, true, true, true);
+                    } finally {
+                        NonNullList<ItemStack> captured = BlockDropCaptureAssist.getCapturedStacksAndStop();
+                        captured.forEach((stack) -> ItemUtils.dropItemNaturally(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, stack));
+                    }
+                    return true;
+                } else {
+                    sendConstellationPing(world, new Vector3(at).add(0.5, 0.5, 0.5));
+                }
+            }
+            return false;
+        }).ifRight(attemptedBreak -> {
+            sendConstellationPing(world, new Vector3(attemptedBreak).add(0.5, 0.5, 0.5));
+        }).left().orElse(false);
+    }
+
+    private boolean canBreakBlock(Level world, BlockPos pos, BlockState state, Predicate<BlockState> blacklist) {
+        if (blacklist.test(state)) {
+            return false;
+        }
+        //1.16.5: BlockState#getBlockHardness(IBlockReader, BlockPos) -> 1.20.1: BlockState#getDestroySpeed
+        float hardness = state.getDestroySpeed(world, pos);
+        if (hardness < 0 || hardness >= 75) {
+            return false;
+        }
+        //1.16.5: state.isAir(world, pos). The position-aware Forge overload was removed with the
+        //Material rework; BlockState#isAir() is the only remaining form.
+        return !state.isAir();
+    }
+
+    private Predicate<BlockState> buildFilter(TileRitualPedestal pedestal) {
+        List<Predicate<BlockState>> filteredBlocks = pedestal.getConfiguredBlockStates().stream()
+                .map(blockState -> (Predicate<BlockState>) blockState::equals)
+                .collect(Collectors.toList());
+        this.addDefaultBreakBlacklist(filteredBlocks);
+        return blockState -> {
+            for (Predicate<BlockState> filterTest : filteredBlocks) {
+                if (filterTest.test(blockState)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+    }
+
+    private void addDefaultBreakBlacklist(List<Predicate<BlockState>> out) {
+        //BlocksAS holds RegistryObjects in this tree, hence the #get() calls
+        out.add((state) -> state.getBlock().equals(BlocksAS.CELESTIAL_COLLECTOR_CRYSTAL.get()));
+        out.add((state) -> state.getBlock().equals(BlocksAS.ROCK_COLLECTOR_CRYSTAL.get()));
+        out.add((state) -> state.getBlock().equals(BlocksAS.LENS.get()));
+        out.add((state) -> state.getBlock().equals(BlocksAS.PRISM.get()));
+    }
+
+    @Override
+    public Config getConfig() {
+        return CONFIG;
+    }
+
+    @Override
+    public PlayerAffectionFlags.AffectionFlag getPlayerAffectionFlag() {
+        return FLAG;
+    }
+
+    private static class EvorsioConfig extends Config {
+
+        public EvorsioConfig() {
+            super("evorsio", 6D, 1D);
+        }
+    }
+}

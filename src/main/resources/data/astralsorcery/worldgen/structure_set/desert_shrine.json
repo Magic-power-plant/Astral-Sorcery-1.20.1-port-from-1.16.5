@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "linear",
+    "spacing": 18,
+    "separation": 4,
+    "salt": 1384822269
+  },
+  "structures": [
+    {
+      "structure": "astralsorcery:desert_shrine",
+      "weight": 1
+    }
+  ]
+}

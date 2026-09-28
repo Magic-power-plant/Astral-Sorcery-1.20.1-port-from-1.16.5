@@ -1,0 +1,152 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
+
+import hellfirepvp.astralsorcery.client.util.MiscPlayEffect;
+import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
+import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
+import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
+import hellfirepvp.astralsorcery.common.util.block.BlockDiscoverer;
+import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+
+import java.util.List;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: MantleEffectMineralis
+ * Created by HellFirePvP
+ * Date: 21.02.2020 / 20:14
+ */
+public class MantleEffectMineralis extends MantleEffect {
+
+    public static MineralisConfig CONFIG = new MineralisConfig();
+
+    public MantleEffectMineralis() {
+        super(ConstellationsAS.mineralis);
+    }
+
+    @Override
+    public void attachEventListeners(IEventBus bus) {
+        super.attachEventListeners(bus);
+        bus.addListener(EventPriority.LOWEST, this::onBreak);
+    }
+
+    private void onBreak(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
+        if (ItemMantle.getEffect(player, ConstellationsAS.mineralis) != null) {
+            //1.16.5: Entity#getEntityWorld().isRemote() -> 1.20.1: Entity#level().isClientSide()
+            LogicalSide side = player.level().isClientSide() ? LogicalSide.CLIENT : LogicalSide.SERVER;
+            if (side.isServer()) {
+                float charge = Math.min(AlignmentChargeHandler.INSTANCE.getCurrentCharge(player, side), CONFIG.chargeCostPerBreak.get());
+                AlignmentChargeHandler.INSTANCE.drainCharge(player, side, charge, false);
+            }
+        }
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected void tickClient(Player player) {
+        super.tickClient(player);
+
+        this.playCapeSparkles(player, 0.15F);
+
+        if (rand.nextBoolean()) {
+            this.playBlockHighlight(player);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void playBlockHighlight(Player player) {
+        BlockState state = null;
+        //1.16.5: LivingEntity#getHeldItem(Hand) -> 1.20.1: LivingEntity#getItemInHand(InteractionHand)
+        if (!player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+            state = ItemUtils.createBlockState(player.getItemInHand(InteractionHand.MAIN_HAND));
+        }
+        if (!player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+            state = ItemUtils.createBlockState(player.getItemInHand(InteractionHand.OFF_HAND));
+        }
+        if (state == null || state.getBlock() instanceof AirBlock) {
+            return;
+        }
+        BlockState fState = state;
+
+        BlockPredicate search = (world, pos, foundState) -> foundState == fState;
+        //1.16.5: Entity#getPosition() (the entity's block position) -> 1.20.1: Entity#blockPosition()
+        List<BlockPos> positions = BlockDiscoverer.searchForBlocksAround(player.level(), player.blockPosition(), CONFIG.highlightRange.get(), search);
+        if (positions.isEmpty()) {
+            return;
+        }
+        int index = positions.size() > 10 ? rand.nextInt(positions.size()) : rand.nextInt(10);
+        if (index >= positions.size()) {
+            return;
+        }
+
+        BlockPos at = positions.get(index);
+        BlockState displayState = player.level().getBlockState(at);
+        MiscPlayEffect.playSingleBlockTumbleDepthEffect(new Vector3(at).add(0.5, 0.5, 0.5), displayState);
+    }
+
+    @Override
+    public Config getConfig() {
+        return CONFIG;
+    }
+
+    @Override
+    protected boolean usesTickMethods() {
+        return true;
+    }
+
+    public static class MineralisConfig extends Config {
+
+        private final int defaultHighlightRange = 10;
+
+        private final int defaultChargeCostPerBreak = 2;
+
+        public ForgeConfigSpec.IntValue highlightRange;
+
+        public ForgeConfigSpec.IntValue chargeCostPerBreak;
+
+        public MineralisConfig() {
+            super("mineralis");
+        }
+
+        @Override
+        public void createEntries(ForgeConfigSpec.Builder cfgBuilder) {
+            super.createEntries(cfgBuilder);
+
+            this.highlightRange = cfgBuilder
+                    .comment("Sets the highlight radius in which the cape effect will search for the block you're holding. Set to 0 to disable this effect.")
+                    .translation(translationKey("range"))
+                    .defineInRange("range", this.defaultHighlightRange, 0, 32);
+
+            this.chargeCostPerBreak = cfgBuilder
+                    .comment("Set the amount alignment charge consumed per block break enhanced by the mantle effect")
+                    .translation(translationKey("chargeCostPerBreak"))
+                    .defineInRange("chargeCostPerBreak", this.defaultChargeCostPerBreak, 0, 1000);
+        }
+
+    }
+
+}

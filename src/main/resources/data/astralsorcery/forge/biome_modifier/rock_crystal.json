@@ -1,0 +1,7 @@
+{
+  "type": "astralsorcery:config_gated_add_features",
+  "config_entry": "rock_crystal",
+  "biomes": "#minecraft:is_overworld",
+  "features": "astralsorcery:rock_crystal",
+  "step": "underground_ores"
+}

@@ -1,0 +1,22 @@
+package hellfirepvp.astralsorcery.common.lib;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.common.effect.EffectBleed;
+import hellfirepvp.astralsorcery.common.effect.EffectCheatDeath;
+import hellfirepvp.astralsorcery.common.effect.EffectDropModifier;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class EffectsAS {
+
+    private EffectsAS() {}
+
+    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AstralSorcery.MODID);
+
+    public static final RegistryObject<EffectBleed> EFFECT_BLEED = EFFECTS.register("bleed", EffectBleed::new);
+    public static final RegistryObject<EffectCheatDeath> EFFECT_CHEAT_DEATH = EFFECTS.register("cheat_death", EffectCheatDeath::new);
+    public static final RegistryObject<EffectDropModifier> EFFECT_DROP_MODIFIER = EFFECTS.register("drop_modifier", EffectDropModifier::new);
+
+}

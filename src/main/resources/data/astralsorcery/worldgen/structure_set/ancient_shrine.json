@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "linear",
+    "spacing": 18,
+    "separation": 4,
+    "salt": 682195674
+  },
+  "structures": [
+    {
+      "structure": "astralsorcery:ancient_shrine",
+      "weight": 1
+    }
+  ]
+}

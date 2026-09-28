@@ -1,0 +1,59 @@
+modLoader="javafml" #mandatory
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/HellFirePvP/AstralSorcery/issues" #optional
+
+# Ported from the 1.16.5 access transformer. Forge 47.4.20 reads this key (the string
+# "accessTransformers" is present in fmlloader's ModFile.class); it is also declared in
+# build.gradle's minecraft {} block so that it applies at compile time and in the dev runs.
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+# NOTE: no [[mixins]] block. Forge 47.4.20's fmlloader contains no reference to "mixins"/
+# "MixinConfigs" at all, so that key is inert on 1.20.1 (ObserverLib 1.20.1 still ships one, but
+# it does nothing). The config is loaded through MixinGradle instead:
+#   * dev runs   -> "--mixin.config astralsorcery.mixins.json" (Mixin's ModLauncher transformation
+#                   service is named "mixin" and declares the "config" option)
+#   * production -> the MixinConfigs / MixinConnector jar manifest attributes
+# Both resolve "astralsorcery.mixins.json" as a classpath resource, hence the config lives at the
+# resource root and not under assets/astralsorcery/.
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="Astral Sorcery"
+displayURL="https://minecraft.curseforge.com/projects/astral-sorcery"
+# TODO_PORT[AS-MDK-01]: 1.16.5 declared logoFile="logo.png"; that asset has not been ported into
+# src/main/resources yet, and pointing at a missing file only produces a mod-list warning.
+credits="HellFirePvP (code), wiiv (models & textures), VulpTheHorseDog (models & textures)"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# The 1.16.5 observerlib dependency block is intentionally gone: ObserverLib is a source-only
+# reference for this port and every class Astral Sorcery needed from it is embedded under
+# hellfirepvp.astralsorcery.*.
+
+# TODO_PORT[AS-INT-01]: 1.16.5 required Curios (mandatory=true, versionRange="[FORGE-1.16.3-,)").
+# IntegrationCurios is still a stub in this port and every call site is guarded by
+# Mods.CURIOS#executeIfPresent, so the dependency is declared optional until the integration is
+# actually ported; flip mandatory back to true once IntegrationCurios talks to the Curios API.
+[[dependencies.${mod_id}]]
+    modId="curios"
+    mandatory=false
+    versionRange="[1.20.1-5.1.1,)"
+    ordering="NONE"
+    side="BOTH"

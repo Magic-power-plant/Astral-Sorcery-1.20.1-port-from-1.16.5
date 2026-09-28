@@ -1,0 +1,27 @@
+{
+  "feature": "astralsorcery:rock_crystal",
+  "placement": [
+    {
+      "type": "astralsorcery:world_filter",
+      "config_entry": "rock_crystal"
+    },
+    {
+      "type": "astralsorcery:chance",
+      "config": {
+        "chance": 0.04
+      }
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "above_bottom": 5
+        },
+        "max_inclusive": {
+          "above_bottom": 6
+        }
+      }
+    }
+  ]
+}

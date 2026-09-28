@@ -1,0 +1,86 @@
+package hellfirepvp.astralsorcery.common.storage;
+
+import hellfirepvp.astralsorcery.common.util.item.ItemComparator;
+import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: StoredItemStack
+ * Created by HellFirePvP
+ * Date: 30.05.2019 / 14:51
+ */
+public class StoredItemStack {
+
+    private final ItemStack stack;
+    private int amount;
+
+    StoredItemStack(ItemStack stack) {
+        this(stack, stack.getCount());
+    }
+
+    private StoredItemStack(ItemStack stack, int amount) {
+        this.stack = ItemUtils.copyStackWithSize(stack, 1);
+        this.amount = amount;
+    }
+
+    public ItemStack getTemplateStack() {
+        return ItemUtils.copyStackWithSize(stack, Math.min(stack.getMaxStackSize(), amount));
+    }
+
+    public boolean removeAmount(int amount) {
+        if (this.amount - amount < 0) {
+            return false;
+        }
+        this.amount -= amount;
+        return true;
+    }
+
+    public boolean isEmpty() {
+        return this.amount <= 0;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public boolean combineIntoThis(StoredItemStack other) {
+        if (ItemComparator.compare(this.stack, other.stack, ItemComparator.Clause.Sets.ITEMSTACK_STRICT_NOAMOUNT)) {
+            amount += other.amount;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean combineIntoThis(ItemStack other) {
+        if (ItemComparator.compare(this.stack, other, ItemComparator.Clause.Sets.ITEMSTACK_STRICT_NOAMOUNT)) {
+            amount += other.getCount();
+            return true;
+        }
+        return false;
+    }
+
+    @Nonnull
+    public CompoundTag serialize() {
+        CompoundTag tag = new CompoundTag();
+        tag.put("item", stack.save(new CompoundTag()));
+        tag.putInt("amount", amount);
+        return tag;
+    }
+
+    @Nullable
+    public static StoredItemStack deserialize(CompoundTag cmp) {
+        ItemStack stack = ItemStack.of(cmp.getCompound("item"));
+        if (stack.isEmpty()) {
+            return null;
+        }
+        int amount = cmp.getInt("amount");
+        return new StoredItemStack(stack, amount);
+    }
+
+}

@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.item.gem;
+
+import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.common.perk.AbstractPerk;
+import hellfirepvp.astralsorcery.common.perk.DynamicModifierHelper;
+import hellfirepvp.astralsorcery.common.perk.modifier.DynamicAttributeModifier;
+import hellfirepvp.astralsorcery.common.perk.node.socket.GemSocketItem;
+import hellfirepvp.astralsorcery.common.perk.node.socket.GemSocketPerk;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.LogicalSide;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ItemPerkGem
+ * Created by HellFirePvP
+ * Date: 09.08.2019 / 07:25
+ */
+public abstract class ItemPerkGem extends Item implements GemSocketItem {
+
+    private final GemType type;
+
+    // 1.16.5 built its own Properties here with maxStackSize(1).group(CommonProxy.ITEM_GROUP_AS).
+    // 1.20.1 has no Properties#group, so the properties (incl. the stack size) are supplied by ItemsAS
+    // and the creative tab is applied centrally.
+    public ItemPerkGem(GemType type, Properties properties) {
+        super(properties);
+        this.type = type;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
+        if (world.isClientSide()) {
+            return;
+        }
+
+        if (DynamicModifierHelper.getStaticModifiers(stack).isEmpty()) {
+            GemAttributeHelper.rollGem(stack);
+        }
+    }
+
+    @Nullable
+    public static GemType getGemType(ItemStack gem) {
+        if (gem.isEmpty() || !(gem.getItem() instanceof ItemPerkGem)) {
+            return null;
+        }
+        return ((ItemPerkGem) gem.getItem()).type;
+    }
+
+    @Override
+    public <T extends AbstractPerk & GemSocketPerk> boolean canBeInserted(ItemStack stack, T perk, Player player, PlayerProgress progress, LogicalSide side) {
+        return !this.getModifiers(stack, perk, player, side).isEmpty();
+    }
+
+    @Override
+    public <T extends AbstractPerk & GemSocketPerk> List<DynamicAttributeModifier> getModifiers(ItemStack stack, T perk, Player player, LogicalSide side) {
+        return DynamicModifierHelper.getStaticModifiers(stack);
+    }
+}

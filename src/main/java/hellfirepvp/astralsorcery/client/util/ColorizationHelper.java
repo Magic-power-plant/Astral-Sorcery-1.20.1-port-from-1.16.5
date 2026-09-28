@@ -1,0 +1,144 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.client.util;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.client.util.color.ColorThief;
+import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ColorizationHelper
+ * Created by HellFirePvP
+ * Date: 24.09.2019 / 20:59
+ */
+public class ColorizationHelper {
+
+    private static final Map<Item, Optional<Color>> itemColors = new HashMap<>();
+    private static final Map<Fluid, Optional<Color>> fluidColors = new HashMap<>();
+
+    private ColorizationHelper() {}
+
+    @Nonnull
+    public static Optional<Color> getColor(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return Optional.empty();
+        }
+        Item i = stack.getItem();
+
+        if (!itemColors.containsKey(i)) {
+            TextureAtlasSprite tas = RenderingUtils.getParticleTexture(stack);
+            if (tas != null) {
+                itemColors.put(i, getDominantColor(tas));
+            } else {
+                itemColors.put(i, Optional.empty());
+            }
+        }
+        return itemColors.get(i).map(c -> ColorUtils.overlayColor(c, new Color(ColorUtils.getOverlayColor(stack))));
+    }
+
+    @Nonnull
+    public static Optional<Color> getColor(FluidStack stack) {
+        if (stack.isEmpty()) {
+            return Optional.empty();
+        }
+        Fluid fluid = stack.getFluid();
+
+        if (!fluidColors.containsKey(fluid)) {
+            TextureAtlasSprite tas = RenderingUtils.getParticleTexture(stack);
+            if (tas != null) {
+                fluidColors.put(fluid, getDominantColor(tas));
+            } else {
+                fluidColors.put(fluid, Optional.empty());
+            }
+        }
+        return fluidColors.get(fluid).map(c -> ColorUtils.overlayColor(c, new Color(ColorUtils.getOverlayColor(stack))));
+    }
+
+    private static Optional<Color> getDominantColor(TextureAtlasSprite tas) {
+        if (tas == null) {
+            return Optional.empty();
+        }
+        try {
+            BufferedImage extractedImage = extractImage(tas);
+            int[] dominantColor = ColorThief.getColor(extractedImage);
+            int color = (dominantColor[0] & 0xFF) << 16 | (dominantColor[1] & 0xFF) << 8 | (dominantColor[2] & 0xFF);
+            return Optional.of(new Color(color));
+        } catch (Exception exc) {
+            //1.16.5: TextureAtlasSprite#getName() -> 1.20.1: TextureAtlasSprite#contents()#name()
+            AstralSorcery.LOG.error("Item Colorization Helper: Ignoring non-resolvable image " + tas.contents().name().toString());
+            exc.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @Nullable
+    private static BufferedImage extractImage(TextureAtlasSprite tas) {
+        //1.16.5: tas.getWidth()/getHeight() -> 1.20.1: tas.contents().width()/height()
+        int w = tas.contents().width();
+        int h = tas.contents().height();
+        int count = getFrameCount(tas);
+        if (w <= 0 || h <= 0 || count <= 0) {
+            return null;
+        }
+
+        BufferedImage bufferedImage = new BufferedImage(w, h * count, BufferedImage.TYPE_4BYTE_ABGR);
+        for (int i = 0; i < count; i++) {
+            int[] pxArray = new int[w * h];
+            for (int xx = 0; xx < w; xx++) {
+                for (int zz = 0; zz < h; zz++) {
+                    int argb = tas.getPixelRGBA(0, xx, zz + (i * h));
+                    pxArray[zz * w + xx] = argb & 0xFF00FF00 | ((argb & 0x00FF0000) >> 16) | ((argb & 0x000000FF) << 16);
+                }
+            }
+            bufferedImage.setRGB(0, i * h, w, h, pxArray, 0, w);
+        }
+        return bufferedImage;
+    }
+
+    /**
+     * 1.16.5 could just ask the sprite for {@code getFrameCount()}; in 1.20.1 {@code SpriteContents#getFrameCount()}
+     * is package-private, so the frame count of a (vertically stacked) animation sheet is derived from the ratio
+     * between the uploaded source image and one sprite frame. Non-animated sprites resolve to exactly 1.
+     */
+    private static int getFrameCount(TextureAtlasSprite tas) {
+        int frameHeight = tas.contents().height();
+        if (frameHeight <= 0) {
+            return 0;
+        }
+        return Math.max(1, tas.contents().getOriginalImage().getHeight() / frameHeight);
+    }
+
+    public static PreparableReloadListener onReload() {
+        //1.16.5: IFutureReloadListener + stage.markCompleteAwaitingOthers(Unit) -> 1.20.1: PreparableReloadListener + barrier.wait(Unit)
+        return (stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) ->
+                stage.wait(Unit.INSTANCE).thenRunAsync(() -> {
+                    //1.16.5 guarded this with SelectiveReloadStateHandler/VanillaResourceType.TEXTURES; both were
+                    //removed in Forge 1.20.1, so the caches are now cleared on every resource reload.
+                    itemColors.clear();
+                    fluidColors.clear();
+                });
+    }
+}

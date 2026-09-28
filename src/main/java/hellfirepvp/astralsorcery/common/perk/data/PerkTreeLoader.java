@@ -1,0 +1,106 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.perk.data;
+
+import com.google.gson.*;
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.common.perk.AbstractPerk;
+import hellfirepvp.astralsorcery.common.perk.PerkTree;
+import hellfirepvp.astralsorcery.common.util.MapStream;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: PerkTreeLoader
+ * Created by HellFirePvP
+ * Date: 12.08.2020 / 22:15
+ */
+public class PerkTreeLoader extends SimpleJsonResourceReloadListener {
+
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+    public static final PerkTreeLoader INSTANCE = new PerkTreeLoader();
+
+    private PerkTreeLoader() {
+        super(GSON, "perks");
+    }
+
+    @Override
+    protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profiler) {
+        Collection<JsonObject> loadingPerkObjects = MapStream.of(dataMap)
+                .filterKey(key -> !key.getPath().startsWith("_"))
+                .filterValue(JsonElement::isJsonObject)
+                .mapValue(JsonElement::getAsJsonObject)
+                .valueStream()
+                .collect(Collectors.toList());
+        PerkTree.PERK_TREE.updateOriginPerkTree(loadPerkTree(loadingPerkObjects));
+    }
+
+    public static PerkTreeData loadPerkTree(Collection<JsonObject> perkTreeObjects) {
+        PerkTreeData newTree = new PerkTreeData();
+
+        int count = 0;
+        for(JsonObject serializedPerkData : perkTreeObjects) {
+
+            ResourceLocation perkRegistryName = ResourceLocation.parse(GsonHelper.getAsString(serializedPerkData, "registry_name"));
+            ResourceLocation customClass = PerkTypeHandler.DEFAULT.getKey();
+            if (serializedPerkData.has("perk_class")) {
+                customClass = ResourceLocation.parse(GsonHelper.getAsString(serializedPerkData, "perk_class"));
+                if (!PerkTypeHandler.hasCustomType(customClass)) {
+                    throw new JsonParseException("Unknown perk_class: " + customClass.toString());
+                }
+            }
+
+            float posX = GsonHelper.getAsFloat(serializedPerkData, "x");
+            float posY = GsonHelper.getAsFloat(serializedPerkData, "y");
+
+            AbstractPerk perk = PerkTypeHandler.convert(perkRegistryName, posX, posY, customClass);
+            if (serializedPerkData.has("name")) {
+                String name = GsonHelper.getAsString(serializedPerkData, "name");
+                perk.setName(name);
+            }
+            if (serializedPerkData.has("hiddenUnlessAllocated")) {
+                perk.setHiddenUnlessAllocated(GsonHelper.getAsBoolean(serializedPerkData, "hiddenUnlessAllocated"));
+            }
+
+            if (serializedPerkData.has("data")) {
+                JsonObject perkData = GsonHelper.getAsJsonObject(serializedPerkData, "data");
+                perk.deserializeData(perkData);
+            }
+
+            if (serializedPerkData.has("connection")) {
+                JsonArray connectionArray = GsonHelper.getAsJsonArray(serializedPerkData, "connection");
+                LoadedPerkData connector = newTree.addPerk(perk, serializedPerkData);
+                for (int i = 0; i < connectionArray.size(); i++) {
+                    JsonElement connection = connectionArray.get(i);
+                    connector.addConnection(ResourceLocation.parse(connection.getAsString()));
+                }
+            } else {
+                newTree.addPerk(perk, serializedPerkData);
+            }
+            count++;
+        }
+
+        AstralSorcery.LOG.info("Built PerkTree with {} perks!", count);
+
+        return newTree;
+    }
+}
+

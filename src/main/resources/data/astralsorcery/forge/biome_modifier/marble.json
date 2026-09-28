@@ -1,0 +1,7 @@
+{
+  "type": "astralsorcery:config_gated_add_features",
+  "config_entry": "marble",
+  "biomes": "#minecraft:is_overworld",
+  "features": "astralsorcery:marble",
+  "step": "underground_ores"
+}

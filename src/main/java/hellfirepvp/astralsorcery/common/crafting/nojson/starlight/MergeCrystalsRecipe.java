@@ -1,0 +1,162 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.crafting.nojson.starlight;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.CrystalIngredient;
+import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
+import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
+import hellfirepvp.astralsorcery.common.util.MiscUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.*;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: MergeCrystalsRecipe
+ * Created by HellFirePvP
+ * Date: 29.05.2020 / 20:54
+ */
+public class MergeCrystalsRecipe extends LiquidStarlightRecipe {
+
+    public MergeCrystalsRecipe() {
+        super(AstralSorcery.key("merge_crystals"));
+    }
+
+    @Override
+    public List<Ingredient> getInputForRender() {
+        return Arrays.asList(new CrystalIngredient(false, false),
+                new CrystalIngredient(false, false));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public List<Ingredient> getOutputForRender() {
+        return Collections.singletonList(new CrystalIngredient(false, false));
+    }
+
+    @Override
+    public boolean doesStartRecipe(ItemStack item) {
+        //Upstream gates the crystal merge on the infused-wood config flag; kept verbatim from 1.16.5
+        if (!CraftingConfig.CONFIG.liquidStarlightDropInfusedWood.get()) {
+            return false;
+        }
+        return !item.isEmpty() && item.getItem() instanceof ItemCrystalBase;
+    }
+
+    @Override
+    public boolean matches(ItemEntity trigger, Level world, BlockPos at) {
+        List<Entity> otherEntities = getEntitiesInBlock(world, at);
+        otherEntities.remove(trigger);
+        Optional<Entity> crystalEntity = otherEntities.stream()
+                .filter(e -> e instanceof ItemEntity)
+                .filter(e -> ((ItemEntity) e).getItem().getItem() instanceof ItemCrystalBase)
+                .findFirst();
+        return crystalEntity.isPresent() && otherEntities.size() == 1;
+    }
+
+    @Override
+    public void doServerCraftTick(ItemEntity trigger, Level world, BlockPos at) {
+        // 1.16.5 MathHelper#getPositionRandom(Vec3i) is Mth#getSeed(Vec3i) in official mappings
+        Random r = new Random(Mth.getSeed(at));
+        if (!world.isClientSide() && getAndIncrementCraftingTick(trigger) > 40 + r.nextInt(20)) {
+            ItemStack crystalFoundOne, crystalFoundTwo;
+            // 1.16.5 Constants.BlockFlags.DEFAULT_AND_RERENDER (11) is Block.UPDATE_ALL_IMMEDIATE in 1.20.1
+            if ((crystalFoundOne = consumeItemEntityInBlock(world, at, 1, stack -> stack.getItem() instanceof ItemCrystalBase)) != null &&
+                    (crystalFoundTwo = consumeItemEntityInBlock(world, at, 1, stack -> stack.getItem() instanceof ItemCrystalBase)) != null &&
+                    world.setBlock(at, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE)) {
+
+                ItemCrystalBase crystalOne = (ItemCrystalBase) crystalFoundOne.getItem();
+                CrystalAttributes attrOne = crystalOne.getAttributes(crystalFoundOne);
+                attrOne = attrOne != null ? attrOne : CrystalAttributes.Builder.newBuilder(false).build();
+
+                ItemCrystalBase crystalTwo = (ItemCrystalBase) crystalFoundTwo.getItem();
+                CrystalAttributes attrTwo = crystalTwo.getAttributes(crystalFoundTwo);
+                attrTwo = attrTwo != null ? attrTwo : CrystalAttributes.Builder.newBuilder(false).build();
+
+                CrystalAttributes mergeTo = attrOne.getTotalTierLevel() >= attrTwo.getTotalTierLevel() ? attrOne : attrTwo;
+                CrystalAttributes mergeFrom = attrOne.getTotalTierLevel() >= attrTwo.getTotalTierLevel() ? attrTwo : attrOne;
+
+                ItemStack resultStack = attrOne.getTotalTierLevel() >= attrTwo.getTotalTierLevel() ? crystalFoundOne.copy() : crystalFoundTwo.copy();
+                ItemCrystalBase resultCrystal = (ItemCrystalBase) resultStack.getItem();
+                CrystalAttributes.Builder resultBuilder = CrystalAttributes.Builder.newBuilder(false).addAll(mergeTo);
+
+                int freeProperties = resultCrystal.getMaxPropertyTiers() - mergeTo.getTotalTierLevel();
+                int copyAmount = Math.min(freeProperties, mergeFrom.getTotalTierLevel());
+                int mergeCount = 0;
+                for (int i = 0; i < copyAmount; i++) {
+                    CrystalAttributes.Attribute attr = MiscUtils.getWeightedRandomEntry(mergeFrom.getCrystalAttributes(), rand, CrystalAttributes.Attribute::getTier);
+                    if (attr != null) {
+                        mergeFrom = mergeFrom.modifyLevel(attr.getProperty(), -1);
+                        if (rand.nextFloat() <= (1F - Math.min(mergeCount, 3) * 0.25F)) {
+                            resultBuilder.addProperty(attr.getProperty(), 1);
+                        }
+                        mergeCount++;
+                    }
+                }
+
+                resultCrystal.setAttributes(resultStack, resultBuilder.build());
+                // 1.16.5 getPosX/getPosY/getPosZ are getX/getY/getZ in official mappings
+                ItemUtils.dropItemNaturally(world, trigger.getX(), trigger.getY(), trigger.getZ(), resultStack);
+            }
+        }
+    }
+
+    @Override
+    public void doClientEffectTick(ItemEntity trigger, Level world, BlockPos at) {
+        for (int i = 0; i < 3; i++) {
+            Vector3 pos = Vector3.atEntityCenter(trigger);
+            MiscUtils.applyRandomOffset(pos, rand, 0.15F);
+
+            Vector3 motion = Vector3.RotAxis.Y_AXIS.clone();
+            motion.rotate(Math.toRadians(10 + rand.nextInt(20)), Vector3.RotAxis.X_AXIS)
+                    .rotate(rand.nextFloat() * Math.PI * 2, Vector3.RotAxis.Y_AXIS)
+                    .normalize().multiply(0.07F + rand.nextFloat() * 0.04F);
+
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(pos)
+                    .alpha(VFXAlphaFunction.FADE_OUT)
+                    .setMotion(motion)
+                    .setScaleMultiplier(0.1F + rand.nextFloat() * 0.2F)
+                    .color(VFXColorFunction.WHITE)
+                    .setMaxAge(35 + rand.nextInt(20));
+        }
+        for (int i = 0; i < 4; i++) {
+            Vector3 target = Vector3.atEntityCenter(trigger);
+            Vector3 pos = target.clone().add(Vector3.random().normalize().multiply(3 + rand.nextFloat()));
+
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(pos)
+                    .alpha(VFXAlphaFunction.PYRAMID.andThen(VFXAlphaFunction.proximity(target::clone, 2)))
+                    .motion(VFXMotionController.target(target::clone, 0.1F))
+                    .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
+                    .color(VFXColorFunction.WHITE)
+                    .setMaxAge(20 + rand.nextInt(20));
+        }
+    }
+}

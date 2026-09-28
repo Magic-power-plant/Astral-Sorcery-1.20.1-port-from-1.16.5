@@ -1,0 +1,72 @@
+package hellfirepvp.astralsorcery.common.starlight.network;
+
+import hellfirepvp.astralsorcery.common.ITickHandler;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.TickEvent;
+
+import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
+public class StarlightTransmissionHandler implements ITickHandler {
+
+    private static final StarlightTransmissionHandler instance = new StarlightTransmissionHandler();
+    private final Map<ResourceKey<Level>, TransmissionWorldHandler> worldHandlers = new HashMap<>();
+
+    private StarlightTransmissionHandler() {}
+
+    public static StarlightTransmissionHandler getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void tick(TickEvent.Type type, Object... context) {
+        Level world = (Level) context[0];
+        if (world.isClientSide() || !(world instanceof ServerLevel)) {
+            return;
+        }
+
+        worldHandlers.computeIfAbsent(world.dimension(), TransmissionWorldHandler::new).tick((ServerLevel) world);
+    }
+
+    public void clearServer() {
+        worldHandlers.values().forEach(TransmissionWorldHandler::clear);
+        worldHandlers.clear();
+    }
+
+    public void informWorldUnload(Level world) {
+        ResourceKey<Level> dimKey = world.dimension();
+        TransmissionWorldHandler handle = worldHandlers.get(dimKey);
+        if (handle != null) {
+            handle.clear();
+        }
+        this.worldHandlers.remove(dimKey);
+    }
+
+    @Nullable
+    public TransmissionWorldHandler getWorldHandler(Level world) {
+        if (world == null) {
+            return null;
+        }
+        return worldHandlers.get(world.dimension());
+    }
+
+    @Override
+    public EnumSet<TickEvent.Type> getHandledTypes() {
+        return EnumSet.of(TickEvent.Type.LEVEL);
+    }
+
+    @Override
+    public boolean canFire(TickEvent.Phase phase) {
+        return phase == TickEvent.Phase.START;
+    }
+
+    @Override
+    public String getName() {
+        return "Starlight Transmission Handler";
+    }
+
+}

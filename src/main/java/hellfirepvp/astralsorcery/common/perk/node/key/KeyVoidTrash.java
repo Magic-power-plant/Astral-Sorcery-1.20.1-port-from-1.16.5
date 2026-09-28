@@ -1,0 +1,87 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.perk.node.key;
+
+import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
+import hellfirepvp.astralsorcery.common.perk.node.KeyPerk;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: KeyVoidTrash
+ * Created by HellFirePvP
+ * Date: 31.08.2019 / 23:11
+ */
+public class KeyVoidTrash extends KeyPerk {
+
+    private static final float defaultOreChance = 0.02F;
+    private static final List<Item> defaultTrashItems = new ArrayList<Item>() {
+        {
+            add(Blocks.DIRT.asItem());
+            add(Blocks.COBBLESTONE.asItem());
+            add(Blocks.ANDESITE.asItem());
+            add(Blocks.DIORITE.asItem());
+            add(Blocks.GRANITE.asItem());
+            add(Blocks.STONE.asItem());
+            add(Blocks.GRAVEL.asItem());
+        }
+    };
+
+    public static final Config CONFIG = new Config("key.void_trash");
+
+    /**
+     * @see hellfirepvp.astralsorcery.common.loot.global.LootModifierPerkVoidTrash
+     */
+    public KeyVoidTrash(ResourceLocation name, float x, float y) {
+        super(name, x, y);
+    }
+
+    public static class Config extends ConfigEntry {
+
+        private ForgeConfigSpec.DoubleValue oreChance;
+        private ForgeConfigSpec.ConfigValue<List<? extends String>> trashItems;
+
+        private Config(String section) {
+            super(section);
+        }
+
+        @Override
+        public void createEntries(ForgeConfigSpec.Builder cfgBuilder) {
+            this.trashItems = cfgBuilder
+                    .comment("List items that should count as trash and should be voided.")
+                    .translation(translationKey("trashItems"))
+                    .defineList("trashItems", (java.util.function.Supplier<java.util.List<? extends String>>) () -> defaultTrashItems.stream().map(item -> net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item).toString()).collect(java.util.stream.Collectors.toList()), o -> o instanceof String);
+
+            this.oreChance = cfgBuilder
+                    .comment("Chance that a voided drop will instead yield a random ore out of the configured ore table.")
+                    .translation(translationKey("oreChance"))
+                    .defineInRange("oreChance", defaultOreChance, 0F, 1F);
+        }
+
+        public boolean isTrash(ItemStack stack) {
+            String key = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString();
+            return this.trashItems.get().contains(key);
+        }
+
+        public double getOreChance() {
+            return oreChance.get();
+        }
+    }
+}
+

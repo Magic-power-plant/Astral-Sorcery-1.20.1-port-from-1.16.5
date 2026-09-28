@@ -1,0 +1,145 @@
+package hellfirepvp.astralsorcery.common.data.sync.server;
+
+import hellfirepvp.astralsorcery.common.data.sync.base.AbstractData;
+import hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider;
+import hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader;
+import hellfirepvp.astralsorcery.common.data.sync.client.ClientLightBlockEndpoints;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+import java.util.*;
+
+public class DataLightBlockEndpoints extends AbstractData {
+
+    private final Map<ResourceKey<Level>, Set<BlockPos>> serverPositions = new HashMap<>();
+
+    private final Map<ResourceKey<Level>, Map<BlockPos, Boolean>> serverChangeBuffer = new HashMap<>();
+    private final Set<ResourceKey<Level>> dimensionClearBuffer = new HashSet<>();
+
+    private DataLightBlockEndpoints(ResourceLocation key) {
+        super(key);
+    }
+
+    public void updateNewEndpoint(ResourceKey<Level> dim, BlockPos pos) {
+        Map<BlockPos, Boolean> posMap = serverChangeBuffer.computeIfAbsent(dim, k -> new HashMap<>());
+        posMap.put(pos, true);
+
+        Set<BlockPos> posBuffer = serverPositions.computeIfAbsent(dim, k -> new HashSet<>());
+        posBuffer.add(pos);
+        markDirty();
+    }
+
+    public void updateNewEndpoints(ResourceKey<Level> dim, Collection<BlockPos> newPositions) {
+        Map<BlockPos, Boolean> posMap = serverChangeBuffer.computeIfAbsent(dim, k -> new HashMap<>());
+        for (BlockPos pos : newPositions) {
+            posMap.put(pos, true);
+        }
+
+        Set<BlockPos> posBuffer = serverPositions.computeIfAbsent(dim, k -> new HashSet<>());
+        posBuffer.addAll(newPositions);
+        markDirty();
+    }
+
+    public void removeEndpoints(ResourceKey<Level> dim, Collection<BlockPos> positions) {
+        Map<BlockPos, Boolean> posMap = serverChangeBuffer.computeIfAbsent(dim, k -> new HashMap<>());
+        for (BlockPos pos : positions) {
+            posMap.put(pos, false);
+        }
+
+        Set<BlockPos> posBuffer = serverPositions.computeIfAbsent(dim, k -> new HashSet<>());
+        if (posBuffer.removeAll(positions)) {
+            markDirty();
+        }
+    }
+
+    public boolean doesPositionReceiveStarlightServer(Level world, BlockPos pos) {
+        return this.serverPositions.getOrDefault(world.dimension(), Collections.emptySet()).contains(pos);
+    }
+
+    @Override
+    public void clear(ResourceKey<Level> dim) {
+        if (this.serverPositions.remove(dim) != null) {
+            this.serverChangeBuffer.remove(dim);
+            this.dimensionClearBuffer.add(dim);
+            markDirty();
+        }
+    }
+
+    @Override
+    public void clearServer() {
+        this.dimensionClearBuffer.clear();
+        this.serverChangeBuffer.clear();
+        this.serverPositions.clear();
+    }
+
+    @Override
+    public void writeAllDataToPacket(CompoundTag compound) {
+        for (ResourceKey<Level> dim : serverPositions.keySet()) {
+            Set<BlockPos> dat = serverPositions.get(dim);
+
+            ListTag dataList = new ListTag();
+            for (BlockPos pos : dat) {
+                CompoundTag cmp = new CompoundTag();
+                cmp.putLong("pos", pos.asLong());
+                dataList.add(cmp);
+            }
+
+            compound.put(dim.location().toString(), dataList);
+        }
+    }
+
+    @Override
+    public void writeDiffDataToPacket(CompoundTag compound) {
+        ListTag clearList = new ListTag();
+        for (ResourceKey<Level> dim : this.dimensionClearBuffer) {
+            clearList.add(StringTag.valueOf(dim.location().toString()));
+        }
+        compound.put("clear", clearList);
+
+        for (ResourceKey<Level> dim : this.serverChangeBuffer.keySet()) {
+            if (this.dimensionClearBuffer.contains(dim)) continue;
+
+            Map<BlockPos, Boolean> data = this.serverChangeBuffer.get(dim);
+
+            ListTag dataList = new ListTag();
+            for (BlockPos pos : data.keySet()) {
+                CompoundTag cmp = new CompoundTag();
+                cmp.putLong("pos", pos.asLong());
+                cmp.putBoolean("add", data.get(pos));
+                dataList.add(cmp);
+            }
+
+            compound.put(dim.location().toString(), dataList);
+        }
+
+        this.dimensionClearBuffer.clear();
+        this.serverChangeBuffer.clear();
+    }
+
+    public static class Provider extends AbstractDataProvider<DataLightBlockEndpoints, ClientLightBlockEndpoints> {
+
+        public Provider(ResourceLocation key) {
+            super(key);
+        }
+
+        @Override
+        public DataLightBlockEndpoints provideServerData() {
+            return new DataLightBlockEndpoints(getKey());
+        }
+
+        @Override
+        public ClientLightBlockEndpoints provideClientData() {
+            return new ClientLightBlockEndpoints();
+        }
+
+        @Override
+        public ClientDataReader<ClientLightBlockEndpoints> createReader() {
+            return new ClientLightBlockEndpoints.Reader();
+        }
+    }
+}

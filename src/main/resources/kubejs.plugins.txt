@@ -1,0 +1,4 @@
+# KubeJS plugin discovery. dev.latvian.mods.kubejs.util.KubeJSPlugins#load reads this file from the root of
+# every mod jar and instantiates each class named here; '#' starts a comment and a trailing " client" marks a
+# client-only plugin. Astral Sorcery's plugin is server-side, so no marker.
+hellfirepvp.astralsorcery.common.integration.kubejs.IntegrationKubeJS

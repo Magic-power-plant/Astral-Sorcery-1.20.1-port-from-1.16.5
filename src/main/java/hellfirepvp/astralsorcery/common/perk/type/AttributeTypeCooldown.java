@@ -1,0 +1,71 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.perk.type;
+
+import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.event.AttributeEvent;
+import hellfirepvp.astralsorcery.common.event.CooldownSetEvent;
+import hellfirepvp.astralsorcery.common.lib.PerkAttributeTypesAS;
+import hellfirepvp.astralsorcery.common.perk.PerkAttributeHelper;
+import hellfirepvp.astralsorcery.common.util.MiscUtils;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: AttributeTypeCooldown
+ * Created by HellFirePvP
+ * Date: 27.07.2020 / 21:38
+ */
+public class AttributeTypeCooldown extends PerkAttributeType {
+
+    public AttributeTypeCooldown() {
+        super(PerkAttributeTypesAS.KEY_ATTR_TYPE_COOLDOWN_REDUCTION, true);
+    }
+
+    @Override
+    protected void attachListeners(IEventBus eventBus) {
+        super.attachListeners(eventBus);
+
+        eventBus.addListener(this::onCooldown);
+    }
+
+    private void onCooldown(CooldownSetEvent event) {
+        Player player = event.getPlayer();
+        Level Level = player.level();
+
+        if (Level.isClientSide()) {
+            return;
+        }
+        PlayerProgress prog = ResearchHelper.getProgress(player, LogicalSide.SERVER);
+        if (!prog.isValid()) {
+            return;
+        }
+        if (player instanceof ServerPlayer) {
+            if (MiscUtils.isPlayerFakeMP((ServerPlayer) player)) {
+                return;
+            }
+        }
+
+        float multiplier = PerkAttributeHelper.getOrCreateMap(player, LogicalSide.SERVER)
+                .modifyValue(player, prog, this, 1F);
+        multiplier -= 1F;
+        multiplier = AttributeEvent.postProcessModded(player, this, multiplier);
+        multiplier = 1F - Mth.clamp(multiplier, 0F, 1F);
+        event.setCooldown(Math.round(event.getResultCooldown() * multiplier));
+    }
+
+}
+

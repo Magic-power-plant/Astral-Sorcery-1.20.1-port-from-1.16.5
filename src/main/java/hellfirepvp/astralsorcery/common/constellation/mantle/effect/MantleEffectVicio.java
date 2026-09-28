@@ -1,0 +1,151 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
+
+import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
+import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
+import hellfirepvp.astralsorcery.common.constellation.effect.aoe.CEffectVicio;
+import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
+import hellfirepvp.astralsorcery.common.event.helper.EventHelperTemporaryFlight;
+import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
+import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
+import hellfirepvp.astralsorcery.common.perk.node.key.KeyMantleFlight;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.LogicalSide;
+
+import javax.annotation.Nonnull;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: MantleEffectVicio
+ * Created by HellFirePvP
+ * Date: 19.02.2020 / 21:05
+ */
+public class MantleEffectVicio extends MantleEffect {
+
+    public static VicioConfig CONFIG = new VicioConfig();
+
+    public MantleEffectVicio() {
+        super(ConstellationsAS.vicio);
+    }
+
+    @Override
+    protected void tickServer(Player player) {
+        super.tickServer(player);
+
+        PlayerProgress prog = ResearchHelper.getProgress(player, LogicalSide.SERVER);
+        if (prog.getPerkData().hasPerkEffect(p -> p instanceof KeyMantleFlight) &&
+                AlignmentChargeHandler.INSTANCE.drainCharge(player, LogicalSide.SERVER, CONFIG.chargeCost.get(), true)) {
+            // 1.16.5: PlayerEntity#abilities -> 1.20.1: Player#getAbilities(); allowFlying -> mayfly
+            boolean prev = player.getAbilities().mayfly;
+            player.getAbilities().mayfly = true;
+            if (!prev) {
+                // 1.16.5: PlayerEntity#sendPlayerAbilities() -> 1.20.1: Player#onUpdateAbilities()
+                player.onUpdateAbilities();
+            }
+
+            EventHelperTemporaryFlight.allowFlight(player, 20);
+            // 1.16.5: abilities.isFlying / isOnGround() / ticksExisted
+            if (player.getAbilities().flying && !player.onGround() && player.tickCount % 20 == 0) {
+                if (!PlayerAffectionFlags.isPlayerAffected(player, CEffectVicio.FLAG)) {
+                    AlignmentChargeHandler.INSTANCE.drainCharge(player, LogicalSide.SERVER, CONFIG.chargeCost.get(), false);
+                }
+            }
+        }
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected void tickClient(Player player) {
+        super.tickClient(player);
+
+        // 1.16.5: PlayerEntity#isElytraFlying() -> 1.20.1: LivingEntity#isFallFlying()
+        if (player.isFallFlying() || (!(player.isCreative() || player.isSpectator()) && player.getAbilities().flying)) {
+            // 1.16.5: GameSettings#getPointOfView()#func_243193_b() -> Options#getCameraType()#isMirrored()
+            // (func_243193_b is the 'mirrored' flag, i.e. THIRD_PERSON_FRONT)
+            if (!Minecraft.getInstance().options.getCameraType().isMirrored()) {
+                this.playCapeSparkles(player, 0.1F);
+            } else {
+                this.playCapeSparkles(player, 0.7F);
+            }
+        } else {
+            this.playCapeSparkles(player, 0.15F);
+        }
+    }
+
+    @Nonnull
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected FXFacingParticle spawnFacingParticle(Player player, Vector3 at) {
+        if (player.isFallFlying() || (!(player.isCreative() || player.isSpectator()) && player.getAbilities().flying)) {
+            // 1.16.5: Entity#getMotion()#mul(x, y, z) -> 1.20.1: Entity#getDeltaMovement()#multiply(x, y, z)
+            at.subtract(player.getDeltaMovement().multiply(1.5, 1.5, 1.5));
+        }
+        return super.spawnFacingParticle(player, at);
+    }
+
+    public static boolean isUsableElytra(ItemStack elytraStack, Player wearingEntity) {
+        if (elytraStack.getItem() instanceof ItemMantle) {
+            MantleEffect effect = ItemMantle.getEffect(wearingEntity, ConstellationsAS.vicio);
+            PlayerProgress progress;
+            // 1.16.5: Entity#getEntityWorld()#isRemote() -> 1.20.1: Entity#level()#isClientSide()
+            if (wearingEntity.level().isClientSide()) {
+                progress = ResearchHelper.getClientProgress();
+            } else {
+                progress = ResearchHelper.getProgress(wearingEntity, LogicalSide.SERVER);
+            }
+            return effect != null && !progress.getPerkData().hasPerkEffect(p -> p instanceof KeyMantleFlight);
+        }
+        return false;
+    }
+
+    @Override
+    public Config getConfig() {
+        return CONFIG;
+    }
+
+    @Override
+    protected boolean usesTickMethods() {
+        return true;
+    }
+
+    // 1.16.5 declares this nested config class (and its fields) private; in this tree the configs are
+    // collected by MantleEffectRegistry from another package, which follows the public-nested-config
+    // convention of the already-ported mantle effects (see MantleEffectAevitas.AevitasConfig).
+    public static class VicioConfig extends Config {
+
+        private static final int defaultChargeCost = 100;
+
+        public ForgeConfigSpec.IntValue chargeCost;
+
+        public VicioConfig() {
+            super("vicio");
+        }
+
+        @Override
+        public void createEntries(ForgeConfigSpec.Builder cfgBuilder) {
+            super.createEntries(cfgBuilder);
+
+            this.chargeCost = cfgBuilder
+                    .comment("Defines the amount of starlight charge consumed per !second! during creative-flight with the vicio mantle.")
+                    .translation(translationKey("chargeCost"))
+                    .defineInRange("chargeCost", defaultChargeCost, 1, 500);
+        }
+    }
+}

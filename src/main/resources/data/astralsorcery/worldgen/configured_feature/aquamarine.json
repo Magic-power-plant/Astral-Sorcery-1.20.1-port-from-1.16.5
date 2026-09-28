@@ -1,0 +1,12 @@
+{
+  "type": "astralsorcery:replace_block",
+  "config": {
+    "target": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:sand"
+    },
+    "state": {
+      "Name": "astralsorcery:aquamarine_sand_ore"
+    }
+  }
+}

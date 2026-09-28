@@ -1,0 +1,131 @@
+package hellfirepvp.astralsorcery.common.auxiliary;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
+import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
+import hellfirepvp.astralsorcery.common.tick.TickManager;
+import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
+import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
+import hellfirepvp.astralsorcery.common.util.tick.TickTokenMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class BlockBreakHelper {
+
+    private static final Map<ResourceKey<Level>, TickTokenMap<BlockPos, BreakEntry>> breakMap = new HashMap<>();
+
+    public static void addProgress(Level world, BlockPos pos, float percStrength, Supplier<Float> expectedHardness) {
+        TickTokenMap<BlockPos, BreakEntry> map = breakMap.computeIfAbsent(world.dimension(), key -> {
+            TickTokenMap<BlockPos, BreakEntry> tkMap = new TickTokenMap<>(TickEvent.Type.SERVER);
+            AstralSorcery.getProxy().getTickManager().register(tkMap);
+            return tkMap;
+        });
+
+        BreakEntry breakProgress = map.get(pos);
+        if (breakProgress == null) {
+            Float hardness = expectedHardness.get();
+            if (hardness == null) {
+                return;
+            }
+            breakProgress = new BreakEntry(expectedHardness.get(), world, pos, world.getBlockState(pos));
+            map.put(pos, breakProgress);
+        }
+
+        breakProgress.breakProgress -= percStrength;
+        breakProgress.idleTimeout = 0;
+    }
+
+    public static void clearServerCache() {
+        TickManager mgr = AstralSorcery.getProxy().getTickManager();
+        breakMap.values().forEach(mgr::unregister);
+        breakMap.clear();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void blockBreakAnimation(PktPlayEffect pktPlayEffect) {
+        BlockPos pos = ByteBufUtils.readPos(pktPlayEffect.getExtraData());
+        int id = pktPlayEffect.getExtraData().readInt();
+        BlockState state = Block.stateById(id);
+    }
+
+    public static class BreakEntry implements TickTokenMap.TickMapToken<Float>, CEffectAbstractList.ListEntry {
+
+        private float breakProgress;
+        private final LevelAccessor world;
+        private BlockPos pos;
+        private BlockState expected;
+
+        private int idleTimeout;
+
+        public BreakEntry(@Nonnull Float value, LevelAccessor world, BlockPos at, BlockState expectedToBreak) {
+            this.breakProgress = value;
+            this.world = world;
+            this.pos = at;
+            this.expected = expectedToBreak;
+        }
+
+        @Override
+        public int getRemainingTimeout() {
+            return (breakProgress <= 0 || idleTimeout >= 20) ? 0 : 1;
+        }
+
+        @Override
+        public void tick() {
+            idleTimeout++;
+        }
+
+        @Override
+        public void onTimeout() {
+            if (breakProgress > 0) {
+                return;
+            }
+
+            BlockState nowAt = world.getBlockState(pos);
+            if (world instanceof ServerLevel && BlockUtils.matchStateExact(expected, nowAt)) {
+                BlockUtils.breakBlockWithoutPlayer((ServerLevel) world, pos, world.getBlockState(pos), ItemStack.EMPTY,
+                        true, true, true);
+            }
+        }
+
+        @Override
+        public Float getValue() {
+            return breakProgress;
+        }
+
+        @Override
+        public BlockPos getPos() {
+            return pos;
+        }
+
+        @Override
+        public void readFromNBT(CompoundTag nbt) {
+            this.breakProgress = nbt.getFloat("breakProgress");
+            this.pos = NBTHelper.readBlockPosFromNBT(nbt);
+            this.expected = Block.stateById(nbt.getInt("expectedStateId"));
+        }
+
+        @Override
+        public void writeToNBT(CompoundTag nbt) {
+            nbt.putFloat("breakProgress", this.breakProgress);
+            NBTHelper.writeBlockPosToNBT(this.pos, nbt);
+            nbt.putInt("expectedStateId", Block.getId(this.expected));
+        }
+
+    }
+}

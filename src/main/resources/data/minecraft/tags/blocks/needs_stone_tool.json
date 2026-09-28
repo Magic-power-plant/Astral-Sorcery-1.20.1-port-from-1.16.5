@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "astralsorcery:lens",
+    "astralsorcery:prism",
+    "astralsorcery:ritual_link",
+    "astralsorcery:ritual_pedestal",
+    "astralsorcery:celestial_gateway",
+    "astralsorcery:illuminator",
+    "astralsorcery:celestial_crystal_cluster",
+    "astralsorcery:gem_crystal_cluster",
+    "astralsorcery:altar_discovery",
+    "astralsorcery:altar_attunement",
+    "astralsorcery:altar_constellation",
+    "astralsorcery:altar_radiance",
+    "astralsorcery:well",
+    "astralsorcery:infuser",
+    "astralsorcery:chalice",
+    "astralsorcery:rock_collector_crystal",
+    "astralsorcery:celestial_collector_crystal",
+    "astralsorcery:attunement_altar",
+    "astralsorcery:observatory"
+  ]
+}

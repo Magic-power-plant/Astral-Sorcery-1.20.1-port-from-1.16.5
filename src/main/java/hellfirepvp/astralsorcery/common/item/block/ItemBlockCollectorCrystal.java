@@ -1,0 +1,140 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.item.block;
+
+import hellfirepvp.astralsorcery.common.block.tile.crystal.CollectorCrystalType;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
+import hellfirepvp.astralsorcery.common.constellation.IConstellation;
+import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
+import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
+import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
+import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
+import hellfirepvp.astralsorcery.common.crystal.CrystalProperty;
+import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyRegistry;
+import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
+import net.minecraft.network.chat.Component;
+import hellfirepvp.astralsorcery.common.lib.CreativeTabsAS;
+import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: ItemBlockCollectorCrystal
+ * Created by HellFirePvP
+ * Date: 10.08.2019 / 20:58
+ */
+public abstract class ItemBlockCollectorCrystal extends ItemBlockCustom implements CrystalAttributeItem, ConstellationItem, CreativeTabItem {
+
+    public ItemBlockCollectorCrystal(Block block, Properties itemProperties) {
+        // 1.16.5 also applied .group(CommonProxy.ITEM_GROUP_AS_CRYSTALS) here; Item.Properties#group is gone in
+        // 1.20.1 (creative tabs are filled through BuildCreativeModeTabContentsEvent), the stack size limit stays.
+        super(block, itemProperties
+                .stacksTo(1));
+    }
+
+    /**
+     * 1.16.5 {@code fillItemGroup} equivalent: one creative entry per weak constellation, each carrying the
+     * creative template attributes with that constellation's crystal property maxed out.
+     */
+    @Override
+    public CreativeModeTab getCreativeTab() {
+        return CreativeTabsAS.TAB_AS_CRYSTALS.get();
+    }
+
+    @Override
+    public void fillCreativeTab(CreativeModeTab.Output output) {
+        this.createCreativeStacks().forEach(output::accept);
+    }
+
+    public List<ItemStack> createCreativeStacks() {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (IWeakConstellation cst : ConstellationRegistry.getWeakConstellations()) {
+            ItemStack stack = new ItemStack(this);
+            setAttunedConstellation(stack, cst);
+
+            CrystalProperty prop = CrystalPropertyRegistry.INSTANCE.getConstellationProperty(cst);
+            CrystalAttributes attr = this.getCreativeTemplateAttributes();
+            if (prop != null) {
+                attr = attr.modifyLevel(prop, prop.getMaxTier());
+            }
+            attr.store(stack);
+
+            stacks.add(stack);
+        }
+        return stacks;
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        IWeakConstellation cst = this.getAttunedConstellation(stack);
+        if (cst != null) {
+            return Component.translatable(super.getDescriptionId(stack) + ".typed", cst.getConstellationName());
+        }
+        return super.getName(stack);
+    }
+
+    public abstract CollectorCrystalType getCollectorType();
+
+    protected abstract CrystalAttributes getCreativeTemplateAttributes();
+
+    @Override
+    @Nullable
+    public IWeakConstellation getAttunedConstellation(ItemStack stack) {
+        return (IWeakConstellation) IConstellation.readFromNBT(NBTHelper.getPersistentData(stack), "constellation");
+    }
+
+    @Override
+    public boolean setAttunedConstellation(ItemStack stack, @Nullable IWeakConstellation cst) {
+        if (cst != null) {
+            cst.writeToNBT(NBTHelper.getPersistentData(stack), "constellation");
+        } else {
+            NBTHelper.getPersistentData(stack).remove("constellation");
+        }
+        return true;
+    }
+
+    @Override
+    @Nullable
+    public IMinorConstellation getTraitConstellation(ItemStack stack) {
+        return (IMinorConstellation) IConstellation.readFromNBT(NBTHelper.getPersistentData(stack), "trait");
+    }
+
+    @Override
+    public boolean setTraitConstellation(ItemStack stack, @Nullable IMinorConstellation cst) {
+        if (cst != null) {
+            cst.writeToNBT(NBTHelper.getPersistentData(stack), "trait");
+        } else {
+            NBTHelper.getPersistentData(stack).remove("trait");
+        }
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public CrystalAttributes getAttributes(ItemStack stack) {
+        return CrystalAttributes.getCrystalAttributes(stack);
+    }
+
+    @Override
+    public void setAttributes(ItemStack stack, @Nullable CrystalAttributes attributes) {
+        if (attributes != null) {
+            attributes.store(stack);
+        } else {
+            CrystalAttributes.storeNull(stack);
+        }
+    }
+}

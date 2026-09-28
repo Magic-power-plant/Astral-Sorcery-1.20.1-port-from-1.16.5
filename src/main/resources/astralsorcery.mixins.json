@@ -1,0 +1,32 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "hellfirepvp.astralsorcery.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "astralsorcery.refmap.json",
+    "mixins": [
+        "MixinAttributeModifierManager",
+        "MixinBlockCollisions",
+        "MixinCooldownTracker",
+        "MixinEnchantmentHelper",
+        "MixinEntity",
+        "MixinForgeHooks",
+        "MixinItemPredicate",
+        "MixinItemStack",
+        "MixinLevelChunk",
+        "MixinLivingEntity",
+        "MixinModifiableAttributeInstance",
+        "MixinServerPlayNetHandler",
+        "MixinWorld"
+    ],
+    "client": [
+        "client.MixinClientWorld",
+        "client.MixinGameRenderer",
+        "client.MixinItemStack",
+        "client.MixinParticleManager"
+    ],
+    "server": [],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
