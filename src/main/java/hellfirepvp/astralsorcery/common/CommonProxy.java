@@ -7,6 +7,7 @@ import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect
 import hellfirepvp.astralsorcery.common.lib.GameRulesAS;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeTypeHandler;
 import hellfirepvp.astralsorcery.common.data.config.CommonConfig;
+import hellfirepvp.astralsorcery.common.data.WorldDataDirectory;
 import hellfirepvp.astralsorcery.common.data.config.ServerConfig;
 import hellfirepvp.astralsorcery.common.data.config.base.BaseConfiguration;
 import hellfirepvp.astralsorcery.common.data.config.entry.*;
@@ -94,6 +95,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -110,6 +112,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
 import java.util.List;
@@ -134,7 +137,6 @@ public class CommonProxy {
     private final CommonScheduler commonScheduler = new CommonScheduler();
     private final TickManager tickManager = new TickManager();
     private final List<ServerLifecycleListener> serverLifecycleListeners = Lists.newArrayList();
-    private File serverDataDirectory;
 
     public TickManager getTickManager() {
         return this.tickManager;
@@ -342,7 +344,14 @@ public class CommonProxy {
     }
 
     public File getASServerDataDirectory() {
-        return serverDataDirectory;
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            // A null File parent would silently put playerdata in the process working directory.
+            throw new IllegalStateException("Cannot access Astral Sorcery save data without an active server");
+        }
+        // Resolve against the active save, including during level loading before ServerStartingEvent.
+        // Do not retain a directory from the previous integrated-server session.
+        return WorldDataDirectory.getOrCreate(server.getWorldPath(LevelResource.ROOT));
     }
 
     private void onRegisterCommands(RegisterCommandsEvent event) {
@@ -362,9 +371,18 @@ public class CommonProxy {
 
     private void onServerStarting(ServerStartingEvent event) {
         MinecraftServer server = event.getServer();
-        this.serverDataDirectory = new File(server.getServerDirectory(), "astralsorcery");
-        if (!this.serverDataDirectory.exists()) {
-            this.serverDataDirectory.mkdirs();
+        File dataDirectory = WorldDataDirectory.getOrCreate(server.getWorldPath(LevelResource.ROOT));
+        File legacyDirectory = new File(server.getServerDirectory(), AstralSorcery.MODID);
+        if (!legacyDirectory.toPath().toAbsolutePath().normalize().equals(dataDirectory.toPath())
+                && (new File(legacyDirectory, "playerdata").exists()
+                || new File(legacyDirectory, "gateway_filter.dat").exists())) {
+            // The old shared directory contains no world identity. Importing it into every save would
+            // preserve the cross-world progression leak. Leave it untouched for an explicit migration.
+            AstralSorcery.LOG.warn("Legacy Astral Sorcery data found at {}. This world uses {}. "
+                            + "Legacy data is NOT imported automatically because its world is unknown. "
+                            + "With the server stopped, back up both locations and copy only the intended "
+                            + "world's playerdata and gateway_filter.dat; see docs/playerdata-storage.md.",
+                    legacyDirectory.getAbsolutePath(), dataDirectory.getAbsolutePath());
         }
     }
 

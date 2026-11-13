@@ -42,7 +42,8 @@ import net.minecraftforge.fml.LogicalSide;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -74,7 +75,9 @@ public class AstralSkyRenderer {
 
     private final BatchedVertexList sky = new BatchedVertexList(DefaultVertexFormat.POSITION);
     private final BatchedVertexList skyHorizon = new BatchedVertexList(DefaultVertexFormat.POSITION);
-    private final List<StarDrawList> starLists = new LinkedList<>();
+    private final BatchedVertexList sun = new BatchedVertexList(DefaultVertexFormat.POSITION_TEX);
+    private final BatchedVertexList[] moonPhases = new BatchedVertexList[8];
+    private final List<StarDrawList> starLists = new ArrayList<>();
 
     private boolean initialized = false;
 
@@ -83,6 +86,12 @@ public class AstralSkyRenderer {
     public void reset() {
         sky.reset();
         skyHorizon.reset();
+        sun.reset();
+        for (BatchedVertexList moonPhase : moonPhases) {
+            if (moonPhase != null) {
+                moonPhase.reset();
+            }
+        }
         starLists.forEach(BatchedVertexList::reset);
         starLists.clear();
 
@@ -92,13 +101,50 @@ public class AstralSkyRenderer {
     private void initialize() {
         sky.batch(AstralSkyRendererSetup::generateSky);
         skyHorizon.batch(AstralSkyRendererSetup::generateSkyHorizon);
+
+        Map<StarBatchKey, List<StarDefinition>> starGroups = new LinkedHashMap<>();
         for (int i = 0; i < 20; i++) {
             AbstractRenderableTexture starTexture = (i % 2 == 0 ? TexturesAS.TEX_STAR_1 : TexturesAS.TEX_STAR_2);
             int flicker = 12 + RAND.nextInt(5);
-
-            StarDrawList starList = new StarDrawList(starTexture, flicker);
-            starList.batch(buf -> AstralSkyRendererSetup.generateStars(buf, 60 + RAND.nextInt(60), 1.1F + RAND.nextFloat() * 0.3F));
+            StarDefinition definition = new StarDefinition(60 + RAND.nextInt(60), 1.1F + RAND.nextFloat() * 0.3F);
+            starGroups.computeIfAbsent(new StarBatchKey(starTexture, flicker), key -> new ArrayList<>()).add(definition);
+        }
+        for (Map.Entry<StarBatchKey, List<StarDefinition>> entry : starGroups.entrySet()) {
+            StarBatchKey key = entry.getKey();
+            List<StarDefinition> definitions = entry.getValue();
+            StarDrawList starList = new StarDrawList(key.texture(), key.flicker());
+            starList.batch(buf -> {
+                buf.begin(RenderingUtils.toDrawMode(GL11.GL_QUADS), DefaultVertexFormat.POSITION_TEX);
+                for (StarDefinition definition : definitions) {
+                    AstralSkyRendererSetup.generateStars(buf, definition.amount(), definition.sizeMultiplier());
+                }
+            });
             starLists.add(starList);
+        }
+
+        sun.batch(buf -> {
+            buf.begin(RenderingUtils.toDrawMode(GL11.GL_QUADS), DefaultVertexFormat.POSITION_TEX);
+            buf.vertex(-30F, 100, -30F).uv(0, 0).endVertex();
+            buf.vertex( 30F, 100, -30F).uv(1, 0).endVertex();
+            buf.vertex( 30F, 100,  30F).uv(1, 1).endVertex();
+            buf.vertex(-30F, 100,  30F).uv(0, 1).endVertex();
+        });
+        for (int moonPhase = 0; moonPhase < moonPhases.length; moonPhase++) {
+            int i = moonPhase % 4;
+            int j = moonPhase / 4 % 2;
+            float minU = i / 4F;
+            float minV = j / 2F;
+            float maxU = (i + 1) / 4F;
+            float maxV = (j + 1) / 2F;
+            BatchedVertexList moon = new BatchedVertexList(DefaultVertexFormat.POSITION_TEX);
+            moon.batch(buf -> {
+                buf.begin(RenderingUtils.toDrawMode(GL11.GL_QUADS), DefaultVertexFormat.POSITION_TEX);
+                buf.vertex(-20F, -100,  20F).uv(maxU, maxV).endVertex();
+                buf.vertex( 20F, -100,  20F).uv(minU, maxV).endVertex();
+                buf.vertex( 20F, -100, -20F).uv(minU, minV).endVertex();
+                buf.vertex(-20F, -100, -20F).uv(maxU, minV).endVertex();
+            });
+            moonPhases[moonPhase] = moon;
         }
 
         this.initialized = true;
@@ -298,11 +344,12 @@ public class AstralSkyRenderer {
             //1.20.1: the batched star geometry is POSITION_TEX, so its core shader has to be selected once here;
             //each StarDrawList only swaps the bound sampler texture afterwards.
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            this.starLists.forEach((list) -> {
-                float br = RenderingConstellationUtils.stdFlicker(ClientScheduler.getClientTick(), pTicks, list.flickerSpeed) * starBrightness;
+            long clientTick = ClientScheduler.getClientTick();
+            for (StarDrawList list : this.starLists) {
+                float br = RenderingConstellationUtils.stdFlicker(clientTick, pTicks, list.flickerSpeed) * starBrightness;
                 RenderSystem.setShaderColor(starBrightness, starBrightness, starBrightness, br);
                 list.render(renderStack);
-            });
+            }
             RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         }
     }
@@ -368,41 +415,15 @@ public class AstralSkyRenderer {
     }
 
     private void renderSun(PoseStack renderStack) {
-        float sunSize = 30F;
-
-        Matrix4f matr = renderStack.last().pose();
-
-        //1.16.5: TextureManager#bindTexture(ResourceLocation) -> RenderSystem.setShaderTexture(0, ResourceLocation)
         RenderSystem.setShaderTexture(0, REF_TEX_SUN);
-        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX, buf -> {
-            buf.vertex(matr, -sunSize, 100, -sunSize).uv(0, 0).endVertex();
-            buf.vertex(matr,  sunSize, 100, -sunSize).uv(1, 0).endVertex();
-            buf.vertex(matr,  sunSize, 100,  sunSize).uv(1, 1).endVertex();
-            buf.vertex(matr, -sunSize, 100,  sunSize).uv(0, 1).endVertex();
-        });
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        this.sun.render(renderStack);
     }
 
     private void renderMoon(PoseStack renderStack, Level world) {
-        float moonSize = 20F;
-
-        //Don't ask me.. i'm just copying this and be done with it
-        int moonPhase = world.getMoonPhase();
-        int i = moonPhase % 4;
-        int j = moonPhase / 4 % 2;
-        float minU = (i) / 4F;
-        float minV = (j) / 2F;
-        float maxU = (i + 1) / 4F;
-        float maxV = (j + 1) / 2F;
-
-        Matrix4f matr = renderStack.last().pose();
-
         RenderSystem.setShaderTexture(0, REF_TEX_MOON_PHASES);
-        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX, buf -> {
-            buf.vertex(matr, -moonSize, -100,  moonSize).uv(maxU, maxV).endVertex();
-            buf.vertex(matr,  moonSize, -100,  moonSize).uv(minU, maxV).endVertex();
-            buf.vertex(matr,  moonSize, -100, -moonSize).uv(minU, minV).endVertex();
-            buf.vertex(matr, -moonSize, -100, -moonSize).uv(maxU, minV).endVertex();
-        });
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        this.moonPhases[world.getMoonPhase()].render(renderStack);
     }
 
     private void renderDuskDawn(float[] duskDawnColors, PoseStack renderStack, ClientLevel world, float pTicks) {
@@ -436,6 +457,10 @@ public class AstralSkyRenderer {
 
         renderStack.popPose();
     }
+
+    private record StarBatchKey(AbstractRenderableTexture texture, int flicker) {}
+
+    private record StarDefinition(int amount, float sizeMultiplier) {}
 
     private static class StarDrawList extends BatchedVertexList {
 

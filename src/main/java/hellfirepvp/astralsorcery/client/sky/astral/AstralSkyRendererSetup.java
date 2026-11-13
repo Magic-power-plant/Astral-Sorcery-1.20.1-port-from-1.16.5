@@ -63,8 +63,6 @@ class AstralSkyRendererSetup {
     }
 
     static void generateStars(BufferBuilder starBuffer, int amount, float sizeMultiplier) {
-        starBuffer.begin(RenderingUtils.toDrawMode(GL11.GL_QUADS), DefaultVertexFormat.POSITION_TEX);
-
         for (int i = 0; i < amount; ++i) { //Amount of stars.
             double x = -1F + RAND.nextFloat() * 2F;
             double y = -1F + RAND.nextFloat() * 2F;

@@ -11,6 +11,7 @@ import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
 import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktSyncPerkActivity;
+import hellfirepvp.astralsorcery.common.network.play.server.PktProgressionUpdate;
 import hellfirepvp.astralsorcery.common.network.play.server.PktSyncModifierSource;
 import hellfirepvp.astralsorcery.common.perk.PerkEffectHelper;
 import hellfirepvp.astralsorcery.common.perk.PerkTree;
@@ -50,6 +51,13 @@ public class ResearchManager {
                 toGive.addAll(give.getPreConditions());
             }
         }
+        //1.16.5 ResearchManager.java:71-72. The empty PktProgressionUpdate carries no tier/research; its only job
+        //is the client handler's refreshJournal(), which closes any open journal and resets the cached journal
+        //state. Without it (and the sends below) the journal kept showing the stage as locked after a grant -
+        //"解锁研究阶段的指令不生效".
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketChannel.sendToPlayer(serverPlayer, new PktProgressionUpdate());
+        }
         ResearchSyncHelper.pushProgressToClientUnsafe(progress, player);
         ResearchHelper.savePlayerKnowledge(player);
     }
@@ -59,12 +67,18 @@ public class ResearchManager {
         if (!progress.isValid() || !canGainResearch(progress, progression)) {
             return false;
         }
-        boolean changed = progress.forceGainResearch(progression);
-        if (changed) {
-            ResearchSyncHelper.pushProgressToClientUnsafe(progress, player);
-            ResearchHelper.savePlayerKnowledge(player);
+        //1.16.5 ResearchManager.java:78-96. Two deviations are undone here: the packet send was missing entirely,
+        //and the port returned forceGainResearch's changed flag where 1.16.5 always syncs/saves and returns true
+        //once the tier/precondition gate passed. The changed-flag return made CommandProgress print "Failed!" when
+        //the tier advanced but the matching research was already present.
+        if (progress.forceGainResearch(progression)) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                PacketChannel.sendToPlayer(serverPlayer, new PktProgressionUpdate(progression));
+            }
         }
-        return changed;
+        ResearchSyncHelper.pushProgressToClientUnsafe(progress, player);
+        ResearchHelper.savePlayerKnowledge(player);
+        return true;
     }
 
     public static boolean canGainResearch(PlayerProgress progress, ResearchProgression progression) {
@@ -93,6 +107,12 @@ public class ResearchManager {
             return false;
         }
         progress.setTierReached(tier);
+        //1.16.5 ResearchManager.java:108-109. Tells the client the tier advanced: chat message
+        //"astralsorcery.progress.gain.progress.chat" plus a journal reset. Was missing, so /as progress
+        //updated the server state but the client showed no unlock.
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketChannel.sendToPlayer(serverPlayer, new PktProgressionUpdate(tier));
+        }
         ResearchSyncHelper.pushProgressToClientUnsafe(progress, player);
         ResearchHelper.savePlayerKnowledge(player);
         return true;
@@ -164,6 +184,10 @@ public class ResearchManager {
             return false;
         }
         progress.setTierReached(ProgressionTier.values()[ProgressionTier.values().length - 1]);
+        //1.16.5 ResearchManager.java:171-172. Empty packet, client-side journal refresh only.
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketChannel.sendToPlayer(serverPlayer, new PktProgressionUpdate());
+        }
         ResearchSyncHelper.pushProgressToClientUnsafe(progress, player);
         ResearchHelper.savePlayerKnowledge(player);
         return true;
@@ -391,6 +415,10 @@ public class ResearchManager {
     }
 
     public static boolean forceMaximizeAll(Player player) {
+        //1.16.5 ResearchManager.java:467-486 announces the tier jump afterwards with
+        //PktProgressionUpdate(tierReached); the ported sequence below never sent it.
+        PlayerProgress progressBefore = ResearchHelper.getProgress(player, LogicalSide.SERVER);
+        ProgressionTier tierBefore = progressBefore.isValid() ? progressBefore.getTierReached() : null;
         boolean changed = discoverConstellations(ConstellationRegistry.getAllConstellations(), player);
         changed |= maximizeTier(player);
         for (ResearchProgression progression : ResearchProgression.values()) {
@@ -398,6 +426,13 @@ public class ResearchManager {
             changed = true;
         }
         changed |= setAttunedBefore(player, true);
+        if (tierBefore != null) {
+            PlayerProgress progressAfter = ResearchHelper.getProgress(player, LogicalSide.SERVER);
+            if (progressAfter.isValid() && progressAfter.getTierReached().isThisLater(tierBefore)
+                    && player instanceof ServerPlayer serverPlayer) {
+                PacketChannel.sendToPlayer(serverPlayer, new PktProgressionUpdate(progressAfter.getTierReached()));
+            }
+        }
         return changed;
     }
 

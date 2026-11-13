@@ -88,6 +88,8 @@ public class CelestialGatewayHandler {
 
     public void onServerStop() {
         this.cache.setData(Dist.DEDICATED_SERVER, null);
+        // The filter retains a File as well as dimension data; neither may survive a world switch.
+        this.filter = null;
     }
 
     public void onWorldInit(LevelEvent.Load event) {
