@@ -10,12 +10,12 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -90,7 +90,7 @@ public class CEffectEvorsio extends CEffectAbstractList<ListEntries.PosEntry> {
             addY = 0F;
         }
         Vector3 motion = Vector3.random().multiply(0.1);
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(pos).add(0.5, 0.5, 0.5).addY(addY))
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .setMotion(motion)

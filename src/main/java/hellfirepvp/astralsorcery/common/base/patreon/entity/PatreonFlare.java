@@ -13,12 +13,12 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXPositionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingSprite;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.resource.query.SpriteQuery;
 import hellfirepvp.astralsorcery.common.base.patreon.FlareColor;
 import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,7 +59,7 @@ public class PatreonFlare extends PatreonPartialEntity {
         if (this.clientSprite == null) {
             SpriteQuery sprite = getSpriteQuery();
             if (sprite != null) {
-                this.clientSprite = EffectHelper.of(EffectTemplatesAS.FACING_SPRITE)
+                this.clientSprite = Effects.of(EffectTemplatesAS.FACING_SPRITE)
                         .spawn(pos)
                         .setSprite(sprite.resolveSprite())
                         .setScaleMultiplier(0.35F)
@@ -104,7 +104,7 @@ public class PatreonFlare extends PatreonPartialEntity {
                 rand.nextFloat() * 0.08 * (rand.nextBoolean() ? 1 : -1),
                 rand.nextFloat() * 0.08 * (rand.nextBoolean() ? 1 : -1));
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(at)
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .setScaleMultiplier(scale)
@@ -112,7 +112,7 @@ public class PatreonFlare extends PatreonPartialEntity {
                 .setMaxAge(age);
 
         if (rand.nextBoolean()) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setScaleMultiplier(scale * 0.3F)

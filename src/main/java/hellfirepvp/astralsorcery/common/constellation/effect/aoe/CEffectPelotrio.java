@@ -9,13 +9,13 @@
 package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalPelotrio;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
 import hellfirepvp.astralsorcery.common.data.config.registry.EntityTransmutationRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.EffectsAS;
@@ -89,7 +89,7 @@ public class CEffectPelotrio extends CEffectAbstractList<ListEntries.EntitySpawn
         if (rand.nextFloat() < 0.2F) {
             Vector3 at = Vector3.random().normalize().multiply(rand.nextFloat() * prop.getSize()).add(pos).add(0.5, 0.5, 0.5);
 
-            EffectHelper.spawnSource(new FXOrbitalPelotrio(at)
+            Effects.spawnSource(new FXOrbitalPelotrio(at)
                     .setOrbitAxis(Vector3.random())
                     .setOrbitRadius(0.8 + rand.nextFloat() * 0.7)
                     .setTicksPerRotation(20 + rand.nextInt(20)));

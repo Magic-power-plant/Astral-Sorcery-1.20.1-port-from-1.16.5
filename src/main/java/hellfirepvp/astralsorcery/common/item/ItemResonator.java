@@ -11,12 +11,12 @@ package hellfirepvp.astralsorcery.common.item;
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.client.data.config.entry.RenderingConfig;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.AreaOfInfluencePreview;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.base.OverrideInteractItem;
 import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;
 import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;
@@ -186,14 +186,14 @@ public class ItemResonator extends Item implements OverrideInteractItem, Creativ
                     if (perc >= 0.4F && random.nextFloat() <= fPerc) {
                         if (random.nextFloat() <= fPerc && random.nextInt(6) == 0) {
 
-                            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                                     .spawn(new Vector3(mPos).add(random.nextFloat(), 0.15, random.nextFloat()))
                                     .color(VFXColorFunction.constant(ColorsAS.RESONATOR_STARFIELD))
                                     .setScaleMultiplier(4F)
                                     .setAlphaMultiplier(distribution * fPerc);
                             if (perc >= 0.8F && random.nextInt(3) == 0) {
 
-                                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                                         .spawn(new Vector3(mPos).add(random.nextFloat(), 0.15, random.nextFloat()))
                                         .setScaleMultiplier(0.3F)
                                         .color(VFXColorFunction.WHITE)

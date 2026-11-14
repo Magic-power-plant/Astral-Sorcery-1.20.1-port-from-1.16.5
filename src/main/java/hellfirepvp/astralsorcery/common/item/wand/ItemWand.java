@@ -10,12 +10,12 @@ package hellfirepvp.astralsorcery.common.item.wand;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.structure.StructurePreview;
 import hellfirepvp.astralsorcery.common.block.ore.BlockRockCrystalOre;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.data.world.RockCrystalBuffer;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.base.OverrideInteractItem;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
@@ -179,7 +179,7 @@ public class ItemWand extends Item implements OverrideInteractItem {
         float dstMul = dst <= 25 ? 1F : (dst >= 50 ? 0F : (1F - (dst - 25F) / 25F));
         for (int i = 0; i < 3; i++) {
             if (random.nextBoolean()) {
-                EffectHelper.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
                         .spawn(at.clone().add(-1 + random.nextFloat() * 3, -1 + random.nextFloat() * 3, -1 + random.nextFloat() * 3))
                         .color(VFXColorFunction.constant(ColorsAS.ROCK_CRYSTAL))
                         .setScaleMultiplier(0.4F)
@@ -210,7 +210,7 @@ public class ItemWand extends Item implements OverrideInteractItem {
         double mZ = random.nextFloat() * 0.01F * (random.nextBoolean() ? 1 : -1);
         float dstr = DayTimeHelper.getCurrentDaytimeDistribution(world);
         for (int i = 0; i < 8 + random.nextInt(10); i++) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(columnDisplay)
                     .setMotion(new Vector3(
                             mX * (0.2 + 0.8 * random.nextFloat()),

@@ -9,12 +9,12 @@
 package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.CropHelper;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -70,7 +70,7 @@ public class CEffectAevitas extends CEffectAbstractList<CropHelper.GrowablePlant
         if (rand.nextBoolean()) {
             ConstellationEffectProperties prop = this.createProperties(pedestal.getMirrorCount());
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(
                             pos.getX() + rand.nextFloat() * (prop.getSize() / 2F) * (rand.nextBoolean() ? 1 : -1) + 0.5,
                             pos.getY() + rand.nextFloat() * (prop.getSize() / 4F) + 0.5,
@@ -183,7 +183,7 @@ public class CEffectAevitas extends CEffectAbstractList<CropHelper.GrowablePlant
     public static void playParticles(PktPlayEffect event) {
         Vector3 at = ByteBufUtils.readVector(event.getExtraData());
         for (int i = 0; i < 8; i++) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at.clone().add(rand.nextFloat(), 0.2, rand.nextFloat()))
                     .setMotion(new Vector3(0, 0.005 + rand.nextFloat() * 0.01, 0))
                     .setScaleMultiplier(0.1F + rand.nextFloat() * 0.1F)

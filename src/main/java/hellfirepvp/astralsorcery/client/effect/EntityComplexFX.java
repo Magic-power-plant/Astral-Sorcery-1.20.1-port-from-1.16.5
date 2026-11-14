@@ -2,6 +2,7 @@ package hellfirepvp.astralsorcery.client.effect;
 
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
+import hellfirepvp.astralsorcery.common.effect.EffectHandle;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 
 import javax.annotation.Nullable;
@@ -11,7 +12,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public abstract class EntityComplexFX {
+public abstract class EntityComplexFX implements EffectHandle {
 
     protected static final Random rand = new Random();
     private static long counter = 0;
@@ -106,10 +107,12 @@ public abstract class EntityComplexFX {
         return this.age >= this.maxAge || removeRequested;
     }
 
+    @Override
     public void requestRemoval() {
         this.removeRequested = true;
     }
 
+    @Override
     public boolean isRemoved() {
         return this.flagRemoved;
     }

@@ -13,7 +13,6 @@ import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalInfuserLiquid;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.ColorizationHelper;
@@ -25,6 +24,7 @@ import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
 import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
@@ -128,7 +128,7 @@ public class ActiveLiquidInfusionRecipe {
         if (orbitalLiquid == null || ((FXOrbitalInfuserLiquid) orbitalLiquid).isRemoved()) {
             ResourceLocation recipeName = this.getRecipeToCraft().getId();
 
-            orbitalLiquid = EffectHelper.spawnSource(
+            orbitalLiquid = Effects.spawnSource(
                     new FXOrbitalInfuserLiquid(new Vector3(infuser).add(0.5F, 0, 0.5F), required)
                             .setOrbitAxis(Vector3.RotAxis.Y_AXIS)
                             .setOrbitRadius(2F)
@@ -175,7 +175,7 @@ public class ActiveLiquidInfusionRecipe {
 
             if (rand.nextInt(3) != 0) {
                 MiscUtils.applyRandomOffset(pos, rand, 0.3F);
-                EffectHelper.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
                         .spawn(pos)
                         .setSprite(tas)
                         .selectFraction(0.2F)
@@ -186,7 +186,7 @@ public class ActiveLiquidInfusionRecipe {
                         .setMaxAge(maxAge);
             } else {
                 MiscUtils.applyRandomOffset(pos, rand, 0.4F);
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
                         .color(colorFn)
@@ -204,7 +204,7 @@ public class ActiveLiquidInfusionRecipe {
         //safely mutable) Vector3 before applyRandomOffset mutates it.
         Vector3 vec = new Vector3(infuser.getRandomInfuserOffset());
         MiscUtils.applyRandomOffset(vec, rand, 0.05F);
-        EffectHelper.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
                 .spawn(vec)
                 .setSprite(RenderingUtils.getParticleTexture(required))
                 .selectFraction(0.2F)
@@ -224,7 +224,7 @@ public class ActiveLiquidInfusionRecipe {
 
         BlockPos at = MiscUtils.getRandomEntry(posList, rand);
         if (at != null) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(at).add(rand.nextFloat(), 1, rand.nextFloat()))
                     .setScaleMultiplier(0.1F + rand.nextFloat() * 0.15F)
                     .color((fx, pTicks) -> ColorizationHelper.getColor(required).orElse(Color.WHITE))

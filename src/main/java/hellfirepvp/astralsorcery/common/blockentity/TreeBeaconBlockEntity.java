@@ -10,7 +10,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.base.TreeType;
 import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffectHelper;
@@ -18,6 +17,7 @@ import hellfirepvp.astralsorcery.common.base.patreon.types.TypeTreeBeaconColor;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -217,7 +217,7 @@ public class TreeBeaconBlockEntity extends ReceiverBlockEntity<StarlightReceiver
         for (int i = 0; i < amt; i++) {
             Vector3 at = MiscUtils.getRandomCirclePosition(thisPos, Vector3.RotAxis.Y_AXIS, radius);
             MiscUtils.applyRandomOffset(at, rand, 0.35F);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .color(colorFn)
                     .setGravityStrength(-0.0015F + rand.nextFloat() * -0.001F)
@@ -230,7 +230,7 @@ public class TreeBeaconBlockEntity extends ReceiverBlockEntity<StarlightReceiver
             MiscUtils.applyRandomCircularOffset(offset, rand, radius);
             offset.setY(offset.getY() * 0.75F);
             Vector3 at = new Vector3(this.getBlockPos()).add(offset);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .color(colorFn)
                     .setGravityStrength(rand.nextBoolean() ? -0.0015F : 0)
@@ -245,7 +245,7 @@ public class TreeBeaconBlockEntity extends ReceiverBlockEntity<StarlightReceiver
             Vector3 at = new Vector3(this).add(0.5, 0.05, 0.5);
             MiscUtils.applyRandomOffset(at, rand, 0.05F);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .setOwner(this.playerUUID)
                     .spawn(at)
                     .setup(at.clone().addY(7), 1.5F, 1.5F)
@@ -264,7 +264,7 @@ public class TreeBeaconBlockEntity extends ReceiverBlockEntity<StarlightReceiver
         VFXColorFunction<?> colorFn = VFXColorFunction.constant(c);
         for (int i = 0; i < 10; i++) {
             Vector3 at = new Vector3(from.toBlockPos()).add(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .motion(VFXMotionController.target(to::clone, 0.04F + rand.nextFloat() * 0.05F))
                     .setScaleMultiplier(0.15F + rand.nextFloat() * 0.05F)

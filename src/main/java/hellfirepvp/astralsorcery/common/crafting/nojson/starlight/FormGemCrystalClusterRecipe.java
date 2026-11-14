@@ -12,10 +12,10 @@ import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.CrystalIngredient;
 import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.item.dust.ItemIlluminationPowder;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
@@ -109,7 +109,7 @@ public class FormGemCrystalClusterRecipe extends LiquidStarlightRecipe {
             Vector3 target = Vector3.atEntityCenter(trigger);
             Vector3 pos = target.clone().add(Vector3.random().normalize().multiply(3 + rand.nextFloat()));
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .color(VFXColorFunction.constant(ColorsAS.ILLUMINATION_POWDER_2))
                     .alpha(VFXAlphaFunction.PYRAMID.andThen(VFXAlphaFunction.proximity(target::clone, 2F)))

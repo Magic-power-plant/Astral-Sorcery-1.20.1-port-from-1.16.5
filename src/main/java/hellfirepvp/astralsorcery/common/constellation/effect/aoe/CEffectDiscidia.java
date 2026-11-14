@@ -11,13 +11,13 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.CommonProxy;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ConstellationEffectEntityCollect;
 import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -73,7 +73,7 @@ public class CEffectDiscidia extends ConstellationEffectEntityCollect<LivingEnti
         }
         Vector3 motion = Vector3.random().setY(0).multiply(0.05);
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(playAt)
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .motion(VFXMotionController.decelerate(() -> motion))

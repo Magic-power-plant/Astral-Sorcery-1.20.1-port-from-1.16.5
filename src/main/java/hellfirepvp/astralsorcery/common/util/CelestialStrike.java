@@ -10,13 +10,13 @@ package hellfirepvp.astralsorcery.common.util;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXLightning;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.client.resource.AbstractRenderableTexture;
 import hellfirepvp.astralsorcery.common.CommonProxy;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
@@ -110,7 +110,7 @@ public class CelestialStrike {
         Vector3 vec = ByteBufUtils.readVector(effect.getExtraData());
         Vector3 effectPos = vec.clone();
 
-        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+        Effects.of(EffectTemplatesAS.LIGHTBEAM)
                 .spawn(effectPos.clone().addY(-4))
                 .setup(effectPos.clone().addY(16), 9, 6)
                 .alpha(VFXAlphaFunction.FADE_OUT)
@@ -119,7 +119,7 @@ public class CelestialStrike {
                 .setMaxAge(25);
 
         effectPos.add(r.nextFloat() - r.nextFloat(), 0, r.nextFloat() - r.nextFloat());
-        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+        Effects.of(EffectTemplatesAS.LIGHTBEAM)
                 .spawn(effectPos.clone().addY(-4))
                 .setup(effectPos.clone().addY(16).addY(r.nextFloat() * 2F), 9, 6)
                 .alpha(VFXAlphaFunction.FADE_OUT)
@@ -128,7 +128,7 @@ public class CelestialStrike {
                 .setMaxAge(24 + r.nextInt(6));
 
         effectPos.add(r.nextFloat() - r.nextFloat(), 0, r.nextFloat() - r.nextFloat());
-        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+        Effects.of(EffectTemplatesAS.LIGHTBEAM)
                 .spawn(effectPos.clone().addY(-4))
                 .setup(effectPos.clone().addY(16).addY(r.nextFloat() * 2F), 9, 6)
                 .alpha(VFXAlphaFunction.FADE_OUT)
@@ -138,7 +138,7 @@ public class CelestialStrike {
 
         AbstractRenderableTexture tex = MiscUtils.eitherOf(r,
                 TexturesAS.TEX_SMOKE_1, TexturesAS.TEX_SMOKE_2, TexturesAS.TEX_SMOKE_3, TexturesAS.TEX_SMOKE_4);
-        EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+        Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                 .spawn(vec.clone().addY(0.1F))
                 .setAxis(Vector3.RotAxis.Y_AXIS.clone().negate())
                 .setSprite(tex)
@@ -151,7 +151,7 @@ public class CelestialStrike {
         for (int i = 0; i < 43; i++) {
             Vector3 randTo = new Vector3((r.nextDouble() * 9) - (r.nextDouble() * 9), r.nextDouble() * 5, (r.nextDouble() * 9) - (r.nextDouble() * 9));
             randTo.add(vec.clone());
-            FXLightning lightning = EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            FXLightning lightning = Effects.of(EffectTemplatesAS.LIGHTNING)
                     .spawn(vec.clone())
                     .makeDefault(randTo);
             lightning.color(MiscUtils.eitherOf(r,
@@ -161,7 +161,7 @@ public class CelestialStrike {
         }
 
         for (int i = 0; i < 40; i++) {
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(vec.clone().add((r.nextFloat() - r.nextFloat()) * 4, r.nextFloat() * 9, (r.nextFloat() - r.nextFloat()) * 4))
                     .setGravityStrength(-0.005F)
                     .setScaleMultiplier(0.85F)
@@ -175,7 +175,7 @@ public class CelestialStrike {
         List<Vector3> circle = MiscUtils.getCirclePositions(vec, Vector3.RotAxis.Y_AXIS, 7.5F + r.nextFloat(), 200 + r.nextInt(40));
         for (Vector3 at : circle) {
             Vector3 dir = at.clone().subtract(vec).normalize().multiply(0.3 + 0.4 * r.nextFloat());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .setAlphaMultiplier(0.4F)
                     .setMotion(dir)
@@ -186,7 +186,7 @@ public class CelestialStrike {
         circle = MiscUtils.getCirclePositions(vec, Vector3.RotAxis.Y_AXIS, 7.5F + r.nextFloat(), 100 + r.nextInt(40));
         for (Vector3 at : circle) {
             Vector3 dir = at.clone().subtract(vec).normalize().multiply(0.2 + 0.1 * r.nextFloat());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .setAlphaMultiplier(0.4F)
                     .setMotion(dir)

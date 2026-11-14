@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.network.play.server;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -109,7 +109,7 @@ public class PktShootEntity {
                             .add(perp.clone().rotate(rand.nextFloat() * 360, look).multiply(0.5F + rand.nextFloat()))
                             .add(origin);
 
-                    FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                             .spawn(at)
                             .alpha(VFXAlphaFunction.FADE_OUT)
                             .setAlphaMultiplier(0.75F)

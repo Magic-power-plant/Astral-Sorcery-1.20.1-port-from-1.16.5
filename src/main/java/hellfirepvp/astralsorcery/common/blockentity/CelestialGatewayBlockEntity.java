@@ -12,12 +12,12 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXColorEffectSphere;
 import hellfirepvp.astralsorcery.client.event.effect.GatewayUIRenderHandler;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.link.LinkableBlockEntity;
 import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
@@ -154,7 +154,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
         Vector3 at = new Vector3(this).add(0.5, 1.7, 0.5);
         double distance = Vector3.atEntityCorner(Minecraft.getInstance().player).distance(at);
         if (clientGatewaySphereEffect == null) {
-            clientGatewaySphereEffect = EffectHelper.of(EffectTemplatesAS.COLOR_SPHERE)
+            clientGatewaySphereEffect = Effects.of(EffectTemplatesAS.COLOR_SPHERE)
                     .spawn(at)
                     .setupSphere(Vector3.RotAxis.Y_AXIS, 6)
                     .setRemoveIfInvisible(true)
@@ -163,7 +163,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
                     .color(VFXColorFunction.BLACK)
                     .refresh(RefreshFunction.blockEntityExistsAnd(this, (te, fx) -> te.doesSeeSky() && te.hasMultiblock()));
         } else if (((EntityVisualFX) clientGatewaySphereEffect).isRemoved() && distance < 5) {
-            EffectHelper.refresh(((FXColorEffectSphere) clientGatewaySphereEffect), EffectTemplatesAS.COLOR_SPHERE);
+            Effects.refresh(((FXColorEffectSphere) clientGatewaySphereEffect), EffectTemplatesAS.COLOR_SPHERE);
         }
 
         if (distance < 5.5) {
@@ -191,7 +191,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
             }
 
             Color c = MiscUtils.eitherOf(rand, Color.WHITE, gatewayColor, gatewayColor.brighter());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setGravityStrength(-0.0001F)
                     .color(VFXColorFunction.constant(c))
@@ -204,7 +204,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
             offset.add(new Vector3(this)).add(0.5, 0, 0.5).setY(this.getBlockPos().getY() + 0.05);
 
             Color c = MiscUtils.eitherOf(rand, Color.WHITE, gatewayColor, gatewayColor.brighter());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setGravityStrength(-0.00004F)
                     .color(VFXColorFunction.constant(c))
@@ -218,7 +218,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
                 Vector3 pos = MiscUtils.getRandomCirclePosition(center, Vector3.RotAxis.Y_AXIS, 1.7);
                 MiscUtils.applyRandomOffset(pos, rand, 0.05F);
                 Color c = MiscUtils.eitherOf(rand, Color.WHITE, ColorsAS.EFFECT_BLUE_LIGHT, ColorsAS.EFFECT_BLUE_DARK);
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .color(VFXColorFunction.constant(c))
                         .setScaleMultiplier(0.25F + rand.nextFloat() * 0.15F)
@@ -229,7 +229,7 @@ public class CelestialGatewayBlockEntity extends TickableBlockEntity implements 
                 Vector3 pos = MiscUtils.getRandomCirclePosition(center, Vector3.RotAxis.Y_AXIS, 1.1).addY(0.3);
                 MiscUtils.applyRandomOffset(pos, rand, 0.05F);
                 Color c = MiscUtils.eitherOf(rand, Color.WHITE, ColorsAS.EFFECT_BLUE_LIGHT, ColorsAS.EFFECT_BLUE_DARK);
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .color(VFXColorFunction.constant(c))
                         .setScaleMultiplier(0.25F + rand.nextFloat() * 0.15F)

@@ -9,11 +9,11 @@
 package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,7 +39,7 @@ public class BuiltInEffectConstellationFinish extends AltarRecipeEffect {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {
-        EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+        Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                 .spawn(new Vector3(altar).add(0.5, 0.05, 0.5))
                 .setSprite(SpritesAS.SPR_CRAFT_BURST)
                 .setAxis(Vector3.RotAxis.Y_AXIS)

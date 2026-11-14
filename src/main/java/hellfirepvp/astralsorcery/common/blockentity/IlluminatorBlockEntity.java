@@ -2,10 +2,10 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.BlockFlareLight;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.entity.EntityFlare;
 import hellfirepvp.astralsorcery.common.item.wand.ItemIlluminationWand;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
@@ -127,7 +127,7 @@ public class IlluminatorBlockEntity extends TickableBlockEntity {
         if (!this.doesSeeSky() && this.boostedTicks <= 0) {
             return;
         }
-        FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(this).add(0.5, 0.5, 0.5))
                 .setScaleMultiplier(0.25F)
                 .setMotion(new Vector3(rand.nextFloat() * 0.025F * (rand.nextBoolean() ? 1 : -1),
@@ -144,7 +144,7 @@ public class IlluminatorBlockEntity extends TickableBlockEntity {
                         Vector3.RotAxis.Y_AXIS, 0.8F + rand.nextFloat() * 0.1F, 20 + rand.nextInt(10));
 
                 for (Vector3 v : positions) {
-                    p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                             .spawn(v)
                             .setScaleMultiplier(0.15F)
                             .setMotion(new Vector3(0, (rand.nextBoolean() ? 1 : -1) * rand.nextFloat() * 0.01, 0));

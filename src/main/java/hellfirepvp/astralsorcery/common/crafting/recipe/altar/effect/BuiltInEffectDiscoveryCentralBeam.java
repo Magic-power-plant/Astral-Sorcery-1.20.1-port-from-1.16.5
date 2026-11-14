@@ -9,10 +9,10 @@
 package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,7 +35,7 @@ public class BuiltInEffectDiscoveryCentralBeam extends AltarRecipeEffect {
                 rand.nextInt(10) == 0) {
             Vector3 from = new Vector3(altar).add(0.5, 0.3, 0.5);
             MiscUtils.applyRandomOffset(from, rand, 0.26F);
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(from)
                     .setup(from.clone().addY(4 * rand.nextFloat() * 2), 1F, 1F)
                     .setMaxAge(64);

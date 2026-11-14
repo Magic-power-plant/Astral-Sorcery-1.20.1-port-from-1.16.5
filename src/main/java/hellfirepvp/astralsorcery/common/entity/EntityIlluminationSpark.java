@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.common.entity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
@@ -58,7 +58,7 @@ public class EntityIlluminationSpark extends ThrowableProjectile {
     private void spawnEffects() {
         FXFacingParticle p;
         for (int i = 0; i < 6; i++) {
-            p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(this))
                     .setMotion(new Vector3(
                             0.04F - this.level().random.nextFloat() * 0.08F,
@@ -69,12 +69,12 @@ public class EntityIlluminationSpark extends ThrowableProjectile {
             randomizeColor(p);
         }
 
-        p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(Vector3.atEntityCorner(this));
         p.setScaleMultiplier(0.6F);
         randomizeColor(p);
 
-        p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(Vector3.atEntityCorner(this).add(getDeltaMovement().multiply(0.5, 0.5, 0.5)));
         p.setScaleMultiplier(0.6F);
         randomizeColor(p);

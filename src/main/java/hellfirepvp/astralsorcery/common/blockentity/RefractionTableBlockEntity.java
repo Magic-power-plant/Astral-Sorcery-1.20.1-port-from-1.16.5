@@ -11,7 +11,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXSpritePlane;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
@@ -19,6 +18,7 @@ import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.constellation.DrawnConstellation;
 import hellfirepvp.astralsorcery.common.constellation.engraving.EngravedStarMap;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.ItemInfusedGlass;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
@@ -117,10 +117,10 @@ public class RefractionTableBlockEntity extends TickableBlockEntity implements N
         }
 
         if (this.effectHalo != null && ((FXSpritePlane) this.effectHalo).isRemoved()) {
-            EffectHelper.refresh((FXSpritePlane) this.effectHalo, EffectTemplatesAS.TEXTURE_SPRITE);
+            Effects.refresh((FXSpritePlane) this.effectHalo, EffectTemplatesAS.TEXTURE_SPRITE);
         }
         if (this.effectHalo == null) {
-            this.effectHalo = EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+            this.effectHalo = Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                     .spawn(new Vector3(this).add(0.5, 0.8, 0.5))
                     .setSprite(SpritesAS.SPR_HALO_INFUSION)
                     .setAxis(Vector3.RotAxis.Y_AXIS)
@@ -141,7 +141,7 @@ public class RefractionTableBlockEntity extends TickableBlockEntity implements N
         offset.add(rand.nextFloat() * 0.1, 0, rand.nextFloat() * 0.1).add(this.getBlockPos());
         Color color = ColorsAS.REFRACTION_TABLE_COLORS[random];
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(offset)
                 .setGravityStrength(-0.002F)
                 .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
@@ -152,12 +152,12 @@ public class RefractionTableBlockEntity extends TickableBlockEntity implements N
         if (rand.nextFloat() < (getRunProgress() * 2F)) {
             Vector3 target = new Vector3(this).add(0.5, 0.9, 0.5);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            Effects.of(EffectTemplatesAS.LIGHTNING)
                     .spawn(offset)
                     .makeDefault(target)
                     .color(VFXColorFunction.constant(color));
 
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
                     .alpha(VFXAlphaFunction.proximity(target::clone, 1F))
@@ -169,7 +169,7 @@ public class RefractionTableBlockEntity extends TickableBlockEntity implements N
         }
 
         if (rand.nextInt(3) == 0) {
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(offset)
                     .setup(offset.clone().addY(0.56F + rand.nextFloat() * 0.2F), 0.25F, 0.25F)
                     .color(VFXColorFunction.constant(color));
@@ -182,7 +182,7 @@ public class RefractionTableBlockEntity extends TickableBlockEntity implements N
                     ColorsAS.CONSTELLATION_TYPE_MINOR);
 
             Vector3 beamOffset = new Vector3(this).add(0.1 + rand.nextFloat() * 0.8, 0.8, 0.1 + rand.nextFloat() * 0.8F);
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(beamOffset)
                     .setup(beamOffset.clone().addY(1 + rand.nextFloat() * 0.5), 0.5F, 0.5F)
                     .color(VFXColorFunction.constant(beamColor))

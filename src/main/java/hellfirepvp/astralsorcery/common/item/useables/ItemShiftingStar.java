@@ -9,7 +9,6 @@
 package hellfirepvp.astralsorcery.common.item.useables;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
@@ -17,6 +16,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.base.PerkExperienceRevealer;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -125,7 +125,7 @@ public class ItemShiftingStar extends Item implements PerkExperienceRevealer {
     private void playUseEffects(LivingEntity player, int tick, int total) {
         IMajorConstellation cst = this.getBaseConstellation();
         if (cst == null) {
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(player).addY(player.getBbHeight() / 2))
                     .setMotion(new Vector3(-0.1 + random.nextFloat() * 0.2, 0.01, -0.1 + random.nextFloat() * 0.2))
                     .setScaleMultiplier(0.2F + random.nextFloat());
@@ -145,7 +145,7 @@ public class ItemShiftingStar extends Item implements PerkExperienceRevealer {
                 Vector3 pos = center.clone().add(v);
                 Vector3 mot = center.clone().subtract(pos).normalize().multiply(0.1);
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .setScaleMultiplier(0.25F + random.nextFloat() * 0.4F)
                         .setMotion(mot)

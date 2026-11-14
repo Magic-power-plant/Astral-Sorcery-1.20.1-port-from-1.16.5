@@ -12,12 +12,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXSpritePlane;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -48,7 +48,7 @@ public class EffectLuminescenceFlare extends AltarRecipeEffect {
             ResourceLocation recipeName = recipe.getRecipe().getId();
 
             FXSpritePlane spr = recipe.getEffectContained(INDEX_CRAFT_FLARE, i -> {
-                return EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+                return Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                         .spawn(new Vector3(altar).add(0.5, 0.04, 0.5))
                         .setSprite(SpritesAS.SPR_CRAFT_FLARE)
                         .setAxis(Vector3.RotAxis.Y_AXIS)
@@ -63,7 +63,7 @@ public class EffectLuminescenceFlare extends AltarRecipeEffect {
                                         recipeName.equals(tAltar.getActiveRecipe().getRecipe().getId())));
             });
 
-            EffectHelper.refresh(spr, EffectTemplatesAS.TEXTURE_SPRITE);
+            Effects.refresh(spr, EffectTemplatesAS.TEXTURE_SPRITE);
         }
     }
 

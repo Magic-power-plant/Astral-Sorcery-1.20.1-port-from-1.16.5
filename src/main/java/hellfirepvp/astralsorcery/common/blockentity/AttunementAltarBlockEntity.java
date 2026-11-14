@@ -18,7 +18,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingSprite;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
@@ -35,6 +34,7 @@ import hellfirepvp.astralsorcery.common.constellation.world.WorldContext;
 import hellfirepvp.astralsorcery.common.crafting.nojson.AttunementCraftingRegistry;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunementRecipe;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.entity.EntityFlare;
 import hellfirepvp.astralsorcery.common.item.ItemConstellationPaper;
 import hellfirepvp.astralsorcery.common.lib.*;
@@ -218,7 +218,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
             float night = DayTimeHelper.getCurrentDaytimeDistribution(level);
             for (BlockPos key : positions) {
                 if (!this.activeStarSprites.containsKey(key)) {
-                    FXFacingSprite sprite = EffectHelper.of(EffectTemplatesAS.FACING_SPRITE)
+                    FXFacingSprite sprite = Effects.of(EffectTemplatesAS.FACING_SPRITE)
                             .spawn(new Vector3(key).add(0.5, 0.5, 0.5))
                             .setSprite(SpritesAS.SPR_RELAY_FLARE)
                             .setScaleMultiplier(1.4F)
@@ -228,7 +228,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
                 } else {
                     FXFacingSprite spr = (FXFacingSprite) this.activeStarSprites.get(key);
                     if (spr.isRemoved()) {
-                        EffectHelper.refresh(spr, EffectTemplatesAS.FACING_SPRITE);
+                        Effects.refresh(spr, EffectTemplatesAS.FACING_SPRITE);
                     }
                 }
 
@@ -278,11 +278,11 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
             Vector3 to   = new Vector3(conn.getB()).add(0.5, 0.5, 0.5);
 
             if (this.getTicksExisted() % 50 == 0) {
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(from)
                         .setup(to, beamSize, beamSize)
                         .color(beamColor);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(to)
                         .setup(from, beamSize, beamSize)
                         .color(beamColor);
@@ -295,7 +295,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
                         .add(to)
                         .add(Vector3.random().multiply(rand.nextFloat() * 0.25F));
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .color(VFXColorFunction.constant(this.activeConstellation.getConstellationColor()))
@@ -346,7 +346,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
                     0.01,
                     rand.nextFloat() * 15 - 7);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .color(VFXColorFunction.WHITE)
                     .setAlphaMultiplier(0.7F)
@@ -390,7 +390,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
         Vector3 offset = Vector3.random().multiply(0.5F).setY(0);
         if (rand.nextInt(3) == 0) {
             offset.multiply(0.5);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at.add(offset))
                     .color(VFXColorFunction.constant(cst.getConstellationColor()))
                     .setGravityStrength(-0.002F)
@@ -399,7 +399,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
                     .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
                     .alpha(VFXAlphaFunction.FADE_OUT);
         } else if (rand.nextInt(3) == 0) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at.add(offset))
                     .setGravityStrength(-0.0005F)
                     .setMotion(Vector3.random().addY(3).normalize().multiply(0.005))
@@ -416,7 +416,7 @@ public class AttunementAltarBlockEntity extends TickableBlockEntity {
                 .add(0.5, 0, 0.5)
                 .add(Vector3.random().setY(0).multiply(0.65F));
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(at)
                 .color(VFXColorFunction.constant(cst.getConstellationColor().brighter()))
                 .setGravityStrength(-0.0015F)

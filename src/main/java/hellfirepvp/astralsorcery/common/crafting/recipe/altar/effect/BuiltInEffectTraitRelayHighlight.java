@@ -11,7 +11,6 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.ColorizationHelper;
@@ -20,6 +19,7 @@ import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.helper.CraftingFocusStack;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
@@ -70,7 +70,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
                         playRelayHighlightParticles(relay, color);
 
                         if (rand.nextInt(4) == 0) {
-                            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                                     .spawn(new Vector3(altar).add(
                                             -3 + rand.nextInt(7),
                                             0.02,
@@ -95,7 +95,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
     @OnlyIn(Dist.CLIENT)
     private void playRelayHighlightParticles(SpectralRelayBlockEntity relay, Color color) {
         if (rand.nextBoolean()) {
-            FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle particle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(relay).add(rand.nextFloat(), 0, rand.nextFloat()))
                     .setAlphaMultiplier(0.7F)
                     .setScaleMultiplier(0.2F + rand.nextFloat() * 0.1F)
@@ -113,7 +113,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
     @OnlyIn(Dist.CLIENT)
     private void playLightbeam(AltarBlockEntity from, SpectralRelayBlockEntity to, Color color) {
         if (getClientTick() % 35 == 0) {
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(new Vector3(from).add(0.5, 0, 0.5).add(getFocusRelayOffset(from.getAltarType())))
                     .setup(new Vector3(to).add(0.5, 0.1, 0.5), 0.8F, 0.8F)
                     .color(VFXColorFunction.constant(color));

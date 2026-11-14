@@ -11,10 +11,10 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -43,7 +43,7 @@ public class EffectPillarSparkle extends AltarRecipeEffect {
                 at.addY(rand.nextFloat() * getPillarHeight(altar.getAltarType()));
                 at.add(-0.3 + 1.6 * rand.nextFloat(), 0, -0.3 + 1.6 * rand.nextFloat());
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .color(VFXColorFunction.WHITE)

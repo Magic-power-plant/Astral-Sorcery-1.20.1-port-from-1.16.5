@@ -2,7 +2,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.ore.BlockStarmetalOre;
 import hellfirepvp.astralsorcery.common.block.BlockCelestialCrystalCluster;
@@ -10,6 +9,7 @@ import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -54,7 +54,7 @@ public class CelestialCrystalsBlockEntity extends TickableBlockEntity implements
     @OnlyIn(Dist.CLIENT)
     private void playStarmetalParticles() {
         if (rand.nextInt(9) == 0) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(this)
                             .add(0.1, 0, 0.1)
                             .add(rand.nextFloat() * 0.8, 0, rand.nextFloat() * 0.8))
@@ -64,7 +64,7 @@ public class CelestialCrystalsBlockEntity extends TickableBlockEntity implements
         }
 
         if (rand.nextInt(4) == 0) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(this)
                             .addY(0.05)
                             .add(rand.nextFloat(), 0, rand.nextFloat()))
@@ -77,7 +77,7 @@ public class CelestialCrystalsBlockEntity extends TickableBlockEntity implements
     @OnlyIn(Dist.CLIENT)
     private void playFullyGrownParticles() {
         if (rand.nextInt(4) == 0) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(this)
                             .add(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()))
                     .alpha(VFXAlphaFunction.FADE_OUT)

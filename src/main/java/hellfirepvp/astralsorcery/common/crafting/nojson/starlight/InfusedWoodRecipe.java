@@ -11,9 +11,9 @@ package hellfirepvp.astralsorcery.common.crafting.nojson.starlight;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -89,7 +89,7 @@ public class InfusedWoodRecipe extends LiquidStarlightRecipe {
             Vector3 pos = new Vector3(at).add(0.5, 0.5, 0.5);
             MiscUtils.applyRandomOffset(pos, rand, 0.5F);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .color(VFXColorFunction.constant(ColorsAS.DYE_BROWN))
                     .alpha(VFXAlphaFunction.PYRAMID)

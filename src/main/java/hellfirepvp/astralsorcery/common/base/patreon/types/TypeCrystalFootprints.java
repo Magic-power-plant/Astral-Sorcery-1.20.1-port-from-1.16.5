@@ -10,11 +10,11 @@ package hellfirepvp.astralsorcery.common.base.patreon.types;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.base.patreon.FlareColor;
 import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -86,7 +86,7 @@ public class TypeCrystalFootprints extends PatreonEffect implements ITickHandler
             return;
         }
 
-        EffectHelper.of(EffectTemplatesAS.CRYSTAL)
+        Effects.of(EffectTemplatesAS.CRYSTAL)
                 .spawn(pos)
                 .rotation(rand.nextFloat() * 35F * (rand.nextBoolean() ? 1 : -1),
                         rand.nextFloat() * 35F * (rand.nextBoolean() ? 1 : -1),

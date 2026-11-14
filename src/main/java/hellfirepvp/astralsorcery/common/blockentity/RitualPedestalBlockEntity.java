@@ -11,7 +11,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import hellfirepvp.astralsorcery.client.effect.function.*;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXSpritePlane;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
@@ -26,6 +25,7 @@ import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalCalculations;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemAttunedCrystalBase;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -260,7 +260,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
             Vector3 from = new Vector3(this).add(0.5, 0.05, 0.5);
             MiscUtils.applyRandomOffset(from, rand, 0.05F);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .setOwner(this.ownerUUID)
                     .spawn(from)
                     .setup(from.clone().addY(6), 1.5F, 1.5F)
@@ -273,7 +273,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                 Vector3 at = new Vector3(this).add(0, 0.1, 0);
                 at.add(rand.nextFloat() * 0.5 + 0.25, 0, rand.nextFloat() * 0.5 + 0.25);
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .setOwner(this.ownerUUID)
                         .spawn(at)
                         .setAlphaMultiplier(0.7F)
@@ -298,7 +298,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                     MiscUtils.applyRandomOffset(from, rand, 2F);
                     from.setY(getBlockPos().getY() - 0.6 + 1 * rand.nextFloat() * (rand.nextBoolean() ? 1 : -1));
 
-                    EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                    Effects.of(EffectTemplatesAS.LIGHTBEAM)
                             .setOwner(this.ownerUUID)
                             .spawn(from)
                             .setup(from.clone().addY(5 + rand.nextInt(3)), 1.3F, 1.3F)
@@ -309,7 +309,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
             }
 
             if (this.ritualHaloEffect == null) {
-                this.ritualHaloEffect = EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+                this.ritualHaloEffect = Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                         .spawn(new Vector3(this).add(0.5, 0.05, 0.5))
                         .setSprite(SpritesAS.SPR_HALO_RITUAL)
                         .setAxis(Vector3.RotAxis.Y_AXIS)
@@ -320,14 +320,14 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
 
             if (this.ritualHaloEffect != null) {
                 FXSpritePlane effectPlane = ((FXSpritePlane) this.ritualHaloEffect);
-                EffectHelper.refresh(effectPlane, EffectTemplatesAS.TEXTURE_SPRITE);
+                Effects.refresh(effectPlane, EffectTemplatesAS.TEXTURE_SPRITE);
 
                 float dayTimeMul = DayTimeHelper.getCurrentDaytimeDistribution(this.level);
                 effectPlane.setAlphaMultiplier(Math.max(0.05F, dayTimeMul * 0.75F));
             }
 
             Vector3 offset = Vector3.random().setY(0).normalize().multiply(rand.nextFloat() * 4 * (rand.nextBoolean() ? 1 : -1));
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .setOwner(this.ownerUUID)
                     .spawn(new Vector3(this).add(0.5, 0.02, 0.5).add(offset))
                     .setAlphaMultiplier(1F)
@@ -359,7 +359,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                             .add(Vector3.random().multiply(0.6F));
                     Vector3 motion = Vector3.random().multiply(0.02F);
 
-                    EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                             .setOwner(this.ownerUUID)
                             .spawn(at)
                             .setMotion(motion)
@@ -381,7 +381,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                         to = new Vector3(mirror).add(0.5, 0.5, 0.5);
                     }
 
-                    EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+                    Effects.of(EffectTemplatesAS.LIGHTNING)
                             .setOwner(this.ownerUUID)
                             .spawn(from)
                             .makeDefault(to)
@@ -395,7 +395,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                 Vector3 source = new Vector3(this).add(0.5, 0.9, 0.5);
                 Vector3 to = new Vector3(this).add(mirror).add(0.5, 0.5, 0.5);
 
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .setOwner(this.ownerUUID)
                         .spawn(source)
                         .setup(to, 0.8F, 0.8F);
@@ -403,7 +403,7 @@ public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightRece
                 if (this.ritualLinkTo != null && this.offsetMirrors.get(mirror)) {
                     source = new Vector3(this).add(RITUAL_ANCHOR_OFFEST).add(0.5, 0.5, 0.5);
 
-                    EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                    Effects.of(EffectTemplatesAS.LIGHTBEAM)
                             .setOwner(this.ownerUUID)
                             .spawn(source)
                             .setup(to, 0.8F, 0.8F)

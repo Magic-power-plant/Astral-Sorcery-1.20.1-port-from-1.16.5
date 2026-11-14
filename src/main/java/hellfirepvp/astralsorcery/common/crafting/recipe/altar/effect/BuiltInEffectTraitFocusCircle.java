@@ -11,10 +11,10 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,7 +40,7 @@ public class BuiltInEffectTraitFocusCircle extends AltarRecipeEffect {
             if (rand.nextInt(4) == 0) {
                 Vector3 at = altarPos.clone().add(-scale + rand.nextFloat() * edgeScale, 0.01, -scale + rand.nextFloat() * edgeScale);
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .color(VFXColorFunction.WHITE)
                         .alpha(VFXAlphaFunction.FADE_OUT)
@@ -52,7 +52,7 @@ public class BuiltInEffectTraitFocusCircle extends AltarRecipeEffect {
                         .normalize()
                         .multiply(1.3F + rand.nextFloat() * 0.5F)
                         .add(new Vector3(altarPos).add(0.5, 2F + rand.nextFloat() * 0.4F, 0.5));
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(r)
                         .color(VFXColorFunction.WHITE)
                         .alpha(VFXAlphaFunction.FADE_OUT)
@@ -64,7 +64,7 @@ public class BuiltInEffectTraitFocusCircle extends AltarRecipeEffect {
                         .normalize()
                         .multiply(2F + rand.nextFloat() * 0.5F)
                         .add(new Vector3(altarPos).add(0.5, 1.1F + rand.nextFloat() * 0.4F, 0.5));
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(r)
                         .color(VFXColorFunction.WHITE)
                         .alpha(VFXAlphaFunction.FADE_OUT)

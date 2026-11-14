@@ -10,13 +10,13 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.CommonProxy;
 import hellfirepvp.astralsorcery.common.auxiliary.AnimalHelper;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ConstellationEffectEntityCollect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -71,14 +71,14 @@ public class CEffectBootes extends ConstellationEffectEntityCollect<LivingEntity
                     rand.nextFloat() * (prop.getSize() / 2F) * (rand.nextBoolean() ? 1 : -1));
             Vector3 motion = Vector3.random().multiply(0.015);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(playAt)
                     .setMotion(motion)
                     .color(VFXColorFunction.constant(ColorsAS.CONSTELLATION_BOOTES))
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setScaleMultiplier(0.5F)
                     .setMaxAge(30 + rand.nextInt(20));
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(playAt)
                     .setMotion(motion.clone().negate())
                     .color(VFXColorFunction.constant(ColorsAS.CONSTELLATION_BOOTES))

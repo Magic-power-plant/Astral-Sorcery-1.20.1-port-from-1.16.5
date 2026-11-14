@@ -11,11 +11,11 @@ package hellfirepvp.astralsorcery.common.base.patreon.types;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.base.patreon.FlareColor;
 import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -76,7 +76,7 @@ public class TypeNebulaCloud extends PatreonEffect implements ITickHandler {
             float oZ = (rand.nextFloat() - rand.nextFloat()) * 2F;
             Vector3 offset = new Vector3(oX, rand.nextFloat() * 0.1F, oZ);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(playerPos.clone().add(offset))
                     .setAlphaMultiplier(0.8F)
                     .alpha(((VFXAlphaFunction<EntityVisualFX>) (fx, alphaIn, pTicks) -> {
@@ -96,7 +96,7 @@ public class TypeNebulaCloud extends PatreonEffect implements ITickHandler {
             Vector3 from = Vector3.random().setY(0).normalize().multiply(rand.nextFloat() * 2F).addY(rand.nextFloat() * 0.1F);
             Vector3 to   = Vector3.random().setY(0).normalize().multiply(rand.nextFloat() * 2F).addY(rand.nextFloat() * 0.1F);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            Effects.of(EffectTemplatesAS.LIGHTNING)
                     .spawn(playerPos.clone().add(from))
                     .makeDefault(playerPos.clone().add(to))
                     .color(VFXColorFunction.WHITE)

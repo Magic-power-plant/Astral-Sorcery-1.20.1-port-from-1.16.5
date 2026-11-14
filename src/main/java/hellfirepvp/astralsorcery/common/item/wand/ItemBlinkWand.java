@@ -12,10 +12,10 @@ import com.google.common.collect.Iterables;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperDamageCancelling;
 import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
 import hellfirepvp.astralsorcery.common.item.base.AlignmentChargeConsumer;
@@ -235,7 +235,7 @@ public class ItemBlinkWand extends Item implements AlignmentChargeConsumer {
                         .add(angle.clone().multiply(dst));
                 Vector3 mot = motion.clone().add(angle.clone().multiply(0.1F + random.nextFloat() * 0.15F)).multiply(speed);
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .setOwner(entity.getUUID())
                         .spawn(at)
                         .setScaleMultiplier(0.3F + random.nextFloat() * 0.3F)
@@ -289,7 +289,7 @@ public class ItemBlinkWand extends Item implements AlignmentChargeConsumer {
                             }
                         }
 
-                        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                                 .setOwner(entity.getUUID())
                                 .spawn(v)
                                 .setScaleMultiplier(scale)

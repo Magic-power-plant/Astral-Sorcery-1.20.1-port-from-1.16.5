@@ -10,7 +10,6 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.FXSource;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalCollector;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
@@ -21,6 +20,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource;
@@ -104,7 +104,7 @@ public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmi
 
             Color c = this.getAttunedConstellation().getConstellationColor();
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(particlePos)
                     .setScaleMultiplier(0.2F + rand.nextFloat() * 0.1F)
                     .setAlphaMultiplier(0.8F)
@@ -118,7 +118,7 @@ public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmi
                             .setOrbitAxis(Vector3.random())
                             .setOrbitRadius(0.8F + rand.nextFloat() * 0.5F)
                             .setTicksPerRotation(40 + rand.nextInt(30));
-                    EffectHelper.spawnSource(src);
+                    Effects.spawnSource(src);
                     this.effectOrbitals[i] = src;
                 } else {
                     if (fxSource.canRemove() && fxSource.isRemoved()) {
@@ -136,7 +136,7 @@ public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmi
             Vector3 motion = thisPos.clone().subtract(from).normalize().multiply(0.08F);
             Color particleColor = MiscUtils.eitherOf(rand, Color.WHITE, c, c.brighter());
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(from)
                     .setMotion(motion)
                     .alpha(VFXAlphaFunction.proximity(thisPos::clone, 2F).andThen(VFXAlphaFunction.FADE_OUT))
@@ -145,7 +145,7 @@ public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmi
                     .setMaxAge(30 + rand.nextInt(10));
 
             if (rand.nextInt(80) == 0) {
-                EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+                Effects.of(EffectTemplatesAS.LIGHTNING)
                         .spawn(thisPos)
                         .makeDefault(from)
                         .color(VFXColorFunction.constant(c));
@@ -154,7 +154,7 @@ public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmi
             if (rand.nextBoolean()) {
                 Color c = this.getCollectorType().getDisplayColor();
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(particlePos)
                         .setScaleMultiplier(0.2F + rand.nextFloat() * 0.1F)
                         .setAlphaMultiplier(0.8F)

@@ -11,12 +11,12 @@ package hellfirepvp.astralsorcery.common.constellation.mantle;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -138,7 +138,7 @@ public abstract class MantleEffect implements ITickHandler {
     @Nonnull
     @OnlyIn(Dist.CLIENT)
     protected FXFacingParticle spawnFacingParticle(Player player, Vector3 at) {
-        return EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        return Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .setOwner(player.getUUID())
                 .spawn(at);
     }

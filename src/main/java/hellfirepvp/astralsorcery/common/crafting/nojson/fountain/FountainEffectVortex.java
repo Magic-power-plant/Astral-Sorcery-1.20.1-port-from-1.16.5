@@ -14,12 +14,12 @@ import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.impl.RenderOffsetNoisePlane;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingSprite;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXSpritePlane;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperEntityFreeze;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
@@ -165,7 +165,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
         if (currentSegment.isLaterOrEqualTo(OperationSegment.STARTUP)) {
             FXSpritePlane sprite = (FXSpritePlane) ctx.fountainSprite;
             if (sprite == null) {
-                sprite = EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+                sprite = Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                         .spawn(new Vector3(fountain).add(0.5, 0.5, 0.5))
                         .setAxis(Vector3.RotAxis.Y_AXIS)
                         .setNoRotation(45)
@@ -178,7 +178,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                         // (1.16.5 FountainEffectVortex.java:174).
                         .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
             } else if (sprite.isRemoved() || sprite.canRemove()) {
-                EffectHelper.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
+                Effects.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
             }
             ctx.fountainSprite = sprite;
         }
@@ -213,7 +213,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
 
         FXFacingSprite sprite = (FXFacingSprite) ctx.facingVortexPlane;
         if (sprite == null) {
-            sprite = EffectHelper.of(EffectTemplatesAS.FACING_SPRITE)
+            sprite = Effects.of(EffectTemplatesAS.FACING_SPRITE)
                     .spawn(vortexAt)
                     .setSprite(SpritesAS.SPR_ATTUNEMENT_FLARE)
                     .setAlphaMultiplier(1F)
@@ -222,7 +222,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                     // (1.16.5 FountainEffectVortex.java:216).
                     .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
         } else if (sprite.isRemoved() || sprite.canRemove()) {
-            EffectHelper.refresh(sprite, EffectTemplatesAS.FACING_SPRITE);
+            Effects.refresh(sprite, EffectTemplatesAS.FACING_SPRITE);
         }
         ctx.facingVortexPlane = sprite;
 
@@ -253,7 +253,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
         Vector3 vortexAt = at.clone().addY(-4);
 
         for (int i = 0; i < 2; i++) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(coreAt)
                     .setScaleMultiplier(0.25F)
                     .setAlphaMultiplier(1F)
@@ -265,7 +265,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
             Vector3 spawnPos = vortexAt.clone().add(Vector3.random().multiply(4.5F));
             Vector3 dir = spawnPos.clone().vectorFromHereTo(vortexAt).normalize().divide(20 + rand.nextInt(10));
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(spawnPos)
                     .setMotion(dir)
                     .setScaleMultiplier(0.2F + rand.nextFloat() * 0.1F)
@@ -290,7 +290,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                     rand.nextFloat() * 0.035 * mul * (rand.nextBoolean() ? 1 : -1)
             );
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .setMotion(dir)
                     .setAlphaMultiplier(1F)
@@ -315,7 +315,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
             );
             Vector3 motion = particlePos.clone().vectorFromHereTo(at).normalize().divide(30);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(particlePos)
                     .setMotion(motion)
                     .setAlphaMultiplier(1F)
@@ -349,7 +349,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                     rand.nextFloat() * 0.15 * (rand.nextBoolean() ? 1 : -1)
             );
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .setMotion(dir)
                     .setAlphaMultiplier(1F)

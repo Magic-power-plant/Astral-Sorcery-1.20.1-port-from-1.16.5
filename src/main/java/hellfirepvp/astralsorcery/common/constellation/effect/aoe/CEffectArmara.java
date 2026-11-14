@@ -8,12 +8,12 @@
 
 package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalArmara;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ConstellationEffectEntityCollect;
 import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperSpawnDeny;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemAttunedCrystalBase;
@@ -67,7 +67,7 @@ public class CEffectArmara extends ConstellationEffectEntityCollect<LivingEntity
     @OnlyIn(Dist.CLIENT)
     public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         if (pedestal.getTicksExisted() % 20 == 0) {
-            EffectHelper.spawnSource(new FXOrbitalArmara(new Vector3(pos).add(0.5, 0.5, 0.5))
+            Effects.spawnSource(new FXOrbitalArmara(new Vector3(pos).add(0.5, 0.5, 0.5))
                     .setOrbitRadius(0.8 + rand.nextFloat() * 0.7)
                     .setOrbitAxis(Vector3.RotAxis.Y_AXIS)
                     .setTicksPerRotation(20 + rand.nextInt(20)));

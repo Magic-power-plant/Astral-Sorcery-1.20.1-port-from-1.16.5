@@ -13,7 +13,6 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
 import hellfirepvp.astralsorcery.client.effect.function.impl.RenderOffsetNoisePlane;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.camera.*;
@@ -23,6 +22,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunePlayerRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunementRecipe;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperInvulnerability;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
@@ -150,7 +150,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
             for (BlockPos pos : altar.getConstellationPositions(cst)) {
                 Vector3 from = new Vector3(pos).add(0.5, 0, 0.5);
                 MiscUtils.applyRandomOffset(from, rand, 0.1F);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(from)
                         .setup(from.clone().addY(6), 1.2, 1.2)
                         .setAlphaMultiplier(0.8F)
@@ -168,7 +168,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
             } else {
                 offset.add(rand.nextFloat() * edgeScale, 0, edgeScale * (rand.nextBoolean() ? 1 : 0));
             }
-            FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle particle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setGravityStrength(-0.0002F + rand.nextFloat() * -0.0001F)
@@ -189,7 +189,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                         .add(0.5, 0, 0.5)
                         .add(Vector3.random().setY(0).multiply(0.6));
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(offset)
                         .color(VFXColorFunction.WHITE)
                         .setGravityStrength(-0.0006F + rand.nextFloat() * -0.003F)
@@ -203,7 +203,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                         .add(0.5, 0, 0.5)
                         .add(Vector3.random().setY(0).multiply(0.5));
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(offset)
                         .setAlphaMultiplier(0.6F)
                         .alpha(VFXAlphaFunction.proximity(playerTarget::clone, 3F))
@@ -216,7 +216,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                 offset = new Vector3(altar)
                         .add(0.5, 0, 0.5)
                         .add(Vector3.random().setY(0).multiply(0.6));
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(offset)
                         .color(VFXColorFunction.WHITE)
                         .setGravityStrength(-0.0006F + rand.nextFloat() * -0.004F)
@@ -233,7 +233,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                     .add(0.5, 0, 0.5)
                     .add(Vector3.random().setY(0));
 
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setAlphaMultiplier(1F)
                     .alpha(VFXAlphaFunction.proximity(playerTarget::clone, 3F))
@@ -252,7 +252,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                 at.addX(rand.nextFloat() * 7F * (rand.nextBoolean() ? 1 : -1));
                 at.addZ(rand.nextFloat() * 7F * (rand.nextBoolean() ? 1 : -1));
 
-                p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .setAlphaMultiplier(0.75F)
                         .alpha(VFXAlphaFunction.FADE_OUT)
@@ -291,7 +291,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
             if (tick % 10 == 0) {
                 Vector3 from = new Vector3(altar).add(0.5, 0, 0.5);
                 MiscUtils.applyRandomOffset(from, rand, 0.25F);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(from)
                         .setup(from.clone().addY(8), 2.4, 2)
                         .setAlphaMultiplier(0.8F)
@@ -305,7 +305,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
                         .add(0.5, 0, 0.5)
                         .addY(rand.nextFloat() * 15);
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .color(VFXColorFunction.WHITE)
                         .setMotion(Vector3.random().setY(0).normalize().multiply(0.03 + rand.nextFloat() * 0.01))

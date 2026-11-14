@@ -2,7 +2,6 @@ package hellfirepvp.astralsorcery.common.entity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingSprite;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
@@ -11,6 +10,7 @@ import hellfirepvp.astralsorcery.common.CommonProxy;
 import hellfirepvp.astralsorcery.common.constellation.mantle.effect.MantleEffectBootes;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.data.config.entry.EntityConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -208,12 +208,12 @@ public class EntityFlare extends Mob {
     @OnlyIn(Dist.CLIENT)
     private void tickClient() {
         if (this.texClientSprite == null) {
-            this.texClientSprite = EffectHelper.of(EffectTemplatesAS.FACING_SPRITE)
+            this.texClientSprite = Effects.of(EffectTemplatesAS.FACING_SPRITE)
                     .spawn(Vector3.atEntityCorner(this).addY(this.getBbHeight() / 2));
         }
 
         if (random.nextBoolean()) {
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(this)
                             .add(random.nextFloat() * 0.2 * (random.nextBoolean() ? 1 : -1),
                                     this.getBbHeight() / 2 + random.nextFloat() * 0.2 * (random.nextBoolean() ? 1 : -1),
@@ -305,7 +305,7 @@ public class EntityFlare extends Mob {
                 20));
 
         posList.forEach(pos -> {
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos.add(Vector3.random().multiply(0.45F)))
                     .setScaleMultiplier(0.1F + random.nextFloat() * 0.25F)
                     .alpha(VFXAlphaFunction.FADE_OUT)
@@ -316,7 +316,7 @@ public class EntityFlare extends Mob {
         });
 
         for (int i = 0; i < 10; i++) {
-            FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(this)
                             .add(random.nextFloat() * 0.15 * (random.nextBoolean() ? 1 : -1),
                                     this.getBbHeight() / 2 + random.nextFloat() * 0.15 * (random.nextBoolean() ? 1 : -1),

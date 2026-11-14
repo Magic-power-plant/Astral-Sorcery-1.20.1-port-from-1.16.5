@@ -11,12 +11,12 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 import com.mojang.datafixers.util.Either;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -116,7 +116,7 @@ public class CEffectOctans extends CEffectAbstractList<ListEntries.CounterMaxEnt
             Color c = MiscUtils.eitherOf(rand,
                     () -> ColorsAS.CONSTELLATION_OCTANS,
                     () -> ColorsAS.CONSTELLATION_OCTANS.darker());
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(vec)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(VFXColorFunction.constant(c))

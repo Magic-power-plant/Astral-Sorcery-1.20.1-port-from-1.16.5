@@ -12,12 +12,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.impl.RenderOffsetNoisePlane;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -75,7 +75,7 @@ public class EffectVortexPlane extends AltarRecipeEffect {
                 Vector3 pos = new Vector3(altar).add(-scale + rand.nextFloat() * edgeScale, 0.02, -scale + rand.nextFloat() * edgeScale);
                 Vector3 mot = pos.vectorFromHereTo(target).normalize().multiply(0.1F);
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .color(VFXColorFunction.WHITE)
@@ -88,7 +88,7 @@ public class EffectVortexPlane extends AltarRecipeEffect {
                 Vector3 dst = pos.vectorFromHereTo(target);
                 Vector3 mot = dst.clone().multiply(dst.length() / 250);
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .alpha(VFXAlphaFunction.PYRAMID)
                         .color(VFXColorFunction.WHITE)

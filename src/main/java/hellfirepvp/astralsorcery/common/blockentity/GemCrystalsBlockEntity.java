@@ -1,10 +1,10 @@
 package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.BlockGemCrystalCluster;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.blockentity.base.TickableBlockEntity;
@@ -49,7 +49,7 @@ public class GemCrystalsBlockEntity extends TickableBlockEntity {
                 .add(this.getBlockState().getOffset(level, getBlockPos()));
         MiscUtils.applyRandomOffset(pos, rand, 0.5F);
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(pos)
                 .color(VFXColorFunction.constant(getGrowth().getDisplayColor()))
                 .setScaleMultiplier(0.1F + rand.nextFloat() * 0.05F)

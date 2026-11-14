@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -38,7 +38,7 @@ public class BuiltInEffectConstellationLines extends AltarRecipeEffect {
                 Vector3 at = getRandomPillarOffset(altar.getAltarType()).clone().addY(getPillarHeight(altar.getAltarType()));
                 at.multiply(rand.nextFloat()).add(thisAltar);
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .color(VFXColorFunction.randomBetween(ColorsAS.CONSTELLATION_TYPE_MAJOR, ColorsAS.CONSTELLATION_TYPE_MINOR))
                         .setScaleMultiplier(0.2F + rand.nextFloat() * 0.2F);

@@ -13,6 +13,7 @@ import hellfirepvp.astralsorcery.client.effect.EffectType;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.source.FXSource;
+import hellfirepvp.astralsorcery.common.effect.EffectBuilder;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;
 
@@ -47,7 +48,7 @@ public final class EffectHelper {
         return EffectRegistrar.registerSource(src);
     }
 
-    public static class Builder<T extends EntityVisualFX> extends EffectProperties<T> {
+    public static class Builder<T extends EntityVisualFX> extends EffectProperties<T> implements EffectBuilder<T> {
 
         public Builder(BatchRenderContext<T> ctx) {
             super(ctx);
@@ -73,6 +74,8 @@ public final class EffectHelper {
             return super.setIgnoreLimit(ignoreLimit);
         }
 
+        @Override
+        @Nonnull
         public T spawn(@Nonnull Vector3 spawnPos) {
             this.setPosition(spawnPos.toBlockPos());
             return EffectRegistrar.registerFX(this.getContext().makeParticle(spawnPos), this);

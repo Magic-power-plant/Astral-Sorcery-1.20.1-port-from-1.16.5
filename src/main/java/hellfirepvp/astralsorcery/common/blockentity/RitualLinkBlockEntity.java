@@ -10,10 +10,10 @@ package hellfirepvp.astralsorcery.common.blockentity;
 
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.link.LinkableBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.blockentity.base.TickableBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -73,7 +73,7 @@ public class RitualLinkBlockEntity extends TickableBlockEntity implements Linkab
                         new Vector3(this).add(0.5, 0.5, 0.5),
                         Vector3.RotAxis.Y_AXIS, 0.4F - rand.nextFloat() * 0.1F, 10 + rand.nextInt(10));
                 for (Vector3 v : positions) {
-                    FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    FXFacingParticle particle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                             .spawn(v)
                             .setScaleMultiplier(0.15F)
                             .setMotion(new Vector3(0, (rand.nextBoolean() ? 1 : -1) * rand.nextFloat() * 0.01, 0));
@@ -83,7 +83,7 @@ public class RitualLinkBlockEntity extends TickableBlockEntity implements Linkab
                 }
             }
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(this).add(0.5, 0.5, 0.5))
                     .setScaleMultiplier(0.3F)
                     .setMotion(new Vector3(0, (rand.nextBoolean() ? 1 : -1) * rand.nextFloat() * 0.015, 0))

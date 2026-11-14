@@ -11,11 +11,11 @@ package hellfirepvp.astralsorcery.common.crafting.nojson.starlight;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.CrystalIngredient;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemAttunedRockCrystal;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemRockCrystal;
@@ -119,7 +119,7 @@ public class GrowCrystalSizeRecipe extends LiquidStarlightRecipe {
                     .rotate(rand.nextFloat() * Math.PI * 2, Vector3.RotAxis.Y_AXIS)
                     .normalize().multiply(0.07F + rand.nextFloat() * 0.04F);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setMotion(motion)

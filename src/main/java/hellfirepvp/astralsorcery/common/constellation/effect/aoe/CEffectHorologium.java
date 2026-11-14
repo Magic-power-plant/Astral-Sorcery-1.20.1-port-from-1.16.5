@@ -11,13 +11,13 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
 import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -89,7 +89,7 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
                     () -> Color.WHITE,
                     () -> ColorsAS.CONSTELLATION_HOROLOGIUM);
             Vector3 at = Vector3.random().normalize().multiply(rand.nextFloat() * prop.getSize()).add(pos).add(0.5, 0.5, 0.5);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(VFXColorFunction.constant(c))
@@ -100,7 +100,7 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
         if (rand.nextInt(16) == 0) {
             Vector3 rand1 = Vector3.random().normalize().multiply(rand.nextFloat() * prop.getSize()).add(pos).add(0.5, 0.5, 0.5);
             Vector3 rand2 = Vector3.random().normalize().multiply(rand.nextFloat() * prop.getSize()).add(pos).add(0.5, 0.5, 0.5);
-            EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            Effects.of(EffectTemplatesAS.LIGHTNING)
                     .spawn(rand1)
                     .makeDefault(rand2)
                     .color(VFXColorFunction.WHITE);

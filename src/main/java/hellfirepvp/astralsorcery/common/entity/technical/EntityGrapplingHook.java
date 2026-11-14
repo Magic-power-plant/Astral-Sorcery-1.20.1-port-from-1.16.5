@@ -3,10 +3,10 @@ package hellfirepvp.astralsorcery.common.entity.technical;
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperDamageCancelling;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
@@ -206,7 +206,7 @@ public class EntityGrapplingHook extends ThrowableProjectile implements IEntityA
                 if (this.level().random.nextBoolean()) {
                     Vector3 motion = Vector3.random().multiply(0.005F);
                     Vector3 at = pos.add(ePos);
-                    FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                             .spawn(at)
                             .setScaleMultiplier(0.3F + this.level().random.nextFloat() * 0.3F)
                             .alpha(VFXAlphaFunction.FADE_OUT)

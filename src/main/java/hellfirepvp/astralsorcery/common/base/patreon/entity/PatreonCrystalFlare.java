@@ -9,11 +9,11 @@
 package hellfirepvp.astralsorcery.common.base.patreon.entity;
 
 import hellfirepvp.astralsorcery.client.data.config.entry.RenderingConfig;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXCrystal;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.resource.AssetLoader;
 import hellfirepvp.astralsorcery.client.resource.query.TextureQuery;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 
 import java.awt.*;
 import java.util.UUID;
@@ -53,10 +53,10 @@ public class PatreonCrystalFlare extends PatreonFlare {
         if (this.crystalEffect != null) {
             FXCrystal crystal = (FXCrystal) this.crystalEffect;
             if (crystal.isRemoved() && RenderingConfig.CONFIG.patreonEffects.get()) {
-                EffectHelper.refresh(crystal, EffectTemplatesAS.CRYSTAL);
+                Effects.refresh(crystal, EffectTemplatesAS.CRYSTAL);
             }
         } else {
-            this.crystalEffect = EffectHelper.of(EffectTemplatesAS.CRYSTAL)
+            this.crystalEffect = Effects.of(EffectTemplatesAS.CRYSTAL)
                     .spawn(getPos())
                     .setTexture(this.queryTexture)
                     .setLightRayColor(this.colorTheme)

@@ -13,10 +13,10 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXSpritePlane;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.lib.SpritesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -144,7 +144,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
         if (currentSegment.isLaterOrEqualTo(OperationSegment.STARTUP)) {
             FXSpritePlane sprite = (FXSpritePlane) ctx.fountainSprite;
             if (sprite == null) {
-                sprite = EffectHelper.of(EffectTemplatesAS.TEXTURE_SPRITE)
+                sprite = Effects.of(EffectTemplatesAS.TEXTURE_SPRITE)
                         .spawn(new Vector3(fountain).add(0.5, 0.5, 0.5))
                         .setAxis(Vector3.RotAxis.Y_AXIS)
                         .setNoRotation(45)
@@ -159,7 +159,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
                         // effect ended or was swapped for another one.
                         .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
             } else if (sprite.isRemoved() || sprite.canRemove()) {
-                EffectHelper.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
+                Effects.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
             }
             ctx.fountainSprite = sprite;
         }
@@ -203,7 +203,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
             );
             Vector3 motion = particlePos.clone().vectorFromHereTo(at).normalize().divide(30);
 
-            EntityVisualFX fx = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            EntityVisualFX fx = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(particlePos)
                     .setMotion(motion)
                     .setAlphaMultiplier(1F)
@@ -225,7 +225,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
                     0.3 + rand.nextFloat() * 0.4,
                     -rand.nextFloat() * 1.7,
                     0.3 + rand.nextFloat() * 0.4);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .setScaleMultiplier(0.25F)
                     .setAlphaMultiplier(1F)
@@ -241,7 +241,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
         Vector3 to = from.clone().setY(0);
 
         float size = 6 + rand.nextFloat() * 2;
-        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+        Effects.of(EffectTemplatesAS.LIGHTBEAM)
                 .spawn(from)
                 .setup(to, size, size);
     }
@@ -264,7 +264,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
         for (int yy = 0; yy <= pos.getY(); yy++) {
             for (int i = 0; i < 4; i++) {
                 Vector3 at = new Vector3(pos).setY(yy).add(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .setAlphaMultiplier(1F)
                         .alpha(VFXAlphaFunction.FADE_OUT)
@@ -275,7 +275,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
 
         Vector3 from = new Vector3(pos).add(0.5, 0.5, 0.5);
         Vector3 to = from.clone().setY(0);
-        EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+        Effects.of(EffectTemplatesAS.LIGHTBEAM)
                 .spawn(from)
                 .setup(to, 1.5, 1.5)
                 .setAlphaMultiplier(1F)

@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.crafting.nojson.fountain;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +79,7 @@ public abstract class FountainEffect<E extends FountainEffect.EffectContext> {
             );
             Vector3 motion = particlePos.clone().vectorFromHereTo(at).normalize().divide(30);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(particlePos)
                     .setMotion(motion)
                     .setAlphaMultiplier(1F)
@@ -98,7 +98,7 @@ public abstract class FountainEffect<E extends FountainEffect.EffectContext> {
             Vector3 pos1 = Vector3.random().setY(0).normalize().multiply(4).add(at);
             Vector3 pos2 = Vector3.random().setY(0).normalize().multiply(4).add(at);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            Effects.of(EffectTemplatesAS.LIGHTNING)
                     .spawn(pos1)
                     .makeDefault(pos2);
         }

@@ -9,10 +9,10 @@
 package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +35,7 @@ public class EffectPillarLightbeams extends AltarRecipeEffect {
             Vector3 altarVec = new Vector3(altar).add(0.5, 0.5, 0.5);
             for (int i = 0; i < getPillarAmount(altar.getAltarType()); i++) {
                 Vector3 pillar = getPillarOffset(altar.getAltarType(), i).add(0.5, 0.5, 0.5);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(altarVec)
                         .setup(pillar, 1.2F, 0.8F);
             }

@@ -16,12 +16,15 @@ import com.mojang.blaze3d.vertex.VertexSorting;
 import hellfirepvp.astralsorcery.client.effect.EntityDynamicFX;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHandler;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.render.IDrawRenderTypeBuffer;
 import hellfirepvp.astralsorcery.client.resource.AbstractRenderableTexture;
 import hellfirepvp.astralsorcery.client.resource.BlockAtlasTexture;
 import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
 import hellfirepvp.astralsorcery.client.util.draw.RenderInfo;
 import hellfirepvp.astralsorcery.client.util.draw.RenderTypeDecorator;
+import hellfirepvp.astralsorcery.common.effect.EffectBuilder;
+import hellfirepvp.astralsorcery.common.effect.EffectTemplate;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.order.OrderSortable;
 import net.minecraft.client.renderer.RenderType;
@@ -37,7 +40,7 @@ import java.util.function.BiFunction;
  * Created by HellFirePvP
  * Date: 07.07.2019 / 10:58
  */
-public class BatchRenderContext<T extends EntityVisualFX> extends OrderSortable {
+public class BatchRenderContext<T extends EntityVisualFX> extends OrderSortable implements EffectTemplate<T> {
 
     private static int counter = 0;
 
@@ -71,6 +74,16 @@ public class BatchRenderContext<T extends EntityVisualFX> extends OrderSortable 
             }
             return fx;
         });
+    }
+
+    @Override
+    public EffectBuilder<T> createEffectBuilder() {
+        return EffectHelper.of(this);
+    }
+
+    @Override
+    public void refreshEffect(T effect) {
+        EffectHelper.refresh(effect, this);
     }
 
     public T makeParticle(Vector3 pos) {

@@ -9,12 +9,12 @@
 package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectStatus;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperTemporaryFlight;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -60,14 +60,14 @@ public class CEffectVicio extends ConstellationEffect implements ConstellationEf
                     pos.getY() + rand.nextFloat() * 2 + 0.5,
                     pos.getZ() + rand.nextFloat() * 4 * (rand.nextBoolean() ? 1 : -1) + 0.5);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(r)
                     .setMotion(Vector3.random().setY(0).multiply(0.03F))
                     .setScaleMultiplier(0.45F)
                     .color(VFXColorFunction.constant(ColorsAS.RITUAL_CONSTELLATION_VICIO))
                     .setGravityStrength(-0.002F)
                     .setMaxAge(40);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(r)
                     .setMotion(new Vector3(0, rand.nextFloat() * 0.03F, 0))
                     .setScaleMultiplier(0.45F)

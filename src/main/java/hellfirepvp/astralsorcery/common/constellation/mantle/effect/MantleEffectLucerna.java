@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.util.block.BlockDiscoverer;
@@ -79,7 +79,7 @@ public class MantleEffectLucerna extends MantleEffect {
                 continue;
             }
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
                     .setOwner(player.getUUID())
                     .spawn(at)
                     .color(VFXColorFunction.constant(highlightColor))
@@ -88,7 +88,7 @@ public class MantleEffectLucerna extends MantleEffect {
                     .setMaxAge(30 + rand.nextInt(15));
 
             if (rand.nextFloat() > 0.35F) {
-                EffectHelper.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
                         .setOwner(player.getUUID())
                         .spawn(at)
                         .color(VFXColorFunction.WHITE)
@@ -118,7 +118,7 @@ public class MantleEffectLucerna extends MantleEffect {
             }
             atEntity.add(rand.nextFloat() * entity.getBbWidth(), rand.nextFloat() * entity.getBbHeight(), rand.nextFloat() * entity.getBbWidth());
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
                     .setOwner(player.getUUID())
                     .spawn(atEntity)
                     .color(VFXColorFunction.constant(this.getAssociatedConstellation().getConstellationColor()))
@@ -127,7 +127,7 @@ public class MantleEffectLucerna extends MantleEffect {
                     .setMaxAge(30 + rand.nextInt(15));
 
             if (rand.nextFloat() > 0.35F) {
-                EffectHelper.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_DEPTH_PARTICLE)
                         .setOwner(player.getUUID())
                         .spawn(atEntity)
                         .color(VFXColorFunction.WHITE)

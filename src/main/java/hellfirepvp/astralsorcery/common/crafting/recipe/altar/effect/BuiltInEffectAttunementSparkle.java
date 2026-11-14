@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -32,7 +32,7 @@ public class BuiltInEffectAttunementSparkle extends AltarRecipeEffect {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(altar).add(0.5, 0.5, 0.5))
                 .color(VFXColorFunction.constant(ColorsAS.ROCK_CRYSTAL))
                 .setMotion(new Vector3(

@@ -12,7 +12,6 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXScaleFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.ColorizationHelper;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
@@ -20,6 +19,7 @@ import hellfirepvp.astralsorcery.common.auxiliary.ChaliceHelper;
 import hellfirepvp.astralsorcery.common.block.BlockFountain;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
 import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.fluid.FluidLiquidStarlight;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -290,7 +290,7 @@ public class ChaliceBlockEntity extends TickableBlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     private static void playLineGenericParticles(Vector3 from, Vector3 to, float width, VFXColorFunction<?> colorFn) {
-        playLineParticles(from, to, width, at -> EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        playLineParticles(from, to, width, at -> Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(at)
                 .color(colorFn)
                 .alpha(VFXAlphaFunction.FADE_OUT)
@@ -305,7 +305,7 @@ public class ChaliceBlockEntity extends TickableBlockEntity {
         //the client-side tint moved to IClientFluidTypeExtensions#getTintColor(FluidStack) - same ARGB value, and
         //java.awt.Color(int) drops the alpha byte here exactly as it did in 1.16.5.
         Color c = new Color(IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid));
-        playLineParticles(from, to, width, at -> EffectHelper.of(EffectTemplatesAS.CUBE_TRANSLUCENT_ATLAS)
+        playLineParticles(from, to, width, at -> Effects.of(EffectTemplatesAS.CUBE_TRANSLUCENT_ATLAS)
                 .spawn(at)
                 .setTextureAtlasSprite(RenderingUtils.getParticleTexture(fluid))
                 .tumble()

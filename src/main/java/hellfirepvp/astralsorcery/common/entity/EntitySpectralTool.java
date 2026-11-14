@@ -2,10 +2,10 @@ package hellfirepvp.astralsorcery.common.entity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.CommonProxy;
 import hellfirepvp.astralsorcery.common.constellation.mantle.effect.MantleEffectPelotrio;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.entity.goal.SpectralToolBreakBlockGoal;
 import hellfirepvp.astralsorcery.common.entity.goal.SpectralToolBreakLogGoal;
 import hellfirepvp.astralsorcery.common.entity.goal.SpectralToolGoal;
@@ -122,14 +122,14 @@ public class EntitySpectralTool extends Mob {
                             random.nextFloat() * 0.3 * (random.nextBoolean() ? 1 : -1) + this.getBbHeight() / 2,
                             random.nextFloat() * 0.3 * (random.nextBoolean() ? 1 : -1));
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(VFXColorFunction.constant(ColorsAS.CONSTELLATION_TYPE_WEAK))
                     .setScaleMultiplier(0.35F + random.nextFloat() * 0.25F)
                     .setMaxAge(30 + random.nextInt(20));
             if (random.nextBoolean()) {
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .color(VFXColorFunction.WHITE)

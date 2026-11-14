@@ -2,12 +2,12 @@ package hellfirepvp.astralsorcery.common.starlight.network.handler;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
 import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
@@ -98,7 +98,7 @@ public class BlockTransmutationHandler implements StarlightNetworkRegistry.IStar
         Random rand = new Random();
         BlockPos pos = ByteBufUtils.readPos(effect.getExtraData());
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(pos).add(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()))
                 .setAlphaMultiplier(1F)
                 .alpha(VFXAlphaFunction.FADE_OUT)

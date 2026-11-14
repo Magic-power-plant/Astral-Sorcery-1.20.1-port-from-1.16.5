@@ -2,9 +2,9 @@ package hellfirepvp.astralsorcery.common.util.time;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -74,7 +74,7 @@ public class TimeStopEffectHelper {
 
     @OnlyIn(Dist.CLIENT)
     static void playParticles(double x, double y, double z) {
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(x, y, z))
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .color(VFXColorFunction.WHITE)
@@ -138,7 +138,7 @@ public class TimeStopEffectHelper {
                 rand2 = rand1.clone().add(dir.normalize().multiply(10));
             }
             // TODO_PORT[AS-VFX-01]: Lightning effect builder pending API stabilization
-            // EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+            // Effects.of(EffectTemplatesAS.LIGHTNING)
             //         .spawn(rand1)
             //         .makeDefault(rand2)
             //         .color(VFXColorFunction.WHITE);

@@ -10,10 +10,10 @@ package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -128,7 +128,7 @@ public class MantleEffectArmara extends MantleEffect {
                     }
                 }
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .setAlphaMultiplier(alpha)
@@ -136,7 +136,7 @@ public class MantleEffectArmara extends MantleEffect {
                         .setScaleMultiplier(scale)
                         .setMaxAge(20 + rand.nextInt(20));
 
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .alpha(VFXAlphaFunction.FADE_OUT)
                         .setAlphaMultiplier(alpha)

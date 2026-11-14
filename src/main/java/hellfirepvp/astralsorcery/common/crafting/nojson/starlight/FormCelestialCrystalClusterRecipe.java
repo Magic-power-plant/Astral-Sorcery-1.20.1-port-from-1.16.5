@@ -11,13 +11,13 @@ package hellfirepvp.astralsorcery.common.crafting.nojson.starlight;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.CrystalIngredient;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalGenerator;
 import hellfirepvp.astralsorcery.common.data.config.entry.CraftingConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.ItemStardust;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
@@ -126,7 +126,7 @@ public class FormCelestialCrystalClusterRecipe extends LiquidStarlightRecipe {
                 .rotate(rand.nextFloat() * Math.PI * 2, Vector3.RotAxis.Y_AXIS)
                 .normalize().multiply(0.07F + rand.nextFloat() * 0.04F);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setMotion(motion)
@@ -137,7 +137,7 @@ public class FormCelestialCrystalClusterRecipe extends LiquidStarlightRecipe {
             Vector3 target = Vector3.atEntityCorner(trigger);
             Vector3 pos = target.clone().add(Vector3.random().normalize().multiply(3 + rand.nextFloat()));
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .alpha(VFXAlphaFunction.PYRAMID.andThen(VFXAlphaFunction.proximity(target::clone, 2)))
                     .motion(VFXMotionController.target(target::clone, 0.1F))

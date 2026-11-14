@@ -1,12 +1,12 @@
 package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.BlockLens;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.lens.LensColorType;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode;
@@ -132,7 +132,7 @@ public class LensBlockEntity extends TransmissionBlockEntity<IPrismTransmissionN
         Vector3 at = new Vector3(this).add(0.5, 0.5, 0.5);
         Color lensColor = this.colorType.getColor();
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(this)
                         .add(0.2, 0.2, 0.2)
                         .add(rand.nextFloat() * 0.6, rand.nextFloat() * 0.6, rand.nextFloat() * 0.6))
@@ -142,7 +142,7 @@ public class LensBlockEntity extends TransmissionBlockEntity<IPrismTransmissionN
         if (getTicksExisted() % 40 == 0) {
             for (BlockPos connected : this.occupiedConnections) {
                 Vector3 to = new Vector3(connected).add(0.5, 0.5, 0.5);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(at)
                         .setup(to, 0.6, 0.6)
                         .color(VFXColorFunction.constant(lensColor));

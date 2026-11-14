@@ -5,9 +5,9 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXRenderOffsetFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXScaleFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
 import hellfirepvp.astralsorcery.common.util.data.ASDataSerializers;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -94,7 +94,7 @@ public class EntityShootingStar extends ThrowableProjectile {
             dir.setX(dir.getX() + this.level().random.nextFloat() * 0.008 * (this.level().random.nextBoolean() ? 1 : -1));
             dir.setZ(dir.getZ() + this.level().random.nextFloat() * 0.008 * (this.level().random.nextBoolean() ? 1 : -1));
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(thisPosition)
                     .color(VFXColorFunction.WHITE)
                     .setMotion(dir)
@@ -110,7 +110,7 @@ public class EntityShootingStar extends ThrowableProjectile {
         int age = 5 + this.level().random.nextInt(2);
         Random effectSeed = new Random(this.getEffectSeed());
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(thisPosition)
                 .color(VFXColorFunction.constant(Color.getHSBColor(effectSeed.nextFloat() * 360F, 1F, 1F)))
                 .setScaleMultiplier(scale)
@@ -118,7 +118,7 @@ public class EntityShootingStar extends ThrowableProjectile {
                 .renderOffset(renderFn)
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .setMaxAge(age);
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(thisPosition)
                 .color(VFXColorFunction.WHITE)
                 .setScaleMultiplier(scale * 0.6F)

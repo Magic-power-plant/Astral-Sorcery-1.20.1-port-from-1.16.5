@@ -11,10 +11,10 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
@@ -51,7 +51,7 @@ public class EffectLargeDustSwirl extends AltarRecipeEffect {
 
                 Vector3 mot = center.clone().subtract(pos).normalize().multiply(0.09);
 
-                EntityVisualFX iEffect = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                EntityVisualFX iEffect = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .setMotion(mot)
                         .setScaleMultiplier(0.15F + rand.nextFloat() * 0.4F);
@@ -71,7 +71,7 @@ public class EffectLargeDustSwirl extends AltarRecipeEffect {
 
                 mot = center.clone().subtract(pos).normalize().multiply(0.15);
 
-                EntityVisualFX oEffect = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                EntityVisualFX oEffect = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .setMotion(mot)
                         .setScaleMultiplier(0.27F + rand.nextFloat() * 0.4F)

@@ -10,11 +10,11 @@ package hellfirepvp.astralsorcery.common.constellation.mantle.effect;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.util.collision.PlayerWalkableAir;
@@ -89,7 +89,7 @@ public class MantleEffectAevitas extends MantleEffect {
                 Vector3 offset = Vector3.random().setY(0).normalize()
                         .multiply(rand.nextFloat() * 5).addY(rand.nextFloat() * -0.4F)
                         .add(center);
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(offset)
                         .setScaleMultiplier(0.25F + rand.nextFloat() * 0.15F)
                         .alpha(VFXAlphaFunction.PYRAMID)

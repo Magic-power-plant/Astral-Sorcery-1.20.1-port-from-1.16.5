@@ -3,12 +3,12 @@ package hellfirepvp.astralsorcery.common.block;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.GuiType;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
 import hellfirepvp.astralsorcery.common.block.base.LargeBlock;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesWood;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.ItemParchment;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -83,7 +83,7 @@ public class BlockRefractionTable extends BaseEntityBlock implements CustomItemB
             offset.addZ((random % (ColorsAS.REFRACTION_TABLE_COLORS.length / 2)) * (4.0 / 16.0));
             offset.add(rand.nextFloat() * 0.1, 0, rand.nextFloat() * 0.1).add(pos);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)

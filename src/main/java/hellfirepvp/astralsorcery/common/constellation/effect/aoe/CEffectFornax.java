@@ -10,7 +10,6 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
@@ -20,6 +19,7 @@ import hellfirepvp.astralsorcery.common.crafting.nojson.WorldFreezingRegistry;
 import hellfirepvp.astralsorcery.common.crafting.nojson.WorldMeltableRegistry;
 import hellfirepvp.astralsorcery.common.crafting.nojson.freezing.WorldFreezingRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.meltable.WorldMeltableRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -97,7 +97,7 @@ public class CEffectFornax extends CEffectAbstractList<ListEntries.PosEntry> {
                 () -> ColorsAS.CONSTELLATION_FORNAX.darker(),
                 () -> ColorsAS.CONSTELLATION_FORNAX.darker(),
                 () -> ColorsAS.CONSTELLATION_FORNAX.darker().darker());
-        EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(new Vector3(pos).add(0.5, 0.2, 0.5))
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .color(VFXColorFunction.constant(c))

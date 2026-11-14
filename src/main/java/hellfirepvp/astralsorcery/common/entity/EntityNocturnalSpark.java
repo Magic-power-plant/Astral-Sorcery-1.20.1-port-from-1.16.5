@@ -2,9 +2,9 @@ package hellfirepvp.astralsorcery.common.entity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -129,7 +129,7 @@ public class EntityNocturnalSpark extends ThrowableProjectile {
                 thisPos.addX(this.level().random.nextFloat() * (2 + this.level().random.nextInt(4)) * (this.level().random.nextBoolean() ? 1 : -1));
                 thisPos.addY(this.level().random.nextFloat() * (2 + this.level().random.nextInt(4)) * (this.level().random.nextBoolean() ? 1 : -1));
                 thisPos.addZ(this.level().random.nextFloat() * (2 + this.level().random.nextInt(4)) * (this.level().random.nextBoolean() ? 1 : -1));
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(thisPos)
                         .setScaleMultiplier(4)
                         .alpha(VFXAlphaFunction.PYRAMID)
@@ -148,7 +148,7 @@ public class EntityNocturnalSpark extends ThrowableProjectile {
                     to.addY(this.level().random.nextFloat() * 2 * (this.level().random.nextBoolean() ? 1 : -1));
                     to.addZ(this.level().random.nextFloat() * 2 * (this.level().random.nextBoolean() ? 1 : -1));
 
-                    EffectHelper.of(EffectTemplatesAS.LIGHTNING)
+                    Effects.of(EffectTemplatesAS.LIGHTNING)
                             .spawn(at)
                             .color(VFXColorFunction.constant(Color.BLACK));
                 }
@@ -156,7 +156,7 @@ public class EntityNocturnalSpark extends ThrowableProjectile {
         } else {
             FXFacingParticle p;
             for (int i = 0; i < 6; i++) {
-                p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(Vector3.atEntityCorner(this))
                         .setMotion(new Vector3(
                             0.04F - this.level().random.nextFloat() * 0.08F,
@@ -167,12 +167,12 @@ public class EntityNocturnalSpark extends ThrowableProjectile {
                 randomizeColor(p);
             }
 
-            p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(this));
             p.setScaleMultiplier(0.6F);
             randomizeColor(p);
 
-            p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.atEntityCorner(this).add(getDeltaMovement().multiply(0.5, 0.5, 0.5)));
             p.setScaleMultiplier(0.6F);
             randomizeColor(p);

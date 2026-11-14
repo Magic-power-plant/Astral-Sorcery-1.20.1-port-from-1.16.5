@@ -13,6 +13,7 @@ import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.common.effect.EffectSource;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 
 import java.util.function.Function;
@@ -24,7 +25,7 @@ import java.util.function.Function;
  * Created by HellFirePvP
  * Date: 30.05.2019 / 12:58
  */
-public abstract class FXSource<E extends EntityVisualFX, T extends BatchRenderContext<E>> extends EntityComplexFX {
+public abstract class FXSource<E extends EntityVisualFX, T extends BatchRenderContext<E>> extends EntityComplexFX implements EffectSource {
 
     private final T ctx;
 
@@ -36,6 +37,11 @@ public abstract class FXSource<E extends EntityVisualFX, T extends BatchRenderCo
     public abstract void tickSpawnFX(Function<Vector3, E> effectRegistrar);
 
     public abstract void populateProperties(EffectProperties<E> properties);
+
+    @Override
+    public final void spawnEffectSource() {
+        EffectHelper.spawnSource(this);
+    }
 
     public final EffectHelper.Builder<E> generateFX() {
         EffectHelper.Builder<E> propBuilder = EffectHelper.of(ctx);

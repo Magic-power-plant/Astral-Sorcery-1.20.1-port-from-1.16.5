@@ -1,12 +1,12 @@
 package hellfirepvp.astralsorcery.common.blockentity;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.client.util.sound.PositionedLoopSound;
 import hellfirepvp.astralsorcery.common.crafting.ActiveLiquidInfusionRecipe;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.entity.EntityFlare;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
@@ -456,7 +456,7 @@ public class InfuserBlockEntity extends TickableBlockEntity {
         Vector3 motion = new Vector3();
         MiscUtils.applyRandomOffset(motion, rand, 0.05F);
 
-        EffectHelper.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
+        Effects.of(EffectTemplatesAS.GENERIC_ATLAS_PARTICLE)
                 .spawn(at)
                 .setSprite(RenderingUtils.getParticleTexture(stack))
                 .selectFraction(0.2F)

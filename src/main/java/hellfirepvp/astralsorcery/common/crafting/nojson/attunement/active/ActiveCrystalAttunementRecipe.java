@@ -12,7 +12,6 @@ import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalCrystalAttunement;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
@@ -25,6 +24,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttuneCrystalRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunementRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.lib.AdvancementsAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -179,7 +179,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
 
         if (this.getTick() >= 80) {
             if (attunementFlare == null || ((EntityComplexFX) attunementFlare).isRemoved()) {
-                attunementFlare = EffectHelper.of(EffectTemplatesAS.FACING_SPRITE)
+                attunementFlare = Effects.of(EffectTemplatesAS.FACING_SPRITE)
                         .spawn(new Vector3(altar).add(0.5, 1.75, 0.5))
                         .setSprite(SpritesAS.SPR_ATTUNEMENT_FLARE)
                         .setScaleMultiplier(2.5F)
@@ -190,7 +190,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
 
         Vector3 altarPos = new Vector3(altar).add(0.5, 0, 0.5);
         if (innerOrbital1 == null) {
-            innerOrbital1 = EffectHelper.spawnSource(new FXOrbitalCrystalAttunement(altarPos.clone(), altarPos.clone().addY(1.75), this.constellation))
+            innerOrbital1 = Effects.spawnSource(new FXOrbitalCrystalAttunement(altarPos.clone(), altarPos.clone().addY(1.75), this.constellation))
                     .setOrbitRadius(3)
                     .setBranches(4)
                     .setOrbitAxis(Vector3.RotAxis.Y_AXIS)
@@ -205,7 +205,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
             for (BlockPos pos : altar.getConstellationPositions(this.constellation)) {
                 Vector3 from = new Vector3(pos).add(0.5, 0, 0.5);
                 MiscUtils.applyRandomOffset(from, rand, 0.1F);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(from)
                         .setup(from.clone().addY(6), 1.2, 1.2)
                         .setAlphaMultiplier(0.8F)
@@ -232,7 +232,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
 
             int age = 20 + rand.nextInt(30);
             float size = 0.2F + rand.nextFloat() * 0.7F;
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .setScaleMultiplier(size)
                     .setMotion(mot)
@@ -240,7 +240,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
                     .setMaxAge(age);
 
             if (rand.nextInt(6) == 0) {
-                EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(pos)
                         .setScaleMultiplier(size * 1.4F)
                         .setMotion(mot)
@@ -259,7 +259,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
             } else {
                 offset.add(rand.nextFloat() * edgeScale, 0, edgeScale * (rand.nextBoolean() ? 1 : 0));
             }
-            FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle particle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setGravityStrength(-0.0002F + rand.nextFloat() * -0.0001F)
@@ -277,7 +277,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
                 at.addX(rand.nextFloat() * 7F * (rand.nextBoolean() ? 1 : -1));
                 at.addZ(rand.nextFloat() * 7F * (rand.nextBoolean() ? 1 : -1));
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .setAlphaMultiplier(0.75F)
                         .alpha(VFXAlphaFunction.FADE_OUT)
@@ -299,7 +299,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
             if (getTick() % 5 == 0) {
                 Vector3 from = new Vector3(altar).add(0.5, 0, 0.5);
                 MiscUtils.applyRandomOffset(from, rand, 0.25F);
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(from)
                         .setup(from.clone().addY(8), 2.4, 2)
                         .setAlphaMultiplier(0.8F)
@@ -313,7 +313,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
                         .add(0.5, 0, 0.5)
                         .addY(rand.nextFloat() * 0.5 + rand.nextFloat() * 0.5);
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .color(VFXColorFunction.WHITE)
                         .setMotion(Vector3.random().setY(0).normalize().multiply(0.025 + rand.nextFloat() * 0.075))

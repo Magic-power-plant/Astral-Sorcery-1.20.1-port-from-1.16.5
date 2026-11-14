@@ -3,10 +3,10 @@ package hellfirepvp.astralsorcery.common.block.base;
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.common.blockentity.base.FakedStateBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.particle.ParticleEngine;
@@ -55,7 +55,7 @@ public abstract class BlockFakedState extends BaseEntityBlock {
             if (fakedState != null) {
                 colorFn = VFXColorFunction.constant(fakedState.getOverlayColor());
             }
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(Vector3.random().abs().add(pos))
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(colorFn)

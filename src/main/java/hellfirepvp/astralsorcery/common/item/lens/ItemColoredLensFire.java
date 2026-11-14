@@ -10,9 +10,9 @@ package hellfirepvp.astralsorcery.common.item.lens;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.data.config.entry.GeneralConfig;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
@@ -61,7 +61,7 @@ public class ItemColoredLensFire extends ItemColoredLens {
     public static void playParticles(PktPlayEffect event) {
         Vector3 at = ByteBufUtils.readVector(event.getExtraData());
         for (int i = 0; i < 5; i++) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at.clone().add(random.nextFloat(), 0.2, random.nextFloat()))
                     .setMotion(new Vector3(0, 0.016 + random.nextFloat() * 0.02, 0))
                     .setScaleMultiplier(0.2F)

@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMisc;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.particle.ParticleEngine;
@@ -55,7 +55,7 @@ public class BlockFlareLight extends Block {
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
         Color c = ColorUtils.flareColorFromDye(state.getValue(COLOR));
         for (int i = 0; i < 2; i++) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(pos)
                             .add(0.5, 0.2, 0.5)
                             .add(rand.nextFloat() * 0.1 * (rand.nextBoolean() ? 1 : -1),
@@ -68,7 +68,7 @@ public class BlockFlareLight extends Block {
                     .setMaxAge(50 + rand.nextInt(20));
         }
         if (rand.nextBoolean()) {
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(pos)
                             .add(0.5, 0.3, 0.5)
                             .add(rand.nextFloat() * 0.02 * (rand.nextBoolean() ? 1 : -1),

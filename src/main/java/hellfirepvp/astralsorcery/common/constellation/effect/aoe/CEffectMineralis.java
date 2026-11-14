@@ -10,7 +10,6 @@ package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
@@ -18,6 +17,7 @@ import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstrac
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfiguredBlockStateList;
 import hellfirepvp.astralsorcery.common.data.config.registry.OreBlockRarityRegistry;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -98,7 +98,7 @@ public class CEffectMineralis extends CEffectAbstractList<ListEntries.PosEntry> 
                     () -> ColorsAS.CONSTELLATION_MINERALIS,
                     () -> ColorsAS.CONSTELLATION_MINERALIS.brighter());
             Vector3 at = Vector3.random().normalize().multiply(rand.nextFloat() * prop.getSize()).add(pos).add(0.5, 0.5, 0.5);
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(at)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setMotion(Vector3.random().multiply(0.05F))

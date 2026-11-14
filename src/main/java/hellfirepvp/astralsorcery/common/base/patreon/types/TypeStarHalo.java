@@ -12,12 +12,12 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXPositionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.base.patreon.FlareColor;
 import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffect;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -82,7 +82,7 @@ public class TypeStarHalo extends PatreonEffect implements ITickHandler {
 
             //1.16.5: GameSettings#getPointOfView()#func_243192_a() -> Options#getCameraType()#isFirstPerson();
             //PlayerEntity#rotationPitch -> Player#getXRot(); MathHelper -> Mth
-            FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            FXFacingParticle particle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(headPos.clone().addY(0.4F).add(offset))
                     .setAlphaMultiplier(0.8F)
                     .alpha(((VFXAlphaFunction<EntityVisualFX>) (fx, alphaIn, pTicks) -> {
@@ -102,7 +102,7 @@ public class TypeStarHalo extends PatreonEffect implements ITickHandler {
 
             FXFacingParticle starParticle = null;
             if (rand.nextInt(5) == 0) {
-                starParticle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                starParticle = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(headPos.clone().addY(0.4F).add(offset))
                         .setAlphaMultiplier(0.8F)
                         .color(VFXColorFunction.WHITE)

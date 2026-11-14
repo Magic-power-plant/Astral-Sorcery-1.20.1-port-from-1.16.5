@@ -12,11 +12,11 @@ import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXMotionController;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 //1.16.5 keeps this block in common.block.tile; this tree places blocks directly under common.block.
 import hellfirepvp.astralsorcery.common.block.BlockSpectralRelay;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
@@ -195,7 +195,7 @@ public class SpectralRelayBlockEntity extends TickableBlockEntity {
         int maxAge = 30;
         maxAge *= Math.max(pos.distance(target) / 3, 1);
 
-        EntityVisualFX vfx = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+        EntityVisualFX vfx = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                 .spawn(pos)
                 .alpha(VFXAlphaFunction.proximity(target::clone, 2F).andThen(VFXAlphaFunction.FADE_OUT))
                 .motion(VFXMotionController.target(target::clone, 0.08F))
@@ -216,7 +216,7 @@ public class SpectralRelayBlockEntity extends TickableBlockEntity {
             MiscUtils.applyRandomOffset(offset, rand, 1.25F);
             pos.add(offset.getX(), 0, offset.getZ());
 
-            EntityVisualFX vfx = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            EntityVisualFX vfx = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(pos)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)

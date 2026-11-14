@@ -11,10 +11,10 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -46,7 +46,7 @@ public class EffectLiquidBurst extends AltarRecipeEffect {
                     0.5 + rand.nextFloat() * 3 * (rand.nextBoolean() ? 1 : -1));
             Vector3 target = position.clone().addY(height);
 
-            EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+            Effects.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(position)
                     .setup(target, 0.8F, 0.8F)
                     .setAlphaMultiplier(1F)
@@ -62,7 +62,7 @@ public class EffectLiquidBurst extends AltarRecipeEffect {
                         rand.nextFloat() * 0.08 * (rand.nextBoolean() ? 1 : -1) * (1 - perc)
                 );
 
-                FXFacingParticle p = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                FXFacingParticle p = Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(position.clone().addY(height * perc))
                         .setMotion(mot)
                         .alpha(VFXAlphaFunction.FADE_OUT)

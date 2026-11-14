@@ -9,7 +9,6 @@
 package hellfirepvp.astralsorcery.common.constellation.effect.aoe;
 
 import hellfirepvp.astralsorcery.client.ClientScheduler;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.source.orbital.FXOrbitalLucerna;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.SkyHandler;
@@ -17,6 +16,7 @@ import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectStatus;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperSpawnDeny;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -57,7 +57,7 @@ public class CEffectLucerna extends ConstellationEffect implements Constellation
     @OnlyIn(Dist.CLIENT)
     public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         if (ClientScheduler.getClientTick() % 20 == 0) {
-            EffectHelper.spawnSource(new FXOrbitalLucerna(new Vector3(pos).add(0.5, 0.5, 0.5))
+            Effects.spawnSource(new FXOrbitalLucerna(new Vector3(pos).add(0.5, 0.5, 0.5))
                     .setOrbitAxis(Vector3.RotAxis.Y_AXIS)
                     .setOrbitRadius(0.8 + rand.nextFloat() * 0.7)
                     .setTicksPerRotation(20 + rand.nextInt(20)));

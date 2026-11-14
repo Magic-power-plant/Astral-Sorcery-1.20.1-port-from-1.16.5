@@ -11,12 +11,12 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -55,14 +55,14 @@ public class EffectFocusEdge extends AltarRecipeEffect implements IFocusEffect {
             Vector3 offset = new Vector3(altar).add(-offsetLength, 0.1, -offsetLength);
             offset.add(xSh * edgeLength, 0, zSh * edgeLength);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setScaleMultiplier(0.1F + rand.nextFloat() * 0.5F)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(VFXColorFunction.constant(getFocusColor(focus, rand)))
                     .setMaxAge(50);
             if (rand.nextInt(12) == 0) {
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(offset)
                         .setup(offset.clone().addY(3 + rand.nextFloat() * 2), 1, 1)
                         .color(VFXColorFunction.constant(getFocusColor(focus, rand)))
@@ -76,14 +76,14 @@ public class EffectFocusEdge extends AltarRecipeEffect implements IFocusEffect {
             offset = new Vector3(altar).add(offsetLength + 1, 0.1, offsetLength + 1);
             offset.add(-xSh * edgeLength, 0, -zSh * edgeLength);
 
-            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(offset)
                     .setScaleMultiplier(0.1F + rand.nextFloat() * 0.5F)
                     .alpha(VFXAlphaFunction.FADE_OUT)
                     .color(VFXColorFunction.constant(getFocusColor(focus, rand)))
                     .setMaxAge(50);
             if (rand.nextInt(12) == 0) {
-                EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
+                Effects.of(EffectTemplatesAS.LIGHTBEAM)
                         .spawn(offset)
                         .setup(offset.clone().addY(3 + rand.nextFloat() * 2), 1, 1)
                         .color(VFXColorFunction.constant(getFocusColor(focus, rand)))
