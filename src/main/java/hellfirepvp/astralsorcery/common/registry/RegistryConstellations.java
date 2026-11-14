@@ -10,7 +10,6 @@ package hellfirepvp.astralsorcery.common.registry;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -48,12 +47,6 @@ import static hellfirepvp.astralsorcery.common.lib.ConstellationsAS.*;
 // callers (TileRitualPedestal, StarlightReceiverRitualPedestal and CEffectArmara).
 public class RegistryConstellations {
 
-    // 1.16.5 pulled the two mod-owned tags from common/lib/TagsAS (TagsAS.Items.DUSTS_STARDUST / INGOTS_STARMETAL).
-    // TagsAS has not been ported to 1.20.1 yet, so the two TagKeys are built here from the same
-    // "astralsorcery:stardust" / "astralsorcery:starmetal" ids TagsAS used.
-    private static final TagKey<Item> DUSTS_STARDUST = TagKey.create(Registries.ITEM, AstralSorcery.key("stardust"));
-    private static final TagKey<Item> INGOTS_STARMETAL = TagKey.create(Registries.ITEM, AstralSorcery.key("starmetal"));
-
     public static void init() {
         // buildConstellations(); -> see the class comment: owned by common/lib/ConstellationsAS in 1.20.1.
 
@@ -70,7 +63,7 @@ public class RegistryConstellations {
 
     private static void registerSignatureItems() {
         aevitas.addSignatureItem(tag(ItemTags.SAPLINGS));
-        aevitas.addSignatureItem(tag(DUSTS_STARDUST));
+        aevitas.addSignatureItem(tag(itemTag("stardust")));
         aevitas.addSignatureItem(tag(Tags.Items.SEEDS_WHEAT));
         aevitas.addSignatureItem(Blocks.SUGAR_CANE.asItem());
 
@@ -105,7 +98,7 @@ public class RegistryConstellations {
         mineralis.addSignatureItem(tag(Tags.Items.INGOTS_IRON));
         mineralis.addSignatureItem(tag(Tags.Items.DUSTS_REDSTONE));
 
-        horologium.addSignatureItem(tag(DUSTS_STARDUST));
+        horologium.addSignatureItem(tag(itemTag("stardust")));
         horologium.addSignatureItem(tag(Tags.Items.GEMS_DIAMOND));
         horologium.addSignatureItem(tag(Tags.Items.ENDER_PEARLS));
         horologium.addSignatureItem(Items.CLOCK);
@@ -136,7 +129,7 @@ public class RegistryConstellations {
         gelu.addSignatureItem(tag(Tags.Items.GEMS_QUARTZ));
         gelu.addSignatureItem(tag(Tags.Items.FEATHERS));
 
-        ulteria.addSignatureItem(tag(INGOTS_STARMETAL));
+        ulteria.addSignatureItem(tag(itemTag("starmetal")));
         ulteria.addSignatureItem(tag(Tags.Items.LEATHER));
         ulteria.addSignatureItem(tag(Tags.Items.GEMS_DIAMOND));
         ulteria.addSignatureItem(tag(Tags.Items.RODS_BLAZE));
@@ -157,5 +150,14 @@ public class RegistryConstellations {
     // overload. Ingredient.of(TagKey) resolves lazily, matching the 1.16.5 tag-wrapper behaviour.
     private static Supplier<Ingredient> tag(TagKey<Item> tag) {
         return () -> Ingredient.of(tag);
+    }
+
+    //The mod-owned signature-item tags are datapack data only: data/astralsorcery/tags/items/stardust.json and
+    //.../starmetal.json are what decide which items they contain. 1.16.5 kept those two ids in the tag-declaration
+    //class common/lib/TagsAS because it also had to build the tag wrappers there; 1.20.1 has no wrapper types and no
+    //reason to duplicate what the json already states, so the handle is created from the same id the file is named
+    //after, at the point of use. TagDataIntegrityTest guards that both files stay present and non-empty.
+    private static TagKey<Item> itemTag(String path) {
+        return ItemTags.create(AstralSorcery.key(path));
     }
 }

@@ -83,8 +83,9 @@ public class ItemInfusedCrystalPickaxe extends ItemCrystalPickaxe implements Equ
             if (stack.getItem() instanceof ItemInfusedCrystalPickaxe && !player.getCooldowns().isOnCooldown(stack.getItem())) {
                 PlayerProgress prog = ResearchHelper.getProgress(player, LogicalSide.SERVER);
                 if (prog.doPerkAbilities()) {
-                    //1.16.5: TagsAS.Blocks.ORES, which was the forge:ores block tag; common/lib/TagsAS.java does not
-                    //exist in the target yet, so Forge's own constant for that very same tag is used here
+                    //1.16.5: TagsAS.Blocks.ORES, which was the forge:ores block tag. That tag is pure datapack data
+                    //(data/forge/tags/blocks/ores.json in this tree), so Forge's own constant for the very same tag
+                    //is all the code needs; there is no tag-declaration class to consult.
                     List<BlockPos> orePositions = BlockDiscoverer.searchForBlocksAround(world, origin, 16, BlockPredicates.isInTag(Tags.Blocks.ORES));
                     PacketChannel.sendToPlayer((ServerPlayer) player, new PktOreScan(orePositions));
 
