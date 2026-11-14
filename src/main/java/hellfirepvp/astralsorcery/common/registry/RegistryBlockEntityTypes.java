@@ -20,46 +20,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 
-/**
- * This class is part of the Astral Sorcery Mod
- * The complete source code for this mod can be found on github.
- * Class: RegistryBlockEntities
- * Created by HellFirePvP
- * Date: 01.06.2019 / 13:35
- */
-// Port notes for 1.16.5 common/registry/RegistryTileEntities.java (99 lines):
-//
-//   registerTiles()        (1.16.5 ref:38-62) -> common/lib/TileEntityTypesAS, which holds all twenty-three
-//                                                BlockEntityType entries as a DeferredRegister of
-//                                                ForgeRegistries.BLOCK_ENTITY_TYPES. Repeating them here would
-//                                                register every tile type twice.
-//   registerTile(Class<T>, Block...)
-//                          (ref:83-98)        -> TileEntityType.Builder.create(Supplier, Block...) is
-//                                                BlockEntityType.Builder.of(BlockEntitySupplier, Block...), and
-//                                                the supplier signature changed: 1.16.5 reflected a no-arg
-//                                                constructor (tileClass.newInstance()), 1.20.1 tiles take
-//                                                (BlockPos, BlockState), so TileEntityTypesAS passes the
-//                                                Tile*::new method references directly. #setRegistryName and the
-//                                                registry primer are gone (IForgeRegistryEntry deleted in 1.19);
-//                                                the names 1.16.5 derived from NameUtil.fromClass(tileClass,
-//                                                "Tile") are spelled out in the DeferredRegister#register calls.
-//   initClient()           (ref:64-81)        -> kept below. ClientRegistry.bindTileEntityRenderer was removed in
-//                                                1.17 together with net.minecraftforge.fml.client.registry;
-//                                                block entity renderers are bound from the mod-bus
-//                                                EntityRenderersEvent.RegisterRenderers, which
-//                                                common/../client/ClientProxy adds this method as a listener for.
-//                                                All fifteen bindings are present, in the reference's order.
-//
-// Two TileEntityTypesAS names do not match what NameUtil.fromClass produced in 1.16.5, and one type accepts an
-// extra valid block; both live in common/lib and are reported as external changes:
-//   TileCelestialCrystals -> 1.16.5 "astralsorcery:celestial_crystals", 1.20.1 "celestial_crystal_cluster"
-//   TileGemCrystals       -> 1.16.5 "astralsorcery:gem_crystals",       1.20.1 "gem_crystal_cluster"
-//   COLLECTOR_CRYSTAL     -> 1.16.5 valid blocks are ROCK_COLLECTOR_CRYSTAL and CELESTIAL_COLLECTOR_CRYSTAL only
-//                            (ref:45), and the 1.20.1 holder now matches: the invented
-//                            BlocksAS.COLLECTOR_CRYSTAL third entry has been removed.
-public class RegistryBlockEntities {
+/** Client renderer bindings for the block entity types declared by BlockEntityTypesAS. */
+public class RegistryBlockEntityTypes {
 
-    private RegistryBlockEntities() {}
+    private RegistryBlockEntityTypes() {}
 
     @OnlyIn(Dist.CLIENT)
     @SuppressWarnings({ "unchecked", "rawtypes" })

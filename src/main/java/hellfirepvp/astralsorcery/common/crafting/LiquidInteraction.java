@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -308,7 +310,7 @@ public class LiquidInteraction implements Recipe<Container> {
      * 1.16.5 registered common/crafting/serializer/LiquidInteractionSerializer directly (through
      * common/lib/RecipeSerializersAS#LIQUID_INTERACTION_SERIALIZER). This tree binds the
      * "astralsorcery:liquid_interaction" serializer id through the DeferredRegister in
-     * common/crafting/RecipeSerializersAS, which needs a nested type to reference, so this shell exists and
+     * common/lib/RecipeSerializersAS, which needs a nested type to reference, so this shell exists and
      * forwards to the ported serializer. There is exactly one implementation of the format.
      * TODO_PORT[AS-ALT-05]: register LiquidInteractionSerializer itself and drop this shell once
      * common/lib/RecipeSerializersAS exists.

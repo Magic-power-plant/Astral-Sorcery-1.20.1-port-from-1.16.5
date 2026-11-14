@@ -16,7 +16,6 @@ import net.minecraft.util.GsonHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class ConstellationInstance extends AbstractCriterionTriggerInstance {
@@ -93,7 +92,7 @@ public class ConstellationInstance extends AbstractCriterionTriggerInstance {
         for (int idx = 0; idx < constellationNames.size(); idx++) {
             JsonElement element = constellationNames.get(idx);
             String key = element.getAsString();
-            IConstellation cst = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(ResourceLocation.parse(key));
+            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(ResourceLocation.parse(key));
             if (cst == null) {
                 throw new IllegalArgumentException(String.format("Unknown constellation: %s - at constellations[%s]", key, idx));
             }

@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
@@ -15,7 +17,6 @@ import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipeEffect;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
-import hellfirepvp.astralsorcery.common.lib.AltarRecipeEffectsAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraftforge.fml.LogicalSide;
@@ -52,14 +53,14 @@ import java.util.Set;
 //TODO_PORT[AS-ALT-03]: this tree carries two parallel altar-recipe classes. The reference-faithful port of
 //1.16.5's SimpleAltarRecipe lives at common/crafting/recipe/SimpleAltarRecipe (it extends
 //common/crafting/helper/CustomMatcherRecipe exactly as 1.16.5 does); this class is the divergent *live* one
-//- common/crafting/RecipeSerializersAS binds "astralsorcery:altar" to AltarRecipeSerializer, TileAltar,
+//- common/lib/RecipeSerializersAS binds "astralsorcery:altar" to AltarRecipeSerializer, TileAltar,
 //ActiveAltarRecipe, the seven builtin recipes and the altar screens/renderers are all typed against it, and
 //AltarRecipeTypeHandler's converters all produce subclasses of it. The two are siblings, not sub/supertypes,
 //so they cannot be merged from inside this slice. Structural differences against 1.16.5, all of them a
 //consequence of that split:
 // - 1.16.5 extends CustomMatcherRecipe, which supplied getId, getType, getSerializer, canFit and the empty
 //   crafting result. This class implements vanilla Recipe<Container> directly and resolves the type and the
-//   serializer through the DeferredRegister holders, because common/crafting/RecipeTypesAS holds vanilla
+//   serializer through the DeferredRegister holders, because common/lib/RecipeTypesAS holds vanilla
 //   RecipeTypes rather than 1.16.5's ResolvingRecipeType. matches(Container,Level), assemble,
 //   canCraftInDimensions, getResultItem, getId, findRecipe, createContainer, getResult, the no-argument
 //   getOutputs and the nested AltarContainer are the glue that replaces it.
@@ -104,7 +105,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
     //1.16.5 SimpleAltarRecipe.java:90-104 adds the default effects here in an intentional fall-through switch
     //over getAltarType(). That is unnecessary in this tree, because the shipped datapack already bakes exactly
     //those effects into each recipe's "effects" array and SimpleAltarRecipeSerializer resolves them through
-    //RegistriesAS.REGISTRY_ALTAR_EFFECTS - a path that does not touch the AltarRecipeEffectsAS handles at all.
+    //RegistriesAS.ALTAR_RECIPE_EFFECTS - a path that does not touch the AltarRecipeEffectsAS handles at all.
     //
     //Measured on a running dedicated server before any change here: all 117 altar recipes already carried their
     //effects, none had an empty set, and the per-type counts were exactly what the 1.16.5 switch produces -
@@ -114,7 +115,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
     //addAltarEffect is a plain list add with no de-duplication, so running the switch on top of the datapack
     //would append a second copy of every default effect: marble_pillar would render the discovery beam twice and
     //astralsorcery:altar/observatory would go from 7 effects to 14. The handles being null was a real latent bug
-    //and RegistryRecipeTypes#initAltarEffects now assigns all 20, but the fix for that is the assignment, not
+    //and RegistryAltarRecipeEffects#init now assigns all 20, but the fix for that is the assignment, not
     //this switch.
     private void addDefaultEffects() {
     }

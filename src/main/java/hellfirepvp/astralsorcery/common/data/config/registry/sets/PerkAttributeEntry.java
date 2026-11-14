@@ -11,7 +11,6 @@ package hellfirepvp.astralsorcery.common.data.config.registry.sets;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfigDataSet;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkAttributeTypes;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -49,12 +48,7 @@ public class PerkAttributeEntry implements ConfigDataSet {
             return null;
         }
         ResourceLocation keyAttributeType = ResourceLocation.parse(split[0]);
-        PerkAttributeType type = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES == null
-                ? null
-                : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValue(keyAttributeType);
-        if (type == null) {
-            type = RegistryPerkAttributeTypes.get(keyAttributeType);
-        }
+        PerkAttributeType type = RegistriesAS.PERK_ATTRIBUTE_TYPES.getValue(keyAttributeType);
         if (type == null) {
             return null;
         }
@@ -71,9 +65,7 @@ public class PerkAttributeEntry implements ConfigDataSet {
     @Nonnull
     @Override
     public String serialize() {
-        ResourceLocation key = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES == null
-                ? null
-                : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getKey(this.type);
+        ResourceLocation key = RegistriesAS.PERK_ATTRIBUTE_TYPES.getKey(this.type);
         if (key == null) {
             key = this.type.getRegistryName();
         }

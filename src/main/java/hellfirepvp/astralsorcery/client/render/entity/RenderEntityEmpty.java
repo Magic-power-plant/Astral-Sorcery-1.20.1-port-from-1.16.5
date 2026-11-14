@@ -26,7 +26,7 @@ import net.minecraft.world.entity.Entity;
  * 1.16.5 -&gt; 1.20.1: EntityRendererManager -&gt; EntityRendererProvider.Context, IRenderTypeBuffer -&gt;
  * MultiBufferSource, MatrixStack -&gt; PoseStack, AtlasTexture.LOCATION_BLOCKS_TEXTURE -&gt;
  * TextureAtlas.LOCATION_BLOCKS and #getEntityTexture -&gt; #getTextureLocation. Forge deleted
- * {@code IRenderFactory}, so the reference's inner {@code Factory} class is gone: {@code RegistryEntities}
+ * {@code IRenderFactory}, so the reference's inner {@code Factory} class is gone: {@code RegistryEntityTypes}
  * registers this renderer as {@code RenderEntityEmpty::new} against
  * {@code EntityRenderersEvent.RegisterRenderers}.
  */

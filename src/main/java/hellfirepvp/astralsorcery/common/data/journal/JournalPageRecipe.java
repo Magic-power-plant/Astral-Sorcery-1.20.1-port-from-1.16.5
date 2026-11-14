@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.client.screen.journal.page.RenderPageRecipe;
 import hellfirepvp.astralsorcery.client.screen.journal.page.RenderPageText;
 import hellfirepvp.astralsorcery.client.screen.journal.page.RenderablePage;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.data.research.ResearchNode;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
 import net.minecraft.resources.ResourceLocation;

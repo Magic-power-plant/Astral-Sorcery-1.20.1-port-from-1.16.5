@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.container.factory;
 
 import hellfirepvp.astralsorcery.common.container.ContainerAltarAttunement;
-import hellfirepvp.astralsorcery.common.lib.ContainerTypesAS;
+import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -33,7 +33,7 @@ public class ContainerAltarAttunementProvider extends CustomContainerProvider<Co
     private final AltarBlockEntity ta;
 
     public ContainerAltarAttunementProvider(AltarBlockEntity ta) {
-        super(ContainerTypesAS.ALTAR_ATTUNEMENT.get());
+        super(MenuTypesAS.ALTAR_ATTUNEMENT.get());
         this.ta = ta;
     }
 

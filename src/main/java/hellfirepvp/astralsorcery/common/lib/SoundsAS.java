@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class SoundsAS {
 
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, AstralSorcery.MODID);
+    public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, AstralSorcery.MODID);
 
     public static final CategorizedSoundEvent BLOCK_COLOREDLENS_ATTACH = reg("block_coloredlens_attach", SoundSource.BLOCKS);
 
@@ -46,7 +46,7 @@ public class SoundsAS {
     public static final CategorizedSoundEvent GUI_JOURNAL_PAGE = reg("gui_journal_page", SoundSource.MASTER);
 
     private static CategorizedSoundEvent reg(String name, SoundSource category) {
-        RegistryObject<SoundEvent> ro = SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(AstralSorcery.key(name)));
+        RegistryObject<SoundEvent> ro = SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(AstralSorcery.key(name)));
         return new CategorizedSoundEvent(ro, category);
     }
 }

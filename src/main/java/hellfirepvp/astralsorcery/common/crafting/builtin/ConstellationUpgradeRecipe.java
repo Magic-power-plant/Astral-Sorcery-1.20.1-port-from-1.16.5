@@ -44,7 +44,7 @@ public class ConstellationUpgradeRecipe extends AltarRecipe implements AltarUpgr
         super(id, altarType, grid, outputs, starlightRequired, craftingTime);
 
         //AS-ALT-02 (resolved): 1.16.5 common/crafting/recipe/altar/builtin/ConstellationUpgradeRecipe.java:41.
-        //AltarRecipeEffectsAS.UPGRADE_ALTAR is assigned by RegistryRecipeTypes#initAltarEffects during
+        //AltarRecipeEffectsAS.UPGRADE_ALTAR is assigned by RegistryAltarRecipeEffects#init during
         //RegisterEvent, i.e. before the datapack builds this recipe, so it is no longer null here.
         this.addAltarEffect(AltarRecipeEffectsAS.UPGRADE_ALTAR);
     }

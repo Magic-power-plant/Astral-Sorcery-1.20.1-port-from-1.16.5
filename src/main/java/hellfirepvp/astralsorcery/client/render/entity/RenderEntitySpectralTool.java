@@ -34,7 +34,7 @@ import net.minecraft.world.item.ItemStack;
  * com.mojang.math.Axis.XP/YP/ZP, Entity#getHeight -&gt; Entity#getBbHeight,
  * AtlasTexture.LOCATION_BLOCKS_TEXTURE -&gt; TextureAtlas.LOCATION_BLOCKS and #getEntityTexture -&gt;
  * #getTextureLocation. Forge deleted {@code IRenderFactory}, so the reference's inner {@code Factory} class is
- * gone: {@code RegistryEntities} registers this renderer as {@code RenderEntitySpectralTool::new} against
+ * gone: {@code RegistryEntityTypes} registers this renderer as {@code RenderEntitySpectralTool::new} against
  * {@code EntityRenderersEvent.RegisterRenderers}, which is why the constructor is public instead of protected.
  */
 public class RenderEntitySpectralTool extends EntityRenderer<EntitySpectralTool> {

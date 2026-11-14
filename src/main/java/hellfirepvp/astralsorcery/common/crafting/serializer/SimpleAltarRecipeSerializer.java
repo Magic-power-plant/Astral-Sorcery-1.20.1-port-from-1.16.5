@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipeEffect;
@@ -39,7 +39,7 @@ public class SimpleAltarRecipeSerializer extends CustomRecipeSerializer<SimpleAl
 
     //1.16.5 held the single instance in common/lib/RecipeSerializersAS as ALTAR_RECIPE_SERIALIZER and
     //registered it from RegistryRecipeSerializers. common/lib is not owned by this slice and this tree's
-    //common/crafting/RecipeSerializersAS already binds the "astralsorcery:altar" serializer id to the
+    //common/lib/RecipeSerializersAS already binds the "astralsorcery:altar" serializer id to the
     //divergent AltarRecipeSerializer, so the instance lives here and is not registered yet.
     //TODO_PORT[AS-ALT-05]: move to common/lib/RecipeSerializersAS#ALTAR_RECIPE_SERIALIZER and register it
     // once the divergent common/crafting/AltarRecipe is retired in favour of SimpleAltarRecipe.
@@ -87,7 +87,7 @@ public class SimpleAltarRecipeSerializer extends CustomRecipeSerializer<SimpleAl
 
         if (GsonHelper.isValidNode(json, "focus_constellation")) {
             ResourceLocation key = parseId(GsonHelper.getAsString(json, "focus_constellation"));
-            IConstellation cst = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(key);
+            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(key);
             if (cst == null) {
                 throw new JsonSyntaxException("Unknown constellation " + key.toString());
             }
@@ -116,7 +116,7 @@ public class SimpleAltarRecipeSerializer extends CustomRecipeSerializer<SimpleAl
             for (int i = 0; i < effectNames.size(); i++) {
                 JsonElement element = effectNames.get(i);
                 ResourceLocation effectKey = parseId(GsonHelper.convertToString(element, "effects[" + i + "]"));
-                AltarRecipeEffect effect = RegistriesAS.REGISTRY_ALTAR_EFFECTS.getValue(effectKey);
+                AltarRecipeEffect effect = RegistriesAS.ALTAR_RECIPE_EFFECTS.getValue(effectKey);
                 if (effect == null) {
                     throw new JsonSyntaxException("No altar effect for name " + effectKey + "! (Found at: effects[" + i + "])");
                 }

@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
@@ -173,7 +175,7 @@ public class BlockTransmutation implements Recipe<Container>, GatedRecipe.Progre
      * 1.16.5 registered common/crafting/serializer/BlockTransmutationSerializer directly (through
      * common/lib/RecipeSerializersAS#BLOCK_TRANSMUTATION_SERIALIZER). This tree binds the
      * "astralsorcery:block_transmutation" serializer id through the DeferredRegister in
-     * common/crafting/RecipeSerializersAS, which needs a nested type to reference, so this shell exists and
+     * common/lib/RecipeSerializersAS, which needs a nested type to reference, so this shell exists and
      * forwards to the ported serializer. There is exactly one implementation of the format.
      * TODO_PORT[AS-ALT-05]: register BlockTransmutationSerializer itself and drop this shell once
      * common/lib/RecipeSerializersAS exists.

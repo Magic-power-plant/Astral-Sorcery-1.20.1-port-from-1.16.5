@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.container.factory;
 
 import hellfirepvp.astralsorcery.common.container.ContainerTome;
-import hellfirepvp.astralsorcery.common.lib.ContainerTypesAS;
+import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,7 +34,7 @@ public class ContainerTomeProvider extends CustomContainerProvider<ContainerTome
     public ContainerTomeProvider(ItemStack stackTome, int slotTome) {
         //1.16.5 holds the ContainerType in a plain static field; the 1.20.1 tree registers menu types
         //through a DeferredRegister, so the RegistryObject has to be resolved here.
-        super(ContainerTypesAS.TOME.get());
+        super(MenuTypesAS.TOME.get());
         this.stackTome = stackTome;
         this.slotTome = slotTome;
     }

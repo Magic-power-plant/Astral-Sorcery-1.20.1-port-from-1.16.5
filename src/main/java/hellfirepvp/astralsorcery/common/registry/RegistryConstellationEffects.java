@@ -4,20 +4,22 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProvider;
 import hellfirepvp.astralsorcery.common.constellation.effect.aoe.*;
-import hellfirepvp.astralsorcery.common.lib.ConstellationEffectsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 
-import javax.annotation.Nullable;
 import java.util.function.Function;
 
 import static hellfirepvp.astralsorcery.common.lib.ConstellationEffectsAS.*;
 
 public class RegistryConstellationEffects {
 
+    private static boolean initialized;
+
     private RegistryConstellationEffects() {}
 
-    public static void init() {
+    public static synchronized void init() {
+        if (initialized) return;
+        initialized = true;
         AEVITAS    = registerProvider(ConstellationsAS.aevitas,    CEffectAevitas::new);
         ARMARA     = registerProvider(ConstellationsAS.armara,     CEffectArmara::new);
         BOOTES     = registerProvider(ConstellationsAS.bootes,     CEffectBootes::new);

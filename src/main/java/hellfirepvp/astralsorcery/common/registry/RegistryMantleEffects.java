@@ -1,21 +1,23 @@
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffect;
+import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffectHelper;
 import hellfirepvp.astralsorcery.common.constellation.mantle.effect.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static hellfirepvp.astralsorcery.common.lib.MantleEffectsAS.*;
 
 public class RegistryMantleEffects {
 
-    private static final List<MantleEffect> REGISTERED_EFFECTS = new ArrayList<>();
+    private static boolean initialized;
 
     private RegistryMantleEffects() {}
 
-    public static void init() {
+    public static synchronized void init() {
+        if (initialized) return;
+        initialized = true;
         AEVITAS = register(new MantleEffectAevitas());
         ARMARA = register(new MantleEffectArmara());
         BOOTES = register(new MantleEffectBootes());
@@ -31,13 +33,13 @@ public class RegistryMantleEffects {
     }
 
     public static void attachEventListeners(IEventBus bus) {
-        for (MantleEffect effect : REGISTERED_EFFECTS) {
+        for (MantleEffect effect : RegistriesAS.MANTLE_EFFECTS.getValues()) {
             effect.attachEventListeners(bus);
         }
     }
 
     private static <T extends MantleEffect> T register(T effect) {
-        REGISTERED_EFFECTS.add(effect);
+        MantleEffectHelper.register(effect.getAssociatedConstellation(), effect);
         return effect;
     }
 }

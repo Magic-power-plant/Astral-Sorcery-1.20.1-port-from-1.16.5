@@ -82,7 +82,7 @@ public enum GuiType {
             switch (this) {
                 case CONSTELLATION_PAPER:
                     //Resolved exactly as 1.16.5 does, so the lookup failure mode stays identical.
-                    IConstellation cst = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(new ResourceLocation(data.getString("cst")));
+                    IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(new ResourceLocation(data.getString("cst")));
                     //AS-GUI-01 (resolved): the BLOCKED note here claimed ScreenConstellationPaper was "an empty
                     //stub without that constructor". Stale - it is 166 lines and declares
                     //ScreenConstellationPaper(IConstellation) at :51.

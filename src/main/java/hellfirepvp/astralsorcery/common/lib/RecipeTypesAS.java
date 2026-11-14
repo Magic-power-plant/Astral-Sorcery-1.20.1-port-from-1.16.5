@@ -6,7 +6,13 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package hellfirepvp.astralsorcery.common.crafting;
+package hellfirepvp.astralsorcery.common.lib;
+
+import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
+import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
+import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
+import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
+import hellfirepvp.astralsorcery.common.crafting.WellLiquefaction;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
 import net.minecraft.world.item.crafting.Recipe;
@@ -22,19 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
  * Created by HellFirePvP
  * Date: 30.06.2019 / 23:50
  */
-//TODO_PORT[AS-PKG-01]/TODO_PORT[AS-ALT-04]: 1.16.5 keeps this at common/lib/RecipeTypesAS and declares the
-//five fields as its own common/crafting/helper/ResolvingRecipeType, e.g.
-//"ResolvingRecipeType<IItemHandler, SimpleAltarRecipe, SimpleAltarRecipeContext> TYPE_ALTAR;"
-//(1.16.5 common/lib/RecipeTypesAS.java:27-31). ResolvingRecipeType wrapped vanilla's IRecipeType and added
-//findMatchingRecipes(context)/findRecipe(context), which is how 1.16.5 resolved altar/well/infuser recipes.
-//This tree instead registers plain vanilla RecipeTypes through a DeferredRegister and every call site
-//(TileAltar, TileChalice, the crt/ and jei/ integrations, the journal pages) already resolves recipes through
-//RecipeManager with these vanilla types. Converting the holder back to ResolvingRecipeType would require
-//changing all of those call sites, which are outside this slice, so the design divergence is recorded here
-//and common/crafting/helper/ResolvingRecipeType stays unused - see externalChangesNeeded.
-//The registered type ids ("altar", "well", "infusion", "liquid_interaction", "block_transmutation") match the
-//1.16.5 field names one-for-one.
-public class RecipeTypesAS {
+public final class RecipeTypesAS {
 
     private RecipeTypesAS() {}
 

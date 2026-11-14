@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.block.BlockAltar;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
@@ -48,7 +48,7 @@ import java.util.List;
  */
 //TODO_PORT[AS-ALT-03]: 1.16.5 typed this category over common/crafting/recipe/SimpleAltarRecipe. In this tree
 //that class is the reference-faithful but *dead* half of the altar-recipe split documented on
-//common/crafting/AltarRecipe: nothing constructs a SimpleAltarRecipe, common/crafting/RecipeSerializersAS
+//common/crafting/AltarRecipe: nothing constructs a SimpleAltarRecipe, common/lib/RecipeSerializersAS
 //binds "astralsorcery:altar" to AltarRecipeSerializer, and every one of the 117 altar recipes the datapack
 //loads is therefore an AltarRecipe. A category typed over SimpleAltarRecipe would show nothing at all, so this
 //is typed over AltarRecipe and switches back to SimpleAltarRecipe when the two halves are merged.
@@ -100,7 +100,7 @@ public class CategoryAltar extends JEICategory<AltarRecipe> {
         //   return RecipeTypesAS.TYPE_ALTAR.getRecipes(recipe -> recipe.getAltarType().equals(this.getAltarType()));
         // TYPE_ALTAR was a ResolvingRecipeType in common/lib whose getRecipes(Predicate) filtered every recipe
         // registered under the altar recipe type. This tree registers the altar type through the
-        // DeferredRegister in common/crafting/RecipeTypesAS as RecipeType<AltarRecipe>, so the same set comes
+        // DeferredRegister in common/lib/RecipeTypesAS as RecipeType<AltarRecipe>, so the same set comes
         // out of the RecipeManager; the copy keeps the result mutable because IntegrationJEI#registerRecipes
         // sorts it.
         RecipeManager mgr = RecipeHelper.getRecipeManager();

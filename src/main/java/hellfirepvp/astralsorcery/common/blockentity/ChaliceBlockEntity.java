@@ -18,7 +18,7 @@ import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.common.auxiliary.ChaliceHelper;
 import hellfirepvp.astralsorcery.common.block.BlockFountain;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.fluid.FluidLiquidStarlight;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;

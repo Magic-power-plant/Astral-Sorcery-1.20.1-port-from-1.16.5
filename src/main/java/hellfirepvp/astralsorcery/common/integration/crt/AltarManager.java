@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.integration.crt;
 
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import net.minecraft.resources.ResourceLocation;

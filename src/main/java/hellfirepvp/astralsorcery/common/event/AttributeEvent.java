@@ -3,7 +3,6 @@ package hellfirepvp.astralsorcery.common.event;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeTypeHelper;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkAttributeTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -101,12 +100,7 @@ public class AttributeEvent {
     }
 
     public static double postProcessModded(Player player, ResourceLocation key, double value) {
-        PerkAttributeType pType = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES == null
-                ? null
-                : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValue(key);
-        if (pType == null) {
-            pType = RegistryPerkAttributeTypes.get(key);
-        }
+        PerkAttributeType pType = RegistriesAS.PERK_ATTRIBUTE_TYPES.getValue(key);
         if (pType == null) {
             return value;
         }

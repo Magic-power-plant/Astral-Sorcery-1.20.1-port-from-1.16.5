@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.container.factory;
 
 import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
-import hellfirepvp.astralsorcery.common.lib.ContainerTypesAS;
+import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
 import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -33,7 +33,7 @@ public class ContainerObservatoryProvider extends CustomContainerProvider<Contai
     private final ObservatoryBlockEntity observatory;
 
     public ContainerObservatoryProvider(ObservatoryBlockEntity observatory) {
-        super(ContainerTypesAS.OBSERVATORY.get());
+        super(MenuTypesAS.OBSERVATORY.get());
         this.observatory = observatory;
     }
 

@@ -12,11 +12,10 @@ import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import hellfirepvp.astralsorcery.common.lib.AltarRecipeEffectsAS;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomMatcherRecipe;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
@@ -90,7 +89,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
 
     //AS-ALT-02: deliberately empty, mirroring common/crafting/AltarRecipe#addDefaultEffects - see the full
     //reasoning there. In short: the shipped datapack already lists each recipe's effects and
-    //SimpleAltarRecipeSerializer resolves them through RegistriesAS.REGISTRY_ALTAR_EFFECTS, and addAltarEffect
+    //SimpleAltarRecipeSerializer resolves them through RegistriesAS.ALTAR_RECIPE_EFFECTS, and addAltarEffect
     //does not de-duplicate, so porting 1.16.5's fall-through switch on top of that appends a second copy of
     //every default effect (measured on a live server: astralsorcery:altar/observatory would go from 7 to 14).
     //Nothing in this tree constructs a SimpleAltarRecipe today - the live path is common/crafting/AltarRecipe,
@@ -251,7 +250,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
                 buf -> ConstellationRegistry.getConstellation(ByteBufUtils.readResourceLocation(buf))));
         ByteBufUtils.readList(buffer, Ingredient::fromNetwork).forEach(recipe::addRelayInput);
         List<AltarRecipeEffect> effects = ByteBufUtils.readList(buffer,
-                buf -> RegistriesAS.REGISTRY_ALTAR_EFFECTS.getValue(ByteBufUtils.readResourceLocation(buf)));
+                buf -> RegistriesAS.ALTAR_RECIPE_EFFECTS.getValue(ByteBufUtils.readResourceLocation(buf)));
         for (AltarRecipeEffect effect : effects) {
             recipe.addAltarEffect(effect);
         }
@@ -329,7 +328,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
         //1.16.5: RecipeTypesAS.TYPE_ALTAR.getType(), where TYPE_ALTAR was a
         //ResolvingRecipeType<IItemHandler, SimpleAltarRecipe, SimpleAltarRecipeContext> held in common/lib.
         //This tree registers the altar recipe type through the DeferredRegister in
-        //common/crafting/RecipeTypesAS; RecipeType identity - which is all Recipe#getType() is used for -
+        //common/lib/RecipeTypesAS; RecipeType identity - which is all Recipe#getType() is used for -
         //is the same object either way.
         //TODO_PORT[AS-ALT-04]: re-point at a ResolvingRecipeType once common/crafting/helper/ResolvingRecipeType
         // is finished (its findRecipe/getAllRecipes are still stubs) and common/lib gains TYPE_ALTAR.
@@ -339,7 +338,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
     @Override
     public CustomRecipeSerializer<?> getSerializer() {
         //1.16.5: RecipeSerializersAS.ALTAR_RECIPE_SERIALIZER (common/lib). common/lib is not owned by this
-        //slice and this tree's common/crafting/RecipeSerializersAS already binds the "altar" serializer id
+        //slice and this tree's common/lib/RecipeSerializersAS already binds the "altar" serializer id
         //to the divergent AltarRecipeSerializer, so the instance is held on the serializer class itself.
         return SimpleAltarRecipeSerializer.INSTANCE;
     }

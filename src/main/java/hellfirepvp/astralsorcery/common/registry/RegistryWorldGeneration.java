@@ -36,7 +36,7 @@ import static hellfirepvp.astralsorcery.common.lib.WorldGenerationAS.Config.*;
 // The 1.16.5 class did seven things. Where each one lives in 1.20.1:
 //   1. registerFeature(KEY, Feature)              (ref:72-73, 173-175)
 //      -> WorldGenerationAS.FEATURES (DeferredRegister<Feature<?>>), handed to the mod bus by
-//         RegistryRegistries#init and filled by WorldGenerationAS#init. Not duplicated here; doing so would
+//         RegistryBootstrap#attach and filled by WorldGenerationAS#init. Not duplicated here; doing so would
 //         register replace_block / rock_crystal twice.
 //   2. registerPlacement(KEY, Placement)          (ref:75-77, 177-179)
 //      -> ported below. In 1.16.5 the Placement instance was itself the registry entry
@@ -98,7 +98,7 @@ public class RegistryWorldGeneration {
 
         // 1.16.5: registerStructure(KEY_*_SHRINE, CFG_*_SHRINE, new Feature*ShrineStructure()) (ref:83-85).
         // The StructureType instances are created by WorldGenerationAS#init, which runs from
-        // RegistryRegistries#init during mod construction, i.e. strictly before RegisterEvent is fired.
+        // RegistryBootstrap#attach during mod construction, i.e. strictly before RegisterEvent is fired.
         event.register(Registries.STRUCTURE_TYPE, WorldGenerationAS.Structures.KEY_ANCIENT_SHRINE,
                 () -> WorldGenerationAS.Structures.ANCIENT_SHRINE_TYPE);
         event.register(Registries.STRUCTURE_TYPE, WorldGenerationAS.Structures.KEY_DESERT_SHRINE,

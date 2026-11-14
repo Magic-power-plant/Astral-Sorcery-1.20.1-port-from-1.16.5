@@ -5,8 +5,8 @@
 
 ## 覆盖范围与统计口径
 
-截至 2026-11-14，`src/main/java` 下有 **248 个实际声明包**、1,373 个业务 Java 源文件，
-每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 50、公共实现 192、Mixin 2。
+截至 2026-11-14，`src/main/java` 下有 **247 个实际声明包**、1,370 个业务 Java 源文件，
+每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 50、公共实现 191、Mixin 2。
 
 - 根命名空间为 `hellfirepvp.astralsorcery`；以源文件的 package 声明为准，并核对目录路径。
 - 只给直接包含 Java 类型的生产源码包编写包文档。仅组织子目录而没有直接类型的目录不创建空包。
@@ -15,7 +15,7 @@
 - 该数量是源码快照，不是长期硬编码配额。新增、拆分、合并或删除包时同步更新包文档与下方索引。
 
 包说明表达当前类型的职责和后续维护约束，**不表示所有移植功能均已完成**。
-现有 `TODO_PORT`、`BLOCKED_PORT` 与类内实现说明继续有效；本次不移动类型、不修改签名、注册 ID、包注解或运行行为。
+现有 `TODO_PORT`、`BLOCKED_PORT` 与类内实现说明继续有效；注册层结构调整见 [注册表约定](registries.md)，注册 ID 保持不变。
 
 ## 层级与依赖边界
 
@@ -107,8 +107,8 @@
   不异步延迟注册，不保留已关闭事件继续写入，不绕过冻结注册表。
 - 新 provider 使用稳定、显式、带自身 namespace 的标识；创建的节点/状态遵守各自工厂契约，
   不因 Java 类改名而改变已有存档 ID。NBT 或同步 schema 的改变另附迁移说明。
-- `common.registry.internal` 保存旧注册机制的说明和占位，`InternalRegistryPrimer` 当前为空壳；
-  实际注册通过现有 DeferredRegister 与 common.registry，不恢复另一条平行注册路径。
+- 注册声明与查询统一由 `RegistriesAS` 的 typed handle 管理，`RegistryBootstrap` 装配生命周期；
+  旧 primer 与空注册类已经退役，命名和兼容性规则见 [注册表约定](registries.md)。
 - 配方 JSON、代码驱动配方、配置注册表与扩展注册表各有生命周期，不能因同称 registry 而混用重载/冻结语义。
 - KubeJS 配方字段和示例同时维护 [KubeJS 文档](kubejs/README.md)，避免脚本适配和 Java 配方语义分叉。
 
@@ -412,7 +412,6 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.perk.type.vanilla`](../src/main/java/hellfirepvp/astralsorcery/common/perk/type/vanilla/package-info.java) | 星能力属性与原版实体属性的映射适配。 |
 | [`common.registry`](../src/main/java/hellfirepvp/astralsorcery/common/registry/package-info.java) | 公共内容、配方、世界生成及领域对象的注册装配。 |
 | [`common.registry.extension`](../src/main/java/hellfirepvp/astralsorcery/common/registry/extension/package-info.java) | 扩展注册窗口与可冻结、重复键校验的注册表设施。 |
-| [`common.registry.internal`](../src/main/java/hellfirepvp/astralsorcery/common/registry/internal/package-info.java) | 旧版注册预备机制的移植说明与兼容占位。 |
 | [`common.starlight`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/package-info.java) | 星光源、接收器、传输能力与世界网络入口。 |
 | [`common.starlight.network`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/network/package-info.java) | 星光网络连接、拓扑、区块跟踪与更新调度。 |
 | [`common.starlight.network.handler`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/network/handler/package-info.java) | 星光网络驱动的方块转化处理。 |

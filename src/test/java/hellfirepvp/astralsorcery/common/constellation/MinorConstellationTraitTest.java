@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.constellation;
 
+import hellfirepvp.astralsorcery.common.registry.RegistryConstellations;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,7 +24,7 @@ class MinorConstellationTraitTest {
     @BeforeAll
     static void buildConstellations() {
         //Idempotent: guarded by ConstellationsAS#initialized, and the argument is ignored.
-        ConstellationsAS.init(null);
+        RegistryConstellations.init();
     }
 
     private static ConstellationEffectProperties propertiesOfSize(double size) {

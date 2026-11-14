@@ -418,6 +418,6 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
         super.readFromNBT(nbt);
 
         this.playerUUID = nbt.getUUID("playerUUID");
-        this.constellation = (IMajorConstellation) RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(new ResourceLocation(nbt.getString("constellation")));
+        this.constellation = (IMajorConstellation) RegistriesAS.CONSTELLATIONS.getValue(new ResourceLocation(nbt.getString("constellation")));
     }
 }

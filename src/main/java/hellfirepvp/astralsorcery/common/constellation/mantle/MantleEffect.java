@@ -49,10 +49,6 @@ import java.util.function.Consumer;
  * Created by HellFirePvP
  * Date: 17.02.2020 / 20:13
  */
-// 1.16.5 had this extend ForgeRegistryEntry<MantleEffect> and call setRegistryName(constellation name),
-// with lookups going through RegistriesAS.REGISTRY_MANTLE_EFFECT. IForgeRegistryEntry/setRegistryName are
-// gone in 1.20.1 and a custom forge registry is not needed for a constellation-keyed lookup, so the
-// instances register themselves into MantleEffectHelper instead (see IWeakConstellation#getMantleEffect).
 public abstract class MantleEffect implements ITickHandler {
 
     protected static final Random rand = new Random();
@@ -64,7 +60,6 @@ public abstract class MantleEffect implements ITickHandler {
         this.constellation = constellation;
         this.playerAffectionFlag = new PlayerAffectionFlags.NoOpAffectionFlag(
                 AstralSorcery.key("mantle_effect_" + constellation.getSimpleName()));
-        MantleEffectHelper.register(constellation, this);
 
         // 1.16.5 also ran this.attachEventListeners(MinecraftForge.EVENT_BUS) here; in this tree
         // RegistryMantleEffects#attachEventListeners drives that from CommonProxy#attachEventHandlers

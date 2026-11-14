@@ -26,7 +26,6 @@ public class PerkAttributeType {
 
     private final ResourceLocation registryName;
     private final boolean isOnlyMultiplicative;
-    private volatile PerkAttributeReader builtinReader;
     private final Map<LogicalSide, Set<UUID>> applicationCache = new EnumMap<>(LogicalSide.class);
     private final ReadWriteLock accessLock = new ReentrantReadWriteLock(true);
 
@@ -73,19 +72,7 @@ public class PerkAttributeType {
 
     @Nullable
     public PerkAttributeReader getReader() {
-        PerkAttributeReader registeredReader = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_READERS == null
-                ? null
-                : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_READERS.getValue(this.getRegistryName());
-        return registeredReader != null ? registeredReader : this.builtinReader;
-    }
-
-    /**
-     * Binds the built-in reader for this type. The 1.16.5 implementation used
-     * the internal registry primer; the 1.20.1 port keeps that reader available
-     * even before the Forge custom registry is populated.
-     */
-    public void setBuiltinReader(@Nullable PerkAttributeReader reader) {
-        this.builtinReader = reader;
+        return RegistriesAS.PERK_ATTRIBUTE_READERS.getValue(this.getRegistryName());
     }
 
     @Nonnull

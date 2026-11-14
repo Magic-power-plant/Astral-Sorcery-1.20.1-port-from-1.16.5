@@ -430,7 +430,7 @@ public final class CrystalAttributes {
             if (key == null) {
                 return null;
             }
-            CrystalProperty prop = RegistriesAS.REGISTRY_CRYSTAL_PROPERTIES.getValue(key);
+            CrystalProperty prop = RegistriesAS.CRYSTAL_PROPERTIES.getValue(key);
             if (prop == null) {
                 return null;
             }

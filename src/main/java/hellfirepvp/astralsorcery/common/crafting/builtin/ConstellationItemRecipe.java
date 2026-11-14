@@ -56,7 +56,7 @@ public class ConstellationItemRecipe extends AltarRecipe {
     public void deserializeAdditionalJson(JsonObject recipeObject) throws JsonSyntaxException {
         super.deserializeAdditionalJson(recipeObject);
         //1.16.5: JSONUtils.hasField/getString -> JsonObject#has and GsonHelper.getAsString, and
-        //RegistriesAS.REGISTRY_CONSTELLATIONS.getValue -> ConstellationRegistry.getConstellation.
+        //RegistriesAS.CONSTELLATIONS.getValue -> ConstellationRegistry.getConstellation.
         if (recipeObject.has(KEY_CONSTELLATION_ATTUNE)) {
             IConstellation constellation = ConstellationRegistry.getConstellation(ResourceLocation.tryParse(GsonHelper.getAsString(recipeObject, KEY_CONSTELLATION_ATTUNE)));
             if (constellation instanceof IWeakConstellation weakConstellation) {

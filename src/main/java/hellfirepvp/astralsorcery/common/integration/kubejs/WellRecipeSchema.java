@@ -28,7 +28,7 @@ import net.minecraft.world.level.material.Fluid;
 //      .productionMultiplier(0.7).shatterMultiplier(40.0).color(-51956)
 //
 //Registered under BOTH "astralsorcery:lightwell" and "astralsorcery:well", because
-//common/crafting/RecipeSerializersAS binds the same serializer to both ids. "lightwell" is the canonical one:
+//common/lib/RecipeSerializersAS binds the same serializer to both ids. "lightwell" is the canonical one:
 //it is the id all eleven shipped recipes carry and the only one 1.16.5 ever registered.
 public interface WellRecipeSchema {
 

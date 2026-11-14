@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.integration.crt;
 
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;

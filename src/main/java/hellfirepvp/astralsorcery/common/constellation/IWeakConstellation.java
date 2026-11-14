@@ -24,13 +24,7 @@ import javax.annotation.Nullable;
  */
 public interface IWeakConstellation extends IConstellation {
 
-    //1.16.5 looked both of these up through the forge registries
-    //`RegistriesAS.REGISTRY_CONSTELLATION_EFFECT.getValue(this.getRegistryName())` and
-    //`RegistriesAS.REGISTRY_MANTLE_EFFECT.getValue(this.getRegistryName())`. Forge deleted
-    //IForgeRegistryEntry/#setRegistryName in 1.19, so neither ConstellationEffectProvider nor MantleEffect can
-    //carry its own registry name and neither forge registry is populated in this tree; both types instead
-    //self-register into their own map keyed by exactly the same `constellation.getRegistryName()` at
-    //construction time. The lookups below are those maps, so the resolved value is identical.
+    // Domain helpers query the same typed handles before and after Forge publication.
     @Nullable
     default public ConstellationEffectProvider getConstellationEffect() {
         return ConstellationEffectProvider.getProvider(this);

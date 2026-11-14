@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.integration.jei;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.interaction.jei.JEIInteractionResultRegistry;
 import hellfirepvp.astralsorcery.common.integration.IntegrationJEI;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;

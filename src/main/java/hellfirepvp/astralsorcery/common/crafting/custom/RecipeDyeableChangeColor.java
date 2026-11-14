@@ -1,6 +1,5 @@
 package hellfirepvp.astralsorcery.common.crafting.custom;
 
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;

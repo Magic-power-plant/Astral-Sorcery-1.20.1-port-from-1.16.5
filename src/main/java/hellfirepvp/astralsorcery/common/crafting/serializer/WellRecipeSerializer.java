@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.crafting.serializer;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.WellLiquefaction;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -35,7 +35,7 @@ public class WellRecipeSerializer extends CustomRecipeSerializer<WellLiquefactio
 
     //1.16.5 held the single instance in common/lib/RecipeSerializersAS as WELL_LIQUEFACTION_SERIALIZER and
     //registered it from RegistryRecipeSerializers. common/lib is not owned by this slice, and this tree's
-    //common/crafting/RecipeSerializersAS already binds the "astralsorcery:lightwell" serializer id to the
+    //common/lib/RecipeSerializersAS already binds the "astralsorcery:lightwell" serializer id to the
     //divergent WellLiquefaction.Serializer, so the instance lives here and is not registered yet.
     //TODO_PORT[AS-ALT-05]: move to common/lib/RecipeSerializersAS#WELL_LIQUEFACTION_SERIALIZER and register
     // it instead of the nested WellLiquefaction.Serializer.

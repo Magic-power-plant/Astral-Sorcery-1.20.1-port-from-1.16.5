@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.client.screen.journal.page.RenderPageLiquidInfu
 import hellfirepvp.astralsorcery.client.screen.journal.page.RenderPageText;
 import hellfirepvp.astralsorcery.client.screen.journal.page.RenderablePage;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.data.research.ResearchNode;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
 import net.minecraft.world.item.ItemStack;

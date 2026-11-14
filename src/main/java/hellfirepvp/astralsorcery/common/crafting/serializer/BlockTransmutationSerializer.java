@@ -18,7 +18,7 @@ import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
 //use the nested BlockTransmutation.BlockMatchInformation, a thin subclass of that very class - see the
 //TODO_PORT[AS-ALT-06] note on the nested type for why it still exists. Every use below is unchanged.
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation.BlockMatchInformation;
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.util.block.BlockStateHelper;
@@ -44,7 +44,7 @@ import java.util.List;
 public class BlockTransmutationSerializer extends CustomRecipeSerializer<BlockTransmutation> {
 
     //1.16.5 held the single instance in common/lib/RecipeSerializersAS as BLOCK_TRANSMUTATION_SERIALIZER.
-    //common/lib is not owned by this slice, and this tree's common/crafting/RecipeSerializersAS binds the
+    //common/lib is not owned by this slice, and this tree's common/lib/RecipeSerializersAS binds the
     //"astralsorcery:block_transmutation" id to the nested BlockTransmutation.Serializer shell, which forwards
     //to this instance - so there is still exactly one implementation of the format.
     //TODO_PORT[AS-ALT-05]: move to common/lib/RecipeSerializersAS#BLOCK_TRANSMUTATION_SERIALIZER and register
@@ -83,7 +83,7 @@ public class BlockTransmutationSerializer extends CustomRecipeSerializer<BlockTr
             //1.16.5: new ResourceLocation(String) - deprecated in this Forge version, ResourceLocation.parse
             //is the replacement and throws the very same ResourceLocationException on a malformed id.
             ResourceLocation cstKey = ResourceLocation.parse(GsonHelper.getAsString(json, "constellation"));
-            IConstellation cst = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(cstKey);
+            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(cstKey);
             if (cst == null) {
                 throw new JsonSyntaxException(String.format("Unknown constellation %s!", cstKey.toString()));
             }
@@ -110,7 +110,7 @@ public class BlockTransmutationSerializer extends CustomRecipeSerializer<BlockTr
         //1.20.1, so the registry name is written/read explicitly and resolved against the same registry the
         //value came from - identical wire content (a ResourceLocation) and identical result.
         IWeakConstellation cst = ByteBufUtils.readOptional(buffer,
-                buf -> (IWeakConstellation) RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(ByteBufUtils.readResourceLocation(buf)));
+                buf -> (IWeakConstellation) RegistriesAS.CONSTELLATIONS.getValue(ByteBufUtils.readResourceLocation(buf)));
         BlockTransmutation tr = new BlockTransmutation(recipeId, output, starlight, cst);
         matchInformation.forEach(tr::addInputOption);
         tr.setOutputDisplay(display);

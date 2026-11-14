@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.crafting.serializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class LiquidInfusionSerializer extends CustomRecipeSerializer<LiquidInfusion> {
 
     //1.16.5 held the single instance in common/lib/RecipeSerializersAS as LIQUID_INFUSION_SERIALIZER.
-    //common/lib is not owned by this slice, and this tree's common/crafting/RecipeSerializersAS binds the
+    //common/lib is not owned by this slice, and this tree's common/lib/RecipeSerializersAS binds the
     //"astralsorcery:infuser" id to the nested LiquidInfusion.Serializer shell, which forwards to this
     //instance - so there is still exactly one implementation of the format.
     //TODO_PORT[AS-ALT-05]: move to common/lib/RecipeSerializersAS#LIQUID_INFUSION_SERIALIZER and register

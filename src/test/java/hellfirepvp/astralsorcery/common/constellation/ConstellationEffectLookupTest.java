@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.constellation;
 
+import hellfirepvp.astralsorcery.common.registry.RegistryConstellations;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProvider;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.registry.RegistryConstellationEffects;
@@ -14,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * {@code IWeakConstellation#getConstellationEffect()}. If that lookup returns null, every ritual is inert -
  * the pedestal builds, accepts a crystal, shows a constellation and does nothing.
  *
- * <p>1.16.5 resolved it through {@code REGISTRY_CONSTELLATION_EFFECT.getValue(getRegistryName())}; this tree
- * resolves it through {@link ConstellationEffectProvider}'s own map, populated by
+ * <p>1.16.5 resolved it through {@code CONSTELLATION_EFFECTS.getValue(getRegistryName())}; this tree
+ * resolves it through the canonical typed registry, populated by
  * {@link RegistryConstellationEffects#init()}. These tests pin that the chain closes for all twelve
  * ritual-capable constellations.
  */
@@ -25,7 +26,7 @@ class ConstellationEffectLookupTest {
     static void init() {
         //Both idempotent and free of vanilla-registry access: init() only stores `CEffectX::new` method
         //references, it never constructs a CEffect (that happens in createEffect, which needs a world).
-        ConstellationsAS.init(null);
+        RegistryConstellations.init();
         RegistryConstellationEffects.init();
     }
 

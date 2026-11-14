@@ -1,25 +1,18 @@
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.lib.PerkAttributeTypesAS;
 import hellfirepvp.astralsorcery.common.lib.PerkCustomModifiersAS;
 import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public final class RegistryPerkCustomModifiers {
 
-    private static final Map<ResourceLocation, PerkAttributeModifier> MODIFIERS = new LinkedHashMap<>();
     private static boolean initialized;
 
     private RegistryPerkCustomModifiers() {}
@@ -90,17 +83,8 @@ public final class RegistryPerkCustomModifiers {
         });
     }
 
-    public static synchronized List<PerkAttributeModifier> getModifiers() {
-        return Collections.unmodifiableList(new ArrayList<>(MODIFIERS.values()));
-    }
-
-    @Nullable
-    public static synchronized PerkAttributeModifier get(ResourceLocation key) {
-        return MODIFIERS.get(key);
-    }
-
     private static <T extends PerkAttributeModifier> T register(T modifier) {
-        MODIFIERS.put(modifier.getRegistryName(), modifier);
+        RegistriesAS.PERK_CUSTOM_MODIFIERS.register(modifier);
         return modifier;
     }
 }

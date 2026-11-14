@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.awt.Color;
@@ -141,12 +140,7 @@ public interface IConstellation extends Comparable<IConstellation> {
         return 1.0F;
     }
 
-    //1.16.5 resolved this through `RegistriesAS.REGISTRY_ENGRAVING_EFFECT.getValue(this.getRegistryName())`
-    //(1.16.5 IConstellation.java:103-105). Returning null unconditionally made every engraving inert:
-    //RegistryEngravingEffects#init built all twelve EngravingEffects, but EngravedStarMap - the only reader -
-    //got null for every constellation, so an engraved star map granted no potion, enchantment or modifier.
-    //EngravingEffect now self-registers into its own map under the same constellation registry name, matching
-    //what ConstellationEffectProvider and MantleEffectHelper already do for the two sibling effect types.
+    // Engraving effects share the constellation ID in the canonical custom registry.
     @Nullable
     default EngravingEffect getEngravingEffect() {
         return EngravingEffect.getEffect(this.getRegistryName());

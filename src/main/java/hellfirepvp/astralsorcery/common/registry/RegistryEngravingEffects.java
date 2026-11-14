@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.engraving.EngravingEffect;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
@@ -10,18 +11,18 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static hellfirepvp.astralsorcery.common.lib.EngravingEffectsAS.*;
 
 public class RegistryEngravingEffects {
 
-    private static final List<EngravingEffect> REGISTERED_EFFECTS = new ArrayList<>();
+    private static boolean initialized;
 
     private RegistryEngravingEffects() {}
 
-    public static void init() {
+    public static synchronized void init() {
+        if (initialized) return;
+        initialized = true;
         AEVITAS = newEffect(ConstellationsAS.aevitas)
                 .addEffect(new EngravingEffect.PotionEffect(() -> MobEffects.REGENERATION, 0, 3))
                 .addEffect(new EngravingEffect.EnchantmentEffect(() -> Enchantments.MENDING, 1, 1))
@@ -223,7 +224,6 @@ public class RegistryEngravingEffects {
     }
 
     private static <T extends EngravingEffect> T register(T effect) {
-        REGISTERED_EFFECTS.add(effect);
-        return effect;
+        return RegistriesAS.ENGRAVING_EFFECTS.register(effect);
     }
 }

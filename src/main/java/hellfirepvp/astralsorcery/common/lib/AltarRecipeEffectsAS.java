@@ -17,13 +17,8 @@ import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipe
  * Created by HellFirePvP
  * Date: 27.09.2019 / 22:42
  */
-//AS-LIB-ARE-01 (resolved): these fields are assigned by common/registry/RegistryRecipeTypes#initAltarEffects,
-// which writes each newly created effect into the matching static handle exactly as 1.16.5 does
-// (1.16.5 common/registry/RegistryRecipeTypes.java:58-78). That method runs from
-// RegistryRegistries#registerAltarRecipeEffects during RegisterEvent - mod construction - so every field here is
-// populated before the datapack constructs any AltarRecipe. While they were null, every
-// addAltarEffect(AltarRecipeEffectsAS.X) call site had to stay commented out and no altar recipe carried a
-// single crafting effect.
+// Assigned by RegistryAltarRecipeEffects during RegistryBootstrap.initializeDomainEntries().
+// The same instances are then published into RegistriesAS.ALTAR_RECIPE_EFFECTS at RegisterEvent.
 public class AltarRecipeEffectsAS {
 
     private AltarRecipeEffectsAS() {}

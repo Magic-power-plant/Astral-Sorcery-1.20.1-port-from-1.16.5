@@ -369,7 +369,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     protected void readFromNBT(CompoundTag nbt) {
         super.readFromNBT(nbt);
 
-        this.constellation = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(new ResourceLocation(nbt.getString("constellation")));
+        this.constellation = RegistriesAS.CONSTELLATIONS.getValue(new ResourceLocation(nbt.getString("constellation")));
         this.entityId = nbt.getInt("entityId");
     }
 }

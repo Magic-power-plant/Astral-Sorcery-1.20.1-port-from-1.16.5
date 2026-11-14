@@ -9,10 +9,6 @@
 package hellfirepvp.astralsorcery.common.integration;
 
 import hellfirepvp.astralsorcery.common.constellation.*;
-import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 /**
@@ -62,8 +58,8 @@ public class IntegrationCraftTweaker {
         //   event.registerDump("astralConstellations", "Lists the different Astral Sorcery Constellations", commandContext -> {
         //
         //       CraftTweakerAPI.logDump("List of all known Astral Sorcery Constellations: ");
-        //       RegistriesAS.REGISTRY_CONSTELLATIONS.getKeys().forEach(resourceLocation -> {
-        //           IConstellation constellation = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(resourceLocation);
+        //       RegistriesAS.CONSTELLATIONS.getKeys().forEach(resourceLocation -> {
+        //           IConstellation constellation = RegistriesAS.CONSTELLATIONS.getValue(resourceLocation);
         //           CraftTweakerAPI.logDump("%s\tis weak: %s, is major: %s", resourceLocation.toString(), constellation instanceof IWeakConstellation, constellation instanceof IMajorConstellation);
         //       });
         //
@@ -82,7 +78,7 @@ public class IntegrationCraftTweaker {
         //       return 0;
         //   });
         // Everything the dumps read is ported and available in this tree:
-        // RegistriesAS.REGISTRY_CONSTELLATIONS is an IForgeRegistry<IConstellation> (so getKeys() and
+        // RegistriesAS.CONSTELLATIONS is an IForgeRegistry<IConstellation> (so getKeys() and
         // getValue(ResourceLocation) are unchanged), IWeakConstellation/IMajorConstellation exist under
         // common.constellation, and AltarType.values() exists under common.blockentity.altar. The 1.20.1
         // spellings of the two feedback lines are:

@@ -13,10 +13,10 @@ public class EffectsAS {
 
     private EffectsAS() {}
 
-    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AstralSorcery.MODID);
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AstralSorcery.MODID);
 
-    public static final RegistryObject<EffectBleed> EFFECT_BLEED = EFFECTS.register("bleed", EffectBleed::new);
-    public static final RegistryObject<EffectCheatDeath> EFFECT_CHEAT_DEATH = EFFECTS.register("cheat_death", EffectCheatDeath::new);
-    public static final RegistryObject<EffectDropModifier> EFFECT_DROP_MODIFIER = EFFECTS.register("drop_modifier", EffectDropModifier::new);
+    public static final RegistryObject<EffectBleed> EFFECT_BLEED = MOB_EFFECTS.register("bleed", EffectBleed::new);
+    public static final RegistryObject<EffectCheatDeath> EFFECT_CHEAT_DEATH = MOB_EFFECTS.register("cheat_death", EffectCheatDeath::new);
+    public static final RegistryObject<EffectDropModifier> EFFECT_DROP_MODIFIER = MOB_EFFECTS.register("drop_modifier", EffectDropModifier::new);
 
 }

@@ -157,7 +157,7 @@ public class SimpleAltarRecipeBuilder<T extends SimpleAltarRecipe> extends Custo
     @Override
     protected CustomRecipeSerializer<T> getSerializer() {
         //1.16.5: RecipeSerializersAS.ALTAR_RECIPE_SERIALIZER (common/lib). common/lib is not owned by this
-        //slice and this tree's common/crafting/RecipeSerializersAS already binds the "altar" serializer id to
+        //slice and this tree's common/lib/RecipeSerializersAS already binds the "altar" serializer id to
         //the divergent AltarRecipeSerializer, so the single instance is held on the serializer class itself.
         return (CustomRecipeSerializer<T>) SimpleAltarRecipeSerializer.INSTANCE;
     }

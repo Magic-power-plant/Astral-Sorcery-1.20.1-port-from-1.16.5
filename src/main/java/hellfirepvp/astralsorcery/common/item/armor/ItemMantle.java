@@ -83,7 +83,7 @@ public class ItemMantle extends ArmorItem implements ItemDynamicColor, Constella
     @Override
     public void fillCreativeTab(CreativeModeTab.Output output) {
         output.accept(new ItemStack(this));
-        for (IConstellation cst : RegistriesAS.REGISTRY_CONSTELLATIONS.getValues()) {
+        for (IConstellation cst : RegistriesAS.CONSTELLATIONS.getValues()) {
             if (!(cst instanceof IWeakConstellation)) {
                 continue;
             }

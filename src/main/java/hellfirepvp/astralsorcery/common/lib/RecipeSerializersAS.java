@@ -8,15 +8,18 @@
 
 package hellfirepvp.astralsorcery.common.lib;
 
-import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
+import hellfirepvp.astralsorcery.common.crafting.AltarRecipeSerializer;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
 import hellfirepvp.astralsorcery.common.crafting.DyeableChangeColorRecipe;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
 import hellfirepvp.astralsorcery.common.crafting.WellLiquefaction;
-import net.minecraft.resources.ResourceLocation;
+
+import hellfirepvp.astralsorcery.AstralSorcery;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -26,47 +29,18 @@ import net.minecraftforge.registries.RegistryObject;
  * Created by HellFirePvP
  * Date: 30.06.2019 / 23:32
  */
-//TODO_PORT[AS-LIB-RS-01]: 1.16.5 declares the seven serializer fields below as plain mutable statics of the
-// concrete serializer types (WellRecipeSerializer, LiquidInfusionSerializer, BlockTransmutationSerializer,
-// SimpleAltarRecipeSerializer, LiquidInteractionSerializer and the two RecipeDyeableChangeColor inner
-// serializers) and fills them in common/registry/RegistryRecipeSerializers#registerSerializers, where each
-// serializer takes its registry name from the matching ResourceLocation constant here
-// (1.16.5 common/lib/RecipeSerializersAS.java:38-45, common/crafting/serializer/*.java).
-// The 1.20.1 tree restructured that completely: common/crafting/RecipeSerializersAS registers every
-// serializer through a DeferredRegister under the very same ids, the serializer classes were renamed/nested
-// (AltarRecipeSerializer, WellLiquefaction.Serializer, LiquidInfusion.Serializer, LiquidInteraction.Serializer,
-// BlockTransmutation.Serializer, DyeableChangeColorRecipe.WandColorSerializer/.GatewayColorSerializer) and
-// Forge's IForgeRegistryEntry#setRegistryName is gone, so the ids are passed to DeferredRegister#register
-// instead of being read from this class. common/crafting/** is outside this slice, so this holder keeps the
-// 1.16.5 names alive by aliasing that DeferredRegister; the RegistryObject wrapper and the serializer types
-// are the parts that cannot be made identical to 1.16.5.
-public class RecipeSerializersAS {
+public final class RecipeSerializersAS {
 
     private RecipeSerializersAS() {}
 
-    public static final ResourceLocation WELL_LIQUEFACTION = AstralSorcery.key("lightwell");
-    public static final ResourceLocation LIQUID_INFUSION = AstralSorcery.key("infuser");
-    public static final ResourceLocation BLOCK_TRANSMUTATION = AstralSorcery.key("block_transmutation");
-    public static final ResourceLocation SIMPLE_ALTAR_CRAFTING = AstralSorcery.key("altar");
-    public static final ResourceLocation LIQUID_INTERACTION = AstralSorcery.key("liquid_interaction");
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, AstralSorcery.MODID);
 
-    public static final ResourceLocation CUSTOM_CHANGE_WAND_COLOR = AstralSorcery.key("change_wand_color");
-    public static final ResourceLocation CUSTOM_CHANGE_GATEWAY_COLOR = AstralSorcery.key("change_gateway_color");
-
-    public static final RegistryObject<RecipeSerializer<WellLiquefaction>> WELL_LIQUEFACTION_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.LIGHTWELL;
-    public static final RegistryObject<RecipeSerializer<LiquidInfusion>> LIQUID_INFUSION_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.INFUSER;
-    public static final RegistryObject<RecipeSerializer<BlockTransmutation>> BLOCK_TRANSMUTATION_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.BLOCK_TRANSMUTATION;
-    public static final RegistryObject<RecipeSerializer<AltarRecipe>> ALTAR_RECIPE_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.ALTAR;
-    public static final RegistryObject<RecipeSerializer<LiquidInteraction>> LIQUID_INTERACTION_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.LIQUID_INTERACTION;
-
-    public static final RegistryObject<RecipeSerializer<DyeableChangeColorRecipe>> CUSTOM_CHANGE_WAND_COLOR_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.CHANGE_WAND_COLOR;
-    public static final RegistryObject<RecipeSerializer<DyeableChangeColorRecipe>> CUSTOM_CHANGE_GATEWAY_COLOR_SERIALIZER =
-            hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS.CHANGE_GATEWAY_COLOR;
-
+    public static final RegistryObject<RecipeSerializer<AltarRecipe>> ALTAR = RECIPE_SERIALIZERS.register("altar", AltarRecipeSerializer::new);
+    public static final RegistryObject<RecipeSerializer<WellLiquefaction>> WELL = RECIPE_SERIALIZERS.register("well", WellLiquefaction.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<WellLiquefaction>> LIGHTWELL = RECIPE_SERIALIZERS.register("lightwell", WellLiquefaction.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<LiquidInfusion>> INFUSER = RECIPE_SERIALIZERS.register("infuser", LiquidInfusion.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<LiquidInteraction>> LIQUID_INTERACTION = RECIPE_SERIALIZERS.register("liquid_interaction", LiquidInteraction.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<BlockTransmutation>> BLOCK_TRANSMUTATION = RECIPE_SERIALIZERS.register("block_transmutation", BlockTransmutation.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<DyeableChangeColorRecipe>> CHANGE_WAND_COLOR = RECIPE_SERIALIZERS.register("change_wand_color", DyeableChangeColorRecipe.WandColorSerializer::new);
+    public static final RegistryObject<RecipeSerializer<DyeableChangeColorRecipe>> CHANGE_GATEWAY_COLOR = RECIPE_SERIALIZERS.register("change_gateway_color", DyeableChangeColorRecipe.GatewayColorSerializer::new);
 }

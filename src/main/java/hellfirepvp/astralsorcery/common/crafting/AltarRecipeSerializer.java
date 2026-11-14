@@ -37,7 +37,7 @@ import java.util.List;
  * Date: 12.08.2019 / 19:45
  */
 //TODO_PORT[AS-PKG-01]: 1.16.5 calls this common/crafting/serializer/SimpleAltarRecipeSerializer. Not renamed
-//or moved because the package layout is a tree-wide decision and common/crafting/RecipeSerializersAS binds
+//or moved because the package layout is a tree-wide decision and common/lib/RecipeSerializersAS binds
 //the "astralsorcery:altar" id to this class by name.
 //TODO_PORT[AS-ALT-03]: this is the serializer of the divergent live common/crafting/AltarRecipe; the
 //reference-faithful serializer of common/crafting/recipe/SimpleAltarRecipe is fully ported next to it as
@@ -112,7 +112,7 @@ public class AltarRecipeSerializer implements RecipeSerializer<AltarRecipe> {
             for (int i = 0; i < effectNames.size(); i++) {
                 JsonElement element = effectNames.get(i);
                 ResourceLocation effectKey = ResourceLocation.parse(GsonHelper.convertToString(element, "effects[" + i + "]"));
-                AltarRecipeEffect effect = RegistriesAS.REGISTRY_ALTAR_EFFECTS.getValue(effectKey);
+                AltarRecipeEffect effect = RegistriesAS.ALTAR_RECIPE_EFFECTS.getValue(effectKey);
                 if (effect == null) {
                     throw new JsonSyntaxException("No altar effect for name " + effectKey + "! (Found at: effects[" + i + "])");
                 }
@@ -154,7 +154,7 @@ public class AltarRecipeSerializer implements RecipeSerializer<AltarRecipe> {
         //against the registry the value came from: identical wire content, identical result.
         int effectCount = buffer.readVarInt();
         for (int i = 0; i < effectCount; i++) {
-            AltarRecipeEffect effect = RegistriesAS.REGISTRY_ALTAR_EFFECTS.getValue(buffer.readResourceLocation());
+            AltarRecipeEffect effect = RegistriesAS.ALTAR_RECIPE_EFFECTS.getValue(buffer.readResourceLocation());
             if (effect != null) {
                 recipe.addAltarEffect(effect);
             }

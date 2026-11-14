@@ -51,7 +51,7 @@ public class ConstellationBaseNBTCopyRecipe extends NBTCopyRecipe {
     @Override
     public void deserializeAdditionalJson(JsonObject recipeObject) throws JsonSyntaxException {
         super.deserializeAdditionalJson(recipeObject);
-        //See ConstellationBaseItemRecipe: JSONUtils -> GsonHelper and RegistriesAS.REGISTRY_CONSTELLATIONS ->
+        //See ConstellationBaseItemRecipe: JSONUtils -> GsonHelper and RegistriesAS.CONSTELLATIONS ->
         //ConstellationRegistry.
         if (recipeObject.has(KEY_CONSTELLATION)) {
             ResourceLocation constellationName = ResourceLocation.tryParse(GsonHelper.getAsString(recipeObject, KEY_CONSTELLATION));

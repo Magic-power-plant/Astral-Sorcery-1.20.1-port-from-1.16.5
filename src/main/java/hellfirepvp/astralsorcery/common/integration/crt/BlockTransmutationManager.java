@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.integration.crt;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.util.block.BlockMatchInformation;
 import net.minecraft.resources.ResourceLocation;
@@ -84,10 +84,10 @@ public class BlockTransmutationManager {
         //BLOCKED_PORT[AS-INT-03]: 1.16.5: name = fixRecipeName(name);
         IWeakConstellation weakConstellation = null;
         if (constellationKey != null) {
-            if (!RegistriesAS.REGISTRY_CONSTELLATIONS.containsKey(constellationKey)) {
+            if (!RegistriesAS.CONSTELLATIONS.containsKey(constellationKey)) {
                 throw new IllegalArgumentException("Invalid constellation key: \"" + constellationKey + "\"");
             }
-            IConstellation constellation = RegistriesAS.REGISTRY_CONSTELLATIONS.getValue(constellationKey);
+            IConstellation constellation = RegistriesAS.CONSTELLATIONS.getValue(constellationKey);
             if (constellation instanceof IWeakConstellation) {
                 weakConstellation = (IWeakConstellation) constellation;
             } else {

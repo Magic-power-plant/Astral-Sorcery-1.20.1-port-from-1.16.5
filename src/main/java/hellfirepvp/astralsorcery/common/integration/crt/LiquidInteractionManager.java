@@ -8,9 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.integration.crt;
 
-import hellfirepvp.astralsorcery.common.crafting.InteractionResult;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
-import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.ResultDropItem;
 import hellfirepvp.astralsorcery.common.crafting.ResultSpawnEntity;
 import net.minecraft.resources.ResourceLocation;

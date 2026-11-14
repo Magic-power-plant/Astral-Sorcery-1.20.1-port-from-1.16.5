@@ -13,7 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-// Reference: 1.16.5 ContainerTypesAS + RegistryContainerTypes.init (registry names must match 1:1).
+// Six menu types retain their existing serialized identifiers; screen bindings live in RegistryMenuTypes.
 public class MenuTypesAS {
 
     private MenuTypesAS() {}

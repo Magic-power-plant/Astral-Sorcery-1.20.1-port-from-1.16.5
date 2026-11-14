@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.crafting.serializer;
 
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.crafting.LiquidInteraction;
-import hellfirepvp.astralsorcery.common.crafting.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public class LiquidInteractionSerializer extends CustomRecipeSerializer<LiquidInteraction> {
 
     //1.16.5 held the single instance in common/lib/RecipeSerializersAS as LIQUID_INTERACTION_SERIALIZER.
-    //common/lib is not owned by this slice, and this tree's common/crafting/RecipeSerializersAS binds the
+    //common/lib is not owned by this slice, and this tree's common/lib/RecipeSerializersAS binds the
     //"astralsorcery:liquid_interaction" id to the nested LiquidInteraction.Serializer shell, which forwards
     //to this instance - so there is still exactly one implementation of the format.
     //TODO_PORT[AS-ALT-05]: move to common/lib/RecipeSerializersAS#LIQUID_INTERACTION_SERIALIZER and register

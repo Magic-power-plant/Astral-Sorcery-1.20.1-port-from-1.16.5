@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.crystal;
 
-import hellfirepvp.astralsorcery.common.registry.RegistryCrystalProperties;
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +64,7 @@ class CrystalGeneratorTest {
             assertEquals(budget, generated.getTotalTierLevel());
             for (CrystalAttributes.Attribute attribute : generated.getCrystalAttributes()) {
                 CrystalProperty property = attribute.getProperty();
-                assertSame(property, RegistryCrystalProperties.get(property.getRegistryName()),
+                assertSame(property, RegistriesAS.CRYSTAL_PROPERTIES.getValue(property.getRegistryName()),
                         "generated a property that is not registered: " + property.getRegistryName());
                 assertTrue(attribute.getTier() >= 1 && attribute.getTier() <= property.getMaxTier(),
                         property.getRegistryName() + " tier " + attribute.getTier() + " exceeds " + property.getMaxTier());

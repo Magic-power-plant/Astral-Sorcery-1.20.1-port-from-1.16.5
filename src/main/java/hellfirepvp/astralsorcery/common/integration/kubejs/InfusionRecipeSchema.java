@@ -32,7 +32,7 @@ import net.minecraft.world.level.material.Fluid;
 //  ).consumeMultipleFluids(true)
 //
 //NOTE the id: the recipe TYPE is "astralsorcery:infusion", but the json "type" field names the recipe
-//SERIALIZER, and common/crafting/RecipeSerializersAS registers that serializer as "astralsorcery:infuser"
+//SERIALIZER, and common/lib/RecipeSerializersAS registers that serializer as "astralsorcery:infuser"
 //(the id all 26 shipped recipes carry). There is no "astralsorcery:infusion" serializer, so a schema
 //registered under that id would resolve to no serializer at all - RecipeSchemaType#getSerializer looks the
 //registered id up in the recipe-serializer registry and throws when it misses.

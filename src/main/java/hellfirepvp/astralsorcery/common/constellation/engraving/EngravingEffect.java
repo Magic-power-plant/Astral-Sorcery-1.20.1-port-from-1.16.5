@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.constellation.engraving;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.item.base.TypeEnchantableItem;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -28,26 +29,16 @@ import java.util.stream.Collectors;
 
 public class EngravingEffect {
 
-    //1.16.5 had EngravingEffect extend ForgeRegistryEntry<EngravingEffect>, and
-    //IConstellation#getEngravingEffect() resolved it with
-    //`RegistriesAS.REGISTRY_ENGRAVING_EFFECT.getValue(this.getRegistryName())`. Forge removed
-    //IForgeRegistryEntry/#setRegistryName in 1.19, so this type can no longer carry its own registry name into a
-    //forge registry. This map is the stand-in for that registry lookup, keyed by exactly the same
-    //`constellation.getRegistryName()`, so the resolved value is identical - the same shape
-    //ConstellationEffectProvider#PROVIDER_MAP and MantleEffectHelper#EFFECTS already use for their two siblings.
-    private static final Map<ResourceLocation, EngravingEffect> EFFECT_MAP = new HashMap<>();
-
     private final ResourceLocation registryName;
     private final List<ApplicableEffect> effects = new ArrayList<>();
 
     public EngravingEffect(IConstellation cst) {
         this.registryName = cst.getRegistryName();
-        EFFECT_MAP.put(this.registryName, this);
     }
 
     @Nullable
     public static EngravingEffect getEffect(ResourceLocation constellationName) {
-        return EFFECT_MAP.get(constellationName);
+        return RegistriesAS.ENGRAVING_EFFECTS.getValue(constellationName);
     }
 
     public ResourceLocation getRegistryName() {

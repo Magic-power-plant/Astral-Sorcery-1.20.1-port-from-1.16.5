@@ -13,8 +13,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkAttributeTypes;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkCustomModifiers;
 import hellfirepvp.astralsorcery.common.perk.source.AttributeModifierProvider;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
@@ -22,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -104,12 +101,7 @@ public class AttributeModifierPerk extends AttributeConverterPerk implements Att
                 if (serializedModifier.has("custom")) {
                     String customKey = GsonHelper.getAsString(serializedModifier, "custom");
                     ResourceLocation customModifierKey = ResourceLocation.parse(customKey);
-                    PerkAttributeModifier customModifier = RegistriesAS.REGISTRY_PERK_CUSTOM_MODIFIERS == null
-                            ? null
-                            : RegistriesAS.REGISTRY_PERK_CUSTOM_MODIFIERS.getValue(customModifierKey);
-                    if (customModifier == null) {
-                        customModifier = RegistryPerkCustomModifiers.get(customModifierKey);
-                    }
+                    PerkAttributeModifier customModifier = RegistriesAS.PERK_CUSTOM_MODIFIERS.getValue(customModifierKey);
                     if (customModifier == null) {
                         throw new IllegalArgumentException("Unknown specified modifier: " + customKey);
                     }
@@ -117,12 +109,7 @@ public class AttributeModifierPerk extends AttributeConverterPerk implements Att
                 } else {
                     String typeKey = GsonHelper.getAsString(serializedModifier, "type");
                     ResourceLocation attributeTypeKey = ResourceLocation.parse(typeKey);
-                    PerkAttributeType type = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES == null
-                            ? null
-                            : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValue(attributeTypeKey);
-                    if (type == null) {
-                        type = RegistryPerkAttributeTypes.get(attributeTypeKey);
-                    }
+                    PerkAttributeType type = RegistriesAS.PERK_ATTRIBUTE_TYPES.getValue(attributeTypeKey);
                     if (type == null) {
                         throw new IllegalArgumentException("Unknown modifier type: " + typeKey);
                     }
@@ -166,5 +153,4 @@ public class AttributeModifierPerk extends AttributeConverterPerk implements Att
         }
     }
 }
-
 

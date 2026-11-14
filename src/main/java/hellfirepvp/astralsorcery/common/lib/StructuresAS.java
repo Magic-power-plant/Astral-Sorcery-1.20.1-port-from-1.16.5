@@ -21,14 +21,7 @@ import hellfirepvp.astralsorcery.common.structure.match.util.PatternBlockArray;
  */
 //1.16.5 imports hellfirepvp.observerlib.api.util.PatternBlockArray; the 1.20.1 tree uses the embedded copy
 //at common/structure/match/util/PatternBlockArray (ObserverLib is a source-only reference here).
-//TODO_PORT[AS-LIB-ST-01]: 1.16.5 leaves every field below null until common/registry/RegistryStructures#init
-// assigns it, and that method additionally hands each pattern plus a matching
-// ObserverProviderStructure(struct.getRegistryName()) to the registry primer
-// (1.16.5 common/registry/RegistryStructures.java:31-49). common/registry/** is outside this slice and the
-// 1.20.1 tree has no RegistryStructures, so the fields are initialized here with exactly the instances that
-// method would have created and are left non-final so a ported RegistryStructures can still overwrite them.
-// What is still missing is the registry-primer/ObserverProviderStructure registration - reported as an
-// external change.
+// Shared embedded structure patterns. StructureTypesAS supplies these instances lazily.
 //Class initialization stays lazy: StructureTypesAS only touches these fields from inside its
 //Supplier<PatternBlockArray> lambdas, so no pattern is built before it is first asked for.
 public class StructuresAS {

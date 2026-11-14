@@ -42,9 +42,9 @@ public class IntegrationKubeJS extends KubeJSPlugin {
     //These are RECIPE SERIALIZER ids, not recipe TYPE ids. RecipeJS writes the id a schema is registered
     //under into the recipe json's "type" field, and RecipeSchemaType#getSerializer then resolves that same id
     //against the recipe-serializer registry - so each entry below has to be a key of
-    //common/crafting/RecipeSerializersAS or the schema throws the moment a script uses it.
+    //common/lib/RecipeSerializersAS or the schema throws the moment a script uses it.
     //
-    //Two of the five therefore do NOT match the recipe-type id in common/crafting/RecipeTypesAS:
+    //Two of the five therefore do NOT match the recipe-type id in common/lib/RecipeTypesAS:
     //  recipe type astralsorcery:well      -> serializer astralsorcery:lightwell (and astralsorcery:well)
     //  recipe type astralsorcery:infusion  -> serializer astralsorcery:infuser
     private static final String ALTAR = "altar";

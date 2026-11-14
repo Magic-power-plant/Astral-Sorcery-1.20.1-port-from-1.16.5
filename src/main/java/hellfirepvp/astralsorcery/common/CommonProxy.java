@@ -19,15 +19,13 @@ import hellfirepvp.astralsorcery.common.enchantment.amulet.PlayerAmuletHandler;
 import hellfirepvp.astralsorcery.common.event.handler.*;
 import hellfirepvp.astralsorcery.common.event.helper.*;
 import hellfirepvp.astralsorcery.common.integration.IntegrationCurios;
-import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.CreativeTabsAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlockProperties;
 import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;
-import hellfirepvp.astralsorcery.common.registry.RegistryRegistries;
+import hellfirepvp.astralsorcery.common.registry.RegistryBootstrap;
 import hellfirepvp.astralsorcery.common.registry.RegistryAdvancements;
 import hellfirepvp.astralsorcery.common.registry.RegistryPerks;
-import hellfirepvp.astralsorcery.common.registry.RegistryRecipeTypes;
 import hellfirepvp.astralsorcery.common.registry.RegistryResearch;
 import hellfirepvp.astralsorcery.common.registry.RegistryItems;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfigRegistries;
@@ -41,13 +39,7 @@ import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegi
 import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.data.config.registry.WeightedPerkAttributeRegistry;
 import hellfirepvp.astralsorcery.common.registry.RegistryWorldGeneration;
-import hellfirepvp.astralsorcery.common.registry.RegistryConstellationEffects;
 import hellfirepvp.astralsorcery.common.registry.RegistryMantleEffects;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkAttributeTypes;
-import hellfirepvp.astralsorcery.common.registry.RegistryCrystalProperties;
-import hellfirepvp.astralsorcery.common.registry.RegistryCrystalPropertyUsages;
-import hellfirepvp.astralsorcery.common.registry.RegistryEngravingEffects;
-import hellfirepvp.astralsorcery.common.registry.RegistryEngravingEffects;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffectRegistry;
 import hellfirepvp.astralsorcery.common.constellation.SkyHandler;
 import hellfirepvp.astralsorcery.common.base.patreon.manager.PatreonManager;
@@ -85,7 +77,6 @@ import hellfirepvp.astralsorcery.common.auxiliary.link.LinkHandler;
 import hellfirepvp.astralsorcery.common.perk.PerkAttributeLimiter;
 import hellfirepvp.astralsorcery.common.perk.tick.PerkTickHelper;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -96,8 +87,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -107,7 +96,6 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -171,7 +159,7 @@ public class CommonProxy {
         //WorldFreezingRegistry). Without it TileAttunementAltar iterates an empty registry, so player and crystal
         //attunement never start - a hard progression gate - and rock crystals never grow, celestial and gem
         //clusters never form, crystals never merge, infused wood never forms and Fornax melts nothing.
-        RegistryRecipeTypes.init();
+        RegistryBootstrap.initializeBuiltinRecipes();
         //1.16.5 CommonProxy.java:171. Registers the "astralsorcery:default" perk converter. Every other perk type
         //self-registers from a static field initialiser, but DEFAULT is built with `new Type<>` and only reaches
         //CONVERTER_MAP through here, so without this call PerkTypeHandler#hasCustomType(DEFAULT.getKey()) is false
@@ -188,14 +176,7 @@ public class CommonProxy {
         //right time, exactly as in 1.16.5 (common/CommonProxy.java:169).
         RegistryAdvancements.init();
         ModifierManager.init();
-        ConstellationsAS.init(null);
-        RegistryMantleEffects.init();
-        RegistryConstellationEffects.init();
-        RegistryPerkAttributeTypes.init();
-        RegistryCrystalPropertyUsages.init();
-        RegistryCrystalProperties.init();
-        RegistryCrystalProperties.initDefaultAttributes();
-        RegistryEngravingEffects.init();
+        RegistryBootstrap.initializeDomainEntries();
         attachTickListeners(this.tickManager::register);
 
         this.serverLifecycleListeners.add(ResearchIOThread.getInstance());
@@ -268,9 +249,7 @@ public class CommonProxy {
         modEventBus.addListener(this::onEnqueueIMC);
         modEventBus.addListener(this::onBuildCreativeTabContents);
         modEventBus.addListener(BaseConfiguration::refreshConfiguration);
-        CreativeTabsAS.CREATIVE_TABS.register(modEventBus);
-        RegistryRegistries.init(modEventBus);
-        ConstellationsAS.init(modEventBus);
+        RegistryBootstrap.attach(modEventBus);
     }
 
     //1.16.5 pushed items into a tab at construction time (Item.Properties#group) and overrode Item#fillItemGroup for

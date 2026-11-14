@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
+import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.serializer.LiquidInfusionSerializer;
@@ -277,7 +279,7 @@ public class LiquidInfusion implements Recipe<Container>, GatedRecipe.Progressio
     /**
      * 1.16.5 registered common/crafting/serializer/LiquidInfusionSerializer directly (through
      * common/lib/RecipeSerializersAS#LIQUID_INFUSION_SERIALIZER). This tree binds the "astralsorcery:infuser"
-     * serializer id through the DeferredRegister in common/crafting/RecipeSerializersAS, which needs a nested
+     * serializer id through the DeferredRegister in common/lib/RecipeSerializersAS, which needs a nested
      * type to reference, so this shell exists and forwards to the ported serializer. There is exactly one
      * implementation of the format.
      * TODO_PORT[AS-ALT-05]: register LiquidInfusionSerializer itself and drop this shell once

@@ -41,7 +41,7 @@ import java.util.List;
  * MultiBufferSource, MatrixStack -&gt; PoseStack, MathHelper -&gt; Mth, DefaultVertexFormats -&gt;
  * DefaultVertexFormat, AtlasTexture.LOCATION_BLOCKS_TEXTURE -&gt; TextureAtlas.LOCATION_BLOCKS,
  * Entity#ticksExisted -&gt; Entity#tickCount and #getEntityTexture -&gt; #getTextureLocation. Forge deleted
- * {@code IRenderFactory}, so the reference's inner {@code Factory} class is gone: {@code RegistryEntities}
+ * {@code IRenderFactory}, so the reference's inner {@code Factory} class is gone: {@code RegistryEntityTypes}
  * registers this renderer as {@code RenderEntityGrapplingHook::new} against
  * {@code EntityRenderersEvent.RegisterRenderers}, which is why the constructor is public instead of protected.
  */

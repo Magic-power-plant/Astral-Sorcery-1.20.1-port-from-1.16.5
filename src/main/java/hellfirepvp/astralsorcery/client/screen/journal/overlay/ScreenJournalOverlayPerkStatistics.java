@@ -76,12 +76,12 @@ public class ScreenJournalOverlayPerkStatistics extends ScreenJournalOverlay {
         Player player = Minecraft.getInstance().player;
         PerkAttributeInterpreter interpreter = PerkAttributeInterpreter.defaultInterpreter(player);
 
-        RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValues()
+        RegistriesAS.PERK_ATTRIBUTE_TYPES.getValues()
                 .stream()
                 .filter(t -> t instanceof VanillaPerkAttributeType)
                 .forEach(t -> ((VanillaPerkAttributeType) t).refreshAttribute(player));
 
-        for (PerkAttributeType type : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValues()) {
+        for (PerkAttributeType type : RegistriesAS.PERK_ATTRIBUTE_TYPES.getValues()) {
             if (type.hasTypeApplied(player, LogicalSide.CLIENT)) {
                 PerkStatistic strPerkStat = interpreter.getValue(type);
                 if (strPerkStat != null) {

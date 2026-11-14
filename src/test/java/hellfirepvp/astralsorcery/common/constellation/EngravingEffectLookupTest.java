@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.constellation;
 
+import hellfirepvp.astralsorcery.common.registry.RegistryConstellations;
 import hellfirepvp.astralsorcery.common.constellation.engraving.EngravingEffect;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.EngravingEffectsAS;
@@ -16,15 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * engraved star map granted no potion, enchantment or modifier - a whole feature that compiled, registered and
  * did nothing.
  *
- * <p>1.16.5 resolved the effect through {@code REGISTRY_ENGRAVING_EFFECT.getValue(getRegistryName())}; this tree
- * resolves it through EngravingEffect's own map under the same key. These tests pin that the lookup closes.
+ * <p>1.16.5 resolved the effect through {@code ENGRAVING_EFFECTS.getValue(getRegistryName())}; this tree
+ * resolves it through the canonical typed registry under the same key. These tests pin that the lookup closes.
  */
 class EngravingEffectLookupTest {
 
     @BeforeAll
     static void init() {
         //Both are idempotent; neither touches a vanilla registry.
-        ConstellationsAS.init(null);
+        RegistryConstellations.init();
         RegistryEngravingEffects.init();
     }
 

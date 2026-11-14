@@ -13,7 +13,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkAttributeTypes;
 import hellfirepvp.astralsorcery.common.perk.PerkConverter;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
@@ -175,12 +174,7 @@ public class DynamicAttributeModifier extends PerkAttributeModifier {
     @Nullable
     public static DynamicAttributeModifier deserialize(CompoundTag tag) {
         ResourceLocation typeKey = ResourceLocation.parse(tag.getString("type"));
-        PerkAttributeType attrType = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES == null
-                ? null
-                : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_TYPES.getValue(typeKey);
-        if (attrType == null) {
-            attrType = RegistryPerkAttributeTypes.get(typeKey);
-        }
+        PerkAttributeType attrType = RegistriesAS.PERK_ATTRIBUTE_TYPES.getValue(typeKey);
         if (attrType == null) {
             return null;
         }

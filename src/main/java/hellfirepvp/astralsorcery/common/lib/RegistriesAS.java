@@ -13,43 +13,46 @@ import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.reader.PerkAttributeReader;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
+import hellfirepvp.astralsorcery.common.registry.ForgeRegistryHandle;
 
-import java.util.Collection;
+import java.util.List;
 
-public class RegistriesAS {
-
+/** Custom registry identities and handles. Serialized identifiers deliberately retain their historic spelling. */
+public final class RegistriesAS {
     private RegistriesAS() {}
 
-    public static final ResourceLocation REGISTRY_NAME_CONSTELLATIONS = AstralSorcery.key("constellations");
-    public static final ResourceLocation REGISTRY_NAME_CONSTELLATION_EFFECTS = AstralSorcery.key("constellation_effect");
-    public static final ResourceLocation REGISTRY_NAME_MANTLE_EFFECTS = AstralSorcery.key("mantle_effect");
-    public static final ResourceLocation REGISTRY_NAME_ENGRAVING_EFFECT = AstralSorcery.key("engraving_effect");
-    public static final ResourceLocation REGISTRY_NAME_STRUCTURE_TYPES = AstralSorcery.key("structure_types");
-    public static final ResourceLocation REGISTRY_NAME_PERK_ATTRIBUTE_TYPES = AstralSorcery.key("perk_attribute_types");
-    public static final ResourceLocation REGISTRY_NAME_PERK_ATTRIBUTE_CONVERTERS = AstralSorcery.key("perk_attribute_converters");
-    public static final ResourceLocation REGISTRY_NAME_PERK_CUSTOM_MODIFIERS = AstralSorcery.key("perk_attribute_custom_modifiers");
-    public static final ResourceLocation REGISTRY_NAME_PERK_ATTRIBUTE_READERS = AstralSorcery.key("perk_attribute_readers");
-    public static final ResourceLocation REGISTRY_NAME_CRYSTAL_PROPERTIES = AstralSorcery.key("attribute_crystal_properties");
-    public static final ResourceLocation REGISTRY_NAME_CRYSTAL_USAGES = AstralSorcery.key("attribute_crystal_usages");
-    public static final ResourceLocation REGISTRY_NAME_ALTAR_EFFECTS = AstralSorcery.key("altar_recipe_effects");
+    public static final ForgeRegistryHandle<IConstellation> CONSTELLATIONS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("constellations"), IConstellation::getRegistryName);
+    public static final ForgeRegistryHandle<ConstellationEffectProvider> CONSTELLATION_EFFECTS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("constellation_effect"), ConstellationEffectProvider::getRegistryName);
+    public static final ForgeRegistryHandle<MantleEffect> MANTLE_EFFECTS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("mantle_effect"), effect -> effect.getAssociatedConstellation().getRegistryName());
+    public static final ForgeRegistryHandle<EngravingEffect> ENGRAVING_EFFECTS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("engraving_effect"), EngravingEffect::getRegistryName);
+    public static final ForgeRegistryHandle<StructureType> STRUCTURE_TYPES = new ForgeRegistryHandle<>(
+            AstralSorcery.key("structure_types"), StructureType::getRegistryName);
+    public static final ForgeRegistryHandle<PerkAttributeType> PERK_ATTRIBUTE_TYPES = new ForgeRegistryHandle<>(
+            AstralSorcery.key("perk_attribute_types"), PerkAttributeType::getRegistryName);
+    public static final ForgeRegistryHandle<PerkConverter> PERK_CONVERTERS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("perk_attribute_converters"), PerkConverter::getRegistryName, true);
+    public static final ForgeRegistryHandle<PerkAttributeModifier> PERK_CUSTOM_MODIFIERS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("perk_attribute_custom_modifiers"), PerkAttributeModifier::getRegistryName, true);
+    public static final ForgeRegistryHandle<PerkAttributeReader> PERK_ATTRIBUTE_READERS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("perk_attribute_readers"), reader -> reader.getType().getRegistryName());
+    public static final ForgeRegistryHandle<CrystalProperty> CRYSTAL_PROPERTIES = new ForgeRegistryHandle<>(
+            AstralSorcery.key("attribute_crystal_properties"), CrystalProperty::getRegistryName);
+    public static final ForgeRegistryHandle<PropertyUsage> CRYSTAL_PROPERTY_USAGES = new ForgeRegistryHandle<>(
+            AstralSorcery.key("attribute_crystal_usages"), PropertyUsage::getRegistryName);
+    public static final ForgeRegistryHandle<AltarRecipeEffect> ALTAR_RECIPE_EFFECTS = new ForgeRegistryHandle<>(
+            AstralSorcery.key("altar_recipe_effects"), AltarRecipeEffect::getRegistryName);
 
-    public static IForgeRegistry<IConstellation> REGISTRY_CONSTELLATIONS;
-    public static IForgeRegistry<ConstellationEffectProvider> REGISTRY_CONSTELLATION_EFFECT;
-    public static IForgeRegistry<MantleEffect> REGISTRY_MANTLE_EFFECT;
-    public static IForgeRegistry<EngravingEffect> REGISTRY_ENGRAVING_EFFECT;
-    public static IForgeRegistry<PerkAttributeType> REGISTRY_PERK_ATTRIBUTE_TYPES;
-    public static IForgeRegistry<CrystalProperty> REGISTRY_CRYSTAL_PROPERTIES;
-    public static IForgeRegistry<PropertyUsage> REGISTRY_CRYSTAL_USAGES;
-    public static IForgeRegistry<PerkConverter> REGISTRY_PERK_ATTRIBUTE_CONVERTERS;
-    public static IForgeRegistry<PerkAttributeModifier> REGISTRY_PERK_CUSTOM_MODIFIERS;
-    public static IForgeRegistry<PerkAttributeReader> REGISTRY_PERK_ATTRIBUTE_READERS;
-    public static IForgeRegistry<StructureType> REGISTRY_STRUCTURE_TYPES;
-    public static IForgeRegistry<AltarRecipeEffect> REGISTRY_ALTAR_EFFECTS;
+    private static final List<ForgeRegistryHandle<?>> ALL = List.of(
+            CONSTELLATIONS, CONSTELLATION_EFFECTS, MANTLE_EFFECTS,
+            ENGRAVING_EFFECTS, STRUCTURE_TYPES, PERK_ATTRIBUTE_TYPES,
+            PERK_CONVERTERS, PERK_CUSTOM_MODIFIERS, PERK_ATTRIBUTE_READERS,
+            CRYSTAL_PROPERTIES, CRYSTAL_PROPERTY_USAGES, ALTAR_RECIPE_EFFECTS);
 
-    public static Collection<IConstellation> constellations() {
-        return hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry.getAllConstellations();
+    public static List<ForgeRegistryHandle<?>> all() {
+        return ALL;
     }
-
 }

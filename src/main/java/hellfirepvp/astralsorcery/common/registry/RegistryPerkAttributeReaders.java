@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.perk.reader.PerkAttributeReader;
 import hellfirepvp.astralsorcery.common.perk.reader.ReaderAddedPercentage;
 import hellfirepvp.astralsorcery.common.perk.reader.ReaderBreakSpeed;
@@ -14,23 +15,11 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-/**
- * Built-in perk attribute readers from the 1.16.5 upstream implementation.
- *
- * <p>The old branch inserted these through Astral Sorcery's internal registry
- * primer. The 1.20.1 custom Forge registry is created separately, so each
- * reader is also bound directly to its attribute type. {@link
- * PerkAttributeType#getReader()} still prefers a Forge-registered override
- * when one exists.</p>
- */
+/** Registers the built-in readers into the canonical perk-attribute reader registry. */
 public final class RegistryPerkAttributeReaders {
 
     private static boolean initialized;
-    private static final List<PerkAttributeReader> READERS = new ArrayList<>();
 
     private RegistryPerkAttributeReaders() {}
 
@@ -82,10 +71,6 @@ public final class RegistryPerkAttributeReaders {
         register(new ReaderBreakSpeed(PerkAttributeTypesAS.ATTR_TYPE_INC_HARVEST_SPEED));
     }
 
-    public static synchronized List<PerkAttributeReader> getReaders() {
-        return Collections.unmodifiableList(new ArrayList<>(READERS));
-    }
-
     private static RegistryObject<Attribute> ref(String key) {
         return RegistryObject.create(ResourceLocation.parse(key), ForgeRegistries.ATTRIBUTES);
     }
@@ -97,8 +82,6 @@ public final class RegistryPerkAttributeReaders {
     }
 
     private static <T extends PerkAttributeReader> T register(T reader) {
-        reader.getType().setBuiltinReader(reader);
-        READERS.add(reader);
-        return reader;
+        return RegistriesAS.PERK_ATTRIBUTE_READERS.register(reader);
     }
 }

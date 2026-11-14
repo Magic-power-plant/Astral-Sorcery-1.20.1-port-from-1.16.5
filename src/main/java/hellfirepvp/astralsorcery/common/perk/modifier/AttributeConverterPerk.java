@@ -14,7 +14,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.registry.RegistryPerkConverters;
 import hellfirepvp.astralsorcery.common.perk.PerkConverter;
 import hellfirepvp.astralsorcery.common.perk.ProgressGatedPerk;
 import hellfirepvp.astralsorcery.common.perk.source.AttributeConverterProvider;
@@ -79,12 +78,7 @@ public class AttributeConverterPerk extends ProgressGatedPerk implements Attribu
                 JsonObject serializedConverter = array.get(i).getAsJsonObject();
                 String key = GsonHelper.getAsString(serializedConverter, "name");
                 ResourceLocation converterKey = ResourceLocation.parse(key);
-                PerkConverter converter = RegistriesAS.REGISTRY_PERK_ATTRIBUTE_CONVERTERS == null
-                        ? null
-                        : RegistriesAS.REGISTRY_PERK_ATTRIBUTE_CONVERTERS.getValue(converterKey);
-                if (converter == null) {
-                    converter = RegistryPerkConverters.get(converterKey);
-                }
+                PerkConverter converter = RegistriesAS.PERK_CONVERTERS.getValue(converterKey);
                 if (converter == null) {
                     throw new JsonParseException("Unknown converter: " + key);
                 }

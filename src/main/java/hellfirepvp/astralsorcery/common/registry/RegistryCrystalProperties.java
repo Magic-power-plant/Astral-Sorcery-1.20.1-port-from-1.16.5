@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalProperty;
@@ -12,37 +13,21 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.Inde
 import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
-import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import static hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS.*;
 
-// Restores the registration half of 1.16.5 common/registry/RegistryCrystalProperties.java: every line of its
-// init() (1.16.5 ref:40-61) went through registerProperty (ref:127-130), which handed the instance to the
-// registry primer for common/registry/internal/PrimerEventHandler#registerCrystalProperties (1.16.5
-// common/registry/internal/PrimerEventHandler.java:89, 216-218) to flush into
-// RegistriesAS.REGISTRY_CRYSTAL_PROPERTIES. This tree still creates that registry
-// (RegistryRegistries#buildRegistries) and still reads it - common/crystal/CrystalAttributes.Attribute#deserialize
-// resolves every stored attribute through REGISTRY_CRYSTAL_PROPERTIES#getValue and drops the attribute when the
-// lookup misses - but nothing filled it, so every crystal would have lost all of its attributes the moment its
-// NBT was read back. The primer and RegistryEvent.Register<CrystalProperty> are gone with IForgeRegistryEntry
-// (1.19), so the instances are collected here and RegistryRegistries#registerCrystalProperties flushes them from
-// the key-dispatched RegisterEvent, the same way this package already handles StructureType, AltarRecipeEffect
-// and the perk registries.
+/** Built-in declarations; canonical storage and Forge publication are owned by RegistriesAS. */
 public class RegistryCrystalProperties {
 
-    private static final Map<ResourceLocation, CrystalProperty> PROPERTIES = new LinkedHashMap<>();
+    private static boolean initialized;
+    private static boolean defaultAttributesInitialized;
 
     private RegistryCrystalProperties() {}
 
-    public static void init() {
-        PROPERTIES.clear();
+    public static synchronized void init() {
+        if (initialized) return;
+        initialized = true;
 
         Properties.PROPERTY_SIZE = registerProperty(new PropertySize());
         Properties.PROPERTY_PURITY = registerProperty(new PropertyPurity());
@@ -68,21 +53,14 @@ public class RegistryCrystalProperties {
         Properties.PROPERTY_CST_PELOTRIO =   registerProperty(new PropertyConstellation(ConstellationsAS.pelotrio));
     }
 
-    public static synchronized List<CrystalProperty> getProperties() {
-        return Collections.unmodifiableList(new ArrayList<>(PROPERTIES.values()));
-    }
-
-    @Nullable
-    public static synchronized CrystalProperty get(ResourceLocation key) {
-        return PROPERTIES.get(key);
-    }
-
     private static synchronized <T extends CrystalProperty> T registerProperty(T property) {
-        PROPERTIES.put(property.getRegistryName(), property);
+        RegistriesAS.CRYSTAL_PROPERTIES.register(property);
         return property;
     }
 
-    public static void initDefaultAttributes() {
+    public static synchronized void initDefaultAttributes() {
+        if (defaultAttributesInitialized) return;
+        defaultAttributesInitialized = true;
         Sources.SOURCE_RITUAL_PEDESTAL = new PropertySource<Object, Ritual>(AstralSorcery.key("ritual_network")) {
             @Override
             public Ritual createInstance(Object obj) {
