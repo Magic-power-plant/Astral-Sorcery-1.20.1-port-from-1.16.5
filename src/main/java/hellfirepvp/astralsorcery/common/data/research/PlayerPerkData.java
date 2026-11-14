@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.perk.AbstractPerk;
 import hellfirepvp.astralsorcery.common.perk.PerkLevelManager;
 import hellfirepvp.astralsorcery.common.perk.PerkTree;
 import hellfirepvp.astralsorcery.common.network.packet.PktSyncKnowledge;
-import hellfirepvp.astralsorcery.common.util.MapStream;
+import hellfirepvp.astralsorcery.common.util.collection.MapStream;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

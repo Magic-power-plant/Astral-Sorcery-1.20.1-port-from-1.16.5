@@ -1,5 +1,7 @@
 package hellfirepvp.astralsorcery.common.util;
 
+import hellfirepvp.astralsorcery.common.util.collection.WRItemObject;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.base.Mods;
 import hellfirepvp.astralsorcery.common.lib.GameRulesAS;

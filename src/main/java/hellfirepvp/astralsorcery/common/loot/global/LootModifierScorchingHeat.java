@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.loot.global;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
 import hellfirepvp.astralsorcery.common.util.loot.LootUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.entity.Entity;

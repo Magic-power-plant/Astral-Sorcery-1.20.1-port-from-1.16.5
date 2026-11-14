@@ -13,7 +13,7 @@ package hellfirepvp.astralsorcery.common.block.altar;
 import hellfirepvp.astralsorcery.common.block.BlockAltar;
 import hellfirepvp.astralsorcery.common.block.base.LargeBlock;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
-import hellfirepvp.astralsorcery.common.util.VoxelUtils;
+import hellfirepvp.astralsorcery.common.block.util.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;

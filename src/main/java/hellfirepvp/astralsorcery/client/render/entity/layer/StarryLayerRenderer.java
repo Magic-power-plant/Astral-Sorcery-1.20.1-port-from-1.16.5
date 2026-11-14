@@ -64,7 +64,7 @@ public class StarryLayerRenderer<E extends LivingEntity, M extends HumanoidModel
     private static final HumanoidModel MODEL_ARMOR = new PlayerModel<>(bakePlayerRoot(0F, false), false);
     private static final HumanoidModel MODEL_ARMOR_SMALL = new PlayerModel<>(bakePlayerRoot(0F, true), true);
 
-    private static BiPredicate<Player, EquipmentSlot> renderTest = (p, type) -> false;
+    private static final List<BiPredicate<Player, EquipmentSlot>> renderTests = new java.util.ArrayList<>();
 
     private final boolean slimRender;
 
@@ -78,7 +78,11 @@ public class StarryLayerRenderer<E extends LivingEntity, M extends HumanoidModel
     }
 
     public static void addRender(BiPredicate<Player, EquipmentSlot> render) {
-        renderTest = renderTest.or(render);
+        renderTests.add(render);
+    }
+
+    public static void removeRender(BiPredicate<Player, EquipmentSlot> render) {
+        renderTests.remove(render);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class StarryLayerRenderer<E extends LivingEntity, M extends HumanoidModel
 
         for (EquipmentSlot slotType : EquipmentSlot.values()) {
             if (slotType.getType() == EquipmentSlot.Type.ARMOR) {
-                if (renderTest.test((Player) entity, slotType)) {
+                if (renderTests.stream().anyMatch(test -> test.test((Player) entity, slotType))) {
                     HumanoidModel<E> model = slotType == EquipmentSlot.HEAD ? MODEL_HEAD : this.slimRender ? MODEL_ARMOR_SMALL : MODEL_ARMOR;
                     this.renderArmorPart(renderStack, buffer, slotType, light, model);
                 }

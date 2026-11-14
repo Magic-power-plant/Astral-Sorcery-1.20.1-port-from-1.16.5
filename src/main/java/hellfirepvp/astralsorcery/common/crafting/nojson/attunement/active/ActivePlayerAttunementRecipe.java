@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
@@ -29,7 +31,7 @@ import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktAttunePlayerConstellation;
-import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -338,7 +340,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
 
         if (!startedPlayerSound) {
             startedPlayerSound = true;
-            SoundHelper.playSoundFadeInClient(SoundsAS.ATTUNEMENT_ATLAR_PLAYER_ATTUNE,
+            ClientSoundHelper.playSoundFadeInClient(SoundsAS.ATTUNEMENT_ATLAR_PLAYER_ATTUNE,
                     new Vector3(altar).add(0.5, 1, 0.5),
                     0.7F,
                     1F,

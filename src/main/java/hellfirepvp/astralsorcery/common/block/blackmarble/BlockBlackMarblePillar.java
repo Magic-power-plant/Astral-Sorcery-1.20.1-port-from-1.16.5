@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.block.blackmarble;
 
 import hellfirepvp.astralsorcery.common.block.base.template.BlockBlackMarbleTemplate;
-import hellfirepvp.astralsorcery.common.util.VoxelUtils;
+import hellfirepvp.astralsorcery.common.block.util.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;

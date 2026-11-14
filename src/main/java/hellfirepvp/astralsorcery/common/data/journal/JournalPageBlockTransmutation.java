@@ -6,7 +6,7 @@ import hellfirepvp.astralsorcery.client.screen.journal.page.RenderablePage;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.data.research.ResearchNode;
-import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 

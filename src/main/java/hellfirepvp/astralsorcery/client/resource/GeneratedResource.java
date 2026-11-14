@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.client.resource;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import hellfirepvp.astralsorcery.common.util.NameUtil;
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;

@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.block;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesGlass;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.RitualLinkBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.ritual.RitualLinkBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;

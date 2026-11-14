@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.item.lens;
 
 import hellfirepvp.astralsorcery.common.item.base.client.ItemDynamicColor;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.blockentity.LensBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.LensBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
 import net.minecraft.world.InteractionResult;

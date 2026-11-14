@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.common.perk.node.focus.KeyUlteria;
 import hellfirepvp.astralsorcery.common.perk.node.focus.KeyVorux;
 import hellfirepvp.astralsorcery.common.perk.node.key.*;
 import hellfirepvp.astralsorcery.common.perk.node.root.*;
-import hellfirepvp.astralsorcery.common.util.TriFunction;
+import hellfirepvp.astralsorcery.common.util.function.TriFunction;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;

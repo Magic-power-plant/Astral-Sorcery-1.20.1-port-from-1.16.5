@@ -8,6 +8,10 @@
 
 package hellfirepvp.astralsorcery.client.util;
 
+import org.joml.Matrix4f;
+
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import hellfirepvp.astralsorcery.client.util.draw.RenderInfo;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +25,14 @@ import net.minecraft.world.phys.Vec3;
  * Date: 27.05.2019 / 22:27
  */
 public class RenderingVectorUtils {
+
+    public static VertexConsumer drawPos(Vector3 position, VertexConsumer buffer) {
+        return buffer.vertex(position.getX(), position.getY(), position.getZ());
+    }
+
+    public static VertexConsumer drawPos(Vector3 position, Matrix4f matrix, VertexConsumer buffer) {
+        return buffer.vertex(matrix, (float) position.getX(), (float) position.getY(), (float) position.getZ());
+    }
 
     public static Vector3 getStandardTranslationRemovalVector(float partialTicks) {
         Vec3 view = RenderInfo.getInstance().getARI().getPosition();

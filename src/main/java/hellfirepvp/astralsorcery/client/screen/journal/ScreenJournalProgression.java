@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen.journal;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -466,19 +468,19 @@ public class ScreenJournalProgression extends ScreenJournal {
         } else {
             if (this.searchPrevRct != null && this.searchPrevRct.contains(mouseX, mouseY)) {
                 this.searchPageOffset -= 1;
-                SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+                ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
                 return true;
             }
             if (this.searchNextRct != null && this.searchNextRct.contains(mouseX, mouseY)) {
                 this.searchPageOffset += 1;
-                SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+                ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
                 return true;
             }
             if (this.searchHoverNode != null) {
                 this.searchTextEntry.setText("");
                 //1.16.5: Minecraft#displayGuiScreen -> 1.20.1: Minecraft#setScreen
                 Minecraft.getInstance().setScreen(new ScreenJournalPages(this, this.searchHoverNode));
-                SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+                ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
                 return true;
             }
         }

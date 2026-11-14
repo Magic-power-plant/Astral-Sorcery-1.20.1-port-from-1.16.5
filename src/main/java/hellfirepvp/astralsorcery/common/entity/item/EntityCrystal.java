@@ -6,7 +6,7 @@ import hellfirepvp.astralsorcery.common.entity.InteractableEntity;
 import hellfirepvp.astralsorcery.common.item.ItemChisel;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

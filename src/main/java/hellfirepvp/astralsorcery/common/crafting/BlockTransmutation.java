@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.serializer.BlockTransmutationSerializer;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
-import hellfirepvp.astralsorcery.common.util.block.BlockStateHelper;
+import hellfirepvp.astralsorcery.common.block.util.BlockStateHelper;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
 import hellfirepvp.astralsorcery.common.util.object.PredicateBuilder;
@@ -217,7 +217,7 @@ public class BlockTransmutation implements Recipe<Container>, GatedRecipe.Progre
      * BlockMatchInformation now resolves the display stack lazily instead of at construction time, matching how
      * vanilla's Ingredient.TagValue defers its own tag lookup.
      */
-    public static class BlockMatchInformation extends hellfirepvp.astralsorcery.common.util.block.BlockMatchInformation {
+    public static class BlockMatchInformation extends hellfirepvp.astralsorcery.common.block.util.BlockMatchInformation {
 
         public BlockMatchInformation(TagKey<Block> matchTag) {
             super(matchTag);

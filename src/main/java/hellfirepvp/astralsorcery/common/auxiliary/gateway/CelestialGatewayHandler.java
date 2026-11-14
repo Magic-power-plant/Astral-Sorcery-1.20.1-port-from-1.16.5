@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktUpdateGateways;
-import hellfirepvp.astralsorcery.common.util.SidedReference;
+import hellfirepvp.astralsorcery.common.util.object.SidedReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;

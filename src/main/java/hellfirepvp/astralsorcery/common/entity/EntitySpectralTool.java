@@ -12,7 +12,7 @@ import hellfirepvp.astralsorcery.common.entity.goal.SpectralToolGoal;
 import hellfirepvp.astralsorcery.common.entity.goal.SpectralToolMeleeAttackGoal;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
-import hellfirepvp.astralsorcery.common.util.DamageUtil;
+import hellfirepvp.astralsorcery.common.util.damage.DamageUtil;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

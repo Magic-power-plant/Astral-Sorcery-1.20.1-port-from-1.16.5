@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.constellation.effect;
 
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
-import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.block.util.ILocatable;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;

@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.blockentity.altar;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import hellfirepvp.astralsorcery.client.util.sound.PositionedLoopSound;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.SkyHandler;
@@ -24,15 +26,15 @@ import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
-import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.SpectralRelayBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.base.network.ReceiverBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverAltar;
-import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.block.BlockDiscoverer;
+import hellfirepvp.astralsorcery.common.block.util.BlockDiscoverer;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import hellfirepvp.astralsorcery.common.util.sound.CategorizedSoundEvent;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -144,7 +146,7 @@ public class AltarBlockEntity extends ReceiverBlockEntity<StarlightReceiverAltar
     @OnlyIn(Dist.CLIENT)
     private void doCraftSound() {
         //1.16.5: SoundCategory.BLOCKS -> 1.20.1: SoundSource.BLOCKS
-        if (SoundHelper.getSoundVolume(SoundSource.BLOCKS) > 0) {
+        if (ClientSoundHelper.getSoundVolume(SoundSource.BLOCKS) > 0) {
             ActiveAltarRecipe activeRecipe = this.getActiveRecipe();
             AltarType type = this.getAltarType();
 
@@ -162,13 +164,13 @@ public class AltarBlockEntity extends ReceiverBlockEntity<StarlightReceiverAltar
                         break;
                 }
 
-                clientCraftSound = SoundHelper.playSoundLoopFadeInClient(sound,
+                clientCraftSound = ClientSoundHelper.playSoundLoopFadeInClient(sound,
                         new Vector3(this).add(0.5, 0.5, 0.5),
                         0.6F,
                         1F,
                         false,
                         (s) -> isRemoved() ||
-                                SoundHelper.getSoundVolume(SoundSource.BLOCKS) <= 0 ||
+                                ClientSoundHelper.getSoundVolume(SoundSource.BLOCKS) <= 0 ||
                                 this.getActiveRecipe() == null)
                         .setFadeInTicks(40)
                         .setFadeOutTicks(20);
@@ -177,9 +179,9 @@ public class AltarBlockEntity extends ReceiverBlockEntity<StarlightReceiverAltar
             if (activeRecipe.getState() == ActiveAltarRecipe.CraftingState.WAITING && type.isThisGEThan(AltarType.RADIANCE)) {
 
                 if (clientWaitSound == null || ((PositionedLoopSound) clientWaitSound).hasStoppedPlaying()) {
-                    clientWaitSound = SoundHelper.playSoundLoopFadeInClient(SoundsAS.ALTAR_CRAFT_LOOP_T4_WAITING, new Vector3(this).add(0.5, 0.5, 0.5), 0.7F, 1F, false,
+                    clientWaitSound = ClientSoundHelper.playSoundLoopFadeInClient(SoundsAS.ALTAR_CRAFT_LOOP_T4_WAITING, new Vector3(this).add(0.5, 0.5, 0.5), 0.7F, 1F, false,
                             (s) -> isRemoved() ||
-                                    SoundHelper.getSoundVolume(SoundSource.BLOCKS) <= 0 ||
+                                    ClientSoundHelper.getSoundVolume(SoundSource.BLOCKS) <= 0 ||
                                     this.getActiveRecipe() == null ||
                                     this.getActiveRecipe().getState() != ActiveAltarRecipe.CraftingState.WAITING)
                             .setFadeInTicks(30)
@@ -220,7 +222,7 @@ public class AltarBlockEntity extends ReceiverBlockEntity<StarlightReceiverAltar
             }
 
             if (!isChaining) {
-                SoundHelper.playSoundClientWorld(SoundsAS.ALTAR_CRAFT_FINISH, at, 0.6F, 1F);
+                ClientSoundHelper.playSoundClientWorld(SoundsAS.ALTAR_CRAFT_FINISH, at, 0.6F, 1F);
             }
         }
     }

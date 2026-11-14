@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.PerkAttributeTypesAS;
 import hellfirepvp.astralsorcery.common.perk.PerkAttributeHelper;
 import hellfirepvp.astralsorcery.common.perk.node.RootPerk;
-import hellfirepvp.astralsorcery.common.util.DiminishingMultiplier;
+import hellfirepvp.astralsorcery.common.util.math.DiminishingMultiplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.level.BlockEvent;

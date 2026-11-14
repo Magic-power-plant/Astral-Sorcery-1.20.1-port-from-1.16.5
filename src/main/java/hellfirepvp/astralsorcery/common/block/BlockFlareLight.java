@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMisc;
 import hellfirepvp.astralsorcery.common.effect.Effects;
-import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import hellfirepvp.astralsorcery.common.util.color.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;

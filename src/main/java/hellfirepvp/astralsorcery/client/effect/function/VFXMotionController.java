@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.client.effect.function;
 
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
+import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;

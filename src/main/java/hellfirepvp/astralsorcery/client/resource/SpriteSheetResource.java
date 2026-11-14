@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.client.resource;
 
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
-import hellfirepvp.astralsorcery.common.util.NameUtil;
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;

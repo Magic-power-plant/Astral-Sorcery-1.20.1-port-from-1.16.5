@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.data.config.base;
 
-import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
-import hellfirepvp.astralsorcery.common.util.block.BlockStateList;
+import hellfirepvp.astralsorcery.common.block.util.BlockPredicate;
+import hellfirepvp.astralsorcery.common.block.util.BlockStateList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;

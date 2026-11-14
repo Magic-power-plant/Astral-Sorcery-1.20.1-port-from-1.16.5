@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.crystal;
 
 import hellfirepvp.astralsorcery.common.crystal.source.Ritual;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
-import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.ritual.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;

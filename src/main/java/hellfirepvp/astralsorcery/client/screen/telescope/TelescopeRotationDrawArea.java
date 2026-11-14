@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.client.screen.telescope;
 
 import hellfirepvp.astralsorcery.client.screen.ScreenTelescope;
 import hellfirepvp.astralsorcery.client.screen.base.ConstellationDiscoveryScreen;
-import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 
 import java.awt.*;
 

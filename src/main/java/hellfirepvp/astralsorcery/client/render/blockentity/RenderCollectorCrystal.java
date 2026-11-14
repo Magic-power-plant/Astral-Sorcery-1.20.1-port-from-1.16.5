@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.util.RenderingDrawUtils;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CollectorCrystalBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 

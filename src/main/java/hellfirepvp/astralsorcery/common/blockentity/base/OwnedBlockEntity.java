@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.blockentity.base;
 
-import hellfirepvp.astralsorcery.common.util.PlayerReference;
+import hellfirepvp.astralsorcery.common.entity.util.PlayerReference;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;

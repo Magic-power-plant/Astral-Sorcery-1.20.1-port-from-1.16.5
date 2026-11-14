@@ -13,7 +13,7 @@ import com.mojang.math.Axis;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelObservatory;
 import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
 import hellfirepvp.astralsorcery.common.entity.technical.EntityObservatoryHelper;
-import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.ObservatoryBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

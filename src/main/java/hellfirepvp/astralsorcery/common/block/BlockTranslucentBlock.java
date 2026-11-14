@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.base.BlockFakedState;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.TranslucentBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.utility.TranslucentBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;

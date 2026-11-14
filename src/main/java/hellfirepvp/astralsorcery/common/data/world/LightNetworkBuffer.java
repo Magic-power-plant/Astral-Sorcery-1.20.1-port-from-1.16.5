@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceCl
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionClassRegistry;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.block.BlockStateHelper;
+import hellfirepvp.astralsorcery.common.block.util.BlockStateHelper;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import hellfirepvp.astralsorcery.common.data.world.cache.WorldCacheDomain;
 import hellfirepvp.astralsorcery.common.data.world.cache.base.SectionWorldData;

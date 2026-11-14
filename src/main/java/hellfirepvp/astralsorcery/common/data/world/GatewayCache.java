@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.common.data.world;
 
 import hellfirepvp.astralsorcery.common.auxiliary.gateway.CelestialGatewayHandler;
-import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.gateway.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.PlayerReference;
+import hellfirepvp.astralsorcery.common.entity.util.PlayerReference;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.log.LogCategory;
 import hellfirepvp.astralsorcery.common.util.log.LogUtil;

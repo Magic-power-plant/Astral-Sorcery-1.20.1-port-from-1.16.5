@@ -8,6 +8,10 @@
 
 package hellfirepvp.astralsorcery.client.screen.journal;
 
+import hellfirepvp.astralsorcery.client.util.ClientRecipeHelper;
+
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,7 +36,7 @@ import hellfirepvp.astralsorcery.common.item.ItemConstellationPaper;
 import hellfirepvp.astralsorcery.common.item.armor.ItemMantle;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -293,7 +297,7 @@ public class ScreenJournalConstellationDetail extends ScreenJournal implements N
         if (ResearchHelper.getClientProgress().getTierReached().isThisLaterOrEqual(ProgressionTier.TRAIT_CRAFT)) {
             //1.16.5 addressed the item directly through ItemsAS; in 1.20.1 ItemsAS holds RegistryObject<Item>,
             //so the registered instance has to be unwrapped and cast to reach ItemMantle#getConstellation.
-            AltarRecipe recipe = RecipeHelper.findAltarRecipeResult(stack ->
+            AltarRecipe recipe = ClientRecipeHelper.findAltarRecipeResult(stack ->
                     stack.getItem() instanceof ItemMantle &&
                             this.constellation.equals(((ItemMantle) ItemsAS.MANTLE.get()).getConstellation(stack)));
 
@@ -307,7 +311,7 @@ public class ScreenJournalConstellationDetail extends ScreenJournal implements N
 
     private void drawConstellationPaperRecipePage(PoseStack renderStack, int mouseX, int mouseY, float partialTicks) {
         if (ResearchHelper.getClientProgress().getTierReached().isThisLaterOrEqual(ProgressionTier.TRAIT_CRAFT)) {
-            AltarRecipe recipe = RecipeHelper.findAltarRecipeResult(stack ->
+            AltarRecipe recipe = ClientRecipeHelper.findAltarRecipeResult(stack ->
                     stack.getItem() instanceof ItemConstellationPaper &&
                     this.constellation.equals(((ItemConstellationPaper) ItemsAS.CONSTELLATION_PAPER.get()).getConstellation(stack)));
 
@@ -519,14 +523,14 @@ public class ScreenJournalConstellationDetail extends ScreenJournal implements N
             if (doublePageID >= 1) {
                 this.doublePageID--;
             }
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (rectNext != null && rectNext.contains(mouseX, mouseY)) {
             if (doublePageID <= doublePages - 1) {
                 this.doublePageID++;
             }
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (doublePageID != 0 && lastFramePage != null) {

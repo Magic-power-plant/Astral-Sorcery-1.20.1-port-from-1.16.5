@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.crafting.builder;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
-//1.16.5 imported hellfirepvp.astralsorcery.common.util.block.BlockMatchInformation here. This tree has to use
+//1.16.5 imported hellfirepvp.astralsorcery.common.block.util.BlockMatchInformation here. This tree has to use
 //the nested BlockTransmutation.BlockMatchInformation, a thin subclass of that very class, because
 //BlockTransmutation#addInputOption takes the nested type - see the TODO_PORT[AS-ALT-06] note on the nested
 //type for why it still exists. Every use below is otherwise unchanged.

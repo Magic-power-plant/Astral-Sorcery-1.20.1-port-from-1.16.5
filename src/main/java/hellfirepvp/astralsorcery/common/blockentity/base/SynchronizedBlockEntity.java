@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.blockentity.base;
 
-import hellfirepvp.astralsorcery.common.util.block.ILocatable;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.block.util.ILocatable;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

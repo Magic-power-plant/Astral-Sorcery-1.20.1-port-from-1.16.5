@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.block.base.BlockDynamicColor;
 import net.minecraft.world.level.block.Block;

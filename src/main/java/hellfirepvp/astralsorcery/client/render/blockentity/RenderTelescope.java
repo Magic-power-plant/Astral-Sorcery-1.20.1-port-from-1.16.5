@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelTelescope;
-import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 

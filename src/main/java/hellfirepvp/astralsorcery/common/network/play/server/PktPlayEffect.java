@@ -1,5 +1,15 @@
 package hellfirepvp.astralsorcery.common.network.play.server;
 
+import hellfirepvp.astralsorcery.client.effect.source.TimeStopEffects;
+
+import hellfirepvp.astralsorcery.client.effect.source.CelestialStrikeEffect;
+
+import hellfirepvp.astralsorcery.common.blockentity.gateway.CelestialGatewayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.FountainBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.infusion.InfuserBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.treebeacon.TreeBeaconBlockEntity;
+
 import hellfirepvp.astralsorcery.client.util.MiscPlayEffect;
 import hellfirepvp.astralsorcery.common.auxiliary.BlockBreakHelper;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect;
@@ -7,9 +17,8 @@ import hellfirepvp.astralsorcery.common.constellation.effect.aoe.CEffectAevitas;
 import hellfirepvp.astralsorcery.common.item.lens.ItemColoredLensFire;
 import hellfirepvp.astralsorcery.common.item.wand.ItemWand;
 import hellfirepvp.astralsorcery.common.starlight.network.handler.BlockTransmutationHandler;
-import hellfirepvp.astralsorcery.common.blockentity.*;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.CelestialStrike;
+import hellfirepvp.astralsorcery.common.auxiliary.combat.CelestialStrike;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.time.TimeStopEffectHelper;
 import io.netty.buffer.ByteBuf;
@@ -114,7 +123,7 @@ public class PktPlayEffect {
                 case CROP_GROWTH:
                     return CEffectAevitas::playParticles;
                 case TIME_FREEZE_EFFECT:
-                    return TimeStopEffectHelper::playEntityParticles;
+                    return TimeStopEffects::playEntityParticles;
                 case BEAM_BREAK:
                     return BlockBreakHelper::blockBreakAnimation;
                 case BLOCK_EFFECT:
@@ -124,7 +133,7 @@ public class PktPlayEffect {
                 case MELT_BLOCK:
                     return ItemColoredLensFire::playParticles;
                 case CELESTIAL_STRIKE:
-                    return CelestialStrike::playEffect;
+                    return CelestialStrikeEffect::playEffect;
                 case ALTAR_RECIPE_FINISH:
                     return AltarBlockEntity::finishCraftingEffects;
                 case INFUSER_RECIPE_FINISH:

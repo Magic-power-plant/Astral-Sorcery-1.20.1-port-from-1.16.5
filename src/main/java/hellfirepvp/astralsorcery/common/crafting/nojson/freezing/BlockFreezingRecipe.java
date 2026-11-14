@@ -9,9 +9,9 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.freezing;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
-import hellfirepvp.astralsorcery.common.util.block.BlockPredicates;
-import hellfirepvp.astralsorcery.common.util.block.WorldBlockPos;
+import hellfirepvp.astralsorcery.common.block.util.BlockPredicate;
+import hellfirepvp.astralsorcery.common.block.util.BlockPredicates;
+import hellfirepvp.astralsorcery.common.block.util.WorldBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;

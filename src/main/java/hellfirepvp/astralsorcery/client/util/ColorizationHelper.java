@@ -8,9 +8,11 @@
 
 package hellfirepvp.astralsorcery.client.util;
 
+import hellfirepvp.astralsorcery.client.util.color.ItemColorUtils;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.util.color.ColorThief;
-import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import hellfirepvp.astralsorcery.common.util.color.ColorUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.Unit;
@@ -56,7 +58,7 @@ public class ColorizationHelper {
                 itemColors.put(i, Optional.empty());
             }
         }
-        return itemColors.get(i).map(c -> ColorUtils.overlayColor(c, new Color(ColorUtils.getOverlayColor(stack))));
+        return itemColors.get(i).map(c -> ColorUtils.overlayColor(c, new Color(ItemColorUtils.getOverlayColor(stack))));
     }
 
     @Nonnull
@@ -74,7 +76,7 @@ public class ColorizationHelper {
                 fluidColors.put(fluid, Optional.empty());
             }
         }
-        return fluidColors.get(fluid).map(c -> ColorUtils.overlayColor(c, new Color(ColorUtils.getOverlayColor(stack))));
+        return fluidColors.get(fluid).map(c -> ColorUtils.overlayColor(c, new Color(ItemColorUtils.getOverlayColor(stack))));
     }
 
     private static Optional<Color> getDominantColor(TextureAtlasSprite tas) {

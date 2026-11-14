@@ -26,7 +26,7 @@ import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.data.research.ResearchNode;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
-import hellfirepvp.astralsorcery.common.util.IngredientHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.IngredientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

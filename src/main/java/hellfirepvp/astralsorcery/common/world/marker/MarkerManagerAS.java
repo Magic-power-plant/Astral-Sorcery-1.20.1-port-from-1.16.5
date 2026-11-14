@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
-import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

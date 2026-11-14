@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.lib.FluidsAS;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
 import hellfirepvp.astralsorcery.common.structure.match.util.PatternBlockArray;
-import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CollectorCrystalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

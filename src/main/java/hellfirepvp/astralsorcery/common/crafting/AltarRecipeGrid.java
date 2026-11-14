@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.util.collection.MapStream;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.util.data;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import hellfirepvp.astralsorcery.common.util.block.BlockStateHelper;
+import hellfirepvp.astralsorcery.common.block.util.BlockStateHelper;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierManager;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierSource;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierSourceProvider;

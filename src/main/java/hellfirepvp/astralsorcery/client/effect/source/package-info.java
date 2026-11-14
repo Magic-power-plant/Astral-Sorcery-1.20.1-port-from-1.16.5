@@ -1,9 +1,9 @@
 /**
- * 持续产生特效的源及泉、轨道特效源。
+ * 持续特效源，以及天击和时间冻结的客户端表现。
  *
- * <p>源负责生成与停止表现实例，不接管对应方块实体的服务端生命周期。</p>
+ * <p>只从客户端初始化和事件入口调用；表现状态在所属游戏线程创建、更新和清理。</p>
  *
- * @see hellfirepvp.astralsorcery.client.effect.source.FXSource
+ * @see hellfirepvp.astralsorcery.client.effect.source.CelestialStrikeEffect
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.client.effect.source;

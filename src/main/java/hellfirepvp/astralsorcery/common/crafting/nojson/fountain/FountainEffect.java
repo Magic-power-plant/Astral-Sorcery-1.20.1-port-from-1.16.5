@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.crafting.nojson.fountain;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
-import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;

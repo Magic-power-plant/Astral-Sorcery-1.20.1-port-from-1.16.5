@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.storage;
 
-import hellfirepvp.astralsorcery.common.util.item.ItemComparator;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemComparator;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 

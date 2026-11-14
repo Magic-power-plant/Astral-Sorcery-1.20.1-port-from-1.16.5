@@ -7,7 +7,7 @@ import hellfirepvp.astralsorcery.common.starlight.network.TransmissionWorldHandl
 import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.CrystalTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
-import hellfirepvp.astralsorcery.common.blockentity.LensBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.LensBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 

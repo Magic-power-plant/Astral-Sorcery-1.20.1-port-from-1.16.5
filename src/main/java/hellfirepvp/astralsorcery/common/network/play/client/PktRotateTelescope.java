@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.network.play.client;
 
 import hellfirepvp.astralsorcery.client.screen.ScreenTelescope;
-import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.client.Minecraft;

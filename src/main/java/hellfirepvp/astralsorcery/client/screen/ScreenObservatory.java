@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen;
 
+import hellfirepvp.astralsorcery.common.blockentity.capability.IHasContainer;
+
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -27,7 +29,7 @@ import hellfirepvp.astralsorcery.common.constellation.world.WorldContext;
 import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.event.EventFlags;
-import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.ObservatoryBlockEntity;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

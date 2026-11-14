@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen.journal.page;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -27,7 +29,7 @@ import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
 import hellfirepvp.astralsorcery.common.structure.match.structure.Structure;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -324,17 +326,17 @@ public class RenderPageStructure extends RenderablePage {
             } else {
                 drawSlice = Optional.of(this.getCurrentMinSlice());
             }
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (sliceUp != null && drawSlice.isPresent() && sliceUp.contains(mouseX, mouseZ)) {
             drawSlice = Optional.of(drawSlice.get() + 1);
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (sliceDown != null && drawSlice.isPresent() && sliceDown.contains(mouseX, mouseZ)) {
             drawSlice = Optional.of(drawSlice.get() - 1);
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (switchRequiredAir != null && switchRequiredAir.contains(mouseX, mouseZ)) {
@@ -351,7 +353,7 @@ public class RenderPageStructure extends RenderablePage {
                 }
                 this.drawSlice = Optional.of(yLevel);
             }
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         return false;

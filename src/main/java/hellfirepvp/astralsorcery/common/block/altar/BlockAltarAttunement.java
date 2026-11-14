@@ -12,7 +12,7 @@ package hellfirepvp.astralsorcery.common.block.altar;
 //at common/block/BlockAltar, so the import below points there instead of moving the class.
 import hellfirepvp.astralsorcery.common.block.BlockAltar;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
-import hellfirepvp.astralsorcery.common.util.VoxelUtils;
+import hellfirepvp.astralsorcery.common.block.util.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;

@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.crafting.recipe;
 
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.crafting.helper.RecipeCraftingContext;
-import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.infusion.InfuserBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.IItemHandler;

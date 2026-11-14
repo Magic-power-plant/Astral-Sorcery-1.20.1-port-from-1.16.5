@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMisc;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

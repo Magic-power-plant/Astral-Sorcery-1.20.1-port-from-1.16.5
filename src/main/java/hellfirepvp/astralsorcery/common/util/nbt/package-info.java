@@ -1,7 +1,7 @@
 /**
- * NBT 比较与通用 NBT 数据辅助。
+ * NBT 数据读写与 registry 序列化。
  *
- * <p>保持既有存档键和类型；与 util.data.NBTHelper 区分调用职责，不因同名随意互换。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
  * @see hellfirepvp.astralsorcery.common.util.nbt.NBTComparator
  * @see "仓库 docs/packages.md"

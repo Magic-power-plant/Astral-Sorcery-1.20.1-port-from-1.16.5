@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.item;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.GuiType;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationBaseItem;
@@ -99,7 +101,7 @@ public class ItemConstellationPaper extends Item implements ItemDynamicColor, Co
             return InteractionResultHolder.success(held);
         }
         if (world.isClientSide() && getConstellation(held) != null) {
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             AstralSorcery.getProxy().openGui(player, GuiType.CONSTELLATION_PAPER, getConstellation(held));
         }
         return InteractionResultHolder.success(held);

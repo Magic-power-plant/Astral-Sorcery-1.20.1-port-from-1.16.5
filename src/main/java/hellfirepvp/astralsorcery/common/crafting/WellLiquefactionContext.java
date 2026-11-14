@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting;
 
 import hellfirepvp.astralsorcery.common.crafting.helper.RecipeCraftingContext;
-import hellfirepvp.astralsorcery.common.blockentity.WellBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.WellBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 

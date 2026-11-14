@@ -8,6 +8,10 @@
 
 package hellfirepvp.astralsorcery.client.screen.journal;
 
+import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
+
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -51,7 +55,7 @@ import hellfirepvp.astralsorcery.common.perk.node.socket.GemSocketPerk;
 import hellfirepvp.astralsorcery.common.perk.source.AttributeConverterProvider;
 import hellfirepvp.astralsorcery.common.perk.tree.PerkTreePoint;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -722,7 +726,7 @@ public class ScreenJournalPerkTree extends ScreenJournal {
 
             Vector3 pos = starVec.clone().addX(size * u * 2).addY(size * v * 2);
             //1.16.5: IVertexBuilder#tex -> 1.20.1: VertexConsumer#uv
-            pos.drawPos(offset, vb)
+            RenderingVectorUtils.drawPos(pos, offset, vb)
                     .color(1F, 1F, 1F, alpha)
                     .uv(frameUV.getA() + uLength * u, frameUV.getB() + vLength * v)
                     .endVertex();
@@ -749,7 +753,7 @@ public class ScreenJournalPerkTree extends ScreenJournal {
             int v = ((i + 2) & 2) >> 1;
 
             Vector3 pos = starVec.clone().addX(size * u * 2).addY(size * v * 2);
-            pos.drawPos(offset, batch)
+            RenderingVectorUtils.drawPos(pos, offset, batch)
                     .color(0.8F, 0.1F, 0.1F, 1F)
                     .uv(frameUV.getA() + uLength * u, frameUV.getB() + vLength * v)
                     .endVertex();
@@ -785,7 +789,7 @@ public class ScreenJournalPerkTree extends ScreenJournal {
             int v = ((i + 2) & 2) >> 1;
 
             Vector3 pos = vec00.clone().add(dir.clone().multiply(u)).add(vecV.clone().multiply(v));
-            pos.drawPos(offset, vb)
+            RenderingVectorUtils.drawPos(pos, offset, vb)
                     .color(rR, rG, rB, rA)
                     .uv(u, v)
                     .endVertex();
@@ -1058,7 +1062,7 @@ public class ScreenJournalPerkTree extends ScreenJournal {
                                 }
                             }, 10);
                             //1.16.5: SoundEvents.BLOCK_GLASS_PLACE -> 1.20.1: SoundEvents.GLASS_PLACE
-                            SoundHelper.playSoundClient(SoundEvents.GLASS_PLACE, .35F, 9f);
+                            ClientSoundHelper.playSoundClient(SoundEvents.GLASS_PLACE, .35F, 9f);
                         } else {
                             this.socketMenu = (GemSocketPerk) perk;
                         }
@@ -1100,7 +1104,7 @@ public class ScreenJournalPerkTree extends ScreenJournal {
                 PacketChannel.CHANNEL.sendToServer(pkt);
 
                 closeSocketMenu();
-                SoundHelper.playSoundClient(SoundEvents.GLASS_PLACE, .35F, 9f);
+                ClientSoundHelper.playSoundClient(SoundEvents.GLASS_PLACE, .35F, 9f);
                 return true;
             }
         }
@@ -1125,17 +1129,17 @@ public class ScreenJournalPerkTree extends ScreenJournal {
 
     public void playUnlockAnimation(AbstractPerk perk) {
         this.unlockEffects.put(perk, ClientScheduler.getClientTick());
-        SoundHelper.playSoundClient(SoundsAS.PERK_UNLOCK, 0.3F, 1F);
+        ClientSoundHelper.playSoundClient(SoundsAS.PERK_UNLOCK, 0.3F, 1F);
     }
 
     public void playSealBreakAnimation(AbstractPerk perk) {
         this.updateSearchHighlight();
         this.breakEffects.put(perk, ClientScheduler.getClientTick());
-        SoundHelper.playSoundClient(SoundsAS.PERK_UNSEAL, 0.3F, 1F);
+        ClientSoundHelper.playSoundClient(SoundsAS.PERK_UNSEAL, 0.3F, 1F);
     }
 
     public void playSealApplyAnimation(AbstractPerk perk) {
         this.updateSearchHighlight();
-        SoundHelper.playSoundClient(SoundsAS.PERK_SEAL, 0.3F, 1F);
+        ClientSoundHelper.playSoundClient(SoundsAS.PERK_SEAL, 0.3F, 1F);
     }
 }

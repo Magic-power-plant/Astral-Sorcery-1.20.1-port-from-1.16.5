@@ -19,7 +19,7 @@ import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.source.provider.equipment.EquipmentAttributeModifierProvider;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
 import hellfirepvp.astralsorcery.common.structure.match.util.BlockArray;
-import hellfirepvp.astralsorcery.common.util.block.TreeDiscoverer;
+import hellfirepvp.astralsorcery.common.block.util.TreeDiscoverer;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.object.CacheReference;
 import net.minecraft.core.BlockPos;

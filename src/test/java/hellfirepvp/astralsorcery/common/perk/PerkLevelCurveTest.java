@@ -45,8 +45,8 @@ class PerkLevelCurveTest {
             Field field = PerkLevelManager.class.getDeclaredField("LEVEL_DATA");
             field.setAccessible(true);
             @SuppressWarnings("unchecked")
-            hellfirepvp.astralsorcery.common.util.SidedReference<Object> ref =
-                    (hellfirepvp.astralsorcery.common.util.SidedReference<Object>) field.get(null);
+            hellfirepvp.astralsorcery.common.util.object.SidedReference<Object> ref =
+                    (hellfirepvp.astralsorcery.common.util.object.SidedReference<Object>) field.get(null);
             ref.setData(LogicalSide.SERVER, levelData);
         } catch (ReflectiveOperationException e) {
             throw new AssertionError("could not install LevelData", e);

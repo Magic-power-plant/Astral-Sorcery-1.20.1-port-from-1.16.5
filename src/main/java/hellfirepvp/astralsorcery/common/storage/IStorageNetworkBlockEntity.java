@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.storage;
 
-import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.block.util.ILocatable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 

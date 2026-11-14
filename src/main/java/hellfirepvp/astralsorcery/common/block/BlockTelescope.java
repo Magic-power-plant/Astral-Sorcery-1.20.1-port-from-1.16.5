@@ -6,7 +6,7 @@ import hellfirepvp.astralsorcery.common.GuiType;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesWood;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

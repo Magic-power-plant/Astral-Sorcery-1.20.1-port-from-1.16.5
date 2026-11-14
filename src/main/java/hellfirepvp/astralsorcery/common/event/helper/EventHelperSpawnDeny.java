@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.event.helper;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectRegistry;
 import hellfirepvp.astralsorcery.common.data.config.entry.GeneralConfig;
-import hellfirepvp.astralsorcery.common.util.block.WorldBlockPos;
+import hellfirepvp.astralsorcery.common.block.util.WorldBlockPos;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.tick.TickTokenMap;
 import net.minecraft.world.entity.LivingEntity;

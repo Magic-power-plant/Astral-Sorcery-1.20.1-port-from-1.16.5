@@ -99,9 +99,9 @@ public class FXColorEffectSphere extends EntityVisualFX {
         Vector3 pos = this.getRenderPosition(pTicks);
         pos.subtract(RenderingVectorUtils.getStandardTranslationRemovalVector(pTicks));
         for (SphereBuilder.TriangleFace face : this.sphereFaces) {
-            pos.clone().add(face.getV1()).drawPos(matr, vb).color(r, g, b, alpha).endVertex();
-            pos.clone().add(face.getV2()).drawPos(matr, vb).color(r, g, b, alpha).endVertex();
-            pos.clone().add(face.getV3()).drawPos(matr, vb).color(r, g, b, alpha).endVertex();
+            RenderingVectorUtils.drawPos(pos.clone().add(face.getV1()), matr, vb).color(r, g, b, alpha).endVertex();
+            RenderingVectorUtils.drawPos(pos.clone().add(face.getV2()), matr, vb).color(r, g, b, alpha).endVertex();
+            RenderingVectorUtils.drawPos(pos.clone().add(face.getV3()), matr, vb).color(r, g, b, alpha).endVertex();
         }
     }
 }

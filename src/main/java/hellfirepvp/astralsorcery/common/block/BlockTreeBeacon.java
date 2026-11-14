@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.block.base.BlockStarlightNetwork;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMisc;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.TreeBeaconBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.treebeacon.TreeBeaconBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

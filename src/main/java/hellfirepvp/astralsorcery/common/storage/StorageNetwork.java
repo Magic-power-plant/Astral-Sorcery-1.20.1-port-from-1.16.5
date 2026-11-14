@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.storage;
 
 import com.google.common.collect.Maps;
-import hellfirepvp.astralsorcery.common.util.MapStream;
+import hellfirepvp.astralsorcery.common.util.collection.MapStream;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

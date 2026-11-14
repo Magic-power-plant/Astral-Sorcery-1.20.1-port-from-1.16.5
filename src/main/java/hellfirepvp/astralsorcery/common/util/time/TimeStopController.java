@@ -83,14 +83,6 @@ public class TimeStopController implements ITickHandler {
                 shouldFreeze = false;
             }
             if (shouldFreeze) {
-                if (e.level().isClientSide()) {
-                    int amt = (int) Mth.sqrt(e.getBbWidth() * e.getBbHeight());
-                    for (int i = 0; i < amt; i++) {
-                        if (e.level().random.nextInt(5) == 0) {
-                            TimeStopEffectHelper.playEntityParticles(e);
-                        }
-                    }
-                }
                 if (!e.level().isClientSide()) {
                     TimeStopZone.handleImportantEntityTicks(e);
                     return true;

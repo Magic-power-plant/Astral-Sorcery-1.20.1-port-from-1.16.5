@@ -14,7 +14,7 @@ import com.mojang.math.Axis;
 import hellfirepvp.astralsorcery.client.lib.RenderTypesAS;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelRefractionTable;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.blockentity.RefractionTableBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.refraction.RefractionTableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

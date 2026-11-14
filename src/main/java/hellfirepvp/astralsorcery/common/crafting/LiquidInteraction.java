@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import hellfirepvp.astralsorcery.common.crafting.serializer.LiquidInteractionSerializer;
-import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.RegistryAccess;

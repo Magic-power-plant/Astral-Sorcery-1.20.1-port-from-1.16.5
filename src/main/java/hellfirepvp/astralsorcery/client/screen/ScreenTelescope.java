@@ -26,7 +26,7 @@ import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktRotateTelescope;
-import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

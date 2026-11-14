@@ -1,5 +1,7 @@
 package hellfirepvp.astralsorcery.common;
 
+import hellfirepvp.astralsorcery.common.util.object.SidedReference;
+
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.cmd.CommandAstralSorcery;
@@ -42,7 +44,7 @@ import hellfirepvp.astralsorcery.common.registry.RegistryWorldGeneration;
 import hellfirepvp.astralsorcery.common.registry.RegistryMantleEffects;
 import hellfirepvp.astralsorcery.common.constellation.mantle.MantleEffectRegistry;
 import hellfirepvp.astralsorcery.common.constellation.SkyHandler;
-import hellfirepvp.astralsorcery.common.base.patreon.manager.PatreonManager;
+import hellfirepvp.astralsorcery.common.patreon.manager.PatreonManager;
 import hellfirepvp.astralsorcery.common.util.time.TimeStopController;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktOpenGui;
@@ -52,7 +54,7 @@ import hellfirepvp.astralsorcery.common.perk.PerkTree;
 import hellfirepvp.astralsorcery.common.perk.data.PerkTreeLoader;
 import hellfirepvp.astralsorcery.common.perk.data.PerkTypeHandler;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierManager;
-import hellfirepvp.astralsorcery.common.blockentity.TreeBeaconBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.treebeacon.TreeBeaconBlockEntity;
 import hellfirepvp.astralsorcery.common.auxiliary.gateway.CelestialGatewayHandler;
 import hellfirepvp.astralsorcery.common.starlight.network.StarlightNetworkRegistry;
 import hellfirepvp.astralsorcery.common.starlight.network.StarlightTransmissionHandler;
@@ -61,8 +63,8 @@ import hellfirepvp.astralsorcery.common.starlight.network.TransmissionChunkTrack
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionClassRegistry;
 import hellfirepvp.astralsorcery.common.tick.TickManager;
-import hellfirepvp.astralsorcery.common.util.BlockDropCaptureAssist;
-import hellfirepvp.astralsorcery.common.util.ServerLifecycleListener;
+import hellfirepvp.astralsorcery.common.util.loot.BlockDropCaptureAssist;
+import hellfirepvp.astralsorcery.common.event.ServerLifecycleListener;
 import hellfirepvp.astralsorcery.common.util.collision.CollisionManager;
 import hellfirepvp.astralsorcery.common.auxiliary.BlockBreakHelper;
 import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
@@ -447,6 +449,14 @@ public class CommonProxy {
         //the reader stubbed to false it was never read either, so MantleEffectVicio charged for ritual flight.
         PlayerAffectionFlags.attachTickListeners(registrar);
     }
+
+    public boolean arePatreonEffectsEnabled() { return true; }
+
+    @javax.annotation.Nullable
+    public net.minecraft.world.entity.player.Player findClientPlayer(java.util.UUID id) { return null; }
+
+    @javax.annotation.Nullable
+    public net.minecraft.world.item.crafting.RecipeManager getClientRecipeManager() { return null; }
 
     public void scheduleClientside(Runnable r, int tickDelay) {}
 

@@ -8,6 +8,10 @@
 
 package hellfirepvp.astralsorcery.client.event;
 
+import hellfirepvp.astralsorcery.common.util.time.TimeStopController;
+
+import hellfirepvp.astralsorcery.client.effect.source.TimeStopEffects;
+
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.data.sync.client.ClientTimeFreezeEffects;
 import hellfirepvp.astralsorcery.common.util.time.TimeStopEffectHelper;
@@ -31,6 +35,19 @@ public class TimeStopEffectHandler implements ITickHandler {
 
     private TimeStopEffectHandler() {}
 
+    public static void onLivingTick(net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent event) {
+        net.minecraft.world.entity.LivingEntity entity = event.getEntity();
+        if (!entity.level().isClientSide() || !TimeStopController.isFrozenDirectly(entity)
+                || !entity.isAlive() || entity.getHealth() <= 0) return;
+        if (entity instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragon dragon
+                && dragon.getPhaseManager().getCurrentPhase().getPhase()
+                == net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.DYING) return;
+        int count = (int) net.minecraft.util.Mth.sqrt(entity.getBbWidth() * entity.getBbHeight());
+        for (int i = 0; i < count; i++) {
+            if (entity.level().random.nextInt(5) == 0) TimeStopEffects.playEntityParticles(entity);
+        }
+    }
+
     @Override
     public void tick(TickEvent.Type type, Object... context) {
         // 1.16.5: Minecraft#world -> 1.20.1: Minecraft#level
@@ -40,7 +57,7 @@ public class TimeStopEffectHandler implements ITickHandler {
 
         SyncDataHolder.executeClient(SyncDataHolder.DATA_TIME_FREEZE_EFFECTS, ClientTimeFreezeEffects.class, effects -> {
             List<TimeStopEffectHelper> zoneEffects = effects.getTimeStopEffects(Minecraft.getInstance().level);
-            zoneEffects.forEach(TimeStopEffectHelper::playClientTickEffect);
+            zoneEffects.forEach(TimeStopEffects::playClientTickEffect);
         });
     }
 

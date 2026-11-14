@@ -1,9 +1,9 @@
 /**
- * 渐入渐出及定位循环声音实例。
+ * 本地播放、淡入淡出及定位循环音效。
  *
- * <p>声音生命周期跟随客户端来源，来源消失或会话结束时应停止循环。</p>
+ * <p>只从客户端初始化和事件入口调用；表现状态在所属游戏线程创建、更新和清理。</p>
  *
- * @see hellfirepvp.astralsorcery.client.util.sound.FadeLoopSound
+ * @see hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.client.util.sound;

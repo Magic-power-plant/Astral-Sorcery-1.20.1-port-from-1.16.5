@@ -22,7 +22,7 @@ import hellfirepvp.astralsorcery.common.item.ItemStardust;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import hellfirepvp.astralsorcery.common.blockentity.CelestialCrystalsBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CelestialCrystalsBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;

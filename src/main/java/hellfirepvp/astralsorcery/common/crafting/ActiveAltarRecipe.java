@@ -8,16 +8,18 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.crafting.helper.CraftingFocusStack;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.FluidIngredient;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.SpectralRelayBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

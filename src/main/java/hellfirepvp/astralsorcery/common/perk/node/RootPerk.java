@@ -13,7 +13,7 @@ import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
 import hellfirepvp.astralsorcery.common.perk.modifier.AttributeModifierPerk;
 import hellfirepvp.astralsorcery.common.perk.tree.PerkTreeConstellation;
 import hellfirepvp.astralsorcery.common.perk.tree.PerkTreePoint;
-import hellfirepvp.astralsorcery.common.util.DiminishingMultiplier;
+import hellfirepvp.astralsorcery.common.util.math.DiminishingMultiplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;

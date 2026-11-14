@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
@@ -76,7 +78,7 @@ public class ScreenConstellationPaper extends WidthHeightScreen {
     @Override
     public void removed() {
         super.removed();
-        SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_CLOSE, 1F, 1F);
+        ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_CLOSE, 1F, 1F);
     }
 
     @Override

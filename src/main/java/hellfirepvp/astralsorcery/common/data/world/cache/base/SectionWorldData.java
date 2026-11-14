@@ -4,7 +4,7 @@ import com.google.common.io.Files;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.data.world.cache.CachedWorldData;
 import hellfirepvp.astralsorcery.common.data.world.cache.WorldCacheDomain;
-import hellfirepvp.astralsorcery.common.util.AlternatingSet;
+import hellfirepvp.astralsorcery.common.util.collection.AlternatingSet;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;

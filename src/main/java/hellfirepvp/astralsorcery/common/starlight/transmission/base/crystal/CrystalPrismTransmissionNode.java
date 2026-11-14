@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimplePrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
-import hellfirepvp.astralsorcery.common.blockentity.PrismBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.PrismBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

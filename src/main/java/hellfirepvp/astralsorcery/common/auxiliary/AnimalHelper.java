@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.auxiliary;
 
 import hellfirepvp.astralsorcery.common.CommonProxy;
-import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
+import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;

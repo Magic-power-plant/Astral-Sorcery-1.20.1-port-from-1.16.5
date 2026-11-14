@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunePlayerRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active.ActivePlayerAttunementRecipe;
-import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;

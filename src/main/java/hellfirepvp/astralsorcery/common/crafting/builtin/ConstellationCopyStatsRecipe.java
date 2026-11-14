@@ -19,7 +19,7 @@ import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;

@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen.journal;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
@@ -280,12 +282,12 @@ public class ScreenJournalPages extends ScreenJournal implements NavigationArrow
         }
         if (rectPrev != null && rectPrev.contains(mouseX, mouseY)) {
             this.currentPageOffset -= 1;
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
         if (rectNext != null && rectNext.contains(mouseX, mouseY)) {
             this.currentPageOffset += 1;
-            SoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
+            ClientSoundHelper.playSoundClient(SoundsAS.GUI_JOURNAL_PAGE, 1F, 1F);
             return true;
         }
 

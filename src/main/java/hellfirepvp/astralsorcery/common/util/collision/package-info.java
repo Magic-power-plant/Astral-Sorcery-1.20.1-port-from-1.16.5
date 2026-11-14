@@ -1,9 +1,9 @@
 /**
- * 自定义碰撞处理、管理与玩家可行走空气逻辑。
+ * 射线遍历和自定义碰撞处理。
  *
- * <p>通过碰撞钩子提供形状和判定，状态更新遵守实体与世界生命周期。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
- * @see hellfirepvp.astralsorcery.common.util.collision.CollisionManager
+ * @see hellfirepvp.astralsorcery.common.util.collision.CollisionHelper
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.util.collision;

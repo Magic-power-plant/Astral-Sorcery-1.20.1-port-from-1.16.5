@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.starlight.transmission.registry;
 
 import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode;
-import hellfirepvp.astralsorcery.common.util.NameUtil;
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;

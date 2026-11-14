@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.meltable;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 

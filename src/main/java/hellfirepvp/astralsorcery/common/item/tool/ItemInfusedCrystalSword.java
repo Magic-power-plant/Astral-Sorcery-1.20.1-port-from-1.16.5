@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.common.perk.modifier.DynamicAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.source.provider.equipment.EquipmentAttributeModifierProvider;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
-import hellfirepvp.astralsorcery.common.util.CelestialStrike;
+import hellfirepvp.astralsorcery.common.auxiliary.combat.CelestialStrike;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.object.CacheReference;

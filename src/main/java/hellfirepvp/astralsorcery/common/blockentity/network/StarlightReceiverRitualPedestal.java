@@ -17,11 +17,11 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissio
 import hellfirepvp.astralsorcery.common.starlight.transmission.NodeConnection;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransmissionReceiver;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
-import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.ritual.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.PartialEffectExecutor;
-import hellfirepvp.astralsorcery.common.util.RaytraceAssist;
-import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.util.math.PartialEffectExecutor;
+import hellfirepvp.astralsorcery.common.util.collision.RaytraceAssist;
+import hellfirepvp.astralsorcery.common.block.util.ILocatable;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import hellfirepvp.astralsorcery.common.util.world.SkyCollectionHelper;

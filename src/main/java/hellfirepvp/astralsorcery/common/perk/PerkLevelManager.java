@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.perk;
 
 import hellfirepvp.astralsorcery.common.data.config.entry.PerkConfig;
-import hellfirepvp.astralsorcery.common.util.SidedReference;
+import hellfirepvp.astralsorcery.common.util.object.SidedReference;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;

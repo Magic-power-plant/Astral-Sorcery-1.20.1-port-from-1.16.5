@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen.base;
 
+import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
+
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -197,7 +199,7 @@ public abstract class ConstellationDiscoveryScreen<D extends ConstellationDiscov
 
             Vector3 pos = vec00.clone().add(dir.clone().multiply(u)).add(vecV.clone().multiply(v));
             //1.16.5: IVertexBuilder#tex(float, float) -> 1.20.1: VertexConsumer#uv(float, float)
-            pos.drawPos(offset, buf).color(starBr, starBr, starBr, Math.max(0, starBr)).uv(u, v).endVertex();
+            RenderingVectorUtils.drawPos(pos, offset, buf).color(starBr, starBr, starBr, Math.max(0, starBr)).uv(u, v).endVertex();
         }
     }
 

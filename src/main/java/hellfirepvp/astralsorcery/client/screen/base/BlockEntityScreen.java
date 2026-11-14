@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.client.screen.base;
 
-import hellfirepvp.astralsorcery.common.util.blockentity.NamedInventoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.capability.NamedInventoryBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

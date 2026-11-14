@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.base;
 
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.TriFunction;
+import hellfirepvp.astralsorcery.common.util.function.TriFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;

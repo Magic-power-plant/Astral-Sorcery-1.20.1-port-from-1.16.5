@@ -7,7 +7,7 @@ import hellfirepvp.astralsorcery.common.perk.data.PerkTreeData;
 import hellfirepvp.astralsorcery.common.perk.data.PreparedPerkTreeData;
 import hellfirepvp.astralsorcery.common.perk.node.RootPerk;
 import hellfirepvp.astralsorcery.common.perk.tree.PerkTreePoint;
-import hellfirepvp.astralsorcery.common.util.SidedReference;
+import hellfirepvp.astralsorcery.common.util.object.SidedReference;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.api.distmarker.Dist;

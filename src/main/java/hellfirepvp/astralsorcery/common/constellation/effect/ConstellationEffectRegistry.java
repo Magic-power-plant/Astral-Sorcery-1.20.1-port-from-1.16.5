@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.constellation.effect;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.aoe.*;
 import hellfirepvp.astralsorcery.common.data.config.ServerConfig;
-import hellfirepvp.astralsorcery.common.util.block.ILocatable;
+import hellfirepvp.astralsorcery.common.block.util.ILocatable;
 
 import javax.annotation.Nullable;
 

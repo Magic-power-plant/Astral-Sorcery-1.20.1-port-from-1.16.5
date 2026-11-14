@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.perk.node.KeyPerk;
 import hellfirepvp.astralsorcery.common.perk.tick.PlayerTickPerk;
-import hellfirepvp.astralsorcery.common.blockentity.IlluminatorBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.illumination.IlluminatorBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;

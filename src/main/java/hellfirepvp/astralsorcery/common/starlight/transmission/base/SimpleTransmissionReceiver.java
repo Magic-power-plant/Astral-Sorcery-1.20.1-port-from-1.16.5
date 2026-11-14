@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.starlight.transmission.base;
 
 import hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver;
-import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

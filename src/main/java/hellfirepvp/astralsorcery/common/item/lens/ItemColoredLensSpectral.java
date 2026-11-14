@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.item.lens;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import hellfirepvp.astralsorcery.common.util.PartialEffectExecutor;
+import hellfirepvp.astralsorcery.common.util.math.PartialEffectExecutor;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

@@ -1,9 +1,9 @@
 /**
- * 时间冻结区域、控制器与效果协调。
+ * 日期判断及时间冻结区域、控制器和同步描述。
  *
- * <p>服务端世界状态和客户端表现分侧处理，区域在失效和世界卸载时清理。</p>
+ * <p>共享区域只持有目标、范围和 NBT 数据；时间冻结粒子的生成由客户端 TimeStopEffects 负责。</p>
  *
- * @see hellfirepvp.astralsorcery.common.util.time.TimeStopController
+ * @see hellfirepvp.astralsorcery.common.util.time.CalendarUtils
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.util.time;

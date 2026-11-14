@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.effect.source.orbital;
 
+import hellfirepvp.astralsorcery.client.util.color.ItemColorUtils;
+
 import hellfirepvp.astralsorcery.client.effect.EffectProperties;
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
@@ -17,7 +19,7 @@ import hellfirepvp.astralsorcery.client.effect.source.FXSourceOrbital;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingAtlasParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import hellfirepvp.astralsorcery.common.util.color.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,7 +56,7 @@ public class FXOrbitalInfuserLiquid extends FXSourceOrbital<FXFacingAtlasParticl
                     .setSprite(RenderingUtils.getParticleTexture(display))
                     .selectFraction(0.2F)
                     .setScaleMultiplier(0.03F)
-                    .color((fx, pTicks) -> new Color(ColorUtils.getOverlayColor(display)))
+                    .color((fx, pTicks) -> new Color(ItemColorUtils.getOverlayColor(display)))
                     .alpha(VFXAlphaFunction.proximity(() -> this.infuserTarget, 2F))
                     .motion(VFXMotionController.target(this.infuserTarget::clone, 0.08F))
                     .setMotion(motion);

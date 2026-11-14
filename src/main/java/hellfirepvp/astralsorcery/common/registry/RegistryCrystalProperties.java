@@ -10,8 +10,8 @@ import hellfirepvp.astralsorcery.common.crystal.source.Crystal;
 import hellfirepvp.astralsorcery.common.crystal.source.Ritual;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
-import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
-import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.ritual.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
 
 

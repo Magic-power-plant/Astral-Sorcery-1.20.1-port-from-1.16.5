@@ -1,9 +1,9 @@
 /**
- * 光路、赞助者光点和时间冻结等同步数据的客户端镜像。
+ * 专用服务器可加载的同步镜像和解码器。
  *
- * <p>client 表示数据用途而非物理加载侧；注册时专用服务器也会创建实例，不能依赖客户端渲染类。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
- * @see hellfirepvp.astralsorcery.common.data.sync.client.ClientLightConnections
+ * @see hellfirepvp.astralsorcery.common.data.sync.client.ClientLightBlockEndpoints
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.data.sync.client;

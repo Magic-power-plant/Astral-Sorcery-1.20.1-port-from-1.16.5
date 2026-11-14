@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.crafting.nojson.fountain;
 
-import hellfirepvp.astralsorcery.common.util.block.BlockGeometry;
+import hellfirepvp.astralsorcery.common.block.util.BlockGeometry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 

@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.constellation.effect.base;
 
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectRegistry;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
-import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
+import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

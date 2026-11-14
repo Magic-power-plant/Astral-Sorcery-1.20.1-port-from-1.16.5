@@ -26,7 +26,7 @@ import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.item.ItemInfusedGlass;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktEngraveGlass;
-import hellfirepvp.astralsorcery.common.blockentity.RefractionTableBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.refraction.RefractionTableBlockEntity;
 import hellfirepvp.astralsorcery.common.util.world.WorldSeedCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

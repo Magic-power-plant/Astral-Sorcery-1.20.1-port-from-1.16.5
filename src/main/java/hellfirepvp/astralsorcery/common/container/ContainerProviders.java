@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.container;
 
-import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.ObservatoryBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;

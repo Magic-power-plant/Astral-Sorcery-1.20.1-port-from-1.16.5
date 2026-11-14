@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.network.play.client;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
-import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.gateway.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;

@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.capability;
 import hellfirepvp.astralsorcery.common.data.config.registry.FluidRarityRegistry;
 import hellfirepvp.astralsorcery.common.data.config.registry.sets.FluidRarityEntry;
 import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;
-import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluids;

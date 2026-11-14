@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.meltable;
 
 import hellfirepvp.astralsorcery.common.crafting.nojson.CustomRecipe;
-import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
+import hellfirepvp.astralsorcery.common.block.util.BlockPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

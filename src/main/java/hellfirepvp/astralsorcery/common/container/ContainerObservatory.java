@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.container;
 
 import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.observation.ObservatoryBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;

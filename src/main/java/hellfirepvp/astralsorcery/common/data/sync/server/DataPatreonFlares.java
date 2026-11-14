@@ -8,8 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.data.sync.server;
 
-import hellfirepvp.astralsorcery.common.base.patreon.PatreonEffect;
-import hellfirepvp.astralsorcery.common.base.patreon.entity.PatreonPartialEntity;
+import hellfirepvp.astralsorcery.common.patreon.effect.PatreonEffect;
+import hellfirepvp.astralsorcery.common.patreon.entity.PatreonPartialEntity;
 import hellfirepvp.astralsorcery.common.data.sync.base.AbstractData;
 import hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider;
 import hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader;
@@ -53,16 +53,37 @@ public class DataPatreonFlares extends AbstractData {
         }
         entity.placeNear(player);
 
-        entitiesServer.computeIfAbsent(owner, o -> new HashSet<>()).add(entity);
-
-        flareRemovals.remove(owner);
-        flarePlayerUpdates.add(owner);
-        markDirty();
-
+        addEntity(entity);
         return entity;
     }
 
+    public void addEntity(PatreonPartialEntity entity) {
+        Objects.requireNonNull(entity);
+        UUID owner = entity.getOwnerUUID();
+        Set<PatreonPartialEntity> owned = entitiesServer.computeIfAbsent(owner, id -> new HashSet<>());
+        owned.removeIf(previous -> {
+            if (!previous.getEffectUUID().equals(entity.getEffectUUID())) return false;
+            if (previous != entity) previous.setRemoved(true);
+            return true;
+        });
+        owned.add(entity);
+        updateEntitiesOf(owner);
+    }
+
+    public void retainEntities(UUID owner, Set<UUID> effectIds) {
+        Set<PatreonPartialEntity> owned = entitiesServer.get(owner);
+        if (owned == null) return;
+        boolean changed = owned.removeIf(entity -> {
+            if (effectIds.contains(entity.getEffectUUID())) return false;
+            entity.setRemoved(true);
+            return true;
+        });
+        if (owned.isEmpty()) removeEntities(owner);
+        else if (changed) updateEntitiesOf(owner);
+    }
+
     public void updateEntitiesOf(UUID playerUUID) {
+        if (!entitiesServer.containsKey(playerUUID)) return;
         flareRemovals.remove(playerUUID);
         flarePlayerUpdates.add(playerUUID);
         markDirty();
@@ -73,12 +94,8 @@ public class DataPatreonFlares extends AbstractData {
         flareRemovals.add(playerUUID);
         markDirty();
 
-        //BLOCKED_PORT[AS-SYNC-PF-02]: 1.16.5 flags every owned flare via PatreonPartialEntity#setRemoved(true) here
-        // so the server tick handler drops it. The target's common/base/patreon/entity/PatreonPartialEntity is still
-        // a stub without setRemoved(boolean), so the flag cannot be raised yet.
-        // (1.16.5 common/data/sync/server/DataPatreonFlares.java:77)
-        this.entitiesServer.getOrDefault(playerUUID, Collections.emptySet())
-                .forEach(p -> {});
+        Set<PatreonPartialEntity> removed = this.entitiesServer.remove(playerUUID);
+        if (removed != null) removed.forEach(entity -> entity.setRemoved(true));
     }
 
     @Nonnull
@@ -97,10 +114,22 @@ public class DataPatreonFlares extends AbstractData {
     }
 
     @Override
-    public void clear(ResourceKey<Level> dim) {}
+    public void clear(ResourceKey<Level> dim) {
+        for (UUID owner : new ArrayList<>(entitiesServer.keySet())) {
+            Set<PatreonPartialEntity> owned = entitiesServer.get(owner);
+            boolean changed = owned.removeIf(entity -> {
+                if (!dim.equals(entity.getLastTickedDimension())) return false;
+                entity.setRemoved(true);
+                return true;
+            });
+            if (owned.isEmpty()) removeEntities(owner);
+            else if (changed) updateEntitiesOf(owner);
+        }
+    }
 
     @Override
     public void clearServer() {
+        this.entitiesServer.values().forEach(entities -> entities.forEach(entity -> entity.setRemoved(true)));
         this.entitiesServer.clear();
         this.flarePlayerUpdates.clear();
         this.flareRemovals.clear();
@@ -120,8 +149,7 @@ public class DataPatreonFlares extends AbstractData {
                 entityNBT.putUUID("id", entity.getEffectUUID());
 
                 CompoundTag data = new CompoundTag();
-                //BLOCKED_PORT[AS-SYNC-PF-02]: entity.writeToNBT(data) - PatreonPartialEntity has no NBT support in
-                // the target yet, so the flare payload stays empty. (1.16.5 DataPatreonFlares.java:119)
+                entity.writeToNBT(data);
                 entityNBT.put("data", data);
 
                 entityList.add(entityNBT);
@@ -146,8 +174,7 @@ public class DataPatreonFlares extends AbstractData {
                 entityNBT.putUUID("id", entity.getEffectUUID());
 
                 CompoundTag data = new CompoundTag();
-                //BLOCKED_PORT[AS-SYNC-PF-02]: entity.writeToNBT(data) - see writeAllDataToPacket.
-                // (1.16.5 DataPatreonFlares.java:144)
+                entity.writeToNBT(data);
                 entityNBT.put("data", data);
 
                 entityList.add(entityNBT);

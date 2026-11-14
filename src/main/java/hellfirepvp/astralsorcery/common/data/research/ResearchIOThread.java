@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.data.research;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.common.util.ServerLifecycleListener;
+import hellfirepvp.astralsorcery.common.event.ServerLifecycleListener;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 

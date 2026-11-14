@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active;
 
+import hellfirepvp.astralsorcery.client.util.sound.ClientSoundHelper;
+
 import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
@@ -30,7 +32,7 @@ import hellfirepvp.astralsorcery.common.lib.AdvancementsAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -167,14 +169,14 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
                         altar.getActiveRecipe() != this;
 
         if (this.itemAttuneSound == null || ((FadeLoopSound) this.itemAttuneSound).hasStoppedPlaying()) {
-            this.itemAttuneSound = SoundHelper.playSoundLoopFadeInClient(SoundsAS.ATTUNEMENT_ATLAR_ITEM_LOOP,
+            this.itemAttuneSound = ClientSoundHelper.playSoundLoopFadeInClient(SoundsAS.ATTUNEMENT_ATLAR_ITEM_LOOP,
                     new Vector3(altar).add(0.5, 1, 0.5), 1F, 1F, false, activeTest)
                     .setFadeInTicks(20)
                     .setFadeOutTicks(20);
         }
 
         if (this.getTick() == 0) {
-            SoundHelper.playSoundClientWorld(SoundsAS.ATTUNEMENT_ATLAR_ITEM_START, altar.getBlockPos(), 1F, 1F);
+            ClientSoundHelper.playSoundClientWorld(SoundsAS.ATTUNEMENT_ATLAR_ITEM_START, altar.getBlockPos(), 1F, 1F);
         }
 
         if (this.getTick() >= 80) {
@@ -338,7 +340,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     @OnlyIn(Dist.CLIENT)
     public void stopEffects(AttunementAltarBlockEntity altar) {
         if (isFinished(altar)) {
-            SoundHelper.playSoundClientWorld(SoundsAS.ATTUNEMENT_ATLAR_ITEM_FINISH, altar.getBlockPos().above(), 1F, 1F);
+            ClientSoundHelper.playSoundClientWorld(SoundsAS.ATTUNEMENT_ATLAR_ITEM_FINISH, altar.getBlockPos().above(), 1F, 1F);
         }
         if (innerOrbital1 != null) {
             ((EntityComplexFX) innerOrbital1).requestRemoval();

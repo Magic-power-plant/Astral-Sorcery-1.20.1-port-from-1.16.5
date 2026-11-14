@@ -1,7 +1,7 @@
 /**
- * 基于当前世界注册表的伤害来源构造。
+ * 伤害来源包装和实体攻击辅助。
  *
- * <p>使用调用方的世界上下文，不缓存跨世界的注册表对象。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
  * @see hellfirepvp.astralsorcery.common.util.damage.DamageSourceUtil
  * @see "仓库 docs/packages.md"

@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting.builtin;
 
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

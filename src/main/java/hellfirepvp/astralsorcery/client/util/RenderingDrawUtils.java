@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.util;
 
+import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,7 +19,7 @@ import hellfirepvp.astralsorcery.client.lib.RenderTypesAS;
 import hellfirepvp.astralsorcery.client.render.IDrawRenderTypeBuffer;
 import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
 import hellfirepvp.astralsorcery.client.util.draw.RenderInfo;
-import hellfirepvp.astralsorcery.common.util.MapStream;
+import hellfirepvp.astralsorcery.common.util.collection.MapStream;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -440,10 +442,10 @@ public class RenderingDrawUtils {
         }
 
         Matrix4f matr = renderStack.last().pose();
-        pos.clone().add(v1).subtract(iPos).drawPos(matr, vb).color(r, g, b, alpha).uv(u + uLength, v + vLength).endVertex();
-        pos.clone().add(v2).subtract(iPos).drawPos(matr, vb).color(r, g, b, alpha).uv(u + uLength, v).endVertex();
-        pos.clone().add(v3).subtract(iPos).drawPos(matr, vb).color(r, g, b, alpha).uv(u, v ).endVertex();
-        pos.clone().add(v4).subtract(iPos).drawPos(matr, vb).color(r, g, b, alpha).uv(u, v + vLength).endVertex();
+        RenderingVectorUtils.drawPos(pos.clone().add(v1).subtract(iPos), matr, vb).color(r, g, b, alpha).uv(u + uLength, v + vLength).endVertex();
+        RenderingVectorUtils.drawPos(pos.clone().add(v2).subtract(iPos), matr, vb).color(r, g, b, alpha).uv(u + uLength, v).endVertex();
+        RenderingVectorUtils.drawPos(pos.clone().add(v3).subtract(iPos), matr, vb).color(r, g, b, alpha).uv(u, v ).endVertex();
+        RenderingVectorUtils.drawPos(pos.clone().add(v4).subtract(iPos), matr, vb).color(r, g, b, alpha).uv(u, v + vLength).endVertex();
     }
 
     public static void renderTexturedCubeCentralColorLighted(VertexConsumer buf, PoseStack renderStack,
@@ -526,16 +528,16 @@ public class RenderingDrawUtils {
         Matrix4f matr = renderStack.last().pose();
 
         Vector3 vec = renderStart.clone().rotate(Math.toRadians(90), axis).normalize().multiply(scale).add(renderOffset);
-        vec.drawPos(matr, vb).color(r, g, b, a).uv(u, v + vLength).endVertex();
+        RenderingVectorUtils.drawPos(vec, matr, vb).color(r, g, b, a).uv(u, v + vLength).endVertex();
 
         vec = renderStart.clone().multiply(-1).normalize().multiply(scale).add(renderOffset);
-        vec.drawPos(matr, vb).color(r, g, b, a).uv(u + uLength, v + vLength).endVertex();
+        RenderingVectorUtils.drawPos(vec, matr, vb).color(r, g, b, a).uv(u + uLength, v + vLength).endVertex();
 
         vec = renderStart.clone().rotate(Math.toRadians(270), axis).normalize().multiply(scale).add(renderOffset);
-        vec.drawPos(matr, vb).color(r, g, b, a).uv(u + uLength, v).endVertex();
+        RenderingVectorUtils.drawPos(vec, matr, vb).color(r, g, b, a).uv(u + uLength, v).endVertex();
 
         vec = renderStart.clone().normalize().multiply(scale).add(renderOffset);
-        vec.drawPos(matr, vb).color(r, g, b, a).uv(u, v).endVertex();
+        RenderingVectorUtils.drawPos(vec, matr, vb).color(r, g, b, a).uv(u, v).endVertex();
     }
 
 }

@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.entity.InteractableEntity;
 import hellfirepvp.astralsorcery.common.item.ItemChisel;
 import hellfirepvp.astralsorcery.common.item.ItemStarmetalIngot;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.reflection.ReflectionHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;

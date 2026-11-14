@@ -8,16 +8,18 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
+import hellfirepvp.astralsorcery.common.util.collection.MapStream;
+
 import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.serializer.LiquidInfusionSerializer;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
-import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.infusion.InfuserBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

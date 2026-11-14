@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.util;
 
+import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -149,13 +151,13 @@ public class RenderingConstellationUtils {
             Vector3 offsetRender = thisOffset.clone().add(0, 0.005, 0);
             offsetRender = offsetRender.add(drawOffset);
             Vector3 pos2 = offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(1));
-            pos2.drawPos(matr, buf).color(r, g, b, outlineAlpha).uv(0, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos2, matr, buf).color(r, g, b, outlineAlpha).uv(0, 1).endVertex();
             pos2 =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(1));
-            pos2.drawPos(matr, buf).color(r, g, b, outlineAlpha).uv(1, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos2, matr, buf).color(r, g, b, outlineAlpha).uv(1, 1).endVertex();
             pos2 =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(0));
-            pos2.drawPos(matr, buf).color(r, g, b, outlineAlpha).uv(1, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos2, matr, buf).color(r, g, b, outlineAlpha).uv(1, 0).endVertex();
             pos2 =         offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(0));
-            pos2.drawPos(matr, buf).color(r, g, b, outlineAlpha).uv(0, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos2, matr, buf).color(r, g, b, outlineAlpha).uv(0, 0).endVertex();
         }
 
         buf = buffer.getBuffer(RenderTypesAS.CONSTELLATION_WORLD_CONNECTION);
@@ -170,16 +172,16 @@ public class RenderingConstellationUtils {
             offsetRender.add(drawOffset);
 
             Vector3 pos = offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(1));
-            pos.drawPos(matr, buf).color(r, g, b, connAlpha).uv(1, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, connAlpha).uv(1, 0).endVertex();
 
             pos =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(1));
-            pos.drawPos(matr, buf).color(r, g, b, connAlpha).uv(0, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, connAlpha).uv(0, 0).endVertex();
 
             pos =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(0));
-            pos.drawPos(matr, buf).color(r, g, b, connAlpha).uv(0, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, connAlpha).uv(0, 1).endVertex();
 
             pos =         offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(0));
-            pos.drawPos(matr, buf).color(r, g, b, connAlpha).uv(1, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, connAlpha).uv(1, 1).endVertex();
         }
 
         dirU = new Vector3(starSize * 2, 0, 0);
@@ -191,13 +193,13 @@ public class RenderingConstellationUtils {
             offsetRender.add(drawOffset);
 
             Vector3 pos = offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(1));
-            pos.drawPos(matr, buf).color(r, g, b, starAlpha).uv(1, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, starAlpha).uv(1, 0).endVertex();
             pos =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(1));
-            pos.drawPos(matr, buf).color(r, g, b, starAlpha).uv(0, 0).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, starAlpha).uv(0, 0).endVertex();
             pos =         offsetRender.clone().add(dirU.clone().multiply(1)).add(dirV.clone().multiply(0));
-            pos.drawPos(matr, buf).color(r, g, b, starAlpha).uv(0, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, starAlpha).uv(0, 1).endVertex();
             pos =         offsetRender.clone().add(dirU.clone().multiply(0)).add(dirV.clone().multiply(0));
-            pos.drawPos(matr, buf).color(r, g, b, starAlpha).uv(1, 1).endVertex();
+            RenderingVectorUtils.drawPos(pos, matr, buf).color(r, g, b, starAlpha).uv(1, 1).endVertex();
         }
     }
 

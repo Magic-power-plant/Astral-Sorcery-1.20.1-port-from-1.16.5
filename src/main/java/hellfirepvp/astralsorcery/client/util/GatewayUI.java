@@ -12,7 +12,7 @@ import hellfirepvp.astralsorcery.common.auxiliary.gateway.CelestialGatewayHandle
 import hellfirepvp.astralsorcery.common.constellation.ConstellationGenerator;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
-import hellfirepvp.astralsorcery.common.util.PlayerReference;
+import hellfirepvp.astralsorcery.common.entity.util.PlayerReference;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.object.ObjectReference;
 import net.minecraft.client.Minecraft;

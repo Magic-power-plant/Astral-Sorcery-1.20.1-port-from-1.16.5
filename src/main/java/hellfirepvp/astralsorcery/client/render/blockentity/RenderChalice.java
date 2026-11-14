@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.render.blockentity;
 
+import hellfirepvp.astralsorcery.client.util.color.ItemColorUtils;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -15,8 +17,8 @@ import hellfirepvp.astralsorcery.client.lib.RenderTypesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingDrawUtils;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
-import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
-import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.util.color.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -60,7 +62,7 @@ public class RenderChalice extends CustomBlockEntityRenderer<ChaliceBlockEntity>
         //ticked at :95-100, and the two getters are at :335/:340. The renderer was simply discarding them, so the
         //liquid cube hung motionless. (1.16.5 client/render/tile/RenderChalice.java:52, 66-68)
         Vector3 rotation = RenderingVectorUtils.interpolate(blockEntity.getPrevRotation(), blockEntity.getRotation(), pTicks);
-        Color color = new Color(ColorUtils.getOverlayColor(stack));
+        Color color = new Color(ItemColorUtils.getOverlayColor(stack));
         float percSize = 0.125F + (blockEntity.getTank().getPercentageFilled() * 0.375F);
 
         float ulength = tas.getU1() - tas.getU0();

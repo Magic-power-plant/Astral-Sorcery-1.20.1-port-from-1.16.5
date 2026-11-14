@@ -13,7 +13,7 @@ import com.mojang.math.Axis;
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelAttunementAltar;
 import hellfirepvp.astralsorcery.client.util.RenderingVectorUtils;
-import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;

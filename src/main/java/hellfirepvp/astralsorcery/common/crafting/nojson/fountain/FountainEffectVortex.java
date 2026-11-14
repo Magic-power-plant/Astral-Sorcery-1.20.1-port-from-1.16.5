@@ -22,9 +22,9 @@ import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegi
 import hellfirepvp.astralsorcery.common.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperEntityFreeze;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
+import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

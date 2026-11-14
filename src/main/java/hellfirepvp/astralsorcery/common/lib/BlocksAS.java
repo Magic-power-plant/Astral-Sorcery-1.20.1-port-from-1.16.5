@@ -1,5 +1,7 @@
 package hellfirepvp.astralsorcery.common.lib;
 
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.block.BlockChalice;
 import hellfirepvp.astralsorcery.common.block.BlockFountain;
@@ -31,7 +33,7 @@ import hellfirepvp.astralsorcery.common.item.block.ItemBlockLens;
 import hellfirepvp.astralsorcery.common.item.block.ItemBlockPrism;
 import hellfirepvp.astralsorcery.common.block.crystal.BlockCelestialCollectorCrystal;
 import hellfirepvp.astralsorcery.common.block.crystal.BlockRockCollectorCrystal;
-import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.crystal.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.block.BlockInfuser;
 //The three pillar/column blocks carry an EnumProperty "pillartype" (top/middle/bottom) that their shipped
 //blockstate json indexes on. Registering them as bare Block instances left them with no properties at all, so

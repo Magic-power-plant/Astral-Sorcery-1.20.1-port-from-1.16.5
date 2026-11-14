@@ -1,0 +1,215 @@
+package hellfirepvp.astralsorcery.common.block.util;
+
+import com.google.common.collect.Lists;
+import hellfirepvp.astralsorcery.common.util.MiscUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+public class BlockDiscoverer {
+
+    public static Set<BlockPos> discoverBlocksWithSameStateAroundChain(Level world, BlockPos origin, BlockState match, int length, @Nullable Direction originalBreakDirection, BlockPredicate addCheck) {
+        Set<BlockPos> out = new HashSet<>();
+
+        BlockPos offset = new BlockPos(origin);
+        lbl: while (length > 0) {
+            List<Direction> faces = new ArrayList<>();
+            Collections.addAll(faces, Direction.values());
+            if (originalBreakDirection != null && out.isEmpty()) {
+                faces.remove(originalBreakDirection);
+                faces.remove(originalBreakDirection.getOpposite());
+            }
+            Collections.shuffle(faces);
+            for (Direction face : faces) {
+                BlockPos at = offset.relative(face);
+                if (out.contains(at)) {
+                    continue;
+                }
+                BlockState test = world.getBlockState(at);
+                if (BlockUtils.matchStateExact(match, test) && addCheck.test(world, at, test)) {
+                    out.add(at);
+                    length--;
+                    offset = at;
+                    continue lbl;
+                }
+            }
+            break;
+        }
+
+        return out;
+    }
+
+    public static Set<BlockPos> searchForBlockEntitiesAround(Level world, BlockPos origin, int distance, Predicate<BlockEntity> match) {
+        Set<BlockPos> out = new HashSet<>();
+
+        int minChX = (origin.getX() - distance) >> 4;
+        int minChZ = (origin.getZ() - distance) >> 4;
+        int maxChX = (origin.getX() + distance) >> 4;
+        int maxChZ = (origin.getZ() + distance) >> 4;
+        for (int chX = minChX; chX <= maxChX; chX++) {
+            for (int chZ = minChZ; chZ <= maxChZ; chZ++) {
+                LevelChunk ch = world.getChunk(chX, chZ);
+                if (ch != null) {
+                    out.addAll(
+                            ch.getBlockEntities()
+                                    .values()
+                                    .stream()
+                                    .filter(blockEntity -> blockEntity.getBlockPos().closerThan(origin, distance))
+                                    .filter(match)
+                                    .map(BlockEntity::getBlockPos)
+                                    .collect(Collectors.toList())
+                    );
+                }
+            }
+        }
+
+        return out;
+    }
+
+    public static List<BlockPos> searchForBlocksAround(Level world, BlockPos origin, int cubeSize, BlockPredicate match) {
+        List<BlockPos> out = new ArrayList<>();
+
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int xx = -cubeSize; xx <= cubeSize; xx++) {
+            for (int zz = -cubeSize; zz <= cubeSize; zz++) {
+                for (int yy = -cubeSize; yy <= cubeSize; yy++) {
+                    mutablePos.set(origin.getX() + xx, origin.getY() + yy, origin.getZ() + zz);
+                    MiscUtils.executeWithChunk(world, mutablePos, () -> {
+                        BlockState atState = world.getBlockState(mutablePos);
+                        if (match.test(world, mutablePos, atState)) {
+                            out.add(new BlockPos(mutablePos));
+                        }
+                    });
+                }
+            }
+        }
+        return out;
+    }
+
+    @Nullable
+    public static BlockPos searchAreaForFirst(Level world, BlockPos center, int radius, @Nullable Vector3 offsetFrom, BlockPredicate acceptor) {
+        for (int r = 0; r <= radius; r++) {
+            Set<BlockPos> posList = new HashSet<>();
+            for (int xx = -r; xx <= r; xx++) {
+                for (int yy = -r; yy <= r; yy++) {
+                    for (int zz = -r; zz <= r; zz++) {
+
+                        BlockPos pos = center.offset(xx, yy, zz);
+                        MiscUtils.executeWithChunk(world, pos, () -> {
+                            BlockState state = world.getBlockState(pos);
+                            if (acceptor.test(world, pos, state)) {
+                                posList.add(pos);
+                            }
+                        });
+                    }
+                }
+            }
+            if (!posList.isEmpty()) {
+                Vector3 offset = new Vector3(center).add(0.5, 0.5, 0.5);
+                if (offsetFrom != null) {
+                    offset = offsetFrom;
+                }
+                BlockPos closest = null;
+                double prevDst = 0;
+                for (BlockPos pos : posList) {
+                    if (closest == null || offset.distance(pos) < prevDst) {
+                        closest = pos;
+                        prevDst = offset.distance(pos);
+                    }
+                }
+                return closest;
+            }
+        }
+        return null;
+    }
+
+    public static List<BlockPos> discoverBlocksWithSameStateAround(Level world, BlockPos origin, boolean onlyExposed, int cubeSize, int limit, boolean searchCorners) {
+        return MiscUtils.executeWithChunk(world, origin,
+                () -> {
+                    BlockState state = world.getBlockState(origin);
+                    return discoverBlocksWithSameStateAround(BlockPredicates.isState(state), world, origin, onlyExposed, cubeSize, limit, searchCorners);
+                },
+                Lists.newArrayList());
+    }
+
+    public static List<BlockPos> discoverBlocksWithSameStateAround(BlockPredicate match, Level world, BlockPos origin, boolean onlyExposed, int cubeSize, int limit, boolean searchCorners) {
+        List<BlockPos> foundResult = new ArrayList<>();
+        foundResult.add(origin);
+        List<BlockPos> visited = new LinkedList<>();
+
+        Deque<BlockPos> searchNext = new LinkedList<>();
+        searchNext.addFirst(origin);
+
+        while (!searchNext.isEmpty()) {
+            Deque<BlockPos> currentSearch = searchNext;
+            searchNext = new LinkedList<>();
+
+            for (BlockPos offsetPos : currentSearch) {
+                if (searchCorners) {
+                    for (int xx = -1; xx <= 1; xx++) {
+                        for (int yy = -1; yy <= 1; yy++) {
+                            for (int zz = -1; zz <= 1; zz++) {
+                                BlockPos search = offsetPos.offset(xx, yy, zz);
+                                if (visited.contains(search)) continue;
+                                if (getCubeDistance(search, origin) > cubeSize) continue;
+                                if (limit != -1 && foundResult.size() + 1 > limit) continue;
+
+                                visited.add(search);
+
+                                if ((!onlyExposed || isExposedToAir(world, search)) && world.isLoaded(search)) {
+                                    if (match.test(world, search, world.getBlockState(search))) {
+                                        foundResult.add(search);
+                                        searchNext.add(search);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    for (Direction face : Direction.values()) {
+                        BlockPos search = offsetPos.relative(face);
+                        if (visited.contains(search)) continue;
+                        if (getCubeDistance(search, origin) > cubeSize) continue;
+                        if (limit != -1 && foundResult.size() + 1 > limit) continue;
+
+                        visited.add(search);
+
+                        if ((!onlyExposed || isExposedToAir(world, search)) && world.isLoaded(search)) {
+                            if (match.test(world, search, world.getBlockState(search))) {
+                                foundResult.add(search);
+                                searchNext.add(search);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return foundResult;
+    }
+
+    private static int getCubeDistance(BlockPos p1, BlockPos p2) {
+        return (int) Mth.absMax(Mth.absMax(p1.getX() - p2.getX(), p1.getY() - p2.getY()), p1.getZ() - p2.getZ());
+    }
+
+    private static boolean isExposedToAir(Level world, BlockPos pos) {
+        for (Direction face : Direction.values()) {
+            BlockPos offset = pos.relative(face);
+            if (MiscUtils.executeWithChunk(world, offset, () -> BlockUtils.isReplaceable(world, offset), false)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}

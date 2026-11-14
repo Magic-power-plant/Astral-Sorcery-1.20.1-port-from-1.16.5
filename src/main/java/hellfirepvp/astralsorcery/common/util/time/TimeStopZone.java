@@ -148,7 +148,7 @@ public class TimeStopZone {
             this.targetPlayers = targetPlayers;
         }
 
-        boolean shouldFreezeEntity(LivingEntity e) {
+        public boolean shouldFreezeEntity(LivingEntity e) {
             if (!e.isAlive() || e.getHealth() <= 0) {
                 return false;
             }

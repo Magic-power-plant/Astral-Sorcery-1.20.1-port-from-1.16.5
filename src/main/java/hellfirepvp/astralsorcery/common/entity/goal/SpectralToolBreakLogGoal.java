@@ -2,13 +2,13 @@ package hellfirepvp.astralsorcery.common.entity.goal;
 
 import hellfirepvp.astralsorcery.common.constellation.mantle.effect.MantleEffectPelotrio;
 import hellfirepvp.astralsorcery.common.entity.EntitySpectralTool;
-import hellfirepvp.astralsorcery.common.util.BlockDropCaptureAssist;
+import hellfirepvp.astralsorcery.common.util.loot.BlockDropCaptureAssist;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.block.BlockDiscoverer;
-import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
-import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
+import hellfirepvp.astralsorcery.common.block.util.BlockDiscoverer;
+import hellfirepvp.astralsorcery.common.block.util.BlockPredicate;
+import hellfirepvp.astralsorcery.common.block.util.BlockUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;

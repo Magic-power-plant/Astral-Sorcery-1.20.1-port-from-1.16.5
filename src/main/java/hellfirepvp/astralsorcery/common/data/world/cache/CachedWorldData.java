@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.data.world.cache;
 
-import hellfirepvp.astralsorcery.common.util.IORunnable;
+import hellfirepvp.astralsorcery.common.util.function.IORunnable;
 import net.minecraft.world.level.Level;
 
 import java.io.IOException;

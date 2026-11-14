@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.block.BlockCelestialGateway;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
-import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.gateway.CelestialGatewayBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;

@@ -1,6 +1,4 @@
 package hellfirepvp.astralsorcery.common.util.data;
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -10,10 +8,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix4f;
-
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -483,19 +477,6 @@ public class Vector3 {
                 (x == next.x ? x : x + ((next.x - x) * partial)),
                 (y == next.y ? y : y + ((next.y - y) * partial)),
                 (z == next.z ? z : z + ((next.z - z) * partial)));
-    }
-
-    @Deprecated
-    @OnlyIn(Dist.CLIENT)
-    public VertexConsumer drawPos(VertexConsumer buf) {
-        buf.vertex(this.x, this.y, this.z);
-        return buf;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public VertexConsumer drawPos(Matrix4f renderMatrix, VertexConsumer buf) {
-        buf.vertex(renderMatrix, (float) this.x, (float) this.y, (float) this.z);
-        return buf;
     }
 
     public double getX() {

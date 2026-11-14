@@ -32,7 +32,8 @@ public class BlockEntityAccelerationBlacklistEntry implements ConfigDataSet, Pre
     public BlockEntityAccelerationBlacklistEntry(String filterString) {
         this.filterString = filterString;
         try {
-            this.filteredSuperClass = Class.forName(filterString);
+            this.filteredSuperClass = Class.forName(BlockEntityClassNames.resolve(filterString), false,
+                    BlockEntityAccelerationBlacklistEntry.class.getClassLoader());
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             this.filteredSuperClass = null; //Then we match by string..
         }
@@ -54,8 +55,7 @@ public class BlockEntityAccelerationBlacklistEntry implements ConfigDataSet, Pre
             return true;
         }
 
-        String className = blockEntity.getClass().getName().toLowerCase(Locale.ROOT);
-        return className.startsWith(testStr);
+        return BlockEntityClassNames.matches(blockEntity.getClass().getName(), this.filterString);
     }
 
     @Nonnull

@@ -1,7 +1,7 @@
 /**
- * 缓存引用、对象引用、转换引用与谓词构建。
+ * 引用、侧向值与缓存对象辅助。
  *
- * <p>调用方决定缓存有效期和线程安全，引用包装不隐式拥有世界生命周期。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
  * @see hellfirepvp.astralsorcery.common.util.object.CacheReference
  * @see "仓库 docs/packages.md"

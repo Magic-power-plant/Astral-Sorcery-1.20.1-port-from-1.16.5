@@ -14,7 +14,7 @@ import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 

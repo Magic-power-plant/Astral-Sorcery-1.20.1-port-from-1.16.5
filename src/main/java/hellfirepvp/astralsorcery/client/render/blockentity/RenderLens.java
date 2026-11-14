@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.client.lib.RenderTypesAS;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelLens;
 import hellfirepvp.astralsorcery.client.model.builtin.ModelLensColored;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.blockentity.LensBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.starlight.LensBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.item.base;
 
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

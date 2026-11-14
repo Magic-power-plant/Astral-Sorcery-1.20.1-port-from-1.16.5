@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.registry;
 
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.effect.EffectCustomTexture;
 import hellfirepvp.astralsorcery.common.lib.EffectsAS;

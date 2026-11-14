@@ -1,9 +1,9 @@
 /**
- * 网络缓冲、JSON、NBT、向量及数据序列化辅助。
+ * 网络缓冲、JSON、名称标识、向量与数据序列化辅助。
  *
- * <p>编码保持字段类型与读写顺序一致；与 util.nbt 的同名工具按实际职责区分。</p>
+ * <p>共享数据结构不依赖渲染库；顶点提交位于 client.util.RenderingVectorUtils，NBT 读写统一使用 common.util.nbt。</p>
  *
- * @see hellfirepvp.astralsorcery.common.util.data.ByteBufUtils
+ * @see hellfirepvp.astralsorcery.common.util.data.ASDataSerializers
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.util.data;

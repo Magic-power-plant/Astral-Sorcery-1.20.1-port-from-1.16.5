@@ -18,7 +18,7 @@ import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalProperty;
 import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyRegistry;
-import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.network.chat.Component;
 import hellfirepvp.astralsorcery.common.lib.CreativeTabsAS;
 import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;

@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.network.play.client;
 import hellfirepvp.astralsorcery.common.constellation.DrawnConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
-import hellfirepvp.astralsorcery.common.blockentity.RefractionTableBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.refraction.RefractionTableBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;

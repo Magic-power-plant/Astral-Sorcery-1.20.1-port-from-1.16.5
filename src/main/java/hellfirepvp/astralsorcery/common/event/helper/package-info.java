@@ -1,9 +1,9 @@
 /**
- * 伤害取消、冻结、飞行和生成限制等事件协作服务。
+ * 事件总线适配、钩子端点和实体监听辅助。
  *
- * <p>临时效果按实体或玩家生命周期清理，事件回调遵守对应逻辑侧。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
- * @see hellfirepvp.astralsorcery.common.event.helper.EventHelperEntityFreeze
+ * @see hellfirepvp.astralsorcery.common.event.helper.ASMHookEndpoint
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.event.helper;

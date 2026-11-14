@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.crafting.recipe.infusion;
 
+import hellfirepvp.astralsorcery.client.util.color.ItemColorUtils;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
@@ -22,14 +24,14 @@ import hellfirepvp.astralsorcery.common.auxiliary.ChaliceHelper;
 //as a top-level class in common/crafting (tracked as TODO_PORT[AS-PKG-01]).
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
-import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.infusion.InfuserBlockEntity;
 import hellfirepvp.astralsorcery.common.effect.Effects;
-import hellfirepvp.astralsorcery.common.util.ColorUtils;
+import hellfirepvp.astralsorcery.common.util.color.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
-import hellfirepvp.astralsorcery.common.util.RecipeHelper;
+import hellfirepvp.astralsorcery.common.crafting.helper.RecipeHelper;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -165,7 +167,7 @@ public class ActiveLiquidInfusionRecipe {
         }
         Vector3 target = new Vector3(infuser).add(0.5, 1.1, 0.5);
         TextureAtlasSprite tas = RenderingUtils.getParticleTexture(required);
-        VFXColorFunction<?> colorFn = (fx, pTicks) -> new Color(ColorUtils.getOverlayColor(required));
+        VFXColorFunction<?> colorFn = (fx, pTicks) -> new Color(ItemColorUtils.getOverlayColor(required));
         for (int i = 0; i < 2 * this.supportingChalices.size(); i++) {
             BlockPos chalice = MiscUtils.getRandomEntry(chalices, rand);
             Vector3 pos = new Vector3(chalice).add(0.5, 1.4, 0.5);
@@ -209,7 +211,7 @@ public class ActiveLiquidInfusionRecipe {
                 .setSprite(RenderingUtils.getParticleTexture(required))
                 .selectFraction(0.2F)
                 .setScaleMultiplier(0.03F + rand.nextFloat() * 0.03F)
-                .color((fx, pTicks) -> new Color(ColorUtils.getOverlayColor(required)))
+                .color((fx, pTicks) -> new Color(ItemColorUtils.getOverlayColor(required)))
                 .alpha(VFXAlphaFunction.FADE_OUT)
                 .motion(VFXMotionController.target(() -> new Vector3(infuser).add(0.5, 1.1, 0.5), 0.3F))
                 .setMaxAge(40);

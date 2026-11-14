@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.starlight;
 
 import hellfirepvp.astralsorcery.common.crafting.nojson.CustomRecipe;
-import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
+import hellfirepvp.astralsorcery.common.item.util.ItemUtils;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

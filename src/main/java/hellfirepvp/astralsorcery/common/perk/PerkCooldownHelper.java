@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.perk;
 
-import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
+import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 import hellfirepvp.astralsorcery.common.util.tick.TimeoutListContainer;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import net.minecraft.world.entity.player.Player;

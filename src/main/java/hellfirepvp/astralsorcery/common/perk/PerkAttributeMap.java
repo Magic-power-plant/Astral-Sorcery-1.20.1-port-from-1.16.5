@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierSource;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
-import hellfirepvp.astralsorcery.common.util.ReadWriteLockable;
+import hellfirepvp.astralsorcery.common.util.concurrent.ReadWriteLockable;
 import hellfirepvp.astralsorcery.common.util.log.LogCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;

@@ -20,7 +20,7 @@ import hellfirepvp.astralsorcery.common.container.ContainerAltarBase;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
+import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;

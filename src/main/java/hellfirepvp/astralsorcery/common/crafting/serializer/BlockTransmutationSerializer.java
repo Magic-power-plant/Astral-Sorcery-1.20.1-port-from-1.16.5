@@ -14,14 +14,14 @@ import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
-//1.16.5 imported hellfirepvp.astralsorcery.common.util.block.BlockMatchInformation here. This tree has to
+//1.16.5 imported hellfirepvp.astralsorcery.common.block.util.BlockMatchInformation here. This tree has to
 //use the nested BlockTransmutation.BlockMatchInformation, a thin subclass of that very class - see the
 //TODO_PORT[AS-ALT-06] note on the nested type for why it still exists. Every use below is unchanged.
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation.BlockMatchInformation;
 import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.util.block.BlockStateHelper;
+import hellfirepvp.astralsorcery.common.block.util.BlockStateHelper;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
 import net.minecraft.network.FriendlyByteBuf;

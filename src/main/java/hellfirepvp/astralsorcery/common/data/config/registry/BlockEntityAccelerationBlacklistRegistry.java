@@ -75,15 +75,15 @@ public class BlockEntityAccelerationBlacklistRegistry extends ConfigDataAdapter<
 
                 // Bad news for potentially various reasons
                 new BlockEntityAccelerationBlacklistEntry(AltarBlockEntity.class.getName()),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.RitualLinkBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.TranslucentBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.TreeBeaconComponentBlockEntity"),
-                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.VanishingBlockEntity")
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.observation.ObservatoryBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.ritual.RitualLinkBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.ritual.RitualPedestalBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.starlight.SpectralRelayBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.utility.TranslucentBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.treebeacon.TreeBeaconComponentBlockEntity"),
+                new BlockEntityAccelerationBlacklistEntry("hellfirepvp.astralsorcery.common.blockentity.utility.VanishingBlockEntity")
         );
     }
 

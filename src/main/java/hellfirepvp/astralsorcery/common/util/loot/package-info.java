@@ -1,9 +1,9 @@
 /**
- * 战利品收集和生成辅助。
+ * 掉落物收集、捕获及战利品生成。
  *
- * <p>复用服务端战利品上下文，具体战利品规则由 common.loot 提供。</p>
+ * <p>此处只提供可复用的辅助或能力；有世界、玩家及设备生命周期的状态由对应领域拥有者管理。</p>
  *
- * @see hellfirepvp.astralsorcery.common.util.loot.LootCollector
+ * @see hellfirepvp.astralsorcery.common.util.loot.BlockDropCaptureAssist
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.util.loot;

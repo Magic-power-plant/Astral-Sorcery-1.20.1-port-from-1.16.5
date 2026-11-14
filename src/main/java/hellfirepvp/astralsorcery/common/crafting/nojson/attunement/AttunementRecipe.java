@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.attunement;
 
 import hellfirepvp.astralsorcery.common.crafting.nojson.CustomRecipe;
-import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

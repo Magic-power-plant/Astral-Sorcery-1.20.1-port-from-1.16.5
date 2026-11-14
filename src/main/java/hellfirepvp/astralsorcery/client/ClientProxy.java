@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client;
 
+import hellfirepvp.astralsorcery.client.registry.RegistryBlockRenderTypes;
+
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.client.data.config.ClientConfig;
 import hellfirepvp.astralsorcery.client.data.config.entry.RenderingConfig;
@@ -23,7 +25,7 @@ import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournal;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalConstellationOverview;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalPerkTree;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalProgression;
-import hellfirepvp.astralsorcery.common.base.patreon.manager.PatreonManagerClient;
+import hellfirepvp.astralsorcery.client.patreon.manager.PatreonManagerClient;
 import hellfirepvp.astralsorcery.client.screen.journal.bookmark.BookmarkProvider;
 import hellfirepvp.astralsorcery.client.util.AreaOfInfluencePreview;
 import hellfirepvp.astralsorcery.client.util.ColorizationHelper;
@@ -168,6 +170,9 @@ public class ClientProxy extends CommonProxy {
         ItemHeldEffectRenderer.INSTANCE.attachEventListeners(eventBus);
         OverlayRenderer.INSTANCE.attachEventListeners(eventBus);
 
+        eventBus.addListener(TimeStopEffectHandler::onLivingTick);
+        eventBus.addListener((net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) -> PatreonManagerClient.INSTANCE.clear());
+
         CameraEventHelper.attachEventListeners(eventBus);
         MouseUtil.attachEventListeners(eventBus);
         GatewayInteractionHandler.attachEventListeners(eventBus);
@@ -197,6 +202,22 @@ public class ClientProxy extends CommonProxy {
         EffectRenderEventHandler.getInstance().attachTickListeners(registrar);
         //AS-ITM-01: expires the wand's structure preview once the multiblock completes or the player walks away.
         StructurePreviewHandler.getInstance().attachTickHandlers(registrar);
+    }
+
+    @Override
+    public boolean arePatreonEffectsEnabled() {
+        return RenderingConfig.CONFIG.patreonEffects.get();
+    }
+
+    @Override
+    public Player findClientPlayer(java.util.UUID id) {
+        return Minecraft.getInstance().level == null ? null : Minecraft.getInstance().level.getPlayerByUUID(id);
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.RecipeManager getClientRecipeManager() {
+        var connection = Minecraft.getInstance().getConnection();
+        return connection == null ? null : connection.getRecipeManager();
     }
 
     @Override

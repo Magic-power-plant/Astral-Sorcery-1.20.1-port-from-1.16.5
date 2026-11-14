@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common;
 
-import hellfirepvp.astralsorcery.common.util.Counter;
+import hellfirepvp.astralsorcery.common.util.math.Counter;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.EnumSet;

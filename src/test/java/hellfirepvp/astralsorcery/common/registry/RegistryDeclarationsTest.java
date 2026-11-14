@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyRegistry;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.util.NameUtil;
+import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;

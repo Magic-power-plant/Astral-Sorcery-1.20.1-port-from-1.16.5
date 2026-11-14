@@ -5,8 +5,8 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissio
 import hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.NodeConnection;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
-import hellfirepvp.astralsorcery.common.util.RaytraceAssist;
-import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
+import hellfirepvp.astralsorcery.common.util.collision.RaytraceAssist;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
