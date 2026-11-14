@@ -32,15 +32,13 @@ public abstract class TileEntityTick extends TileEntitySynchronized implements T
     private boolean doesSeeSky = false;
     private int lastUpdateTick = -1;
 
-    //TODO_PORT[AS-TILE-03]: 1.16.5 caches the structure match in an ObserverLib
-    //`ChangeSubscriber<ChangeObserverStructure> structureMatch` obtained from `StructureType#observe(world, pos)` and
-    //only asks it `isValid(world)` (1.16.5 TileEntityTick.java:36, 99-103), with `refreshMatcher()` dropping the
-    //subscriber through ObserverHelper whenever the required structure type changes (1.16.5 lines 118-130).
-    //ObserverLib is a source-only reference here and neither ChangeSubscriber nor ChangeObserverStructure is embedded
-    //under hellfirepvp.astralsorcery yet, so hasMultiblock() re-runs the full StructureType#matches every call
-    //instead of consulting an incrementally-updated subscriber. Same answer, more work per call; refreshMatcher()
-    //has no observable effect without the subscriber and is therefore absent.
+    //ObserverLib is not embedded in this port, so structure validity is sampled periodically and reused between
+    //checks. This avoids repeating a full scan when several callers ask in the same tick while still detecting
+    //player-built or broken structures within one second.
     private boolean hasMultiblock = false;
+    private int lastMultiblockCheckTick = Integer.MIN_VALUE;
+    private StructureType lastRequiredStructure;
+    private static final int MULTIBLOCK_CHECK_INTERVAL = 20;
 
     protected int ticksExisted = 0;
 
@@ -106,6 +104,14 @@ public abstract class TileEntityTick extends TileEntitySynchronized implements T
         }
 
         StructureType struct = this.getRequiredStructureType();
+        if (struct != lastRequiredStructure) {
+            lastRequiredStructure = struct;
+            lastMultiblockCheckTick = Integer.MIN_VALUE;
+        }
+        if (lastMultiblockCheckTick != Integer.MIN_VALUE && ticksExisted - lastMultiblockCheckTick < MULTIBLOCK_CHECK_INTERVAL) {
+            return this.hasMultiblock;
+        }
+        lastMultiblockCheckTick = ticksExisted;
         boolean prevFound = this.hasMultiblock;
         boolean found = struct.matches(level, worldPosition);
         if (prevFound != found) {
@@ -120,6 +126,8 @@ public abstract class TileEntityTick extends TileEntitySynchronized implements T
     }
 
     private void resetMultiblockState() {
+        lastRequiredStructure = null;
+        lastMultiblockCheckTick = Integer.MIN_VALUE;
         if (this.hasMultiblock) {
             this.notifyMultiblockStateUpdate(true, false);
             this.hasMultiblock = false;

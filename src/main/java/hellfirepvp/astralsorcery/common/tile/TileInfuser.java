@@ -177,7 +177,11 @@ public class TileInfuser extends TileEntityTick {
         }
         this.activeRecipe.tick();
         this.infusionProgress = this.activeRecipe.getProgress() * 100F;
-        this.markForUpdate();
+        // Persist each tick, but limit block-entity update broadcasts to four per second.
+        this.setChanged();
+        if (this.ticksExisted % 5 == 0) {
+            this.markForUpdate();
+        }
     }
 
     private void finishRecipe() {
@@ -350,7 +354,7 @@ public class TileInfuser extends TileEntityTick {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
         if (capability == ForgeCapabilities.ITEM_HANDLER) {
-            return LazyOptional.of(() -> inventory).cast();
+            return getCachedCapability(new CapabilityKey(capability, side), () -> inventory).cast();
         }
         return super.getCapability(capability, side);
     }

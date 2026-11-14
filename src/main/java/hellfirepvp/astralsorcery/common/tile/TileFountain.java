@@ -327,7 +327,7 @@ public class TileFountain extends TileEntityTick {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (this.access.hasCapability(cap, side)) {
-            return this.access.getCapability(side).cast();
+            return getCachedCapability(new CapabilityKey(cap, side), () -> this.access.getCapability(side).orElseThrow(() -> new IllegalStateException("Capability availability changed during lookup"))).cast();
         }
         return super.getCapability(cap, side);
     }

@@ -3,6 +3,7 @@ package hellfirepvp.astralsorcery.common.tile.base;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -16,10 +17,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class TileEntitySynchronized extends BlockEntity implements ILocatable, hellfirepvp.astralsorcery.api.sync.SyncTarget {
 
@@ -28,6 +34,21 @@ public class TileEntitySynchronized extends BlockEntity implements ILocatable, h
     protected static final AABB BOX = new AABB(0, 0, 0, 1, 1, 1);
     protected boolean isRemote = false;
     private boolean loadingFromNbt = false;
+    private final Map<Object, LazyOptional<?>> capabilityCache = new HashMap<>();
+
+    public record CapabilityKey(Capability<?> capability, Direction side) {}
+
+    @SuppressWarnings("unchecked")
+    protected final <T> LazyOptional<T> getCachedCapability(Object key, Supplier<T> valueFactory) {
+        return (LazyOptional<T>) capabilityCache.computeIfAbsent(key, ignored -> LazyOptional.of(() -> valueFactory.get()));
+    }
+
+    @Override
+    public void invalidateCaps() {
+        capabilityCache.values().forEach(LazyOptional::invalidate);
+        capabilityCache.clear();
+        super.invalidateCaps();
+    }
 
     public TileEntitySynchronized(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

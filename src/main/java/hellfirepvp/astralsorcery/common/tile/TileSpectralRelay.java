@@ -345,7 +345,7 @@ public class TileSpectralRelay extends TileEntityTick {
         //1.16.5 asked TileInventory#hasCapability(cap, side) (which also honoured the inventory's side filter,
         //empty here = all sides) and handed out TileInventory#getCapability().
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return LazyOptional.of(() -> inventory).cast();
+            return getCachedCapability(new CapabilityKey(cap, side), () -> inventory).cast();
         }
         return super.getCapability(cap, side);
     }

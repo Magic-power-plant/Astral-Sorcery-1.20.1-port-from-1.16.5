@@ -266,10 +266,10 @@ public class TileWell extends TileReceiverBase<StarlightReceiverWell> {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
         if (tankAccess.hasCapability(capability, side)) {
-            return tankAccess.getCapability(side).cast();
+            return getCachedCapability(new CapabilityKey(capability, side), () -> tankAccess.getCapability(side).orElseThrow(() -> new IllegalStateException("Capability availability changed during lookup"))).cast();
         }
         if (ForgeCapabilities.ITEM_HANDLER == capability && (side == null || side == Direction.DOWN)) {
-            return LazyOptional.of(() -> catalystInventory).cast();
+            return getCachedCapability(new CapabilityKey(capability, side), () -> catalystInventory).cast();
         }
         return super.getCapability(capability, side);
     }

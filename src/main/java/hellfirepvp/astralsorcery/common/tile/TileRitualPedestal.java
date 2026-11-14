@@ -627,7 +627,7 @@ public class TileRitualPedestal extends TileReceiverBase<StarlightReceiverRitual
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (this.inventory.hasCapability(cap, side)) {
-            return this.inventory.getCapability().cast();
+            return getCachedCapability(new CapabilityKey(cap, side), () -> this.inventory).cast();
         }
         return super.getCapability(cap, side);
     }
