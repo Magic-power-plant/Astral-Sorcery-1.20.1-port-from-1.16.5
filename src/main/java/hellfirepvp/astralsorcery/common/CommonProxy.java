@@ -506,6 +506,7 @@ public class CommonProxy {
         //per hardcoded item, so without this the Liquid Starlight bucket fell through to
         //DefaultDispenseItemBehavior and a dispenser spat it out as an item instead of placing the fluid.
         event.enqueueWork(RegistryItems::registerDispenseBehaviors);
+        event.enqueueWork(hellfirepvp.astralsorcery.common.registry.extension.ExtensionRegistration::complete);
         AstralSorcery.LOG.info("AstralSorcery common setup complete");
     }
 

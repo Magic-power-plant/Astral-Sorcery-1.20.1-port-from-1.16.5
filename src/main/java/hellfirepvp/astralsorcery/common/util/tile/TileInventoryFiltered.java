@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.util.tile;
 
-import hellfirepvp.astralsorcery.common.tile.base.TileEntitySynchronized;
+import hellfirepvp.astralsorcery.api.sync.SyncTarget;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,20 +18,20 @@ public class TileInventoryFiltered extends TileInventory {
     private InputFilter inputFilter = null;
     private ExtractFilter extractFilter = null;
 
-    public TileInventoryFiltered(@Nonnull TileEntitySynchronized tile,
+    public TileInventoryFiltered(@Nonnull SyncTarget tile,
                                  @Nonnull Supplier<Integer> slotCountProvider,
                                  Direction... applicableSides) {
         super(tile, slotCountProvider, applicableSides);
     }
 
-    public TileInventoryFiltered(@Nonnull TileEntitySynchronized tile,
+    public TileInventoryFiltered(@Nonnull SyncTarget tile,
                                  @Nonnull Supplier<Integer> slotCountProvider,
                                  @Nullable Consumer<Integer> changeListener,
                                  Direction... applicableSides) {
         super(tile, slotCountProvider, changeListener, applicableSides);
     }
 
-    protected TileInventoryFiltered(@Nonnull TileEntitySynchronized tile,
+    protected TileInventoryFiltered(@Nonnull SyncTarget tile,
                                     @Nonnull Supplier<Integer> slotCountProvider,
                                     @Nullable Consumer<Integer> changeListener,
                                     @Nonnull Collection<Direction> applicableSides,

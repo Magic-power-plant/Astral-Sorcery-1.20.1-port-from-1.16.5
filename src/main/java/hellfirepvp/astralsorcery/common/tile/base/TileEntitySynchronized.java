@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TileEntitySynchronized extends BlockEntity implements ILocatable {
+public class TileEntitySynchronized extends BlockEntity implements ILocatable, hellfirepvp.astralsorcery.api.sync.SyncTarget {
 
     protected static final Random rand = new Random();
     //1.16.5: protected static final AxisAlignedBB BOX = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
@@ -38,6 +38,7 @@ public class TileEntitySynchronized extends BlockEntity implements ILocatable {
         return this.getBlockPos();
     }
 
+    @Override
     public void markForUpdate() {
         setChanged();
         if (!loadingFromNbt && level != null && !level.isClientSide) {

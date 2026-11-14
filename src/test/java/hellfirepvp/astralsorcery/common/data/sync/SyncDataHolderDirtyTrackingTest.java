@@ -84,7 +84,10 @@ class SyncDataHolderDirtyTrackingTest {
      */
     @Test
     void everyRegisteredProviderHasServerDataToDiff() {
-        assertEquals(5, SyncDataRegistry.getKnownKeys().size());
+        assertTrue(SyncDataRegistry.getKnownKeys().containsAll(java.util.List.of(
+                SyncDataHolder.DATA_LIGHT_CONNECTIONS, SyncDataHolder.DATA_LIGHT_BLOCK_ENDPOINTS,
+                SyncDataHolder.DATA_TIME_FREEZE_EFFECTS, SyncDataHolder.DATA_TIME_FREEZE_ENTITIES,
+                SyncDataHolder.DATA_PATREON_FLARES)));
         for (ResourceLocation key : SyncDataRegistry.getKnownKeys()) {
             SyncDataHolder.markForUpdate(key);
         }

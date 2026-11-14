@@ -3,8 +3,6 @@ package hellfirepvp.astralsorcery.common.network.login.server;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataRegistry;
 import hellfirepvp.astralsorcery.common.data.sync.base.AbstractData;
-import hellfirepvp.astralsorcery.common.data.sync.base.ClientData;
-import hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader;
 import hellfirepvp.astralsorcery.common.network.base.ASLoginPacket;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -79,14 +77,7 @@ public class PktLoginSyncDataHolder extends ASLoginPacket<PktLoginSyncDataHolder
             @OnlyIn(Dist.CLIENT)
             public void handleClient(PktLoginSyncDataHolder packet, NetworkEvent.Context context) {
                 context.enqueueWork(() -> {
-                    for (ResourceLocation key : packet.syncData.keySet()) {
-                        ClientDataReader reader = SyncDataHolder.getReader(key);
-                        if (reader != null) {
-                            SyncDataHolder.executeClient(key, ClientData.class, data -> {
-                                reader.readFromIncomingFullSync(data, packet.syncData.get(key));
-                            });
-                        }
-                    }
+                    packet.syncData.forEach(SyncDataHolder::applyFullSync);
                     acknowledge(context);
                 });
             }

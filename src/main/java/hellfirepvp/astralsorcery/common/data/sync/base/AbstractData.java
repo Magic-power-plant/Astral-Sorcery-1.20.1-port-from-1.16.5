@@ -6,12 +6,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractData {
+public abstract class AbstractData implements hellfirepvp.astralsorcery.api.sync.SyncDataWriter {
 
     private final ResourceLocation key;
 
     protected AbstractData(ResourceLocation key) {
-        this.key = key;
+        this.key = java.util.Objects.requireNonNull(key, "key");
+    }
+
+    public final ResourceLocation getKey() {
+        return key;
     }
 
     public final void markDirty() {

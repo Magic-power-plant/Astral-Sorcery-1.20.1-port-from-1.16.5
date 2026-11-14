@@ -1,21 +1,19 @@
 package hellfirepvp.astralsorcery.common.starlight.transmission.registry;
 
-import hellfirepvp.astralsorcery.common.event.StarlightNetworkEvent;
+import hellfirepvp.astralsorcery.common.registry.extension.ExtensionRegistry;
 import hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class SourceClassRegistry {
 
     public static final SourceClassRegistry eventInstance = new SourceClassRegistry();
 
-    private static final Map<ResourceLocation, SourceProvider> providerMap = new HashMap<>();
+    private static final ExtensionRegistry<SourceProvider> providerMap = new ExtensionRegistry<>("SourceProvider");
 
     private SourceClassRegistry() {}
 
@@ -29,17 +27,18 @@ public class SourceClassRegistry {
     }
 
     public static void register(SourceProvider provider) {
-        if (providerMap.containsKey(provider.getIdentifier())) {
-            throw new IllegalArgumentException("Already registered identifier SourceProvider: " + provider.getIdentifier());
-        }
-        providerMap.put(provider.getIdentifier(), provider);
+        Objects.requireNonNull(provider, "provider");
+        providerMap.register(provider.getIdentifier(), provider);
+    }
+
+    public static void freeze() {
+        providerMap.freeze();
     }
 
     public static void setupRegistry() {
         register(new IndependentCrystalSource.Provider());
 
-        //1.16.5 SourceClassRegistry.java:56 - see the note in TransmissionClassRegistry#setupRegistry.
-        MinecraftForge.EVENT_BUS.post(new StarlightNetworkEvent.SourceProviderRegistry(eventInstance));
+        // Extension events are dispatched later, during enqueued common setup.
     }
 
     public interface SourceProvider {

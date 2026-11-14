@@ -1,6 +1,8 @@
 package hellfirepvp.astralsorcery.common.data.sync;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.sync.SyncDataProvider;
+import hellfirepvp.astralsorcery.api.sync.SyncDataReader;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.data.sync.base.AbstractData;
 import hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider;
@@ -35,10 +37,6 @@ public class SyncDataHolder implements ITickHandler {
     public static final ResourceLocation DATA_TIME_FREEZE_ENTITIES = AstralSorcery.key("time_freeze_entities");
     public static final ResourceLocation DATA_PATREON_FLARES = AstralSorcery.key("patreon");
 
-    private static final Map<ResourceLocation, AbstractData> serverData = new HashMap<>();
-    private static final Map<ResourceLocation, ClientData<?>> clientData = new HashMap<>();
-    private static final Map<ResourceLocation, ClientDataReader<?>> readers = new HashMap<>();
-
     private static final Set<ResourceLocation> dirtyData = new HashSet<>();
     private static final Object lock = new Object();
 
@@ -49,10 +47,11 @@ public class SyncDataHolder implements ITickHandler {
     }
 
     public static void register(AbstractDataProvider<? extends AbstractData, ? extends ClientData> provider) {
-        SyncDataRegistry.register(provider);
-        serverData.put(provider.getKey(), provider.provideServerData());
-        clientData.put(provider.getKey(), provider.provideClientData());
-        readers.put(provider.getKey(), provider.createReader());
+        register((SyncDataProvider<?, ?>) provider);
+    }
+
+    public static void register(SyncDataProvider<?, ?> provider) {
+        synchronized (lock) { SyncDataRegistry.register(provider); }
     }
 
     public static <T extends AbstractData> void executeServer(ResourceLocation key, Class<T> typeHint, Consumer<T> function) {
@@ -61,7 +60,8 @@ public class SyncDataHolder implements ITickHandler {
 
     public static <T extends AbstractData, V> Optional<V> computeServer(ResourceLocation key, Class<T> typeHint, Function<T, V> function) {
         synchronized (lock) {
-            T data = (T) serverData.get(key);
+            RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+            T data = entry == null ? null : typeHint.cast(entry.server);
             if (data != null) {
                 return Optional.ofNullable(function.apply(data));
             }
@@ -70,14 +70,16 @@ public class SyncDataHolder implements ITickHandler {
     }
 
     public static <T extends ClientData<T>> void executeClient(ResourceLocation key, Class<T> typeHint, Consumer<T> function) {
-        T data = (T) clientData.get(key);
+        RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+        T data = entry == null ? null : typeHint.cast(entry.client);
         if (data != null) {
             function.accept(data);
         }
     }
 
     public static <T extends ClientData<T>, V> Optional<V> computeClient(ResourceLocation key, Class<T> typeHint, Function<T, V> function) {
-        T data = (T) clientData.get(key);
+        RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+        T data = entry == null ? null : typeHint.cast(entry.client);
         if (data != null) {
             return Optional.ofNullable(function.apply(data));
         }
@@ -85,8 +87,26 @@ public class SyncDataHolder implements ITickHandler {
     }
 
     @Nullable
+    @SuppressWarnings("unchecked")
     public static <T extends ClientData<T>> ClientDataReader<T> getReader(ResourceLocation key) {
-        return (ClientDataReader<T>) readers.get(key);
+        RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+        if (entry == null) return null;
+        SyncDataReader<T> reader = (SyncDataReader<T>) entry.reader;
+        if (reader instanceof ClientDataReader<?>) return (ClientDataReader<T>) reader;
+        return new ClientDataReader<>() {
+            public void readFromIncomingFullSync(T data, CompoundTag tag) { reader.readFromIncomingFullSync(data, tag); }
+            public void readFromIncomingDiff(T data, CompoundTag tag) { reader.readFromIncomingDiff(data, tag); }
+        };
+    }
+
+    public static void applyFullSync(ResourceLocation key, CompoundTag tag) {
+        RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+        if (entry != null) entry.readFull(Objects.requireNonNull(tag));
+    }
+
+    public static void applyDiff(ResourceLocation key, CompoundTag tag) {
+        RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+        if (entry != null) entry.readDiff(Objects.requireNonNull(tag));
     }
 
     public static void markForUpdate(ResourceLocation key) {
@@ -102,9 +122,13 @@ public class SyncDataHolder implements ITickHandler {
     }
 
     public static void clearAll() {
-        for (ResourceLocation key : SyncDataRegistry.getKnownKeys()) {
-            executeServer(key, AbstractData.class, AbstractData::clearServer);
-            executeClient(key, ClientData.class, ClientData::clearClient);
+        synchronized (lock) {
+            for (ResourceLocation key : SyncDataRegistry.getKnownKeys()) {
+                RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+                entry.server.clearServer();
+                entry.client.clearClient();
+            }
+            dirtyData.clear();
         }
     }
 
@@ -146,7 +170,8 @@ public class SyncDataHolder implements ITickHandler {
                 return pktData;
             }
             for (ResourceLocation key : dirtyData) {
-                AbstractData data = serverData.get(key);
+                RegisteredSyncData<?, ?> entry = SyncDataRegistry.getData(key);
+                AbstractData data = entry == null ? null : entry.server;
                 if (data != null) {
                     CompoundTag nbt = new CompoundTag();
                     data.writeDiffDataToPacket(nbt);

@@ -2,12 +2,12 @@ package hellfirepvp.astralsorcery.common.data.sync.base;
 
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class AbstractDataProvider<T extends AbstractData, C extends ClientData<C>> {
+public abstract class AbstractDataProvider<T extends AbstractData, C extends ClientData<C>> implements hellfirepvp.astralsorcery.api.sync.SyncDataProvider<T, C> {
 
     private final ResourceLocation key;
 
     public AbstractDataProvider(ResourceLocation key) {
-        this.key = key;
+        this.key = java.util.Objects.requireNonNull(key, "key");
     }
 
     public abstract T provideServerData();

@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.util.tile;
 
-import hellfirepvp.astralsorcery.common.tile.base.TileEntitySynchronized;
+import hellfirepvp.astralsorcery.api.sync.SyncTarget;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
 import net.minecraft.core.Direction;
@@ -20,26 +20,26 @@ import java.util.function.Supplier;
 
 public class TileInventory extends ItemStackHandler implements Iterable<ItemStack> {
 
-    protected final TileEntitySynchronized tile;
+    protected final SyncTarget tile;
     protected final Consumer<Integer> changeListener;
     protected final Supplier<Integer> slotCountProvider;
     protected Set<Direction> applicableSides = new HashSet<>();
     protected BiFunction<Integer, ItemStack, Integer> stackSizeLimiter;
 
-    public TileInventory(@Nonnull TileEntitySynchronized tile,
+    public TileInventory(@Nonnull SyncTarget tile,
                          @Nonnull Supplier<Integer> slotCountProvider,
                          Direction... applicableSides) {
         this(tile, slotCountProvider, null, applicableSides);
     }
 
-    public TileInventory(@Nonnull TileEntitySynchronized tile,
+    public TileInventory(@Nonnull SyncTarget tile,
                          @Nonnull Supplier<Integer> slotCountProvider,
                          @Nullable Consumer<Integer> changeListener,
                          Direction... applicableSides) {
         this(tile, slotCountProvider, changeListener, Arrays.asList(applicableSides), (slot, stack) -> stack.getMaxStackSize());
     }
 
-    protected TileInventory(@Nonnull TileEntitySynchronized tile,
+    protected TileInventory(@Nonnull SyncTarget tile,
                             @Nonnull Supplier<Integer> slotCountProvider,
                             @Nullable Consumer<Integer> changeListener,
                             @Nonnull Collection<Direction> applicableSides,

@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.starlight.transmission.registry;
 
-import hellfirepvp.astralsorcery.common.event.StarlightNetworkEvent;
+import hellfirepvp.astralsorcery.common.registry.extension.ExtensionRegistry;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimplePrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransmissionSourceNode;
@@ -13,17 +13,15 @@ import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverWell;
 import hellfirepvp.astralsorcery.common.tile.network.StarlightTransmissionLens;
 import hellfirepvp.astralsorcery.common.tile.network.StarlightTransmissionPrism;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class TransmissionClassRegistry {
 
     public static final TransmissionClassRegistry eventInstance = new TransmissionClassRegistry();
 
-    private static final Map<ResourceLocation, TransmissionProvider> providerMap = new HashMap<>();
+    private static final ExtensionRegistry<TransmissionProvider> providerMap = new ExtensionRegistry<>("TransmissionProvider");
 
     private TransmissionClassRegistry() {}
 
@@ -37,10 +35,12 @@ public class TransmissionClassRegistry {
     }
 
     public static void register(TransmissionProvider provider) {
-        if (providerMap.containsKey(provider.getIdentifier())) {
-            throw new IllegalArgumentException("Already registered identifier TransmissionProvider: " + provider.getIdentifier());
-        }
-        providerMap.put(provider.getIdentifier(), provider);
+        Objects.requireNonNull(provider, "provider");
+        providerMap.register(provider.getIdentifier(), provider);
+    }
+
+    public static void freeze() {
+        providerMap.freeze();
     }
 
     public static void setupRegistry() {
@@ -56,9 +56,6 @@ public class TransmissionClassRegistry {
         register(new StarlightTransmissionLens.Provider());
         register(new StarlightTransmissionPrism.Provider());
 
-        //1.16.5 TransmissionClassRegistry.java:71. Without this an addon has no way to register its own
-        //TransmissionProvider, so its persisted nodes are dropped with a warning by LightNetworkBuffer on world
-        //load. No effect for a vanilla player - the eleven providers above are registered directly either way.
-        MinecraftForge.EVENT_BUS.post(new StarlightNetworkEvent.TransmissionRegister(eventInstance));
+        // Extension events are dispatched later, during enqueued common setup.
     }
 }

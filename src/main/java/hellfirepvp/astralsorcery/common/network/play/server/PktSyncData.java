@@ -1,8 +1,6 @@
 package hellfirepvp.astralsorcery.common.network.play.server;
 
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
-import hellfirepvp.astralsorcery.common.data.sync.base.ClientData;
-import hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -56,13 +54,7 @@ public class PktSyncData {
 
     @OnlyIn(Dist.CLIENT)
     private static void handleClient(PktSyncData packet) {
-        for (ResourceLocation key : packet.diffData.keySet()) {
-            ClientDataReader reader = SyncDataHolder.getReader(key);
-            if (reader != null) {
-                SyncDataHolder.executeClient(key, ClientData.class,
-                        data -> reader.readFromIncomingDiff(data, packet.diffData.get(key)));
-            }
-        }
+        packet.diffData.forEach(SyncDataHolder::applyDiff);
     }
 
 }

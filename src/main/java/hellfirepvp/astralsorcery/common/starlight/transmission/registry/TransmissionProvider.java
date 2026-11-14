@@ -11,6 +11,14 @@ public abstract class TransmissionProvider implements Supplier<IPrismTransmissio
 
     private ResourceLocation identifierCache = null;
 
+    /** Legacy built-in naming; do not use class-derived IDs for addon save formats. */
+    protected TransmissionProvider() {}
+
+    /** Explicit, stable addon ID, independent of Java class names and refactoring. */
+    protected TransmissionProvider(ResourceLocation identifier) {
+        this.identifierCache = java.util.Objects.requireNonNull(identifier, "identifier");
+    }
+
     //This identifier is the on-disk key of every transmission node: LightNetworkBuffer writes it as "trNodeId"
     //and reads it back through TransmissionClassRegistry#getProvider. It is therefore part of the save format
     //and must match 1.16.5 exactly (1.16.5 TransmissionProvider.java:30 -> NameUtil.fromClass(get())).
