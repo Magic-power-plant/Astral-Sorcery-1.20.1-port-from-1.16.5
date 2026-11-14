@@ -1,9 +1,6 @@
 {
   "replace": false,
   "values": [
-    "astralsorcery:lens",
-    "astralsorcery:prism",
-    "astralsorcery:ritual_link",
     "astralsorcery:ritual_pedestal",
     "astralsorcery:celestial_gateway",
     "astralsorcery:illuminator",
@@ -19,6 +16,8 @@
     "astralsorcery:rock_collector_crystal",
     "astralsorcery:celestial_collector_crystal",
     "astralsorcery:attunement_altar",
-    "astralsorcery:observatory"
+    "astralsorcery:observatory",
+    "astralsorcery:starmetal",
+    "astralsorcery:tree_beacon"
   ]
 }

@@ -14,8 +14,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +42,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * The asset check stands in for a registry lookup: loading {@code ForgeRegistries} needs a bootstrapped game, but
  * every registered astralsorcery item has a model and every block a blockstate, so a dangling entry is detectable
  * from the resource tree alone.
+ * <p>
+ * The coverage check is the other half of the port: 1.16.5 kept the harvest tool and tier in code
+ * ({@code harvestTool}/{@code harvestLevel}), which Forge removed with {@code ToolType} in 1.18, so in 1.20.1 a
+ * block's mining behaviour exists only in these tag files. A block that is in none of the three
+ * {@code minecraft:mineable/*} tags is mined by hand at 1.0 speed regardless of its hardness, and a block that also
+ * calls {@code requiresCorrectToolForDrops()} can never drop at all. Both failures are silent, hence the check that
+ * every block registered with an item is either mineable or listed as deliberately tool-free.
  */
 class TagDataIntegrityTest {
 
@@ -49,6 +60,28 @@ class TagDataIntegrityTest {
     private static final Path BLOCKSTATES = RESOURCES.resolve(Paths.get("assets", "astralsorcery", "blockstates"));
 
     private static final String AS_NAMESPACE = "astralsorcery";
+
+    /**
+     * The three vanilla tags that decide which tool mines a block. 1.20.1 has no code-side equivalent, so membership
+     * here is the whole definition of a block's harvest tool.
+     */
+    private static final List<String> MINING_TAGS = List.of(
+            "minecraft/tags/blocks/mineable/pickaxe.json",
+            "minecraft/tags/blocks/mineable/axe.json",
+            "minecraft/tags/blocks/mineable/shovel.json");
+
+    /** Vanilla tier gates; an entry only has an effect when the block is also in one of {@link #MINING_TAGS}. */
+    private static final List<String> NEEDS_TOOL_TAGS = List.of(
+            "minecraft/tags/blocks/needs_stone_tool.json",
+            "minecraft/tags/blocks/needs_iron_tool.json",
+            "minecraft/tags/blocks/needs_diamond_tool.json");
+
+    /** Source of truth for "which blocks have an item", since no registry can be read without a running game. */
+    private static final Path BLOCKS_AS = Paths.get("src", "main", "java", "hellfirepvp", "astralsorcery",
+            "common", "lib", "BlocksAS.java");
+
+    private static final Pattern ITEM_BLOCK_REGISTRATION =
+            Pattern.compile("registerBlockWithItem\\(\"([a-z0-9_]+)\"");
 
     /**
      * Every tag 1.16.5 declared in common/lib/TagsAS, mapped to the data file that now defines it. The class is gone,
@@ -122,6 +155,76 @@ class TagDataIntegrityTest {
                 }
             }
         }
+    }
+
+    @Test
+    void everyBlockWithAnItemIsMineableOrDeliberatelyToolFree() throws IOException {
+        //Two blocks of this mod are intentionally outside the mining tags:
+        // - spectral_relay is coated glass: 1.16.5 gave it neither harvestTool nor harvestLevel, and
+        //   BlockSpectralRelay never calls requiresCorrectToolForDrops(), so any tool breaks it at normal speed;
+        // - glow_flower extends FlowerBlock and is a plant: plants are broken instantly and carry no mining tag.
+        Map<String, String> toolFree = new LinkedHashMap<>();
+        toolFree.put("spectral_relay", "coated glass without harvestTool/harvestLevel or requiresCorrectToolForDrops");
+        toolFree.put("glow_flower", "FlowerBlock plant");
+
+        Set<String> mineable = new LinkedHashSet<>();
+        for (String file : MINING_TAGS) {
+            mineable.addAll(values(DATA.resolve(file)));
+        }
+
+        List<String> itemBlocks = registeredItemBlockIds();
+        assertFalse(itemBlocks.isEmpty(), "no registerBlockWithItem(\"...\") call found in " + BLOCKS_AS);
+
+        for (String id : itemBlocks) {
+            String blockId = AS_NAMESPACE + ":" + id;
+            if (toolFree.containsKey(id)) {
+                assertFalse(mineable.contains(blockId),
+                        blockId + " is declared tool-free but appears in " + MINING_TAGS
+                                + "; remove it from the tag or drop the exemption");
+                continue;
+            }
+            assertTrue(mineable.contains(blockId),
+                    blockId + " ships an item but is in none of " + MINING_TAGS
+                            + "; in 1.20.1 that means it is mined by hand at 1.0 speed regardless of hardness,"
+                            + " and with requiresCorrectToolForDrops() it can never drop: " + BLOCKS_AS);
+        }
+        for (String id : toolFree.keySet()) {
+            assertTrue(itemBlocks.contains(id),
+                    "stale tool-free exemption for " + id + ": it is no longer a block registered with an item");
+        }
+    }
+
+    @Test
+    void needsToolTagsOnlyGateBlocksThatAreAlsoMineable() throws IOException {
+        Set<String> mineable = new LinkedHashSet<>();
+        for (String file : MINING_TAGS) {
+            mineable.addAll(values(DATA.resolve(file)));
+        }
+
+        for (String file : NEEDS_TOOL_TAGS) {
+            Path path = DATA.resolve(file);
+            if (!Files.isRegularFile(path)) {
+                continue;
+            }
+            for (String id : values(path)) {
+                assertTrue(mineable.contains(id),
+                        path + " requires a tool tier for " + id + ", but " + id + " is in none of " + MINING_TAGS
+                                + "; the tier gate does nothing without a harvest tool");
+            }
+        }
+    }
+
+    /**
+     * The block ids registered through {@code BlocksAS#registerBlockWithItem}, read from the source because a
+     * registry lookup needs a bootstrapped game and this test deliberately does not boot one.
+     */
+    private static List<String> registeredItemBlockIds() throws IOException {
+        Set<String> ids = new LinkedHashSet<>();
+        Matcher matcher = ITEM_BLOCK_REGISTRATION.matcher(Files.readString(BLOCKS_AS, StandardCharsets.UTF_8));
+        while (matcher.find()) {
+            ids.add(matcher.group(1));
+        }
+        return new ArrayList<>(ids);
     }
 
     /**

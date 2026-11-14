@@ -32,9 +32,9 @@ public class BlockAttunementAltar extends BaseEntityBlock implements CustomItemB
     private static final VoxelShape ATTUNEMENT_ALTAR_COLLISION = box(0, 0, 0, 16, 6, 16);
 
     public BlockAttunementAltar() {
-        // TODO_PORT[AS-MCH-01]: BlockAttunementAltar#<init> - 1.16.5 used harvestLevel(1)/harvestTool(PICKAXE);
-        // in 1.20.1 that is expressed via the minecraft:mineable/pickaxe and minecraft:needs_stone_tool block tags,
-        // which do not exist in the target data yet (requiresCorrectToolForDrops comes from PropertiesMarble).
+        // 1.16.5 used harvestLevel(1)/harvestTool(PICKAXE). In 1.20.1 that lives entirely in the data tags:
+        // data/minecraft/tags/blocks/mineable/pickaxe.json and .../needs_stone_tool.json both list this block
+        // (requiresCorrectToolForDrops comes from PropertiesMarble).
         super(PropertiesMarble.defaultMarble()
                 .lightLevel((state) -> 4));
     }
