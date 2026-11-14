@@ -5,8 +5,8 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffect;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualLink;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualLinkBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.BlockPredicate;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
@@ -89,7 +89,7 @@ public abstract class CEffectAbstractList<T extends CEffectAbstractList.ListEntr
         return pos ->
                 !pos.equals(BlockPos.ZERO) &&
                         this.isLinkedRitual || (
-                                !pos.equals(TileRitualPedestal.RITUAL_ANCHOR_OFFEST) && (
+                                !pos.equals(RitualPedestalBlockEntity.RITUAL_ANCHOR_OFFEST) && (
                                         pos.getY() >= 3 ||
                                                 (!structure.hasBlockAt(pos) &&
                                                         !structure.hasBlockAt(pos.below()) &&
@@ -137,8 +137,8 @@ public abstract class CEffectAbstractList<T extends CEffectAbstractList.ListEntr
     @Nonnull
     public Either<T, BlockPos> peekNewPosition(Level world, BlockPos pos, ConstellationEffectProperties prop) {
         if (this.excludesRitual || this.excludeRitualColumn) {
-            TileRitualLink link = MiscUtils.getTileAt(world, pos, TileRitualLink.class, false);
-            TileRitualPedestal pedestal = getPedestal(world, pos);
+            RitualLinkBlockEntity link = MiscUtils.getBlockEntityAt(world, pos, RitualLinkBlockEntity.class, false);
+            RitualPedestalBlockEntity pedestal = getPedestal(world, pos);
             this.isLinkedRitual = (pedestal != null && link != null && pos.equals(link.getLinkedTo()));
         }
         BlockPositionGenerator gen = this.selectPositionStrategy(this.positionStrategy, prop);

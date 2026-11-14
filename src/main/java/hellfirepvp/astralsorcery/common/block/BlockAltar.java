@@ -5,9 +5,9 @@ import hellfirepvp.astralsorcery.common.container.ContainerProviders;
 import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -50,7 +50,7 @@ public class BlockAltar extends BaseEntityBlock {
         }
 
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(blockEntity instanceof TileAltar altar)) {
+        if (!(blockEntity instanceof AltarBlockEntity altar)) {
             return InteractionResult.PASS;
         }
 
@@ -96,7 +96,7 @@ public class BlockAltar extends BaseEntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!(newState.getBlock() instanceof BlockAltar)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (!world.isClientSide && blockEntity instanceof TileAltar altar) {
+            if (!world.isClientSide && blockEntity instanceof AltarBlockEntity altar) {
                 ItemUtils.dropInventory(altar.getInventory(), world, pos);
             }
             super.onRemove(state, world, pos, newState, isMoving);
@@ -105,7 +105,7 @@ public class BlockAltar extends BaseEntityBlock {
         AltarType newType = ((BlockAltar) newState.getBlock()).getAltarType();
         if (this.type != newType) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof TileAltar altar) {
+            if (blockEntity instanceof AltarBlockEntity altar) {
                 altar.updateType(newType, false);
             }
         }
@@ -124,7 +124,7 @@ public class BlockAltar extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        TileAltar altar = new TileAltar(pos, state);
+        AltarBlockEntity altar = new AltarBlockEntity(pos, state);
         altar.updateType(type, true);
         return altar;
     }
@@ -132,8 +132,8 @@ public class BlockAltar extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.ALTAR.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileAltar altar) {
+        return type == BlockEntityTypesAS.ALTAR.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof AltarBlockEntity altar) {
                 altar.tick();
             }
         } : null;

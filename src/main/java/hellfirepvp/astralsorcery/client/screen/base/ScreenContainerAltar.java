@@ -19,7 +19,7 @@ import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.common.container.ContainerAltarBase;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -70,7 +70,7 @@ public abstract class ScreenContainerAltar<T extends ContainerAltarBase> extends
      */
     @Nullable
     public AltarRecipe findRecipe(boolean ignoreStarlightRequirement) {
-        TileAltar ta = getMenu().getTileEntity();
+        AltarBlockEntity ta = getMenu().getBlockEntity();
         Level level = ta.getLevel();
         if (level == null) {
             return null;
@@ -93,7 +93,7 @@ public abstract class ScreenContainerAltar<T extends ContainerAltarBase> extends
      * shared base so the four altar screens keep reading like the reference.
      */
     protected ItemStack getOutputForRender(AltarRecipe recipe) {
-        ItemStackHandlerAS inventory = this.getMenu().getTileEntity().getInventory();
+        ItemStackHandlerAS inventory = this.getMenu().getBlockEntity().getInventory();
         List<ItemStack> inventoryContents = new ArrayList<>(inventory.getSlots());
         for (int i = 0; i < inventory.getSlots(); i++) {
             inventoryContents.add(inventory.getStackInSlot(i));
@@ -111,7 +111,7 @@ public abstract class ScreenContainerAltar<T extends ContainerAltarBase> extends
 
     //1.16.5: MatrixStack -> 1.20.1: PoseStack
     protected void renderStarlightBar(PoseStack renderStack, int offsetX, int offsetZ, int width, int height) {
-        TileAltar altar = this.getMenu().getTileEntity();
+        AltarBlockEntity altar = this.getMenu().getBlockEntity();
 
         //1.16.5 bracketed this method with RenderSystem.disableAlphaTest()/enableAlphaTest(). The fixed-function
         //alpha test is gone in 1.20.1 - the position_color_tex core shader used by RenderingGuiUtils does the alpha

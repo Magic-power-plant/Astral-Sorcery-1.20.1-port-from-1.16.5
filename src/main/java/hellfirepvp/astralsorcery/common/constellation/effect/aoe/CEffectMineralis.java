@@ -21,7 +21,7 @@ import hellfirepvp.astralsorcery.common.data.config.registry.OreBlockRarityRegis
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.BlockStateList;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
@@ -90,7 +90,7 @@ public class CEffectMineralis extends CEffectAbstractList<ListEntries.PosEntry> 
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         ConstellationEffectProperties prop = this.createProperties(pedestal.getMirrorCount());
 
         if (rand.nextFloat() < 0.6F) {

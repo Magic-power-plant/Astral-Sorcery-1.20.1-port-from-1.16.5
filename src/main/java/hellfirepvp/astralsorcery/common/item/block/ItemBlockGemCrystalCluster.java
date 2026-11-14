@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.item.block;
 
-import hellfirepvp.astralsorcery.common.block.tile.BlockGemCrystalCluster;
+import hellfirepvp.astralsorcery.common.block.BlockGemCrystalCluster;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;
 import net.minecraft.world.item.CreativeModeTab;

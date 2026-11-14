@@ -6,7 +6,7 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.tile.base.TileFakedState;
+import hellfirepvp.astralsorcery.common.blockentity.base.FakedStateBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.particle.ParticleEngine;
@@ -51,7 +51,7 @@ public abstract class BlockFakedState extends BaseEntityBlock {
     protected void playParticles(Level world, BlockPos pos, RandomSource rand) {
         if (rand.nextInt(8) == 0) {
             VFXColorFunction<?> colorFn = VFXColorFunction.WHITE;
-            TileFakedState fakedState = MiscUtils.getTileAt(world, pos, TileFakedState.class, false);
+            FakedStateBlockEntity fakedState = MiscUtils.getBlockEntityAt(world, pos, FakedStateBlockEntity.class, false);
             if (fakedState != null) {
                 colorFn = VFXColorFunction.constant(fakedState.getOverlayColor());
             }
@@ -159,7 +159,7 @@ public abstract class BlockFakedState extends BaseEntityBlock {
 
     @Nonnull
     protected BlockState getFakedState(BlockGetter world, BlockPos pos) {
-        TileFakedState tb = MiscUtils.getTileAt(world, pos, TileFakedState.class, true);
+        FakedStateBlockEntity tb = MiscUtils.getBlockEntityAt(world, pos, FakedStateBlockEntity.class, true);
         return tb != null ? tb.getFakedState() : Blocks.AIR.defaultBlockState();
     }
 

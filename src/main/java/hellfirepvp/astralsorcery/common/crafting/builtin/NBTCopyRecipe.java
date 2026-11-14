@@ -15,8 +15,8 @@ import com.google.gson.JsonSyntaxException;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 //1.16.5 imported common/util/nbt/NBTHelper; this tree carries two NBTHelper classes
 //(common/util/data and common/util/nbt) with an identical deepMerge - the nbt one is the reference's and is
@@ -114,7 +114,7 @@ public class NBTCopyRecipe extends AltarRecipe {
 
     @Nonnull
     @Override
-    public List<ItemStack> getOutputsForAltar(TileAltar altar) {
+    public List<ItemStack> getOutputsForAltar(AltarBlockEntity altar) {
         List<ItemStack> outputs = super.getOutputsForAltar(altar);
         List<CompoundTag> foundTags = new ArrayList<>();
         //1.16.5 iterated TileAltar#getInventory() directly (a TileInventory is Iterable<ItemStack>); this

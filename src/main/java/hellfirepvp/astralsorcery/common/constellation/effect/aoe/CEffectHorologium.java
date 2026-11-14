@@ -17,11 +17,11 @@ import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.effect.ConstellationEffectProperties;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstractList;
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
-import hellfirepvp.astralsorcery.common.data.config.registry.TileAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 import hellfirepvp.astralsorcery.common.util.block.iterator.BlockPositionGenerator;
@@ -58,7 +58,7 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
 
     public CEffectHorologium(@Nonnull ILocatable origin) {
         super(origin, ConstellationsAS.horologium, CONFIG.maxAmount.get(), (world, pos, state) ->
-                TileAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(MiscUtils.getTileAt(world, pos, BlockEntity.class, false)));
+                BlockEntityAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, false)));
     }
 
     @Nonnull
@@ -81,7 +81,7 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         ConstellationEffectProperties prop = this.createProperties(pedestal.getMirrorCount());
 
         for (int i = 0; i < 2; i++) {
@@ -123,24 +123,24 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
         ListEntries.PosEntry entry = this.getRandomElementChanced();
         if (entry != null) {
             if (MiscUtils.executeWithChunk(world, entry.getPos(), () -> {
-                BlockEntity tile = MiscUtils.getTileAt(world, entry.getPos(), BlockEntity.class, true);
-                if (tile != null && isValid(world, entry)) {
+                BlockEntity blockEntity = MiscUtils.getBlockEntityAt(world, entry.getPos(), BlockEntity.class, true);
+                if (blockEntity != null && isValid(world, entry)) {
                     sendConstellationPing(world, new Vector3(entry.getPos()).add(Vector3.positiveRandom()));
                     sendConstellationPing(world, new Vector3(entry.getPos()).add(Vector3.positiveRandom()));
                     try {
                         long startNs = System.nanoTime();
                         int times = 4 + rand.nextInt(2);
                         while (times > 0) {
-                            tickTile(world, entry.getPos(), tile);
+                            tickBlockEntity(world, entry.getPos(), blockEntity);
                             if ((System.nanoTime() - startNs) >= 80_000) {
                                 break;
                             }
                             times--;
                         }
                     } catch (Exception exc) {
-                        TileAccelerationBlacklistRegistry.INSTANCE.addErrored(tile);
+                        BlockEntityAccelerationBlacklistRegistry.INSTANCE.addErrored(blockEntity);
                         this.removeElement(entry);
-                        AstralSorcery.LOG.warn("Couldn't accelerate TileEntity " + tile.getClass().getName() + ".");
+                        AstralSorcery.LOG.warn("Couldn't accelerate TileEntity " + blockEntity.getClass().getName() + ".");
                         AstralSorcery.LOG.warn("Temporarily blacklisting that class. Consider adding that to the blacklist if it persists?");
                         exc.printStackTrace();
                     }
@@ -171,12 +171,12 @@ public class CEffectHorologium extends CEffectAbstractList<ListEntries.PosEntry>
     //VERIFY_PORT[AS-CST-02]: needs an in-game check that accelerating e.g. a vanilla furnace still works, since the
     //ticker is resolved per call instead of being cached by the chunk like vanilla does.
     @SuppressWarnings("unchecked")
-    private static void tickTile(Level world, BlockPos pos, BlockEntity tile) {
+    private static void tickBlockEntity(Level world, BlockPos pos, BlockEntity blockEntity) {
         BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof EntityBlock entityBlock) {
-            BlockEntityTicker<BlockEntity> ticker = entityBlock.getTicker(world, state, (BlockEntityType<BlockEntity>) tile.getType());
+            BlockEntityTicker<BlockEntity> ticker = entityBlock.getTicker(world, state, (BlockEntityType<BlockEntity>) blockEntity.getType());
             if (ticker != null) {
-                ticker.tick(world, pos, state, tile);
+                ticker.tick(world, pos, state, blockEntity);
             }
         }
     }

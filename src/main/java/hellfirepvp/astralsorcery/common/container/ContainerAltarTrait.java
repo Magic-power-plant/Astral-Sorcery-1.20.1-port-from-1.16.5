@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.container.slot.SlotConstellationFocus;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
 import hellfirepvp.astralsorcery.common.item.base.IConstellationFocus;
 import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public class ContainerAltarTrait extends ContainerAltarBase {
 
     private SlotConstellationFocus focusSlot;
 
-    public ContainerAltarTrait(int id, Inventory inv, TileAltar altar) {
+    public ContainerAltarTrait(int id, Inventory inv, AltarBlockEntity altar) {
         super(MenuTypesAS.ALTAR_RADIANCE.get(), id, inv, altar);
     }
 
@@ -43,7 +43,7 @@ public class ContainerAltarTrait extends ContainerAltarBase {
             }
         }
 
-        this.focusSlot = new SlotConstellationFocus(altarInventory, this.getTileEntity(), 35, 11);
+        this.focusSlot = new SlotConstellationFocus(altarInventory, this.getBlockEntity(), 35, 11);
         addSlot(this.focusSlot); //Focus item, not accessible from slot index.
     }
 

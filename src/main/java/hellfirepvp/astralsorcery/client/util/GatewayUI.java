@@ -75,13 +75,13 @@ public class GatewayUI {
     }
 
     @Nullable
-    public static GatewayUI create(Level world, BlockPos tilePos, Vector3 renderPos, double sphereRadius) {
-        GatewayCache.GatewayNode gatewayNode = CelestialGatewayHandler.INSTANCE.getGatewayNode(world, Dist.CLIENT, tilePos);
+    public static GatewayUI create(Level world, BlockPos blockEntityPos, Vector3 renderPos, double sphereRadius) {
+        GatewayCache.GatewayNode gatewayNode = CelestialGatewayHandler.INSTANCE.getGatewayNode(world, Dist.CLIENT, blockEntityPos);
         if (gatewayNode == null) {
             return null;
         }
         ResourceKey<Level> dimType = world.dimension();
-        GatewayUI ui = new GatewayUI(dimType, tilePos, renderPos, sphereRadius);
+        GatewayUI ui = new GatewayUI(dimType, blockEntityPos, renderPos, sphereRadius);
         Player thisPlayer = Minecraft.getInstance().player;
 
         for (GatewayCache.GatewayNode node : CelestialGatewayHandler.INSTANCE.getGatewaysForWorld(world, Dist.CLIENT)) {

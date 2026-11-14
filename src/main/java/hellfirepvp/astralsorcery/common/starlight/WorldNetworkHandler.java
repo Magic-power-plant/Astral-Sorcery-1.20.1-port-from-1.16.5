@@ -179,13 +179,13 @@ public class WorldNetworkHandler {
         buffer.removeTransmission(transmission.getTrPos());
     }
 
-    public void addNewSourceTile(IStarlightSource<?> source) {
+    public void addNewSourceBlockEntity(IStarlightSource<?> source) {
         buffer.addSource(source, source.getTrPos());
 
         linkNextToThisSources(source);
     }
 
-    public void addTransmissionTile(IStarlightTransmission<?> transmission) {
+    public void addTransmissionBlockEntity(IStarlightTransmission<?> transmission) {
         buffer.addTransmission(transmission, transmission.getTrPos());
 
         linkNextToThisSources(transmission);

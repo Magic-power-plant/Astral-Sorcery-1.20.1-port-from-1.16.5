@@ -217,13 +217,13 @@ public class StructureRenderer {
                     if (this.isolateIndividualBlockRender) {
                         this.world.pushContentFilter(wPos -> wPos.equals(pos));
                     }
-                    BlockEntity tile = this.world.getBlockEntity(pos);
-                    if (tile != null) {
-                        BlockEntityRenderer tesr = berd.getRenderer(tile);
+                    BlockEntity blockEntity = this.world.getBlockEntity(pos);
+                    if (blockEntity != null) {
+                        BlockEntityRenderer tesr = berd.getRenderer(blockEntity);
                         if (tesr != null) {
                             renderStack.pushPose();
                             renderStack.translate(pos.getX(), pos.getY(), pos.getZ());
-                            tesr.render(tile, 0, renderStack, buffers, LevelRenderer.getLightColor(this.world, pos), OverlayTexture.NO_OVERLAY);
+                            tesr.render(blockEntity, 0, renderStack, buffers, LevelRenderer.getLightColor(this.world, pos), OverlayTexture.NO_OVERLAY);
                             renderStack.popPose();
                         }
                     }

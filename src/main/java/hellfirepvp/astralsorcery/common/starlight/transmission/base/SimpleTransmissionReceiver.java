@@ -16,7 +16,7 @@ public abstract class SimpleTransmissionReceiver<T extends BlockEntity> implemen
 
     private BlockPos thisPos;
     private final Set<BlockPos> sourcesToThis = new HashSet<>();
-    private boolean needsTileSync = false;
+    private boolean needsBlockEntitySync = false;
 
     public SimpleTransmissionReceiver(BlockPos thisPos) {
         this.thisPos = thisPos;
@@ -24,21 +24,21 @@ public abstract class SimpleTransmissionReceiver<T extends BlockEntity> implemen
 
     @Override
     public void update(Level world) {
-        if (this.needsTileSync) {
-            T tile = getTileAtPos(world);
-            if (tile != null && this.syncTileData(world, tile)) {
-                this.needsTileSync = false;
+        if (this.needsBlockEntitySync) {
+            T blockEntity = getBlockEntityAtPos(world);
+            if (blockEntity != null && this.syncBlockEntityData(world, blockEntity)) {
+                this.needsBlockEntitySync = false;
             }
         }
     }
 
-    public final void markForTileSync() {
-        this.needsTileSync = true;
+    public final void markForBlockEntitySync() {
+        this.needsBlockEntitySync = true;
     }
 
-    public abstract boolean syncTileData(Level world, T tile);
+    public abstract boolean syncBlockEntityData(Level world, T blockEntity);
 
-    public abstract Class<T> getTileClass();
+    public abstract Class<T> getBlockEntityClass();
 
     @Override
     public BlockPos getLocationPos() {
@@ -66,13 +66,13 @@ public abstract class SimpleTransmissionReceiver<T extends BlockEntity> implemen
     }
 
     @Nullable
-    public T getTileAtPos(Level world) {
+    public T getBlockEntityAtPos(Level world) {
         if (world == null || thisPos == null) {
             return null;
         }
-        BlockEntity tile = world.getBlockEntity(thisPos);
-        if (getTileClass().isInstance(tile)) {
-            return getTileClass().cast(tile);
+        BlockEntity blockEntity = world.getBlockEntity(thisPos);
+        if (getBlockEntityClass().isInstance(blockEntity)) {
+            return getBlockEntityClass().cast(blockEntity);
         }
         return null;
     }
@@ -81,7 +81,7 @@ public abstract class SimpleTransmissionReceiver<T extends BlockEntity> implemen
     public void readFromNBT(CompoundTag compound) {
         this.sourcesToThis.clear();
         this.thisPos = NBTHelper.readBlockPosFromNBT(compound);
-        this.needsTileSync = compound.getBoolean("needsTileSync");
+        this.needsBlockEntitySync = compound.getBoolean("needsTileSync");
 
         ListTag sources = compound.getList("sources", Tag.TAG_COMPOUND);
         for (int i = 0; i < sources.size(); i++) {
@@ -92,7 +92,7 @@ public abstract class SimpleTransmissionReceiver<T extends BlockEntity> implemen
     @Override
     public void writeToNBT(CompoundTag compound) {
         NBTHelper.writeBlockPosToNBT(thisPos, compound);
-        compound.putBoolean("needsTileSync", this.needsTileSync);
+        compound.putBoolean("needsTileSync", this.needsBlockEntitySync);
 
         ListTag sources = new ListTag();
         for (BlockPos source : sourcesToThis) {

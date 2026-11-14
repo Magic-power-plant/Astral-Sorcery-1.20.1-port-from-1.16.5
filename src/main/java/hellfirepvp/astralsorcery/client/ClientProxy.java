@@ -139,7 +139,7 @@ public class ClientProxy extends CommonProxy {
         // 1.16.5 called RegistryEntities.initClient()/RegistryTileEntities.initClient() from onClientSetup;
         // in 1.20.1 renderer registration is the dedicated mod-bus EntityRenderersEvent.RegisterRenderers
         modEventBus.addListener(RegistryEntities::initClient);
-        modEventBus.addListener(RegistryTileEntities::initClient);
+        modEventBus.addListener(RegistryBlockEntities::initClient);
         modEventBus.addListener(this::registerReloadListeners);
         // 1.16.5 attached the starry player layers from onClientSetup by reaching into the skin map;
         // 1.20.1 exposes EntityRenderersEvent.AddLayers for exactly that, fired whenever the renderers are rebuilt

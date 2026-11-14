@@ -18,7 +18,7 @@ import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RegistryComponent;
 import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.kubejs.util.MapJS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;

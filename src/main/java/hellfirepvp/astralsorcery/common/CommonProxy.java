@@ -38,7 +38,7 @@ import hellfirepvp.astralsorcery.common.data.config.registry.FluidRarityRegistry
 import hellfirepvp.astralsorcery.common.data.config.registry.OreBlockRarityRegistry;
 import hellfirepvp.astralsorcery.common.data.config.registry.OreItemRarityRegistry;
 import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegistry;
-import hellfirepvp.astralsorcery.common.data.config.registry.TileAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.data.config.registry.WeightedPerkAttributeRegistry;
 import hellfirepvp.astralsorcery.common.registry.RegistryWorldGeneration;
 import hellfirepvp.astralsorcery.common.registry.RegistryConstellationEffects;
@@ -60,7 +60,7 @@ import hellfirepvp.astralsorcery.common.perk.PerkTree;
 import hellfirepvp.astralsorcery.common.perk.data.PerkTreeLoader;
 import hellfirepvp.astralsorcery.common.perk.data.PerkTypeHandler;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierManager;
-import hellfirepvp.astralsorcery.common.tile.TileTreeBeacon;
+import hellfirepvp.astralsorcery.common.blockentity.TreeBeaconBlockEntity;
 import hellfirepvp.astralsorcery.common.auxiliary.gateway.CelestialGatewayHandler;
 import hellfirepvp.astralsorcery.common.starlight.network.StarlightNetworkRegistry;
 import hellfirepvp.astralsorcery.common.starlight.network.StarlightTransmissionHandler;
@@ -204,7 +204,7 @@ public class CommonProxy {
         this.serverLifecycleListeners.add(ServerLifecycleListener.start(PerkTree.PERK_TREE::setupServerPerkTree));
         this.serverLifecycleListeners.add(ServerLifecycleListener.start(PerkLevelManager::loadPerkLevels));
         this.serverLifecycleListeners.add(ServerLifecycleListener.stop(BlockBreakHelper::clearServerCache));
-        this.serverLifecycleListeners.add(ServerLifecycleListener.stop(TileTreeBeacon.TreeWatcher::clearServerCache));
+        this.serverLifecycleListeners.add(ServerLifecycleListener.stop(TreeBeaconBlockEntity.TreeWatcher::clearServerCache));
         //1.16.5 CommonProxy.java:189. PlayerAffectionFlags keeps a static per-UUID map, so it has to be dropped
         //on server stop like every other server-side cache here.
         this.serverLifecycleListeners.add(ServerLifecycleListener.stop(PlayerAffectionFlags::clearServerCache));
@@ -226,7 +226,7 @@ public class CommonProxy {
         //TileAccelerationBlacklistRegistry permitted everything.
         ConfigRegistries.getRegistries().addDataRegistry(FluidRarityRegistry.INSTANCE);
         ConfigRegistries.getRegistries().addDataRegistry(TechnicalEntityRegistry.INSTANCE);
-        ConfigRegistries.getRegistries().addDataRegistry(TileAccelerationBlacklistRegistry.INSTANCE);
+        ConfigRegistries.getRegistries().addDataRegistry(BlockEntityAccelerationBlacklistRegistry.INSTANCE);
         ConfigRegistries.getRegistries().addDataRegistry(AmuletEnchantmentRegistry.INSTANCE);
         ConfigRegistries.getRegistries().addDataRegistry(WeightedPerkAttributeRegistry.INSTANCE);
         ConfigRegistries.getRegistries().addDataRegistry(OreItemRarityRegistry.VOID_TRASH_REWARD);
@@ -239,7 +239,7 @@ public class CommonProxy {
         //tick, so a saved world containing a Tree Beacon threw ReportedException("Ticking block entity") the
         //moment its chunk loaded.
         ToolsConfig.CONFIG.newSubSection(WandsConfig.CONFIG);
-        MachineryConfig.CONFIG.newSubSection(TileTreeBeacon.Config.CONFIG);
+        MachineryConfig.CONFIG.newSubSection(TreeBeaconBlockEntity.Config.CONFIG);
 
         this.serverConfig.addConfigEntry(GeneralConfig.CONFIG);
         this.serverConfig.addConfigEntry(ToolsConfig.CONFIG);

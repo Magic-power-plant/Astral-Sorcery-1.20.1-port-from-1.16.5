@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.serializer.LiquidInfusionSerializer;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
-import hellfirepvp.astralsorcery.common.tile.TileInfuser;
+import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
 import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
@@ -82,7 +82,7 @@ public class LiquidInfusion implements Recipe<Container>, GatedRecipe.Progressio
     }
 
     @Nullable
-    public static LiquidInfusion findRecipe(Level level, TileInfuser infuser, Player crafter) {
+    public static LiquidInfusion findRecipe(Level level, InfuserBlockEntity infuser, Player crafter) {
         for (LiquidInfusion recipe : level.getRecipeManager().getAllRecipesFor(RecipeTypesAS.INFUSION.get())) {
             if (recipe.matches(infuser, crafter)) {
                 return recipe;
@@ -98,7 +98,7 @@ public class LiquidInfusion implements Recipe<Container>, GatedRecipe.Progressio
     //forwards to the reference matcher with LogicalSide.SERVER - which restores the 1.16.5 research gate that
     //this tree's version was missing. Its two extra guards - an empty output or an empty input fluid, neither
     //of which a validated recipe can carry - are kept.
-    public boolean matches(TileInfuser infuser, Player crafter) {
+    public boolean matches(InfuserBlockEntity infuser, Player crafter) {
         if (crafter == null || this.output.isEmpty() || this.liquidInput == Fluids.EMPTY) {
             return false;
         }
@@ -111,7 +111,7 @@ public class LiquidInfusion implements Recipe<Container>, GatedRecipe.Progressio
     //to this tree and common/util/data is not owned by this slice; since the remapped key was never read by
     //the predicate, iterating the values is the identical check. TileInfuser#getLiquids() always reports
     //every liquid offset, so the size comparison the two-argument form used to do was redundant.
-    public boolean matches(TileInfuser infuser, Player crafter, LogicalSide side) {
+    public boolean matches(InfuserBlockEntity infuser, Player crafter, LogicalSide side) {
         if (crafter == null) {
             return false;
         }
@@ -209,7 +209,7 @@ public class LiquidInfusion implements Recipe<Container>, GatedRecipe.Progressio
         return ItemUtils.copyStackWithSize(this.output, this.output.getCount());
     }
 
-    public void onRecipeCompletion(TileInfuser infuser) {}
+    public void onRecipeCompletion(InfuserBlockEntity infuser) {}
 
     public float getConsumptionChance() {
         return Mth.clamp(consumptionChance, 0F, 1F);

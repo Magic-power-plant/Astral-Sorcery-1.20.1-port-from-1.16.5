@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.event.handler;
 
 import hellfirepvp.astralsorcery.common.item.base.OverrideInteractItem;
-import hellfirepvp.astralsorcery.common.tile.base.TileOwned;
+import hellfirepvp.astralsorcery.common.blockentity.base.OwnedBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -68,7 +68,7 @@ public class EventHandlerInteract {
     }
 
     private static void handleOwnerPlacement(LevelAccessor world, BlockPos pos, Player placer) {
-        TileOwned owned = MiscUtils.getTileAt(world, pos, TileOwned.class, true);
+        OwnedBlockEntity owned = MiscUtils.getBlockEntityAt(world, pos, OwnedBlockEntity.class, true);
         if (owned != null) {
             owned.setOwner(placer);
         }

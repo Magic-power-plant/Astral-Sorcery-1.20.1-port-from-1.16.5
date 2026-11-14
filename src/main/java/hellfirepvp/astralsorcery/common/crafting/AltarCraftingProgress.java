@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting;
 
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 
 /**
@@ -21,7 +21,7 @@ import net.minecraft.nbt.CompoundTag;
  */
 public interface AltarCraftingProgress {
 
-    boolean tryProcess(TileAltar altar, ActiveAltarRecipe currentRecipe, CompoundTag data, int ticksCrafting, int totalCraftingTime);
+    boolean tryProcess(AltarBlockEntity altar, ActiveAltarRecipe currentRecipe, CompoundTag data, int ticksCrafting, int totalCraftingTime);
 
     //TODO_PORT[AS-ALT-03]: 1.16.5 declared exactly one method, taking the one and only active-altar-recipe
     // type ActiveSimpleAltarRecipe (1.16.5 common/crafting/recipe/altar/AltarCraftingProgress.java:23). This
@@ -32,7 +32,7 @@ public interface AltarCraftingProgress {
     // AltarCraftingProgress (neither in 1.16.5 nor here); it is purely an addon extension point, which is
     // why the ActiveSimpleAltarRecipe form can default to "keep going". Collapse the two back into one
     // method once the two recipe hierarchies are merged.
-    default boolean tryProcess(TileAltar altar, ActiveSimpleAltarRecipe currentRecipe, CompoundTag data, int ticksCrafting, int totalCraftingTime) {
+    default boolean tryProcess(AltarBlockEntity altar, ActiveSimpleAltarRecipe currentRecipe, CompoundTag data, int ticksCrafting, int totalCraftingTime) {
         return true;
     }
 }

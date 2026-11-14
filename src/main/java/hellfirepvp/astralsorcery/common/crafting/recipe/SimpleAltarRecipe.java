@@ -25,8 +25,8 @@ import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipe
 import hellfirepvp.astralsorcery.common.crafting.serializer.SimpleAltarRecipeSerializer;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
@@ -148,7 +148,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
         return starlightRequirement;
     }
 
-    public void onRecipeCompletion(TileAltar altar, ActiveSimpleAltarRecipe activeRecipe) {}
+    public void onRecipeCompletion(AltarBlockEntity altar, ActiveSimpleAltarRecipe activeRecipe) {}
 
     @Nonnull
     @OnlyIn(Dist.CLIENT)
@@ -158,7 +158,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
     }
 
     @Nonnull
-    public List<ItemStack> getOutputs(TileAltar altar) {
+    public List<ItemStack> getOutputs(AltarBlockEntity altar) {
         return MiscUtils.transformList(this.outputs, stack -> ItemUtils.copyStackWithSize(stack, stack.getCount()));
     }
 
@@ -183,7 +183,7 @@ public class SimpleAltarRecipe extends CustomMatcherRecipe implements GatedRecip
         this.outputs.add(ItemUtils.copyStackWithSize(output, output.getCount()));
     }
 
-    public boolean matches(LogicalSide side, Player crafter, TileAltar altar, boolean ignoreStarlightRequirement) {
+    public boolean matches(LogicalSide side, Player crafter, AltarBlockEntity altar, boolean ignoreStarlightRequirement) {
         if (crafter == null) {
             return false;
         }

@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimplePrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider;
-import hellfirepvp.astralsorcery.common.tile.TilePrism;
+import hellfirepvp.astralsorcery.common.blockentity.PrismBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +32,7 @@ public class CrystalPrismTransmissionNode extends SimplePrismTransmissionNode {
 
     @Override
     public void onTransmissionTick(Level world, float starlightAmt, IWeakConstellation type) {
-        TilePrism prism = MiscUtils.getTileAt(world, getLocationPos(), TilePrism.class, false);
+        PrismBlockEntity prism = MiscUtils.getBlockEntityAt(world, getLocationPos(), PrismBlockEntity.class, false);
         if (prism != null) {
             prism.transmissionTick(starlightAmt, type);
         }

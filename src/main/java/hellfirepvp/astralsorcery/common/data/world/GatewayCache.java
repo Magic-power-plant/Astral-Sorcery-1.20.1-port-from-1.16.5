@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.data.world;
 
 import hellfirepvp.astralsorcery.common.auxiliary.gateway.CelestialGatewayHandler;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.PlayerReference;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -64,7 +64,7 @@ public class GatewayCache extends GlobalWorldData {
     }
 
     public boolean offerPosition(Level world, BlockPos pos) {
-        TileCelestialGateway te = MiscUtils.getTileAt(world, pos, TileCelestialGateway.class, false);
+        CelestialGatewayBlockEntity te = MiscUtils.getBlockEntityAt(world, pos, CelestialGatewayBlockEntity.class, false);
         if (te == null) {
             return false;
         }
@@ -99,9 +99,9 @@ public class GatewayCache extends GlobalWorldData {
         Iterator<GatewayNode> iterator = gatewayPositions.iterator();
         while (iterator.hasNext()) {
             GatewayNode node = iterator.next();
-            TileCelestialGateway gateway;
+            CelestialGatewayBlockEntity gateway;
             try {
-                gateway = MiscUtils.getTileAt(world, node.getPos(), TileCelestialGateway.class, true);
+                gateway = MiscUtils.getBlockEntityAt(world, node.getPos(), CelestialGatewayBlockEntity.class, true);
             } catch (Exception loadEx) {
                 LogUtil.info(LogCategory.GATEWAY_CACHE, () -> "Failed to check gateway for " + node + " skipping");
                 continue;

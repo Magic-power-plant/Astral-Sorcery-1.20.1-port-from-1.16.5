@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active.ActiveCrystalAttunementRecipe;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -45,7 +45,7 @@ public class AttuneCrystalRecipe extends AttunementRecipe<ActiveCrystalAttunemen
     }
 
     @Override
-    public boolean canStartCrafting(TileAttunementAltar altar) {
+    public boolean canStartCrafting(AttunementAltarBlockEntity altar) {
         Level world = altar.getLevel();
         if (DayTimeHelper.isNight(world)) {
             return findApplicableCrystal(altar) != null;
@@ -55,19 +55,19 @@ public class AttuneCrystalRecipe extends AttunementRecipe<ActiveCrystalAttunemen
 
     @Nonnull
     @Override
-    public ActiveCrystalAttunementRecipe createRecipe(TileAttunementAltar altar) {
+    public ActiveCrystalAttunementRecipe createRecipe(AttunementAltarBlockEntity altar) {
         ItemEntity crystal = findApplicableCrystal(altar);
         return new ActiveCrystalAttunementRecipe(this, altar.getActiveConstellation(), crystal.getId());
     }
 
     @Nonnull
     @Override
-    public ActiveCrystalAttunementRecipe deserialize(TileAttunementAltar altar, CompoundTag nbt, @Nullable ActiveCrystalAttunementRecipe previousInstance) {
+    public ActiveCrystalAttunementRecipe deserialize(AttunementAltarBlockEntity altar, CompoundTag nbt, @Nullable ActiveCrystalAttunementRecipe previousInstance) {
         return new ActiveCrystalAttunementRecipe(this, nbt);
     }
 
     @Nullable
-    private static ItemEntity findApplicableCrystal(TileAttunementAltar altar) {
+    private static ItemEntity findApplicableCrystal(AttunementAltarBlockEntity altar) {
         IConstellation cst = altar.getActiveConstellation();
         if (cst == null) {
             return null;

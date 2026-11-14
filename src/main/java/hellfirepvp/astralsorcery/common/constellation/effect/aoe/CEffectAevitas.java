@@ -21,7 +21,7 @@ import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.EffectsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
@@ -66,7 +66,7 @@ public class CEffectAevitas extends CEffectAbstractList<CropHelper.GrowablePlant
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         if (rand.nextBoolean()) {
             ConstellationEffectProperties prop = this.createProperties(pedestal.getMirrorCount());
 

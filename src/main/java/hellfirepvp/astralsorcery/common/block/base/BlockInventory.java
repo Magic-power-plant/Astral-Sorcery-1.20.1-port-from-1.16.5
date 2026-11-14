@@ -18,7 +18,7 @@ public abstract class BlockInventory extends BlockCrystalContainer {
 
     @Override
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        BlockEntity te = MiscUtils.getTileAt(worldIn, pos, BlockEntity.class, true);
+        BlockEntity te = MiscUtils.getBlockEntityAt(worldIn, pos, BlockEntity.class, true);
         if (te != null && !worldIn.isClientSide) {
             LazyOptional<IItemHandler> opt = te.getCapability(ForgeCapabilities.ITEM_HANDLER);
             if (opt.isPresent()) {

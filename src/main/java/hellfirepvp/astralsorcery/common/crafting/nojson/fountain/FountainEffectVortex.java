@@ -22,7 +22,7 @@ import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegistry;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperEntityFreeze;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.tile.TileFountain;
+import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
 import net.minecraft.core.BlockPos;
@@ -63,12 +63,12 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
 
     @Nonnull
     @Override
-    public VortexContext createContext(TileFountain fountain) {
+    public VortexContext createContext(FountainBlockEntity fountain) {
         return new VortexContext();
     }
 
     @Override
-    public void tick(TileFountain fountain, VortexContext context, int operationTick, LogicalSide side, OperationSegment currentSegment) {
+    public void tick(FountainBlockEntity fountain, VortexContext context, int operationTick, LogicalSide side, OperationSegment currentSegment) {
         if (side.isClient()) {
             tickEffects(fountain, context, operationTick, currentSegment);
         } else if (side.isServer() && currentSegment.isLaterOrEqualTo(OperationSegment.RUNNING)) {
@@ -76,7 +76,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
         }
     }
 
-    private void pullEntities(TileFountain fountain) {
+    private void pullEntities(FountainBlockEntity fountain) {
         Vector3 at = new Vector3(fountain).add(0.5, 0.5, 0.5);
         Vector3 vortexAt = at.clone().addY(-4);
 
@@ -161,7 +161,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void tickEffects(TileFountain fountain, VortexContext ctx, int operationTick, OperationSegment currentSegment) {
+    private void tickEffects(FountainBlockEntity fountain, VortexContext ctx, int operationTick, OperationSegment currentSegment) {
         if (currentSegment.isLaterOrEqualTo(OperationSegment.STARTUP)) {
             FXSpritePlane sprite = (FXSpritePlane) ctx.fountainSprite;
             if (sprite == null) {
@@ -176,7 +176,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                         //AS-FNT-05 (resolved): TileFountain does track its current effect
                         // (common/tile/TileFountain.java:60), so 1.16.5's identity check is restored
                         // (1.16.5 FountainEffectVortex.java:174).
-                        .refresh(RefreshFunction.tileExistsAnd(fountain, (tile, fx) -> tile.getCurrentEffect() == this));
+                        .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
             } else if (sprite.isRemoved() || sprite.canRemove()) {
                 EffectHelper.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
             }
@@ -207,7 +207,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playVortexEffects(BlockPos pos, TileFountain fountain, VortexContext ctx) {
+    private void playVortexEffects(BlockPos pos, FountainBlockEntity fountain, VortexContext ctx) {
         Vector3 at = new Vector3(pos).add(0.5, 0.5, 0.5);
         Vector3 vortexAt = at.clone().addY(-4);
 
@@ -220,7 +220,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
                     .setScaleMultiplier(2F)
                     //AS-FNT-05 (resolved): same restoration as above
                     // (1.16.5 FountainEffectVortex.java:216).
-                    .refresh(RefreshFunction.tileExistsAnd(fountain, (tile, fx) -> tile.getCurrentEffect() == this));
+                    .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
         } else if (sprite.isRemoved() || sprite.canRemove()) {
             EffectHelper.refresh(sprite, EffectTemplatesAS.FACING_SPRITE);
         }
@@ -327,7 +327,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
     }
 
     @Override
-    public void transition(TileFountain fountain, VortexContext context, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment) {
+    public void transition(FountainBlockEntity fountain, VortexContext context, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment) {
         if (side.isClient()) {
             if (nextSegment == OperationSegment.RUNNING) {
                 doVortexExplosion(fountain.getBlockPos());
@@ -361,7 +361,7 @@ public class FountainEffectVortex extends FountainEffect<VortexContext> {
     }
 
     @Override
-    public void onReplace(TileFountain fountain, VortexContext ctx, @Nullable FountainEffect<?> newEffect, LogicalSide side) {
+    public void onReplace(FountainBlockEntity fountain, VortexContext ctx, @Nullable FountainEffect<?> newEffect, LogicalSide side) {
         if (side.isClient()) {
             removeSprite(ctx);
         }

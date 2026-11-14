@@ -60,8 +60,8 @@ public class CrystalPropertiesAS {
     public static class Sources {
 
         public static PropertySource<Object, Crystal> SOURCE_COLLECTOR_CRYSTAL;
-        public static PropertySource<Object, Crystal> SOURCE_TILE_COLLECTOR_CRYSTAL;
+        public static PropertySource<Object, Crystal> SOURCE_COLLECTOR_CRYSTAL_BLOCK_ENTITY;
         public static PropertySource<Object, Ritual> SOURCE_RITUAL_PEDESTAL;
-        public static PropertySource<Object, Ritual> SOURCE_TILE_RITUAL_PEDESTAL;
+        public static PropertySource<Object, Ritual> SOURCE_RITUAL_PEDESTAL_BLOCK_ENTITY;
     }
 }

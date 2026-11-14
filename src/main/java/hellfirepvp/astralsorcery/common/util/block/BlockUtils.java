@@ -47,7 +47,7 @@ public class BlockUtils {
         LootParams.Builder builder = new LootParams.Builder(world)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                 .withParameter(LootContextParams.TOOL, tool)
-                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, MiscUtils.getTileAt(world, pos, BlockEntity.class, true))
+                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, true))
                 .withLuck(harvestFortune);
         return state.getDrops(builder);
     }

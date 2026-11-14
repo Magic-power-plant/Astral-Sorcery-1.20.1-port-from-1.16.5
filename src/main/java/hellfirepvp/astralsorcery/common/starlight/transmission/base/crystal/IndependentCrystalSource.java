@@ -12,7 +12,7 @@ import hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
-import hellfirepvp.astralsorcery.common.tile.TileCollectorCrystal;
+import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.NBTHelper;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -105,8 +105,8 @@ public class IndependentCrystalSource implements IIndependentStarlightSource {
     }
 
     @Override
-    public <T extends BlockEntity> boolean updateFromTileEntity(T tile) {
-        if (!(tile instanceof TileCollectorCrystal crystal)) {
+    public <T extends BlockEntity> boolean updateFromBlockEntity(T blockEntity) {
+        if (!(blockEntity instanceof CollectorCrystalBlockEntity crystal)) {
             return true;
         }
         this.doesSeeSky = crystal.doesSeeSky();

@@ -16,8 +16,8 @@ import hellfirepvp.astralsorcery.common.crafting.recipe.GatedRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipeEffect;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
 import hellfirepvp.astralsorcery.common.lib.AltarRecipeEffectsAS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -123,7 +123,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
     //ResolvingRecipeType) via SimpleAltarRecipeContext. This tree resolves them through the vanilla
     //RecipeManager, so the lookup lives on the recipe class.
     @Nullable
-    public static AltarRecipe findRecipe(Level level, TileAltar altar, @Nullable Player player) {
+    public static AltarRecipe findRecipe(Level level, AltarBlockEntity altar, @Nullable Player player) {
         var optional = level.getRecipeManager()
                 .getRecipeFor(RecipeTypesAS.ALTAR.get(), new AltarContainer(altar), level);
         AltarRecipe recipe = optional.orElse(null);
@@ -136,7 +136,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
         return recipe;
     }
 
-    public static AltarContainer createContainer(TileAltar altar) {
+    public static AltarContainer createContainer(AltarBlockEntity altar) {
         return new AltarContainer(altar);
     }
 
@@ -145,7 +145,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
         if (!(container instanceof AltarContainer altarContainer)) {
             return false;
         }
-        TileAltar altar = altarContainer.getAltar();
+        AltarBlockEntity altar = altarContainer.getAltar();
 
         // Check altar type compatibility
         if (!altarType.isThisLEThan(altar.getAltarType())) {
@@ -176,7 +176,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
      * on the client (see TODO_PORT[AS-SCR-01] in ScreenContainerAltar), so the reference signature is
      * restored here and the three-argument form delegates to it.
      */
-    public boolean matches(LogicalSide side, Player crafter, TileAltar altar, boolean ignoreStarlightRequirement) {
+    public boolean matches(LogicalSide side, Player crafter, AltarBlockEntity altar, boolean ignoreStarlightRequirement) {
         if (crafter == null) {
             return false;
         }
@@ -208,7 +208,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
      * counterpart - it exists because this tree's callers (ActiveAltarRecipe, findRecipe above and
      * client/screen/base/ScreenContainerAltar) have no SimpleAltarRecipeContext to carry the side in.
      */
-    public boolean matches(Player player, TileAltar altar, boolean ignoreStarlightRequirement) {
+    public boolean matches(Player player, AltarBlockEntity altar, boolean ignoreStarlightRequirement) {
         return this.matches(LogicalSide.SERVER, player, altar, ignoreStarlightRequirement);
     }
 
@@ -344,7 +344,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
 
     //1.16.5 inlined this in matches(..) (1.16.5 common/crafting/recipe/SimpleAltarRecipe.java:206-211); it is
     //a private helper here because the vanilla matches(Container, Level) glue above needs the same check.
-    private boolean matchesFocusConstellation(TileAltar altar) {
+    private boolean matchesFocusConstellation(AltarBlockEntity altar) {
         if (this.getFocusConstellation() == null) {
             return true;
         }
@@ -363,7 +363,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
         this.relayInputs.add(input);
     }
 
-    public void onRecipeCompletion(TileAltar altar, ActiveAltarRecipe activeRecipe) {
+    public void onRecipeCompletion(AltarBlockEntity altar, ActiveAltarRecipe activeRecipe) {
     }
 
     //1.16.5 marks this @OnlyIn(Dist.CLIENT) (1.16.5 common/crafting/recipe/SimpleAltarRecipe.java:156-161).
@@ -379,7 +379,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
     //above. 1.16.5 built the copy through MiscUtils.transformList + ItemUtils.copyStackWithSize, which is
     //ItemStack#copy per element.
     @Nonnull
-    public List<ItemStack> getOutputsForAltar(TileAltar altar) {
+    public List<ItemStack> getOutputsForAltar(AltarBlockEntity altar) {
         List<ItemStack> result = new ArrayList<>();
         for (ItemStack output : outputs) {
             result.add(output.copy());
@@ -401,9 +401,9 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
      * inventory is mirrored into one for the lookup in {@link #findRecipe(Level, TileAltar, Player)}.
      */
     private static class AltarContainer extends SimpleContainer {
-        private final TileAltar altar;
+        private final AltarBlockEntity altar;
 
-        private AltarContainer(TileAltar altar) {
+        private AltarContainer(AltarBlockEntity altar) {
             super(AltarRecipeGrid.MAX_INVENTORY_SIZE);
             this.altar = altar;
             for (int i = 0; i < AltarRecipeGrid.MAX_INVENTORY_SIZE; i++) {
@@ -411,7 +411,7 @@ public class AltarRecipe implements Recipe<Container>, GatedRecipe.Progression {
             }
         }
 
-        private TileAltar getAltar() {
+        private AltarBlockEntity getAltar() {
             return altar;
         }
     }

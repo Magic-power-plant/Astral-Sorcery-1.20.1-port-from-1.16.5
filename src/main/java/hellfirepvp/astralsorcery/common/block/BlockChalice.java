@@ -1,8 +1,8 @@
 package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMisc;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileChalice;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -44,7 +44,7 @@ public class BlockChalice extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof TileChalice chalice)) {
+        if (!(blockEntity instanceof ChaliceBlockEntity chalice)) {
             return InteractionResult.PASS;
         }
         ItemStack held = player.getItemInHand(hand);
@@ -87,7 +87,7 @@ public class BlockChalice extends BaseEntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof TileChalice chalice) {
+        if (blockEntity instanceof ChaliceBlockEntity chalice) {
             return Mth.ceil(chalice.getTank().getPercentageFilled() * 15F);
         }
         return 0;
@@ -111,14 +111,14 @@ public class BlockChalice extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileChalice(pos, state);
+        return new ChaliceBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.CHALICE.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileChalice chalice) {
+        return type == BlockEntityTypesAS.CHALICE.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof ChaliceBlockEntity chalice) {
                 chalice.tick();
             }
         } : null;

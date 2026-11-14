@@ -20,7 +20,7 @@ import hellfirepvp.astralsorcery.client.lib.SpritesAS;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
-import hellfirepvp.astralsorcery.common.tile.TileFountain;
+import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.util.BlockDropCaptureAssist;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
@@ -65,12 +65,12 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
 
     @Nonnull
     @Override
-    public LiquidContext createContext(TileFountain fountain) {
+    public LiquidContext createContext(FountainBlockEntity fountain) {
         return new LiquidContext(fountain.getBlockPos());
     }
 
     @Override
-    public void tick(TileFountain fountain, LiquidContext ctx, int operationTick, LogicalSide side, OperationSegment currentSegment) {
+    public void tick(FountainBlockEntity fountain, LiquidContext ctx, int operationTick, LogicalSide side, OperationSegment currentSegment) {
         if (side.isClient()) {
             tickEffects(fountain, ctx, operationTick, currentSegment);
             return;
@@ -93,7 +93,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
         }
     }
 
-    private void produceLiquid(TileFountain fountain) {
+    private void produceLiquid(FountainBlockEntity fountain) {
         LevelChunk ch = fountain.getLevel().getChunkAt(fountain.getBlockPos());
         ch.getCapability(CapabilitiesAS.CHUNK_FLUID).ifPresent(entry -> {
             int drain = 200 + rand.nextInt(400);
@@ -140,7 +140,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void tickEffects(TileFountain fountain, LiquidContext ctx, int operationTick, OperationSegment currentSegment) {
+    private void tickEffects(FountainBlockEntity fountain, LiquidContext ctx, int operationTick, OperationSegment currentSegment) {
         if (currentSegment.isLaterOrEqualTo(OperationSegment.STARTUP)) {
             FXSpritePlane sprite = (FXSpritePlane) ctx.fountainSprite;
             if (sprite == null) {
@@ -157,7 +157,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
                         // six call sites - so 1.16.5's identity check is restored
                         // (1.16.5 FountainEffectLiquid.java:149). Without it the sprite kept refreshing after this
                         // effect ended or was swapped for another one.
-                        .refresh(RefreshFunction.tileExistsAnd(fountain, (tile, fx) -> tile.getCurrentEffect() == this));
+                        .refresh(RefreshFunction.blockEntityExistsAnd(fountain, (blockEntity, fx) -> blockEntity.getCurrentEffect() == this));
             } else if (sprite.isRemoved() || sprite.canRemove()) {
                 EffectHelper.refresh(sprite, EffectTemplatesAS.TEXTURE_SPRITE);
             }
@@ -247,7 +247,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
     }
 
     @Override
-    public void transition(TileFountain fountain, LiquidContext ctx, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment) {
+    public void transition(FountainBlockEntity fountain, LiquidContext ctx, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment) {
         if (side.isServer()) {
             if (nextSegment == OperationSegment.RUNNING) {
                 digCone(fountain.getLevel(), ctx);
@@ -284,7 +284,7 @@ public class FountainEffectLiquid extends FountainEffect<LiquidContext> {
     }
 
     @Override
-    public void onReplace(TileFountain fountain, LiquidContext ctx, @Nullable FountainEffect<?> newEffect, LogicalSide side) {
+    public void onReplace(FountainBlockEntity fountain, LiquidContext ctx, @Nullable FountainEffect<?> newEffect, LogicalSide side) {
         if (side.isClient()) {
             removeSprite(ctx);
         }

@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunePlayerRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active.ActivePlayerAttunementRecipe;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;
@@ -81,7 +81,7 @@ public class PktAttunePlayerConstellation {
                 if (world == null) {
                     return;
                 }
-                TileAttunementAltar ta = MiscUtils.getTileAt(world, msg.at, TileAttunementAltar.class, false);
+                AttunementAltarBlockEntity ta = MiscUtils.getBlockEntityAt(world, msg.at, AttunementAltarBlockEntity.class, false);
                 if (ta != null && ta.getActiveRecipe() instanceof ActivePlayerAttunementRecipe activeRecipe) {
                     if (sender.getUUID().equals(activeRecipe.getPlayerUUID()) &&
                             AttunePlayerRecipe.isEligablePlayer(sender, ta.getActiveConstellation())) {

@@ -21,8 +21,8 @@ import hellfirepvp.astralsorcery.common.crafting.helper.CraftingFocusStack;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
-import hellfirepvp.astralsorcery.common.tile.TileSpectralRelay;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -45,7 +45,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state) {
+    public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
         //1.16.5 typed this against ActiveSimpleAltarRecipe/SimpleAltarRecipe; TileAltar in this tree still hands out
         //the legacy ActiveAltarRecipe/AltarRecipe pair. getRecipe() is the rename of getRecipeToCraft() and both
         //getRelayInputs()/getFocusStacks() are byte-for-byte the same accessors, so behaviour is unchanged.
@@ -59,7 +59,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
                 }
                 WrappedIngredient match = additionalIngredients.get(stack.getStackIndex());
 
-                TileSpectralRelay relay = MiscUtils.getTileAt(altar.getLevel(), stack.getRealPosition(), TileSpectralRelay.class, false);
+                SpectralRelayBlockEntity relay = MiscUtils.getBlockEntityAt(altar.getLevel(), stack.getRealPosition(), SpectralRelayBlockEntity.class, false);
                 if (relay != null) {
                     ItemStack in = relay.getInventory().getStackInSlot(0);
                     if (!in.isEmpty() && match.getIngredient().test(in)) {
@@ -93,7 +93,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playRelayHighlightParticles(TileSpectralRelay relay, Color color) {
+    private void playRelayHighlightParticles(SpectralRelayBlockEntity relay, Color color) {
         if (rand.nextBoolean()) {
             FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
                     .spawn(new Vector3(relay).add(rand.nextFloat(), 0, rand.nextFloat()))
@@ -111,7 +111,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playLightbeam(TileAltar from, TileSpectralRelay to, Color color) {
+    private void playLightbeam(AltarBlockEntity from, SpectralRelayBlockEntity to, Color color) {
         if (getClientTick() % 35 == 0) {
             EffectHelper.of(EffectTemplatesAS.LIGHTBEAM)
                     .spawn(new Vector3(from).add(0.5, 0, 0.5).add(getFocusRelayOffset(from.getAltarType())))
@@ -122,7 +122,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {
+    public void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {
         //See onTick: ActiveAltarRecipe#getRecipe() stands in for ActiveSimpleAltarRecipe#getRecipeToCraft().
         ActiveAltarRecipe activeRecipe = altar.getActiveRecipe();
         if (activeRecipe != null) {
@@ -136,7 +136,7 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
                 WrappedIngredient match = additionalIngredients.get(stack.getStackIndex());
                 BlockPos offset = stack.getRealPosition().subtract(altar.getBlockPos());
 
-                TileSpectralRelay relay = MiscUtils.getTileAt(altar.getLevel(), stack.getRealPosition(), TileSpectralRelay.class, false);
+                SpectralRelayBlockEntity relay = MiscUtils.getBlockEntityAt(altar.getLevel(), stack.getRealPosition(), SpectralRelayBlockEntity.class, false);
 
                 if (relay == null || (!match.getIngredient().test(relay.getInventory().getStackInSlot(0)))) {
                     ItemStack potential = match.getRandomMatchingStack(getClientTick());
@@ -152,5 +152,5 @@ public class BuiltInEffectTraitRelayHighlight extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onCraftingFinish(TileAltar altar, boolean isChaining) {}
+    public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {}
 }

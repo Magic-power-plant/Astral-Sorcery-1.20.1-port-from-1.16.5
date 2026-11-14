@@ -21,8 +21,8 @@ import hellfirepvp.astralsorcery.common.data.config.base.ConfigEntry;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
-import hellfirepvp.astralsorcery.common.tile.TileRitualLink;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualLinkBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -71,21 +71,21 @@ public abstract class ConstellationEffect {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended);
+    public abstract void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended);
 
     public abstract boolean playEffect(Level world, BlockPos pos, ConstellationEffectProperties properties, @Nullable IMinorConstellation trait);
 
     @Nullable
-    public TileRitualPedestal getPedestal(Level world, BlockPos pos) {
-        BlockEntity te = MiscUtils.getTileAt(world, pos, BlockEntity.class, false);
-        if (te instanceof TileRitualLink link) {
+    public RitualPedestalBlockEntity getPedestal(Level world, BlockPos pos) {
+        BlockEntity te = MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, false);
+        if (te instanceof RitualLinkBlockEntity link) {
             BlockPos linkedPos = link.getLinkedTo();
             if (linkedPos != null) {
-                linkedPos = linkedPos.subtract(TileRitualPedestal.RITUAL_ANCHOR_OFFEST);
-                return MiscUtils.getTileAt(world, linkedPos, TileRitualPedestal.class, false);
+                linkedPos = linkedPos.subtract(RitualPedestalBlockEntity.RITUAL_ANCHOR_OFFEST);
+                return MiscUtils.getBlockEntityAt(world, linkedPos, RitualPedestalBlockEntity.class, false);
             }
         }
-        return te instanceof TileRitualPedestal pedestal ? pedestal : null;
+        return te instanceof RitualPedestalBlockEntity pedestal ? pedestal : null;
     }
 
     public ConstellationEffectProperties createProperties(int mirrors) {
@@ -118,7 +118,7 @@ public abstract class ConstellationEffect {
 
     @Nullable
     public Player getOwningPlayerInWorld(Level world, BlockPos pos) {
-        TileRitualPedestal pedestal = getPedestal(world, pos);
+        RitualPedestalBlockEntity pedestal = getPedestal(world, pos);
         if (pedestal != null) {
             return pedestal.getOwner();
         }

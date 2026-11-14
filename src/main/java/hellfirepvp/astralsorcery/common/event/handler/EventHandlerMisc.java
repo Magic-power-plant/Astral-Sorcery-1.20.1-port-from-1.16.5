@@ -52,7 +52,7 @@ public class EventHandlerMisc {
     private static void onLecternOpen(PlayerInteractEvent.RightClickBlock event) {
         if (event.getLevel().isClientSide()) return;
         net.minecraft.world.level.block.entity.LecternBlockEntity lectern =
-                MiscUtils.getTileAt(event.getLevel(), event.getPos(), net.minecraft.world.level.block.entity.LecternBlockEntity.class, false);
+                MiscUtils.getBlockEntityAt(event.getLevel(), event.getPos(), net.minecraft.world.level.block.entity.LecternBlockEntity.class, false);
         if (lectern != null) {
             ItemStack contained = lectern.getBook();
             if (contained.getItem() instanceof ItemTome) {

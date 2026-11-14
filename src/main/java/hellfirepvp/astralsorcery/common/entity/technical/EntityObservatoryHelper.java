@@ -4,7 +4,7 @@ import com.google.common.collect.Iterables;
 import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileObservatory;
+import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;
@@ -44,9 +44,9 @@ public class EntityObservatoryHelper extends Entity {
     }
 
     @Nullable
-    public TileObservatory getAssociatedObservatory() {
+    public ObservatoryBlockEntity getAssociatedObservatory() {
         BlockPos at = this.getFixedObservatoryPos();
-        TileObservatory observatory = MiscUtils.getTileAt(this.level(), at, TileObservatory.class, true);
+        ObservatoryBlockEntity observatory = MiscUtils.getBlockEntityAt(this.level(), at, ObservatoryBlockEntity.class, true);
         if (observatory == null) {
             return null;
         }
@@ -63,7 +63,7 @@ public class EntityObservatoryHelper extends Entity {
 
         this.noPhysics = true;
 
-        TileObservatory observatory;
+        ObservatoryBlockEntity observatory;
         if ((observatory = this.getAssociatedObservatory()) == null) {
             if (!this.level().isClientSide()) {
                 this.discard();
@@ -83,7 +83,7 @@ public class EntityObservatoryHelper extends Entity {
         }
     }
 
-    public void applyObservatoryRotationsFrom(TileObservatory to, Player riding, boolean updateTile) {
+    public void applyObservatoryRotationsFrom(ObservatoryBlockEntity to, Player riding, boolean updateBlockEntity) {
         if (riding.containerMenu instanceof ContainerObservatory) {
             this.setYRot(riding.yHeadRot);
             this.yRotO = riding.yHeadRotO;
@@ -95,7 +95,7 @@ public class EntityObservatoryHelper extends Entity {
         }
 
         to.updatePitchYaw(this.getXRot(), this.xRotO, this.getYRot(), this.yRotO);
-        if (updateTile) {
+        if (updateBlockEntity) {
             to.markForUpdate();
         }
 
@@ -113,7 +113,7 @@ public class EntityObservatoryHelper extends Entity {
         if (!super.canAddPassenger(entity)) {
             return false;
         }
-        TileObservatory observatory = this.getAssociatedObservatory();
+        ObservatoryBlockEntity observatory = this.getAssociatedObservatory();
         return observatory != null && observatory.isUsable();
     }
 

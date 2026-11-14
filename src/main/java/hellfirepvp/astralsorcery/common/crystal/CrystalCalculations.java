@@ -2,8 +2,8 @@ package hellfirepvp.astralsorcery.common.crystal;
 
 import hellfirepvp.astralsorcery.common.crystal.source.Ritual;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,8 +29,8 @@ public class CrystalCalculations {
         return getRitualEffectRangeFactor(SOURCE_RITUAL_PEDESTAL.createInstance(pedestal), attributes);
     }
 
-    public static double getRitualEffectRangeFactor(TileRitualPedestal pedestal, CrystalAttributes attributes) {
-        return getRitualEffectRangeFactor(SOURCE_TILE_RITUAL_PEDESTAL.createInstance(pedestal), attributes);
+    public static double getRitualEffectRangeFactor(RitualPedestalBlockEntity pedestal, CrystalAttributes attributes) {
+        return getRitualEffectRangeFactor(SOURCE_RITUAL_PEDESTAL_BLOCK_ENTITY.createInstance(pedestal), attributes);
     }
 
     private static double getRitualEffectRangeFactor(Ritual pedestalSrc, CrystalAttributes attributes) {

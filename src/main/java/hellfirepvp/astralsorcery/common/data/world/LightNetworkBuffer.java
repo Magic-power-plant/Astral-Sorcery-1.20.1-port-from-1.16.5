@@ -65,7 +65,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
             IIndependentStarlightSource source = entry.getValue();
 
             MiscUtils.executeWithChunk(world, pos, () -> {
-                IStarlightSource<?> te = MiscUtils.getTileAt(world, pos, IStarlightSource.class, true);
+                IStarlightSource<?> te = MiscUtils.getBlockEntityAt(world, pos, IStarlightSource.class, true);
                 if (te != null) {
                     if (te.needsToRefreshNetworkChain()) {
                         if (handle != null) {
@@ -82,7 +82,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
                     if (world.setBlockAndUpdate(pos, actual.getFluidState().createLegacyBlock())) {
                         ChunkNetworkData data = getSection(pos);
                         if (data != null) {
-                            data.removeSourceTile(pos);
+                            data.removeSourceBlockEntity(pos);
                         }
                     }
                 }
@@ -101,7 +101,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
             for (ChunkNetworkData data : getSections()) {
                 for (ChunkSectionNetworkData secData : data.sections.values()) {
                     for (IPrismTransmissionNode node : secData.getAllTransmissionNodes()) {
-                        IStarlightTransmission<?> te = MiscUtils.getTileAt(world, node.getLocationPos(), IStarlightTransmission.class, true);
+                        IStarlightTransmission<?> te = MiscUtils.getBlockEntityAt(world, node.getLocationPos(), IStarlightTransmission.class, true);
                         if (te == null) {
                             invalidRemoval.add(node);
                             continue;
@@ -224,7 +224,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
 
     public void addSource(IStarlightSource<?> source, BlockPos pos) {
         ChunkNetworkData data = getOrCreateSection(pos);
-        data.addSourceTile(pos, source);
+        data.addSourceBlockEntity(pos, source);
 
         IIndependentStarlightSource newSource = addIndependentSource(pos, source);
         if (newSource != null) {
@@ -250,7 +250,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
 
     public void addTransmission(IStarlightTransmission<?> transmission, BlockPos pos) {
         ChunkNetworkData data = getOrCreateSection(pos);
-        data.addTransmissionTile(pos, transmission);
+        data.addTransmissionBlockEntity(pos, transmission);
 
         markDirty(data);
     }
@@ -258,7 +258,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
     public void removeSource(BlockPos pos) {
         ChunkNetworkData data = getSection(pos);
         if (data == null) return;
-        data.removeSourceTile(pos);
+        data.removeSourceBlockEntity(pos);
 
         removeIndependentSource(pos);
 
@@ -274,7 +274,7 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
     public void removeTransmission(BlockPos pos) {
         ChunkNetworkData data = getSection(pos);
         if (data == null) return;
-        data.removeTransmissionTile(pos);
+        data.removeTransmissionBlockEntity(pos);
 
         checkIntegrity(pos);
         markDirty(data);
@@ -370,30 +370,30 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
             return section;
         }
 
-        private void removeSourceTile(BlockPos pos) {
+        private void removeSourceBlockEntity(BlockPos pos) {
             int yLevel = sectionYLevel(pos);
             ChunkSectionNetworkData section = getSection(yLevel);
             if (section == null) return;
-            section.removeSourceTile(pos);
+            section.removeSourceBlockEntity(pos);
         }
 
-        private void removeTransmissionTile(BlockPos pos) {
+        private void removeTransmissionBlockEntity(BlockPos pos) {
             int yLevel = sectionYLevel(pos);
             ChunkSectionNetworkData section = getSection(yLevel);
             if (section == null) return;
-            section.removeTransmissionTile(pos);
+            section.removeTransmissionBlockEntity(pos);
         }
 
-        private void addSourceTile(BlockPos pos, IStarlightSource<?> source) {
+        private void addSourceBlockEntity(BlockPos pos, IStarlightSource<?> source) {
             int yLevel = sectionYLevel(pos);
             ChunkSectionNetworkData section = getOrCreateSection(yLevel);
-            section.addSourceTile(pos, source);
+            section.addSourceBlockEntity(pos, source);
         }
 
-        private void addTransmissionTile(BlockPos pos, IStarlightTransmission<?> transmission) {
+        private void addTransmissionBlockEntity(BlockPos pos, IStarlightTransmission<?> transmission) {
             int yLevel = sectionYLevel(pos);
             ChunkSectionNetworkData section = getOrCreateSection(yLevel);
-            section.addTransmissionTile(pos, transmission);
+            section.addTransmissionBlockEntity(pos, transmission);
         }
 
         /**
@@ -501,11 +501,11 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
             return nodes.get(at);
         }
 
-        private void removeSourceTile(BlockPos pos) {
+        private void removeSourceBlockEntity(BlockPos pos) {
             removeNode(pos);
         }
 
-        private void removeTransmissionTile(BlockPos pos) {
+        private void removeTransmissionBlockEntity(BlockPos pos) {
             removeNode(pos);
         }
 
@@ -513,11 +513,11 @@ public class LightNetworkBuffer extends SectionWorldData<LightNetworkBuffer.Chun
             nodes.remove(pos);
         }
 
-        private void addSourceTile(BlockPos pos, IStarlightSource<?> source) {
+        private void addSourceBlockEntity(BlockPos pos, IStarlightSource<?> source) {
             addNode(pos, source);
         }
 
-        private void addTransmissionTile(BlockPos pos, IStarlightTransmission<?> transmission) {
+        private void addTransmissionBlockEntity(BlockPos pos, IStarlightTransmission<?> transmission) {
             addNode(pos, transmission);
         }
 

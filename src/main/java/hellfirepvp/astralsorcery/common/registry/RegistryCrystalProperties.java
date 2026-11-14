@@ -9,9 +9,9 @@ import hellfirepvp.astralsorcery.common.crystal.source.Crystal;
 import hellfirepvp.astralsorcery.common.crystal.source.Ritual;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
-import hellfirepvp.astralsorcery.common.tile.TileCollectorCrystal;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -90,10 +90,10 @@ public class RegistryCrystalProperties {
                 return new Ritual(this, srrp.getChannelingType(), srrp.getChannelingTrait());
             }
         };
-        Sources.SOURCE_TILE_RITUAL_PEDESTAL = new PropertySource<Object, Ritual>(AstralSorcery.key("ritual_tile")) {
+        Sources.SOURCE_RITUAL_PEDESTAL_BLOCK_ENTITY = new PropertySource<Object, Ritual>(AstralSorcery.key("ritual_tile")) {
             @Override
             public Ritual createInstance(Object obj) {
-                TileRitualPedestal trp = (TileRitualPedestal) obj;
+                RitualPedestalBlockEntity trp = (RitualPedestalBlockEntity) obj;
                 return new Ritual(this, trp.getRitualConstellation(), trp.getRitualTrait());
             }
         };
@@ -104,10 +104,10 @@ public class RegistryCrystalProperties {
                 return new Crystal(this, ics.getStarlightType());
             }
         };
-        Sources.SOURCE_TILE_COLLECTOR_CRYSTAL = new PropertySource<Object, Crystal>(AstralSorcery.key("crystal_tile")) {
+        Sources.SOURCE_COLLECTOR_CRYSTAL_BLOCK_ENTITY = new PropertySource<Object, Crystal>(AstralSorcery.key("crystal_tile")) {
             @Override
             public Crystal createInstance(Object obj) {
-                TileCollectorCrystal tcc = (TileCollectorCrystal) obj;
+                CollectorCrystalBlockEntity tcc = (CollectorCrystalBlockEntity) obj;
                 return new Crystal(this, tcc.getAttunedConstellation());
             }
         };

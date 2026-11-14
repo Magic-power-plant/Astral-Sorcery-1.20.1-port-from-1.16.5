@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.network.play.client;
 
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.PlayerReference;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -65,16 +65,16 @@ public class PktRevokeGatewayAccess {
                 if (world == null) {
                     return;
                 }
-                TileCelestialGateway gateway = MiscUtils.getTileAt(world, msg.pos,
-                        TileCelestialGateway.class, false);
+                CelestialGatewayBlockEntity gateway = MiscUtils.getBlockEntityAt(world, msg.pos,
+                        CelestialGatewayBlockEntity.class, false);
                 if (gateway == null || !gateway.isLocked() || gateway.getOwner() == null
                         || !gateway.getOwner().isPlayer(sender)) {
                     return;
                 }
 
                 BlockPos testPos = Vector3.atEntityCorner(sender).toBlockPos();
-                TileCelestialGateway playerGateway = MiscUtils.getTileAt(world, testPos,
-                        TileCelestialGateway.class, false);
+                CelestialGatewayBlockEntity playerGateway = MiscUtils.getBlockEntityAt(world, testPos,
+                        CelestialGatewayBlockEntity.class, false);
                 if (!gateway.equals(playerGateway)) {
                     return;
                 }

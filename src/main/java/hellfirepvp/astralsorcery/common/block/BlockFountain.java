@@ -10,8 +10,8 @@ package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesWood;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileFountain;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.util.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -75,7 +75,7 @@ public class BlockFountain extends BaseEntityBlock implements CustomItemBlock {
     @Override
     @Nullable
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileFountain(pos, state);
+        return new FountainBlockEntity(pos, state);
     }
 
     //No 1.16.5 counterpart: TileFountain implemented ITickableTileEntity, which 1.20.1 replaced with a
@@ -83,8 +83,8 @@ public class BlockFountain extends BaseEntityBlock implements CustomItemBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.FOUNTAIN.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileFountain fountain) {
+        return type == BlockEntityTypesAS.FOUNTAIN.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof FountainBlockEntity fountain) {
                 fountain.tick();
             }
         } : null;

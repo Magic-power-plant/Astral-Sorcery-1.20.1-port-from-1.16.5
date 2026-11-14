@@ -9,14 +9,14 @@
 package hellfirepvp.astralsorcery.common.item.wand;
 
 import hellfirepvp.astralsorcery.common.auxiliary.charge.AlignmentChargeHandler;
-import hellfirepvp.astralsorcery.common.block.tile.BlockFlareLight;
-import hellfirepvp.astralsorcery.common.block.tile.BlockTranslucentBlock;
+import hellfirepvp.astralsorcery.common.block.BlockFlareLight;
+import hellfirepvp.astralsorcery.common.block.BlockTranslucentBlock;
 import hellfirepvp.astralsorcery.common.item.base.AlignmentChargeConsumer;
 import hellfirepvp.astralsorcery.common.item.base.client.ItemDynamicColor;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.tile.TileIlluminator;
-import hellfirepvp.astralsorcery.common.tile.TileTranslucentBlock;
+import hellfirepvp.astralsorcery.common.blockentity.IlluminatorBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.TranslucentBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
@@ -109,7 +109,7 @@ public class ItemIlluminationWand extends Item implements ItemDynamicColor, Alig
 
         if (player.isShiftKeyDown()) {
             if (state.getBlock() instanceof BlockTranslucentBlock) {
-                TileTranslucentBlock tb = MiscUtils.getTileAt(world, pos, TileTranslucentBlock.class, true);
+                TranslucentBlockEntity tb = MiscUtils.getBlockEntityAt(world, pos, TranslucentBlockEntity.class, true);
                 if (tb != null && (tb.getPlayerUUID() == null || tb.getPlayerUUID().equals(player.getUUID()))) {
                     if (tb.revert()) {
                         SoundHelper.playSoundAround(SoundsAS.ILLUMINATION_WAND_UNHIGHLIGHT.getSoundEvent(), SoundSource.BLOCKS, world, pos, 0.6F, 0.9F + RAND.nextFloat() * 0.2F);
@@ -117,8 +117,8 @@ public class ItemIlluminationWand extends Item implements ItemDynamicColor, Alig
                 }
             } else {
                 //1.16.5: TileEntity / state.hasTileEntity() - renamed to BlockEntity / hasBlockEntity() in 1.20.1
-                BlockEntity tile = MiscUtils.getTileAt(world, pos, BlockEntity.class, true);
-                if (tile == null &&
+                BlockEntity blockEntity = MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, true);
+                if (blockEntity == null &&
                         !state.hasBlockEntity() &&
                         //1.16.5: player.canPlayerEdit(pos, dir, stack)
                         player.mayUseItemAt(pos, dir, stack) &&
@@ -130,7 +130,7 @@ public class ItemIlluminationWand extends Item implements ItemDynamicColor, Alig
                         //constants moved onto Block, DEFAULT_AND_RERENDER is UPDATE_ALL_IMMEDIATE (11)
                         if (world.setBlock(pos, BlocksAS.TRANSLUCENT_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE)) {
                             SoundHelper.playSoundAround(SoundsAS.ILLUMINATION_WAND_HIGHLIGHT.getSoundEvent(), SoundSource.BLOCKS, world, pos, 0.6F, 0.9F + RAND.nextFloat() * 0.2F);
-                            TileTranslucentBlock tb = MiscUtils.getTileAt(world, pos, TileTranslucentBlock.class, true);
+                            TranslucentBlockEntity tb = MiscUtils.getBlockEntityAt(world, pos, TranslucentBlockEntity.class, true);
                             if (tb != null) {
                                 tb.setFakedState(state);
                                 tb.setOverlayColor(ColorUtils.flareColorFromDye(getConfiguredColor(stack)));
@@ -146,7 +146,7 @@ public class ItemIlluminationWand extends Item implements ItemDynamicColor, Alig
             return InteractionResult.SUCCESS;
         }
 
-        TileIlluminator illum = MiscUtils.getTileAt(world, pos, TileIlluminator.class, true);
+        IlluminatorBlockEntity illum = MiscUtils.getBlockEntityAt(world, pos, IlluminatorBlockEntity.class, true);
         if (illum != null) {
             illum.onWandUsed(stack);
             SoundHelper.playSoundAround(SoundsAS.ILLUMINATION_WAND_LIGHT.getSoundEvent(), SoundSource.BLOCKS, world, pos, 0.6F, 1F);

@@ -24,7 +24,7 @@ public interface IIndependentStarlightSource {
         return false;
     }
 
-    default <T extends BlockEntity> boolean updateFromTileEntity(T tile) {
+    default <T extends BlockEntity> boolean updateFromBlockEntity(T blockEntity) {
         return true;
     }
 

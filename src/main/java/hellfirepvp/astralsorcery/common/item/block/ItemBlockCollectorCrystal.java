@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.item.block;
 
-import hellfirepvp.astralsorcery.common.block.tile.crystal.CollectorCrystalType;
+import hellfirepvp.astralsorcery.common.block.crystal.CollectorCrystalType;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;

@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.lib.FluidsAS;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
 import hellfirepvp.astralsorcery.common.structure.match.util.PatternBlockArray;
-import hellfirepvp.astralsorcery.common.tile.TileCollectorCrystal;
+import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -30,7 +30,7 @@ public class PatternEnhancedCollectorCrystal extends PatternBlockArray {
                 }
             }
         }
-        for (BlockPos offset : TileCollectorCrystal.OFFSETS_LIQUID_STARLIGHT) {
+        for (BlockPos offset : CollectorCrystalBlockEntity.OFFSETS_LIQUID_STARLIGHT) {
             addBlock(FluidsAS.LIQUID_STARLIGHT_BLOCK.get().defaultBlockState(), offset);
         }
 

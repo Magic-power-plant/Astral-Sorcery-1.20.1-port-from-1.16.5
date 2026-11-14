@@ -30,7 +30,7 @@ import hellfirepvp.astralsorcery.common.lib.AdvancementsAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -82,7 +82,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     }
 
     @Override
-    public boolean matches(TileAttunementAltar altar) {
+    public boolean matches(AttunementAltarBlockEntity altar) {
         if (!super.matches(altar)) {
             return false;
         }
@@ -95,17 +95,17 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     }
 
     @Override
-    public void startCrafting(TileAttunementAltar altar) {
+    public void startCrafting(AttunementAltarBlockEntity altar) {
 
     }
 
     @Override
-    public void stopCrafting(TileAttunementAltar altar) {
+    public void stopCrafting(AttunementAltarBlockEntity altar) {
 
     }
 
     @Override
-    public void finishRecipe(TileAttunementAltar altar) {
+    public void finishRecipe(AttunementAltarBlockEntity altar) {
         ItemEntity crystal = this.getEntity(altar.getLevel());
         if (crystal != null) {
             ItemStack stack = crystal.getItem();
@@ -141,7 +141,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     }
 
     @Override
-    public void doTick(LogicalSide side, TileAttunementAltar altar) {
+    public void doTick(LogicalSide side, AttunementAltarBlockEntity altar) {
         ItemEntity crystal = this.getEntity(altar.getLevel());
         if (crystal == null) {
             return;
@@ -161,7 +161,7 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void doClientTick(TileAttunementAltar altar) {
+    private void doClientTick(AttunementAltarBlockEntity altar) {
         Predicate<PositionedLoopSound> activeTest = s ->
                 !altar.canPlayConstellationActiveEffects() ||
                         altar.getActiveRecipe() != this;
@@ -195,9 +195,9 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
                     .setBranches(4)
                     .setOrbitAxis(Vector3.RotAxis.Y_AXIS)
                     .setTicksPerRotation(200)
-                    .refresh(RefreshFunction.tileExistsAnd(altar,
-                            (tile, effect) -> tile.canPlayConstellationActiveEffects() &&
-                                    tile.getActiveRecipe() == this));
+                    .refresh(RefreshFunction.blockEntityExistsAnd(altar,
+                            (blockEntity, effect) -> blockEntity.canPlayConstellationActiveEffects() &&
+                                    blockEntity.getActiveRecipe() == this));
         }
 
         VFXColorFunction<?> beamColor = VFXColorFunction.constant(ColorsAS.DEFAULT_GENERIC_PARTICLE);
@@ -330,13 +330,13 @@ public class ActiveCrystalAttunementRecipe extends AttunementRecipe.Active<Attun
     }
 
     @Override
-    public boolean isFinished(TileAttunementAltar altar) {
+    public boolean isFinished(AttunementAltarBlockEntity altar) {
         return this.getTick() >= DURATION_CRYSTAL_ATTUNEMENT;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void stopEffects(TileAttunementAltar altar) {
+    public void stopEffects(AttunementAltarBlockEntity altar) {
         if (isFinished(altar)) {
             SoundHelper.playSoundClientWorld(SoundsAS.ATTUNEMENT_ATLAR_ITEM_FINISH, altar.getBlockPos().above(), 1F, 1F);
         }

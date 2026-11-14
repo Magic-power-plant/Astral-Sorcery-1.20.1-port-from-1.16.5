@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.client.screen.base;
 
-import hellfirepvp.astralsorcery.common.container.ContainerTileEntity;
+import hellfirepvp.astralsorcery.common.container.ContainerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * Date: 03.08.2019 / 16:08
  */
 //1.16.5: TileEntity -> 1.20.1: BlockEntity; ContainerScreen -> AbstractContainerScreen
-public abstract class ContainerBaseScreen<T extends BlockEntity, C extends ContainerTileEntity<T>> extends AbstractContainerScreen<C> {
+public abstract class ContainerBaseScreen<T extends BlockEntity, C extends ContainerBlockEntity<T>> extends AbstractContainerScreen<C> {
 
     //1.16.5: PlayerInventory -> 1.20.1: Inventory; ITextComponent -> Component
     public ContainerBaseScreen(C screenContainer, Inventory inv, Component titleIn) {
@@ -51,7 +51,7 @@ public abstract class ContainerBaseScreen<T extends BlockEntity, C extends Conta
         super.containerTick();
 
         //1.16.5: ContainerScreen#container -> 1.20.1: AbstractContainerScreen#menu
-        BlockEntity te = this.menu.getTileEntity();
+        BlockEntity te = this.menu.getBlockEntity();
         //1.16.5: Container#canInteractWith(PlayerEntity) -> 1.20.1: AbstractContainerMenu#stillValid(Player)
         if (te.isRemoved() || !this.menu.stillValid(Minecraft.getInstance().player)) {
             this.onClose(); //1.16.5: Screen#closeScreen()

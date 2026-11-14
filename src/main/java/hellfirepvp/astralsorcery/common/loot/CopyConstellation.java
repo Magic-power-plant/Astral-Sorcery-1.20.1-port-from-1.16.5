@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
-import hellfirepvp.astralsorcery.common.constellation.ConstellationTile;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationBlockEntity;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
@@ -29,10 +29,10 @@ public class CopyConstellation extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         if (context.hasParam(LootContextParams.BLOCK_ENTITY)) {
-            BlockEntity tile = context.getParam(LootContextParams.BLOCK_ENTITY);
-            if (tile instanceof ConstellationTile && stack.getItem() instanceof ConstellationItem) {
-                IWeakConstellation main = ((ConstellationTile) tile).getAttunedConstellation();
-                IMinorConstellation trait = ((ConstellationTile) tile).getTraitConstellation();
+            BlockEntity blockEntity = context.getParam(LootContextParams.BLOCK_ENTITY);
+            if (blockEntity instanceof ConstellationBlockEntity && stack.getItem() instanceof ConstellationItem) {
+                IWeakConstellation main = ((ConstellationBlockEntity) blockEntity).getAttunedConstellation();
+                IMinorConstellation trait = ((ConstellationBlockEntity) blockEntity).getTraitConstellation();
 
                 ((ConstellationItem) stack.getItem()).setAttunedConstellation(stack, main);
                 ((ConstellationItem) stack.getItem()).setTraitConstellation(stack, trait);

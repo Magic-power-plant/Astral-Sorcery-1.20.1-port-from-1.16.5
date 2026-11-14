@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting.nojson.attunement;
 
 import hellfirepvp.astralsorcery.common.crafting.nojson.CustomRecipe;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,14 +33,14 @@ public abstract class AttunementRecipe<T extends AttunementRecipe.Active<?>> ext
         super(key);
     }
 
-    public abstract boolean canStartCrafting(TileAttunementAltar altar);
+    public abstract boolean canStartCrafting(AttunementAltarBlockEntity altar);
 
     @Nonnull
-    public abstract T createRecipe(TileAttunementAltar altar);
+    public abstract T createRecipe(AttunementAltarBlockEntity altar);
 
     @Nonnull
     @OnlyIn(Dist.CLIENT)
-    public T deserialize(TileAttunementAltar altar, CompoundTag nbt, @Nullable T previousInstance) {
+    public T deserialize(AttunementAltarBlockEntity altar, CompoundTag nbt, @Nullable T previousInstance) {
         T activeRecipe = this.createRecipe(altar);
         activeRecipe.readFromNBT(nbt);
         return activeRecipe;
@@ -65,32 +65,32 @@ public abstract class AttunementRecipe<T extends AttunementRecipe.Active<?>> ext
             return tick;
         }
 
-        public final void tick(LogicalSide side, TileAttunementAltar altar) {
+        public final void tick(LogicalSide side, AttunementAltarBlockEntity altar) {
             this.doTick(side, altar);
             this.tick++;
         }
 
         //Called on server when this recipe should stop (stop effects, world interactions, ...)
-        public abstract void stopCrafting(TileAttunementAltar altar);
+        public abstract void stopCrafting(AttunementAltarBlockEntity altar);
 
         //Called on server when this recipe starts
-        public abstract void startCrafting(TileAttunementAltar altar);
+        public abstract void startCrafting(AttunementAltarBlockEntity altar);
 
         //Called on server when this recipe should create rewards
-        public abstract void finishRecipe(TileAttunementAltar altar);
+        public abstract void finishRecipe(AttunementAltarBlockEntity altar);
 
         //Called every tick for both sides
-        public abstract void doTick(LogicalSide side, TileAttunementAltar altar);
+        public abstract void doTick(LogicalSide side, AttunementAltarBlockEntity altar);
 
         //Called every tick on server to test if this recipe is done. Create 'reward' and return true when finished.
-        public abstract boolean isFinished(TileAttunementAltar altar);
+        public abstract boolean isFinished(AttunementAltarBlockEntity altar);
 
         //Called on client to stop effects and such
         @OnlyIn(Dist.CLIENT)
-        public abstract void stopEffects(TileAttunementAltar altar);
+        public abstract void stopEffects(AttunementAltarBlockEntity altar);
 
         //Called every tick on server to test if this recipe can be continued.
-        public boolean matches(TileAttunementAltar altar) {
+        public boolean matches(AttunementAltarBlockEntity altar) {
             return this.recipe.canStartCrafting(altar);
         }
 

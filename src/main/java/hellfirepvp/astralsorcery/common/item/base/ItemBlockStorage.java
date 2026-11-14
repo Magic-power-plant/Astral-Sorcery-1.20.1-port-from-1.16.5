@@ -40,7 +40,7 @@ public interface ItemBlockStorage {
     Random random = new Random();
 
     static boolean storeBlockState(ItemStack stack, Level world, BlockPos pos) {
-        if (MiscUtils.getTileAt(world, pos, BlockEntity.class, true) != null) {
+        if (MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, true) != null) {
             return false;
         }
         BlockState state = world.getBlockState(pos);

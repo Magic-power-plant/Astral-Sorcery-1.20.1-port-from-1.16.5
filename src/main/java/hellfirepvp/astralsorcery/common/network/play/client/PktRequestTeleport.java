@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.network.play.client;
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -51,9 +51,9 @@ public class PktRequestTeleport {
                     return;
                 }
 
-                TileCelestialGateway gateway = MiscUtils.getTileAt(player.level(),
+                CelestialGatewayBlockEntity gateway = MiscUtils.getBlockEntityAt(player.level(),
                         Vector3.atEntityCorner(player).toBlockPos(),
-                        TileCelestialGateway.class, false);
+                        CelestialGatewayBlockEntity.class, false);
                 if (gateway == null || !gateway.hasMultiblock() || !gateway.doesSeeSky()) {
                     return;
                 }

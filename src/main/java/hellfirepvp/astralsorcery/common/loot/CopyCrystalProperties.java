@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeTile;
+import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
 import net.minecraft.world.item.ItemStack;
@@ -28,11 +28,11 @@ public class CopyCrystalProperties extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         if (context.hasParam(LootContextParams.BLOCK_ENTITY)) {
-            BlockEntity tile = context.getParam(LootContextParams.BLOCK_ENTITY);
-            if (tile instanceof CrystalAttributeTile && stack.getItem() instanceof CrystalAttributeItem) {
-                CrystalAttributes attr = ((CrystalAttributeTile) tile).getAttributes();
+            BlockEntity blockEntity = context.getParam(LootContextParams.BLOCK_ENTITY);
+            if (blockEntity instanceof CrystalAttributeBlockEntity && stack.getItem() instanceof CrystalAttributeItem) {
+                CrystalAttributes attr = ((CrystalAttributeBlockEntity) blockEntity).getAttributes();
                 if (attr == null) {
-                    attr = ((CrystalAttributeTile) tile).getMissingAttributes();
+                    attr = ((CrystalAttributeBlockEntity) blockEntity).getMissingAttributes();
                 }
                 ((CrystalAttributeItem) stack.getItem()).setAttributes(stack, attr);
             }

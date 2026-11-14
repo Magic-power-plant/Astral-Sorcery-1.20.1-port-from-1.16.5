@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
@@ -35,7 +35,7 @@ public class EffectFocusDustSwirl extends AltarRecipeEffect implements IFocusEff
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state) {
+    public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
         if (state == ActiveSimpleAltarRecipe.CraftingState.ACTIVE) {
             //1.16.5 used ActiveSimpleAltarRecipe#getRecipeToCraft(); TileAltar in this tree still hands out the
             //legacy ActiveAltarRecipe/AltarRecipe pair, where getRecipe() is the same accessor under a different name.
@@ -75,9 +75,9 @@ public class EffectFocusDustSwirl extends AltarRecipeEffect implements IFocusEff
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
+    public void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onCraftingFinish(TileAltar altar, boolean isChaining) {}
+    public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {}
 }

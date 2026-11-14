@@ -1,0 +1,169 @@
+/*******************************************************************************
+ * HellFirePvP / Astral Sorcery 2022
+ *
+ * All rights reserved.
+ * The source code is available on github: https://github.com/HellFirePvP/AstralSorcery
+ * For further details, see the License file there.
+ ******************************************************************************/
+
+package hellfirepvp.astralsorcery.common.blockentity;
+
+import com.google.common.collect.Lists;
+import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
+import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
+import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
+import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.common.auxiliary.link.LinkableBlockEntity;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.base.TickableBlockEntity;
+import hellfirepvp.astralsorcery.common.util.MiscUtils;
+import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * This class is part of the Astral Sorcery Mod
+ * The complete source code for this mod can be found on github.
+ * Class: RitualLinkBlockEntity
+ * Created by HellFirePvP
+ * Date: 10.07.2019 / 21:07
+ */
+public class RitualLinkBlockEntity extends TickableBlockEntity implements LinkableBlockEntity {
+
+    private BlockPos linkedTo = null;
+
+    public RitualLinkBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntityTypesAS.RITUAL_LINK.get(), pos, state);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (level.isClientSide()) {
+            playClientEffects();
+        } else {
+            if (linkedTo != null) {
+                MiscUtils.executeWithChunk(level, linkedTo, () -> {
+                    RitualLinkBlockEntity link = MiscUtils.getBlockEntityAt(level, linkedTo, RitualLinkBlockEntity.class, true);
+                    if (link == null) {
+                        linkedTo = null;
+                        markForUpdate();
+                    }
+                });
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void playClientEffects() {
+        if (this.linkedTo != null) {
+            if (ticksExisted % 4 == 0) {
+                Collection<Vector3> positions = MiscUtils.getCirclePositions(
+                        new Vector3(this).add(0.5, 0.5, 0.5),
+                        Vector3.RotAxis.Y_AXIS, 0.4F - rand.nextFloat() * 0.1F, 10 + rand.nextInt(10));
+                for (Vector3 v : positions) {
+                    FXFacingParticle particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                            .spawn(v)
+                            .setScaleMultiplier(0.15F)
+                            .setMotion(new Vector3(0, (rand.nextBoolean() ? 1 : -1) * rand.nextFloat() * 0.01, 0));
+                    if (rand.nextBoolean()) {
+                        particle.color(VFXColorFunction.WHITE);
+                    }
+                }
+            }
+
+            EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE)
+                    .spawn(new Vector3(this).add(0.5, 0.5, 0.5))
+                    .setScaleMultiplier(0.3F)
+                    .setMotion(new Vector3(0, (rand.nextBoolean() ? 1 : -1) * rand.nextFloat() * 0.015, 0))
+                    .color(VFXColorFunction.random());
+
+        }
+    }
+
+    @Nullable
+    public BlockPos getLinkedTo() {
+        return linkedTo;
+    }
+
+    @Override
+    protected void readCustomNBT(CompoundTag compound) {
+        super.readCustomNBT(compound);
+
+        this.linkedTo = NBTHelper.readFromSubTag(compound, "posLink", NBTHelper::readBlockPosFromNBT);
+    }
+
+    @Override
+    protected void writeCustomNBT(CompoundTag compound) {
+        super.writeCustomNBT(compound);
+
+        if (this.linkedTo != null) {
+            NBTHelper.setAsSubTag(compound, "posLink", nbt -> NBTHelper.writeBlockPosToNBT(this.linkedTo, nbt));
+        }
+    }
+
+    @Override
+    public void onBlockLinkCreate(Player player, BlockPos other) {
+        if (this.linkedTo != null) {
+            //1.16.5: Entity#getEntityWorld() -> 1.20.1: Entity#level()
+            RitualLinkBlockEntity otherLink = MiscUtils.getBlockEntityAt(player.level(), this.linkedTo, RitualLinkBlockEntity.class, true);
+            if (otherLink != null) {
+                otherLink.linkedTo = null;
+                otherLink.markForUpdate();
+            }
+        }
+        this.linkedTo = other;
+        RitualLinkBlockEntity otherLink = MiscUtils.getBlockEntityAt(player.level(), other, RitualLinkBlockEntity.class, true);
+        if (otherLink != null) {
+            otherLink.linkedTo = getBlockPos();
+            otherLink.markForUpdate();
+        }
+
+        markForUpdate();
+    }
+
+    @Override
+    public void onEntityLinkCreate(Player player, LivingEntity linked) {
+    }
+
+    @Override
+    public boolean tryLinkBlock(Player player, BlockPos other) {
+        RitualLinkBlockEntity otherLink = MiscUtils.getBlockEntityAt(player.level(), other, RitualLinkBlockEntity.class, true);
+        return otherLink != null && otherLink.linkedTo == null && !other.equals(getBlockPos());
+    }
+
+    @Override
+    public boolean tryLinkEntity(Player player, LivingEntity other) {
+        return false;
+    }
+
+    @Override
+    public boolean tryUnlink(Player player, BlockPos other) {
+        RitualLinkBlockEntity otherLink = MiscUtils.getBlockEntityAt(player.level(), other, RitualLinkBlockEntity.class, true);
+        if (otherLink == null || otherLink.linkedTo == null) return false;
+        if (otherLink.linkedTo.equals(getBlockPos())) {
+            this.linkedTo = null;
+            otherLink.linkedTo = null;
+            otherLink.markForUpdate();
+            markForUpdate();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<BlockPos> getLinkedPositions() {
+        return linkedTo != null ? Lists.newArrayList(linkedTo) : Lists.newArrayList();
+    }
+}

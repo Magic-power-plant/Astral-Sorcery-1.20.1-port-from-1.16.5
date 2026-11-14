@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.integration;
 
 import hellfirepvp.astralsorcery.common.constellation.*;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -40,7 +40,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 // CommandSourceStack#sendSuccess(Supplier<Component>, boolean) (the component became a supplier in
 // 1.20.1, i.e. "commandContext.getSource().sendSuccess(() -> message, true)").
 //TODO_PORT[AS-PKG-01]: 1.16.5 took AltarType from common.block.tile.altar; this tree has it under
-// common.tile.altar.
+// common.blockentity.altar.
 public class IntegrationCraftTweaker {
 
     public static void attachListeners(IEventBus eventBus) {
@@ -84,7 +84,7 @@ public class IntegrationCraftTweaker {
         // Everything the dumps read is ported and available in this tree:
         // RegistriesAS.REGISTRY_CONSTELLATIONS is an IForgeRegistry<IConstellation> (so getKeys() and
         // getValue(ResourceLocation) are unchanged), IWeakConstellation/IMajorConstellation exist under
-        // common.constellation, and AltarType.values() exists under common.tile.altar. The 1.20.1
+        // common.constellation, and AltarType.values() exists under common.blockentity.altar. The 1.20.1
         // spellings of the two feedback lines are:
         //   final Component message = Component.literal(ChatFormatting.GREEN + "Constellations written to the log" + ChatFormatting.RESET);
         //   commandContext.getSource().sendSuccess(() -> message, true);

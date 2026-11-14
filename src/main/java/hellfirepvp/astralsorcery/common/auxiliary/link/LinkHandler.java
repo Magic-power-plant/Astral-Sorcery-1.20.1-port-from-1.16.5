@@ -54,23 +54,23 @@ public class LinkHandler implements ITickHandler {
     public static RightClickResult onInteractBlock(Player clicked, Level world, BlockPos pos, boolean sneak) {
         UUID playerUUID = clicked.getUUID();
         if (!players.containsKey(playerUUID)) {
-            LinkableTileEntity tile = MiscUtils.getTileAt(world, pos, LinkableTileEntity.class, true);
-            if (tile == null) {
+            LinkableBlockEntity blockEntity = MiscUtils.getBlockEntityAt(world, pos, LinkableBlockEntity.class, true);
+            if (blockEntity == null) {
                 return new RightClickResult(RightClickResultType.NONE, null);
             }
 
-            LinkSession session = LinkSession.tile(tile);
+            LinkSession session = LinkSession.blockEntity(blockEntity);
             players.put(playerUUID, session);
             return new RightClickResult(RightClickResultType.SELECT_START, session);
         } else {
             LinkSession session = players.get(playerUUID);
             if (session.getType() == LinkType.ENTITY) {
-                LinkableTileEntity tile = MiscUtils.getTileAt(world, pos, LinkableTileEntity.class, true);
-                if (tile == null) {
+                LinkableBlockEntity blockEntity = MiscUtils.getBlockEntityAt(world, pos, LinkableBlockEntity.class, true);
+                if (blockEntity == null) {
                     players.remove(playerUUID);
                     return new RightClickResult(RightClickResultType.NONE, null);
                 } else {
-                    session.setSelected(tile);
+                    session.setSelected(blockEntity);
                     return new RightClickResult(RightClickResultType.TRY_LINK, session);
                 }
             } else if (sneak) {
@@ -83,7 +83,7 @@ public class LinkHandler implements ITickHandler {
 
     public static void processInteraction(RightClickResult result, Player playerIn, Level world, BlockPos pos) {
         LinkSession session = result.getLinkingSession();
-        LinkableTileEntity tile = session.getSelectedTile();
+        LinkableBlockEntity blockEntity = session.getSelectedBlockEntity();
         String linkedToName;
         switch (result.getType()) {
             case SELECT_START:
@@ -91,8 +91,8 @@ public class LinkHandler implements ITickHandler {
                     playerIn.sendSystemMessage(Component.translatable("astralsorcery.misc.link.start",
                             result.getLinkingSession().getSelectedEntity().getDisplayName()).withStyle(ChatFormatting.GREEN));
                 } else {
-                    String name = tile.getUnLocalizedDisplayName();
-                    if (tile.onSelect(playerIn)) {
+                    String name = blockEntity.getUnLocalizedDisplayName();
+                    if (blockEntity.onSelect(playerIn)) {
                         if (name != null) {
                             playerIn.sendSystemMessage(Component.translatable("astralsorcery.misc.link.start",
                                     Component.translatable(name)).withStyle(ChatFormatting.GREEN));
@@ -101,28 +101,28 @@ public class LinkHandler implements ITickHandler {
                 }
                 break;
             case TRY_LINK:
-                BlockEntity te = MiscUtils.getTileAt(world, pos, BlockEntity.class, true);
+                BlockEntity te = MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, true);
                 linkedToName = "astralsorcery.misc.link.link.block";
-                if (te instanceof LinkableTileEntity) {
-                    if (!((LinkableTileEntity) te).doesAcceptLinks()) {
+                if (te instanceof LinkableBlockEntity) {
+                    if (!((LinkableBlockEntity) te).doesAcceptLinks()) {
                         return;
                     }
-                    String unloc = ((LinkableTileEntity) te).getUnLocalizedDisplayName();
+                    String unloc = ((LinkableBlockEntity) te).getUnLocalizedDisplayName();
                     if (unloc != null) {
                         linkedToName = unloc;
                     }
                 }
 
-                if (session.getType() == LinkType.ENTITY && te instanceof LinkableTileEntity) {
-                    LinkableTileEntity linkTarget = (LinkableTileEntity) te;
+                if (session.getType() == LinkType.ENTITY && te instanceof LinkableBlockEntity) {
+                    LinkableBlockEntity linkTarget = (LinkableBlockEntity) te;
                     LivingEntity linked = session.getSelectedEntity();
                     if (linkTarget.tryLinkEntity(playerIn, linked)) {
                         linkTarget.onEntityLinkCreate(playerIn, linked);
                     }
                 } else {
-                    if (tile.tryLinkBlock(playerIn, pos)) {
-                        tile.onBlockLinkCreate(playerIn, pos);
-                        String linkedFrom = tile.getUnLocalizedDisplayName();
+                    if (blockEntity.tryLinkBlock(playerIn, pos)) {
+                        blockEntity.onBlockLinkCreate(playerIn, pos);
+                        String linkedFrom = blockEntity.getUnLocalizedDisplayName();
                         if (linkedFrom != null) {
                             playerIn.sendSystemMessage(Component.translatable("astralsorcery.misc.link.link",
                                     Component.translatable(linkedFrom),
@@ -133,16 +133,16 @@ public class LinkHandler implements ITickHandler {
                 }
                 break;
             case TRY_UNLINK:
-                if (tile.tryUnlink(playerIn, pos)) {
+                if (blockEntity.tryUnlink(playerIn, pos)) {
                     linkedToName = "astralsorcery.misc.link.link.block";
-                    te = MiscUtils.getTileAt(world, pos, BlockEntity.class, true);
-                    if (te instanceof LinkableTileEntity) {
-                        String unloc = ((LinkableTileEntity) te).getUnLocalizedDisplayName();
+                    te = MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, true);
+                    if (te instanceof LinkableBlockEntity) {
+                        String unloc = ((LinkableBlockEntity) te).getUnLocalizedDisplayName();
                         if (unloc != null) {
                             linkedToName = unloc;
                         }
                     }
-                    String linkedFrom = tile.getUnLocalizedDisplayName();
+                    String linkedFrom = blockEntity.getUnLocalizedDisplayName();
                     if (linkedFrom != null) {
                         playerIn.sendSystemMessage(Component.translatable("astralsorcery.misc.link.unlink",
                                 Component.translatable(linkedFrom),
@@ -184,7 +184,7 @@ public class LinkHandler implements ITickHandler {
                     }
                     break;
                 case BLOCK:
-                    LinkableTileEntity selected = session.getSelectedTile();
+                    LinkableBlockEntity selected = session.getSelectedBlockEntity();
                     if (selected == null || selected.getLinkWorld() == null ||
                             !selected.getLinkWorld().dimension().equals(player.level().dimension())) {
                         needsRemoval = true;
@@ -221,16 +221,16 @@ public class LinkHandler implements ITickHandler {
     public static class LinkSession {
 
         private final LinkType type;
-        private LinkableTileEntity selected;
+        private LinkableBlockEntity selected;
         private final LivingEntity entity;
 
-        private LinkSession(LinkType type, LinkableTileEntity selected, LivingEntity entity) {
+        private LinkSession(LinkType type, LinkableBlockEntity selected, LivingEntity entity) {
             this.type = type;
             this.selected = selected;
             this.entity = entity;
         }
 
-        public static LinkSession tile(LinkableTileEntity selected) {
+        public static LinkSession blockEntity(LinkableBlockEntity selected) {
             return new LinkSession(LinkType.BLOCK, selected, null);
         }
 
@@ -243,11 +243,11 @@ public class LinkHandler implements ITickHandler {
         }
 
         @Nullable
-        public LinkableTileEntity getSelectedTile() {
+        public LinkableBlockEntity getSelectedBlockEntity() {
             return selected;
         }
 
-        public void setSelected(LinkableTileEntity selected) {
+        public void setSelected(LinkableBlockEntity selected) {
             this.selected = selected;
         }
 

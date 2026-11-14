@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.client.screen.base.NavigationArrowScreen;
 import hellfirepvp.astralsorcery.client.screen.base.SkyScreen;
-import hellfirepvp.astralsorcery.client.screen.base.TileConstellationDiscoveryScreen;
+import hellfirepvp.astralsorcery.client.screen.base.ConstellationDiscoveryBlockEntityScreen;
 import hellfirepvp.astralsorcery.client.screen.telescope.TelescopeRotationDrawArea;
 import hellfirepvp.astralsorcery.client.util.*;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
@@ -26,7 +26,7 @@ import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktRotateTelescope;
-import hellfirepvp.astralsorcery.common.tile.TileTelescope;
+import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -46,13 +46,13 @@ import java.util.*;
  * Created by HellFirePvP
  * Date: 15.01.2020 / 17:16
  */
-public class ScreenTelescope extends TileConstellationDiscoveryScreen<TileTelescope, TelescopeRotationDrawArea> implements SkyScreen, NavigationArrowScreen {
+public class ScreenTelescope extends ConstellationDiscoveryBlockEntityScreen<TelescopeBlockEntity, TelescopeRotationDrawArea> implements SkyScreen, NavigationArrowScreen {
 
-    private TileTelescope.TelescopeRotation rotation;
+    private TelescopeBlockEntity.TelescopeRotation rotation;
 
     private Rectangle rectArrowCW = null, rectArrowCCW = null;
 
-    public ScreenTelescope(TileTelescope telescope) {
+    public ScreenTelescope(TelescopeBlockEntity telescope) {
         //TODO_PORT[AS-SCR-02]: 1.16.5 called plain super(telescope, 280, 280) and let
         //TileConstellationDiscoveryScreen read the title off TileTelescope#getDisplayName()
         //(1.16.5 ScreenTelescope.java:54). This tree's TileTelescope does not implement NamedInventoryTile anymore,
@@ -67,7 +67,7 @@ public class ScreenTelescope extends TileConstellationDiscoveryScreen<TileTelesc
     @Override
     protected List<TelescopeRotationDrawArea> createDrawAreas() {
         List<TelescopeRotationDrawArea> areas = new LinkedList<>();
-        for (TileTelescope.TelescopeRotation r : TileTelescope.TelescopeRotation.values()) {
+        for (TelescopeBlockEntity.TelescopeRotation r : TelescopeBlockEntity.TelescopeRotation.values()) {
             areas.add(new TelescopeRotationDrawArea(this, r, this.getGuiBox()));
         }
         return areas;
@@ -142,7 +142,7 @@ public class ScreenTelescope extends TileConstellationDiscoveryScreen<TileTelesc
 
     private void drawConstellationCell(PoseStack renderStack, float pTicks) {
         //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
-        boolean canSeeSky = this.canObserverSeeSky(this.getTile().getBlockPos(), 1);
+        boolean canSeeSky = this.canObserverSeeSky(this.getBlockEntity().getBlockPos(), 1);
 
         //1.16.5 ran RenderSystem.disableAlphaTest() here and RenderSystem.enableAlphaTest() at every exit of this
         //method. 1.20.1 removed the fixed-function alpha test entirely - the position_color_tex core shader used by
@@ -242,12 +242,12 @@ public class ScreenTelescope extends TileConstellationDiscoveryScreen<TileTelesc
         if (rectArrowCW != null && rectArrowCW.contains(p)) {
             //1.16.5: TileEntity#getWorld()#getDimensionKey() -> 1.20.1: BlockEntity#getLevel()#dimension();
             //        TileEntity#getPos() -> BlockEntity#getBlockPos()
-            PktRotateTelescope pkt = new PktRotateTelescope(true, this.getTile().getLevel().dimension(), this.getTile().getBlockPos());
+            PktRotateTelescope pkt = new PktRotateTelescope(true, this.getBlockEntity().getLevel().dimension(), this.getBlockEntity().getBlockPos());
             PacketChannel.CHANNEL.sendToServer(pkt);
             return true;
         }
         if (rectArrowCCW != null && rectArrowCCW.contains(p)) {
-            PktRotateTelescope pkt = new PktRotateTelescope(false, this.getTile().getLevel().dimension(), this.getTile().getBlockPos());
+            PktRotateTelescope pkt = new PktRotateTelescope(false, this.getBlockEntity().getLevel().dimension(), this.getBlockEntity().getBlockPos());
             PacketChannel.CHANNEL.sendToServer(pkt);
             return true;
         }
@@ -264,7 +264,7 @@ public class ScreenTelescope extends TileConstellationDiscoveryScreen<TileTelesc
         this.clearDrawing();
     }
 
-    public TileTelescope.TelescopeRotation getRotation() {
+    public TelescopeBlockEntity.TelescopeRotation getRotation() {
         return rotation;
     }
 

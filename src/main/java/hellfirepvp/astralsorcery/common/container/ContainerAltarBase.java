@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.container;
 
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,12 +18,12 @@ import java.util.Optional;
 // Slot order matches 1.16.5 exactly: the 36 player slots first (27 main at 0..26, 9 hotbar at 27..35),
 // then the altar slots from 36 upwards. ContainerAltarTrait#handleCustomTransfer relies on this
 // (its `index < 36` test identifies player slots).
-public abstract class ContainerAltarBase extends ContainerTileEntity<TileAltar> {
+public abstract class ContainerAltarBase extends ContainerBlockEntity<AltarBlockEntity> {
 
     private final Inventory playerInv;
     private final IItemHandler invHandler;
 
-    protected ContainerAltarBase(@Nullable MenuType<?> type, int id, Inventory inv, TileAltar altar) {
+    protected ContainerAltarBase(@Nullable MenuType<?> type, int id, Inventory inv, AltarBlockEntity altar) {
         super(type, id, altar);
         this.playerInv = inv;
         this.invHandler = altar.getInventory();
@@ -101,21 +101,21 @@ public abstract class ContainerAltarBase extends ContainerTileEntity<TileAltar> 
 
     @Override
     public boolean stillValid(Player player) {
-        TileAltar altar = this.getTileEntity();
+        AltarBlockEntity altar = this.getBlockEntity();
         if (altar == null) {
             // 1.20.1 only: a client menu built from the network buffer may outlive its block entity.
             return false;
         }
         BlockPos pos = altar.getBlockPos();
-        if (MiscUtils.getTileAt(altar.getLevel(), pos, BlockEntity.class, false) != altar) {
+        if (MiscUtils.getBlockEntityAt(altar.getLevel(), pos, BlockEntity.class, false) != altar) {
             return false;
         } else {
             return player.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
         }
     }
 
-    protected static TileAltar getAltar(Inventory inv, BlockPos pos) {
-        TileAltar altar = MiscUtils.getTileAt(inv.player.level(), pos, TileAltar.class, true);
+    protected static AltarBlockEntity getAltar(Inventory inv, BlockPos pos) {
+        AltarBlockEntity altar = MiscUtils.getBlockEntityAt(inv.player.level(), pos, AltarBlockEntity.class, true);
         if (altar == null) {
             throw new IllegalStateException("Missing altar at " + pos);
         }

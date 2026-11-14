@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
 import hellfirepvp.astralsorcery.common.structure.match.structure.Structure;
-import hellfirepvp.astralsorcery.common.structure.match.tile.MatchableTile;
+import hellfirepvp.astralsorcery.common.structure.match.blockentity.MatchableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -149,22 +149,22 @@ public class StructureRenderWorld implements LevelReader {
             return null;
         }
         MatchableState state = this.structure.getBlockStateAt(pos);
-        BlockEntity tile = state.createTileEntity(this, pos, ClientScheduler.getClientTick());
-        if (tile == null) {
+        BlockEntity blockEntity = state.createBlockEntity(this, pos, ClientScheduler.getClientTick());
+        if (blockEntity == null) {
             return null;
         }
-        tile.setLevel(Minecraft.getInstance().level);
+        blockEntity.setLevel(Minecraft.getInstance().level);
 
-        MatchableTile tileMatch = this.structure.getTileEntityAt(pos);
-        if (tileMatch == null) {
-            return tile;
+        MatchableBlockEntity blockEntityMatch = this.structure.getBlockEntityAt(pos);
+        if (blockEntityMatch == null) {
+            return blockEntity;
         }
-        CompoundTag tag = tile.saveWithoutMetadata();
-        tileMatch.writeDisplayData(tile, ClientScheduler.getClientTick(), tag);
-        tile.load(tag);
+        CompoundTag tag = blockEntity.saveWithoutMetadata();
+        blockEntityMatch.writeDisplayData(blockEntity, ClientScheduler.getClientTick(), tag);
+        blockEntity.load(tag);
 
-        tileMatch.postPlacement(tile, this, pos);
-        return tile;
+        blockEntityMatch.postPlacement(blockEntity, this, pos);
+        return blockEntity;
     }
 
     @Override

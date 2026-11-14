@@ -22,7 +22,7 @@ public class PropertyConstellation extends CrystalProperty {
 
         this.addUsage(ctx -> ctx.isSource(SOURCE_COLLECTOR_CRYSTAL));
         this.addModifier((value, originalValue, propertyLevel, context) -> {
-            if (context.isSource(SOURCE_COLLECTOR_CRYSTAL) || context.isSource(SOURCE_TILE_COLLECTOR_CRYSTAL)) {
+            if (context.isSource(SOURCE_COLLECTOR_CRYSTAL) || context.isSource(SOURCE_COLLECTOR_CRYSTAL_BLOCK_ENTITY)) {
                 Crystal crystal = context.getSource();
                 if (crystal != null && cst.equals(crystal.getAttunedConstellation())) {
                     return value * (1.0 + (0.3 * propertyLevel));
@@ -30,9 +30,9 @@ public class PropertyConstellation extends CrystalProperty {
             }
             return value;
         });
-        this.addUsage(ctx -> ctx.isSource(SOURCE_RITUAL_PEDESTAL) || ctx.isSource(SOURCE_TILE_RITUAL_PEDESTAL));
+        this.addUsage(ctx -> ctx.isSource(SOURCE_RITUAL_PEDESTAL) || ctx.isSource(SOURCE_RITUAL_PEDESTAL_BLOCK_ENTITY));
         this.addModifier((value, originalValue, propertyLevel, context) -> {
-            if (context.isSource(SOURCE_RITUAL_PEDESTAL) || context.isSource(SOURCE_TILE_RITUAL_PEDESTAL)) {
+            if (context.isSource(SOURCE_RITUAL_PEDESTAL) || context.isSource(SOURCE_RITUAL_PEDESTAL_BLOCK_ENTITY)) {
                 Ritual ritual = context.getSource();
                 if (ritual != null && cst.equals(ritual.getAttunedConstellation())) {
                     return value * (1.0 + (0.35 * propertyLevel));

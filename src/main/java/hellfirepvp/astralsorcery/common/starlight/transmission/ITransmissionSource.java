@@ -11,12 +11,12 @@ public interface ITransmissionSource extends IPrismTransmissionNode {
     IIndependentStarlightSource provideNewIndependentSource(IStarlightSource<?> source);
 
     @Override
-    default <T extends BlockEntity> boolean updateFromTileEntity(T tile) {
-        Level world = tile.getLevel();
+    default <T extends BlockEntity> boolean updateFromBlockEntity(T blockEntity) {
+        Level world = blockEntity.getLevel();
         if (world == null) {
             return true;
         }
         IIndependentStarlightSource source = WorldNetworkHandler.getNetworkHandler(world).getSourceAt(getLocationPos());
-        return source == null || source.updateFromTileEntity(tile);
+        return source == null || source.updateFromBlockEntity(blockEntity);
     }
 }

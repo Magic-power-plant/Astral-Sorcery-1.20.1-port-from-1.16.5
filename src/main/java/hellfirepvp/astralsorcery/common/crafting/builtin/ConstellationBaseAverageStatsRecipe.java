@@ -12,8 +12,8 @@ import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +50,7 @@ public class ConstellationBaseAverageStatsRecipe extends ConstellationBaseItemRe
 
     @Nonnull
     @Override
-    public List<ItemStack> getOutputsForAltar(TileAltar altar) {
+    public List<ItemStack> getOutputsForAltar(AltarBlockEntity altar) {
         List<ItemStack> out = super.getOutputsForAltar(altar);
         out.forEach(stack -> setStats(stack, wrapInventory(altar.getInventory())));
         return out;

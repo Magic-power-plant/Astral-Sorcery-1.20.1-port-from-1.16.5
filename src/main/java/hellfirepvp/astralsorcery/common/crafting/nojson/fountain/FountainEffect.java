@@ -12,7 +12,7 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
-import hellfirepvp.astralsorcery.common.tile.TileFountain;
+import hellfirepvp.astralsorcery.common.blockentity.FountainBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -57,13 +57,13 @@ public abstract class FountainEffect<E extends FountainEffect.EffectContext> {
     public abstract Block getAssociatedPrime();
 
     @Nonnull
-    public abstract E createContext(TileFountain fountain);
+    public abstract E createContext(FountainBlockEntity fountain);
 
-    public abstract void tick(TileFountain fountain, E context, int operationTick, LogicalSide side, OperationSegment currentSegment);
+    public abstract void tick(FountainBlockEntity fountain, E context, int operationTick, LogicalSide side, OperationSegment currentSegment);
 
-    public abstract void transition(TileFountain fountain, E context, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment);
+    public abstract void transition(FountainBlockEntity fountain, E context, LogicalSide side, OperationSegment prevSegment, OperationSegment nextSegment);
 
-    public abstract void onReplace(TileFountain fountain, E context, @Nullable FountainEffect<?> newEffect, LogicalSide side);
+    public abstract void onReplace(FountainBlockEntity fountain, E context, @Nullable FountainEffect<?> newEffect, LogicalSide side);
 
     @OnlyIn(Dist.CLIENT)
     protected void playFountainVortexParticles(Vec3i pos, float chance) {

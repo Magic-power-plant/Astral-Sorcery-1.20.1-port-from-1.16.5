@@ -7,8 +7,8 @@ import hellfirepvp.astralsorcery.common.constellation.effect.aoe.CEffectAevitas;
 import hellfirepvp.astralsorcery.common.item.lens.ItemColoredLensFire;
 import hellfirepvp.astralsorcery.common.item.wand.ItemWand;
 import hellfirepvp.astralsorcery.common.starlight.network.handler.BlockTransmutationHandler;
-import hellfirepvp.astralsorcery.common.tile.*;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.*;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.CelestialStrike;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.time.TimeStopEffectHelper;
@@ -126,9 +126,9 @@ public class PktPlayEffect {
                 case CELESTIAL_STRIKE:
                     return CelestialStrike::playEffect;
                 case ALTAR_RECIPE_FINISH:
-                    return TileAltar::finishCraftingEffects;
+                    return AltarBlockEntity::finishCraftingEffects;
                 case INFUSER_RECIPE_FINISH:
-                    return TileInfuser::finishCraftingEffects;
+                    return InfuserBlockEntity::finishCraftingEffects;
                 case BLOCK_TRANSMUTATION_TICK:
                     return BlockTransmutationHandler::playTransmutation;
                 case LIQUID_FOUNTAIN:
@@ -136,15 +136,15 @@ public class PktPlayEffect {
                 case CONSTELLATION_EFFECT_PING:
                     return ConstellationEffect::playConstellationPing;
                 case BLOCK_HARVEST_DRAW:
-                    return TileTreeBeacon::playDrawParticles;
+                    return TreeBeaconBlockEntity::playDrawParticles;
                 case GATEWAY_REVOKE_EFFECT:
-                    return TileCelestialGateway::playAccessRevokeEffect;
+                    return CelestialGatewayBlockEntity::playAccessRevokeEffect;
                 case LIQUID_INTERACTION_LINE:
-                    return TileChalice::drawLiquidLine;
+                    return ChaliceBlockEntity::drawLiquidLine;
                 case FOUNTAIN_TRANSITION_SEGMENT:
-                    return TileFountain::playTransitionEffect;
+                    return FountainBlockEntity::playTransitionEffect;
                 case FOUNTAIN_REPLACE_EFFECT:
-                    return TileFountain::replaceEffect;
+                    return FountainBlockEntity::replaceEffect;
             }
             return (pkt) -> {};
         }

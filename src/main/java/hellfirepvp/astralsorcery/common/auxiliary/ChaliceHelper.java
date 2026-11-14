@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.auxiliary;
 
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.tile.TileChalice;
+import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractGlassBlock;
@@ -43,10 +43,10 @@ public class ChaliceHelper {
     }
 
     @Nonnull
-    public static List<TileChalice> findNearbyChalicesContaining(Level level, BlockPos origin, FluidStack expected, int distance) {
-        List<TileChalice> out = new ArrayList<>();
+    public static List<ChaliceBlockEntity> findNearbyChalicesContaining(Level level, BlockPos origin, FluidStack expected, int distance) {
+        List<ChaliceBlockEntity> out = new ArrayList<>();
         for (BlockPos chalicePos : findNearbyChalices(level, origin, distance)) {
-            if (level.getBlockEntity(chalicePos) instanceof TileChalice chalice && chalice.getTank().drain(expected, IFluidHandler.FluidAction.SIMULATE).getAmount() >= expected.getAmount()) {
+            if (level.getBlockEntity(chalicePos) instanceof ChaliceBlockEntity chalice && chalice.getTank().drain(expected, IFluidHandler.FluidAction.SIMULATE).getAmount() >= expected.getAmount()) {
                 out.add(chalice);
             }
         }
@@ -54,11 +54,11 @@ public class ChaliceHelper {
     }
 
     @Nonnull
-    public static Optional<List<TileChalice>> findNearbyChalicesCombined(Level level, BlockPos origin, FluidStack expected, int distance) {
+    public static Optional<List<ChaliceBlockEntity>> findNearbyChalicesCombined(Level level, BlockPos origin, FluidStack expected, int distance) {
         FluidStack required = expected.copy();
-        List<TileChalice> out = new ArrayList<>();
+        List<ChaliceBlockEntity> out = new ArrayList<>();
         for (BlockPos chalicePos : findNearbyChalices(level, origin, distance)) {
-            if (level.getBlockEntity(chalicePos) instanceof TileChalice chalice) {
+            if (level.getBlockEntity(chalicePos) instanceof ChaliceBlockEntity chalice) {
                 FluidStack drained = chalice.getTank().drain(required, IFluidHandler.FluidAction.SIMULATE);
                 if (!drained.isEmpty()) {
                     required.shrink(drained.getAmount());
@@ -75,7 +75,7 @@ public class ChaliceHelper {
     public static boolean doChalicesContainCombined(Level level, Collection<BlockPos> chalicePositions, FluidStack expected) {
         FluidStack required = expected.copy();
         for (BlockPos pos : chalicePositions) {
-            if (level.getBlockEntity(pos) instanceof TileChalice chalice) {
+            if (level.getBlockEntity(pos) instanceof ChaliceBlockEntity chalice) {
                 FluidStack drained = chalice.getTank().drain(required, IFluidHandler.FluidAction.SIMULATE);
                 if (!drained.isEmpty()) {
                     required.shrink(drained.getAmount());

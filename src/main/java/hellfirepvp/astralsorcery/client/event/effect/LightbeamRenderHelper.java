@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.data.sync.client.ClientLightConnections;
-import hellfirepvp.astralsorcery.common.tile.TileLens;
+import hellfirepvp.astralsorcery.common.blockentity.LensBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.Minecraft;
@@ -70,7 +70,7 @@ public class LightbeamRenderHelper implements ITickHandler {
                         if (renderView.distanceToSqr(at.getX(), at.getY(), at.getZ()) <= RenderingConfig.CONFIG.getMaxEffectRenderDistanceSq()) {
                             Vector3 source = new Vector3(at).add(0.5, 0.5, 0.5);
                             Color overlay = null;
-                            TileLens lens = MiscUtils.getTileAt(renderView.level(), at, TileLens.class, true);
+                            LensBlockEntity lens = MiscUtils.getBlockEntityAt(renderView.level(), at, LensBlockEntity.class, true);
                             if (lens != null) {
                                 if (lens.getColorType() != null) {
                                     overlay = lens.getColorType().getColor();

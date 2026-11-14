@@ -49,7 +49,7 @@ public class BlockDiscoverer {
         return out;
     }
 
-    public static Set<BlockPos> searchForTileEntitiesAround(Level world, BlockPos origin, int distance, Predicate<BlockEntity> match) {
+    public static Set<BlockPos> searchForBlockEntitiesAround(Level world, BlockPos origin, int distance, Predicate<BlockEntity> match) {
         Set<BlockPos> out = new HashSet<>();
 
         int minChX = (origin.getX() - distance) >> 4;
@@ -64,7 +64,7 @@ public class BlockDiscoverer {
                             ch.getBlockEntities()
                                     .values()
                                     .stream()
-                                    .filter(tile -> tile.getBlockPos().closerThan(origin, distance))
+                                    .filter(blockEntity -> blockEntity.getBlockPos().closerThan(origin, distance))
                                     .filter(match)
                                     .map(BlockEntity::getBlockPos)
                                     .collect(Collectors.toList())

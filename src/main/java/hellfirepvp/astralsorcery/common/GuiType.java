@@ -15,8 +15,8 @@ import hellfirepvp.astralsorcery.client.screen.ScreenTelescope;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalProgression;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
-import hellfirepvp.astralsorcery.common.tile.TileRefractionTable;
-import hellfirepvp.astralsorcery.common.tile.TileTelescope;
+import hellfirepvp.astralsorcery.common.blockentity.RefractionTableBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
 import net.minecraft.client.Minecraft;
@@ -91,7 +91,7 @@ public enum GuiType {
                     return ScreenJournalProgression.getOpenJournalInstance();
                 case REFRACTION_TABLE:
                     at = NBTHelper.readBlockPosFromNBT(data);
-                    TileRefractionTable refractionTable = MiscUtils.getTileAt(clWorld, at, TileRefractionTable.class, true);
+                    RefractionTableBlockEntity refractionTable = MiscUtils.getBlockEntityAt(clWorld, at, RefractionTableBlockEntity.class, true);
                     if (refractionTable != null) {
                         //AS-GUI-02 (resolved): ScreenRefractionTable is 452 lines and declares
                         //ScreenRefractionTable(TileRefractionTable) at :69. Its GUI is the only construction site
@@ -102,7 +102,7 @@ public enum GuiType {
                     return null;
                 case TELESCOPE:
                     at = NBTHelper.readBlockPosFromNBT(data);
-                    TileTelescope telescope = MiscUtils.getTileAt(clWorld, at, TileTelescope.class, true);
+                    TelescopeBlockEntity telescope = MiscUtils.getBlockEntityAt(clWorld, at, TelescopeBlockEntity.class, true);
                     if (telescope != null) {
                         //AS-GUI-03 (resolved): ScreenTelescope is 280 lines and declares
                         //ScreenTelescope(TileTelescope) at :55.

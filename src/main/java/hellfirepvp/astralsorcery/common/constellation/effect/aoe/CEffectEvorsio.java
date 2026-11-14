@@ -20,7 +20,7 @@ import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.BlockDropCaptureAssist;
 import hellfirepvp.astralsorcery.common.util.block.BlockUtils;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
@@ -83,7 +83,7 @@ public class CEffectEvorsio extends CEffectAbstractList<ListEntries.PosEntry> {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         float addY = 1F;
         //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
         if (!pedestal.getBlockPos().equals(pos)) {
@@ -130,7 +130,7 @@ public class CEffectEvorsio extends CEffectAbstractList<ListEntries.PosEntry> {
                 return false;
             }
 
-            TileRitualPedestal pedestal = getPedestal(world, pos);
+            RitualPedestalBlockEntity pedestal = getPedestal(world, pos);
             if (pedestal != null) {
                 BlockState state = world.getBlockState(at);
                 if (this.canBreakBlock(world, at, state, buildFilter(pedestal))) {
@@ -170,7 +170,7 @@ public class CEffectEvorsio extends CEffectAbstractList<ListEntries.PosEntry> {
         return !state.isAir();
     }
 
-    private Predicate<BlockState> buildFilter(TileRitualPedestal pedestal) {
+    private Predicate<BlockState> buildFilter(RitualPedestalBlockEntity pedestal) {
         List<Predicate<BlockState>> filteredBlocks = pedestal.getConfiguredBlockStates().stream()
                 .map(blockState -> (Predicate<BlockState>) blockState::equals)
                 .collect(Collectors.toList());

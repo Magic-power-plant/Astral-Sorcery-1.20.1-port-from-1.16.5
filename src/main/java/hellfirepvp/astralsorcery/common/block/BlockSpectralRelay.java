@@ -1,8 +1,8 @@
 package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesGlass;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileSpectralRelay;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -39,7 +39,7 @@ public class BlockSpectralRelay extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof TileSpectralRelay relay)) {
+        if (!(blockEntity instanceof SpectralRelayBlockEntity relay)) {
             return InteractionResult.PASS;
         }
         ItemStack held = player.getItemInHand(hand);
@@ -54,7 +54,7 @@ public class BlockSpectralRelay extends BaseEntityBlock {
                 if (!player.addItem(removed)) {
                     player.drop(removed, false);
                 }
-                TileSpectralRelay.cascadeRelayProximityUpdates(level, pos);
+                SpectralRelayBlockEntity.cascadeRelayProximityUpdates(level, pos);
             }
             if (!level.isEmptyBlock(pos.above()) || !relay.getInventory().isItemValid(0, held)) {
                 return InteractionResult.PASS;
@@ -66,7 +66,7 @@ public class BlockSpectralRelay extends BaseEntityBlock {
                 held.shrink(1);
             }
             relay.updateAltarLinkState();
-            TileSpectralRelay.cascadeRelayProximityUpdates(level, pos);
+            SpectralRelayBlockEntity.cascadeRelayProximityUpdates(level, pos);
             relay.markForUpdate();
             return InteractionResult.CONSUME;
         }
@@ -76,7 +76,7 @@ public class BlockSpectralRelay extends BaseEntityBlock {
             if (!player.addItem(removed)) {
                 player.drop(removed, false);
             }
-            TileSpectralRelay.cascadeRelayProximityUpdates(level, pos);
+            SpectralRelayBlockEntity.cascadeRelayProximityUpdates(level, pos);
             relay.markForUpdate();
             return InteractionResult.CONSUME;
         }
@@ -87,13 +87,13 @@ public class BlockSpectralRelay extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (!level.isClientSide && blockEntity instanceof TileSpectralRelay relay) {
+            if (!level.isClientSide && blockEntity instanceof SpectralRelayBlockEntity relay) {
                 ItemStack stored = relay.getInventory().getStackInSlot(0);
                 if (!stored.isEmpty()) {
                     ItemUtils.dropItemNaturally(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stored.copy());
                     relay.getInventory().setStackInSlot(0, ItemStack.EMPTY);
                 }
-                TileSpectralRelay.cascadeRelayProximityUpdates(level, pos);
+                SpectralRelayBlockEntity.cascadeRelayProximityUpdates(level, pos);
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -107,7 +107,7 @@ public class BlockSpectralRelay extends BaseEntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof TileSpectralRelay relay) {
+        if (blockEntity instanceof SpectralRelayBlockEntity relay) {
             return relay.getInventory().getStackInSlot(0).isEmpty() ? 0 : 15;
         }
         return 0;
@@ -131,14 +131,14 @@ public class BlockSpectralRelay extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileSpectralRelay(pos, state);
+        return new SpectralRelayBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.SPECTRAL_RELAY.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileSpectralRelay relay) {
+        return type == BlockEntityTypesAS.SPECTRAL_RELAY.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof SpectralRelayBlockEntity relay) {
                 relay.tick();
             }
         } : null;

@@ -1,8 +1,8 @@
 package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMarble;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileWell;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.WellBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -59,7 +59,7 @@ public class BlockWell extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(blockEntity instanceof TileWell well)) {
+        if (!(blockEntity instanceof WellBlockEntity well)) {
             return InteractionResult.PASS;
         }
         ItemStack held = player.getItemInHand(hand);
@@ -113,7 +113,7 @@ public class BlockWell extends BaseEntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (!world.isClientSide && blockEntity instanceof TileWell well && !well.getCatalyst().isEmpty()) {
+            if (!world.isClientSide && blockEntity instanceof WellBlockEntity well && !well.getCatalyst().isEmpty()) {
                 well.breakCatalyst();
             }
         }
@@ -128,7 +128,7 @@ public class BlockWell extends BaseEntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof TileWell well) {
+        if (blockEntity instanceof WellBlockEntity well) {
             int fluidPart = Mth.ceil(well.getTank().getPercentageFilled() * 8F);
             return well.getCatalyst().isEmpty() ? fluidPart : fluidPart + 7;
         }
@@ -153,14 +153,14 @@ public class BlockWell extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileWell(pos, state);
+        return new WellBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.WELL.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileWell well) {
+        return type == BlockEntityTypesAS.WELL.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof WellBlockEntity well) {
                 well.tick();
             }
         } : null;

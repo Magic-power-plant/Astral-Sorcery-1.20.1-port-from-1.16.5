@@ -32,43 +32,43 @@ public interface RefreshFunction<T extends EntityComplexFX> {
 
     RefreshFunction<?> DESPAWN = fx -> false;
 
-    public static <E extends BlockEntity, T extends EntityComplexFX> RefreshFunction<T> tileExists(E tile) {
-        return new TileExists<>(tile);
+    public static <E extends BlockEntity, T extends EntityComplexFX> RefreshFunction<T> blockEntityExists(E blockEntity) {
+        return new BlockEntityExists<>(blockEntity);
     }
 
-    public static <E extends BlockEntity, T extends EntityComplexFX> RefreshFunction<T> tileExistsAnd(E tile, BiPredicate<E, T> refreshFct) {
-        TileExists<E, T> fct = new TileExists<>(tile);
-        return (fx) -> Optional.ofNullable(fct.getTileIfValid()).map(t -> refreshFct.test(t, fx)).orElse(false);
+    public static <E extends BlockEntity, T extends EntityComplexFX> RefreshFunction<T> blockEntityExistsAnd(E blockEntity, BiPredicate<E, T> refreshFct) {
+        BlockEntityExists<E, T> fct = new BlockEntityExists<>(blockEntity);
+        return (fx) -> Optional.ofNullable(fct.getBlockEntityIfValid()).map(t -> refreshFct.test(t, fx)).orElse(false);
     }
 
     public boolean shouldRefresh(@Nonnull T fx);
 
-    public static class TileExists<E extends BlockEntity, T extends EntityComplexFX> implements RefreshFunction<T> {
+    public static class BlockEntityExists<E extends BlockEntity, T extends EntityComplexFX> implements RefreshFunction<T> {
 
         private final ResourceKey<Level> dimType;
         private final BlockPos pos;
         private final Class<E> clazzExpected;
 
-        public TileExists(E tile) {
-            this.dimType = tile.getLevel().dimension();
-            this.pos = tile.getBlockPos();
-            this.clazzExpected = (Class<E>) tile.getClass();
+        public BlockEntityExists(E blockEntity) {
+            this.dimType = blockEntity.getLevel().dimension();
+            this.pos = blockEntity.getBlockPos();
+            this.clazzExpected = (Class<E>) blockEntity.getClass();
         }
 
         @Override
         public boolean shouldRefresh(@Nonnull T fx) {
-            return getTileIfValid() != null;
+            return getBlockEntityIfValid() != null;
         }
 
         @Nullable
-        protected E getTileIfValid() {
+        protected E getBlockEntityIfValid() {
             Level clWorld = Minecraft.getInstance().level;
-            E tile;
+            E blockEntity;
             if (clWorld != null &&
                     clWorld.dimension().equals(dimType) &&
-                    (tile = MiscUtils.getTileAt(clWorld, pos, clazzExpected, true)) != null &&
-                    !tile.isRemoved()) {
-                return tile;
+                    (blockEntity = MiscUtils.getBlockEntityAt(clWorld, pos, clazzExpected, true)) != null &&
+                    !blockEntity.isRemoved()) {
+                return blockEntity;
             }
             return null;
         }

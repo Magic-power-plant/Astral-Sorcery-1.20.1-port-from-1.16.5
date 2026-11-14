@@ -181,7 +181,7 @@ public class StructurePreview {
         Collections.reverse(structureSlice);
         for (Map.Entry<BlockPos, ? extends MatchableState> expectedBlock : structureSlice) {
             BlockPos at = expectedBlock.getKey().offset(this.origin);
-            BlockEntity renderTile = expectedBlock.getValue().createTileEntity(drawWorld, at, this.snapshot.getSnapshotTick());
+            BlockEntity renderBlockEntity = expectedBlock.getValue().createBlockEntity(drawWorld, at, this.snapshot.getSnapshotTick());
             BlockState actual = renderWorld.getBlockState(at);
 
             if (this.snapshot.getStructure().matchesSingleBlock(renderWorld, this.origin, expectedBlock.getKey(), actual, renderWorld.getBlockEntity(at))) {
@@ -194,7 +194,7 @@ public class StructurePreview {
                 renderState = expectedBlock.getValue().getDescriptiveState(this.snapshot.getSnapshotTick());
             }
 
-            ModelData data = renderTile != null ? renderTile.getModelData() : ModelData.EMPTY;
+            ModelData data = renderBlockEntity != null ? renderBlockEntity.getModelData() : ModelData.EMPTY;
 
             renderStack.pushPose();
             renderStack.translate(at.getX() + 0.2F, at.getY() + 0.2F, at.getZ() + 0.2F);

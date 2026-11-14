@@ -15,8 +15,8 @@ import hellfirepvp.astralsorcery.common.crafting.AltarUpgradeRecipe;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
 import hellfirepvp.astralsorcery.common.lib.AltarRecipeEffectsAS;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -56,18 +56,18 @@ public class AttunementUpgradeRecipe extends AltarRecipe implements AltarUpgrade
     }
 
     @Override
-    public boolean matches(LogicalSide side, Player crafter, TileAltar altar, boolean ignoreStarlightRequirement) {
+    public boolean matches(LogicalSide side, Player crafter, AltarBlockEntity altar, boolean ignoreStarlightRequirement) {
         return altar.getAltarType() == AltarType.DISCOVERY && super.matches(side, crafter, altar, ignoreStarlightRequirement);
     }
 
     @Nonnull
     @Override
-    public List<ItemStack> getOutputsForAltar(TileAltar altar) {
+    public List<ItemStack> getOutputsForAltar(AltarBlockEntity altar) {
         return Collections.emptyList();
     }
 
     @Override
-    public void onRecipeCompletion(TileAltar altar, ActiveAltarRecipe activeRecipe) {
+    public void onRecipeCompletion(AltarBlockEntity altar, ActiveAltarRecipe activeRecipe) {
         super.onRecipeCompletion(altar, activeRecipe);
 
         //1.16.5 .../AttunementUpgradeRecipe.java:64. This tree's ResearchManager#informCraftedAltar is typed

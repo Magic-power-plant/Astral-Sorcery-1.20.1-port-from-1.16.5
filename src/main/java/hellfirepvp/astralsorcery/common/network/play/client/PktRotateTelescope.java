@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.network.play.client;
 
 import hellfirepvp.astralsorcery.client.screen.ScreenTelescope;
-import hellfirepvp.astralsorcery.common.tile.TileTelescope;
+import hellfirepvp.astralsorcery.common.blockentity.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.client.Minecraft;
@@ -64,8 +64,8 @@ public class PktRotateTelescope {
                 if (world == null) {
                     return;
                 }
-                TileTelescope telescope = MiscUtils.getTileAt(world, msg.pos,
-                        TileTelescope.class, false);
+                TelescopeBlockEntity telescope = MiscUtils.getBlockEntityAt(world, msg.pos,
+                        TelescopeBlockEntity.class, false);
                 if (telescope != null) {
                     telescope.setRotation(msg.isClockwise
                             ? telescope.getRotation().nextClockWise()
@@ -83,8 +83,8 @@ public class PktRotateTelescope {
     @OnlyIn(Dist.CLIENT)
     private static void handleClient(PktRotateTelescope msg) {
         Level world = Minecraft.getInstance().level;
-        TileTelescope telescope = MiscUtils.getTileAt(world, msg.pos,
-                TileTelescope.class, false);
+        TelescopeBlockEntity telescope = MiscUtils.getBlockEntityAt(world, msg.pos,
+                TelescopeBlockEntity.class, false);
         if (telescope != null) {
             telescope.setRotation(msg.isClockwise
                     ? telescope.getRotation().nextClockWise()

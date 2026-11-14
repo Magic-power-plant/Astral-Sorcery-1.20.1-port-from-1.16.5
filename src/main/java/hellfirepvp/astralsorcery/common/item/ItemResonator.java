@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
-import hellfirepvp.astralsorcery.common.tile.base.TileAreaOfInfluence;
+import hellfirepvp.astralsorcery.common.blockentity.base.AreaOfInfluenceBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -210,24 +210,24 @@ public class ItemResonator extends Item implements OverrideInteractItem, Creativ
     @Override
     public boolean shouldInterceptBlockInteract(LogicalSide side, Player player, InteractionHand hand, BlockPos pos, Direction face) {
         ResonatorUpgrade upgrade = getCurrentUpgrade(player, player.getItemInHand(hand));
-        return upgrade == ResonatorUpgrade.AREA_SIZE && MiscUtils.getTileAt(player.level(), pos, TileAreaOfInfluence.class, false) != null;
+        return upgrade == ResonatorUpgrade.AREA_SIZE && MiscUtils.getBlockEntityAt(player.level(), pos, AreaOfInfluenceBlockEntity.class, false) != null;
     }
 
     @Override
     public boolean doBlockInteract(LogicalSide side, Player player, InteractionHand hand, BlockPos pos, Direction face) {
         ResonatorUpgrade upgrade = getCurrentUpgrade(player, player.getItemInHand(hand));
         if (upgrade == ResonatorUpgrade.AREA_SIZE && player.level().isClientSide()) {
-            TileAreaOfInfluence aoeTile = MiscUtils.getTileAt(player.level(), pos, TileAreaOfInfluence.class, false);
-            if (aoeTile != null) {
-                playAreaOfInfluenceEffect(aoeTile);
+            AreaOfInfluenceBlockEntity aoeBlockEntity = MiscUtils.getBlockEntityAt(player.level(), pos, AreaOfInfluenceBlockEntity.class, false);
+            if (aoeBlockEntity != null) {
+                playAreaOfInfluenceEffect(aoeBlockEntity);
             }
         }
         return true;
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playAreaOfInfluenceEffect(TileAreaOfInfluence aoeTile) {
-        AreaOfInfluencePreview.INSTANCE.showOrRemoveIdentical(aoeTile);
+    private void playAreaOfInfluenceEffect(AreaOfInfluenceBlockEntity aoeBlockEntity) {
+        AreaOfInfluencePreview.INSTANCE.showOrRemoveIdentical(aoeBlockEntity);
     }
 
     @Override

@@ -6,12 +6,12 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransm
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransmissionSourceNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.CrystalPrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.CrystalTransmissionNode;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverAltar;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverRitualPedestal;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverTreeBeacon;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightReceiverWell;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightTransmissionLens;
-import hellfirepvp.astralsorcery.common.tile.network.StarlightTransmissionPrism;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverAltar;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverTreeBeacon;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverWell;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightTransmissionLens;
+import hellfirepvp.astralsorcery.common.blockentity.network.StarlightTransmissionPrism;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;

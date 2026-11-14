@@ -10,8 +10,8 @@ package hellfirepvp.astralsorcery.common.integration.jei;
 
 import hellfirepvp.astralsorcery.common.container.ContainerAltarBase;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -314,7 +314,7 @@ public class TieredAltarRecipeTransferHandler<C extends ContainerAltarBase> impl
     }
 
     private static Optional<AltarType> altarType(ContainerAltarBase container) {
-        TileAltar altar = container.getTileEntity();
+        AltarBlockEntity altar = container.getBlockEntity();
         return altar == null ? Optional.empty() : Optional.of(altar.getAltarType());
     }
 

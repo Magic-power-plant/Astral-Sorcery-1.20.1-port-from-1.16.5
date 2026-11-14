@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.container;
 
 import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ import java.util.Optional;
 // Reference: 1.16.5 ContainerAltarAttunement.
 public class ContainerAltarAttunement extends ContainerAltarBase {
 
-    public ContainerAltarAttunement(int id, Inventory inv, TileAltar altar) {
+    public ContainerAltarAttunement(int id, Inventory inv, AltarBlockEntity altar) {
         super(MenuTypesAS.ALTAR_ATTUNEMENT.get(), id, inv, altar);
     }
 

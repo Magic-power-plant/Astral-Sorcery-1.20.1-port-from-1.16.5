@@ -32,22 +32,22 @@ public class BlockPredicates {
         return (world, pos, state) -> applicable.contains(state);
     }
 
-    public static <T extends BlockEntity> BlockPredicate doesTileExist(T tile, boolean loadTileWorldAndChunk) {
-        ResourceKey<Level> dim = tile.getLevel().dimension();
-        BlockEntityType<?> tileType = tile.getType();
+    public static <T extends BlockEntity> BlockPredicate doesBlockEntityExist(T blockEntity, boolean loadBlockEntityWorldAndChunk) {
+        ResourceKey<Level> dim = blockEntity.getLevel().dimension();
+        BlockEntityType<?> blockEntityType = blockEntity.getType();
         MinecraftServer srv = ServerLifecycleHooks.getCurrentServer();
 
         return (world, pos, state) -> {
-            if (loadTileWorldAndChunk || srv.levelKeys().contains(dim)) {
+            if (loadBlockEntityWorldAndChunk || srv.levelKeys().contains(dim)) {
                 Level foundWorld = srv.getLevel(dim);
                 if (foundWorld == null) {
-                    return !loadTileWorldAndChunk;
+                    return !loadBlockEntityWorldAndChunk;
                 }
-                if (!loadTileWorldAndChunk && !foundWorld.isLoaded(pos)) {
+                if (!loadBlockEntityWorldAndChunk && !foundWorld.isLoaded(pos)) {
                     return true;
                 }
-                BlockEntity te = MiscUtils.getTileAt(foundWorld, pos, BlockEntity.class, true);
-                return te != null && te.getType().equals(tileType);
+                BlockEntity te = MiscUtils.getBlockEntityAt(foundWorld, pos, BlockEntity.class, true);
+                return te != null && te.getType().equals(blockEntityType);
             }
             return true;
         };

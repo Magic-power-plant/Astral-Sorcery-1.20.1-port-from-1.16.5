@@ -17,8 +17,8 @@ import hellfirepvp.astralsorcery.common.crafting.helper.CraftingFocusStack;
 import hellfirepvp.astralsorcery.common.crafting.helper.WrappedIngredient;
 import hellfirepvp.astralsorcery.common.crafting.helper.ingredient.FluidIngredient;
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.TileSpectralRelay;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.SpectralRelayBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
@@ -130,7 +130,7 @@ public class ActiveSimpleAltarRecipe {
         return (T) clientEffectContainer.computeIfAbsent(index, provider);
     }
 
-    public void createItemOutputs(TileAltar altar, Consumer<ItemStack> output) {
+    public void createItemOutputs(AltarBlockEntity altar, Consumer<ItemStack> output) {
         //BLOCKED_PORT[AS-ALT-09]: 1.16.5 body (1.16.5 common/crafting/recipe/altar/ActiveSimpleAltarRecipe.java:122-124):
         //  Consumer<ItemStack> informer = stack -> ResearchManager.informCraftedAltar(altar, this, stack);
         //  Consumer<ItemStack> handleCrafted = informer.andThen(output);
@@ -146,7 +146,7 @@ public class ActiveSimpleAltarRecipe {
         this.getRecipeToCraft().onRecipeCompletion(altar, this);
     }
 
-    public void consumeInputs(TileAltar altar) {
+    public void consumeInputs(AltarBlockEntity altar) {
         //1.16.5: TileAltar#getInventory() returned a TileInventory; this tree's TileAltar hands out an
         //ItemStackHandlerAS (an IItemHandlerModifiable), which offers the same
         //getStackInSlot/setStackInSlot pair used below.
@@ -172,7 +172,7 @@ public class ActiveSimpleAltarRecipe {
 
         for (CraftingFocusStack input : this.focusStacks) {
             //1.16.5: altar.getWorld() - World was renamed to Level and the getter to getLevel() in 1.20.1.
-            TileSpectralRelay tar = MiscUtils.getTileAt(altar.getLevel(), input.getRealPosition(), TileSpectralRelay.class, true);
+            SpectralRelayBlockEntity tar = MiscUtils.getBlockEntityAt(altar.getLevel(), input.getRealPosition(), SpectralRelayBlockEntity.class, true);
             if (tar != null) {
                 ItemStackHandlerAS tarInventory = tar.getInventory();
                 if (input.getInput() != null && input.getInput().getIngredient() instanceof FluidIngredient) {
@@ -188,7 +188,7 @@ public class ActiveSimpleAltarRecipe {
         }
     }
 
-    public boolean matches(TileAltar altar, boolean ignoreStarlightRequirement, boolean testNecessaryRelayInputs) {
+    public boolean matches(AltarBlockEntity altar, boolean ignoreStarlightRequirement, boolean testNecessaryRelayInputs) {
         if (!this.getRecipeToCraft().matches(LogicalSide.SERVER, this.tryGetCraftingPlayerServer(), altar, ignoreStarlightRequirement)) {
             return false;
         }
@@ -196,7 +196,7 @@ public class ActiveSimpleAltarRecipe {
         List<WrappedIngredient> listIngredients = this.getRecipeToCraft().getRelayInputs();
         for (CraftingFocusStack stack : this.focusStacks) {
             if (stack.getStackIndex() >= 0 && stack.getStackIndex() < listIngredients.size()) {
-                TileSpectralRelay relay = MiscUtils.getTileAt(altar.getLevel(), stack.getRealPosition(), TileSpectralRelay.class, true);
+                SpectralRelayBlockEntity relay = MiscUtils.getBlockEntityAt(altar.getLevel(), stack.getRealPosition(), SpectralRelayBlockEntity.class, true);
                 if (relay == null) {
                     return false;
                 }
@@ -215,7 +215,7 @@ public class ActiveSimpleAltarRecipe {
     }
     //True if the recipe progressed, false if it's stuck
 
-    public CraftingState tick(TileAltar altar) {
+    public CraftingState tick(AltarBlockEntity altar) {
         if (recipeToCraft instanceof AltarCraftingProgress) {
             if (!((AltarCraftingProgress) recipeToCraft).tryProcess(altar, this, craftingData, ticksCrafting, totalCraftingTime)) {
                 return CraftingState.WAITING;
@@ -235,7 +235,7 @@ public class ActiveSimpleAltarRecipe {
         return CraftingState.ACTIVE;
     }
 
-    private boolean tickCraftingRelayInputs(TileAltar altar, List<WrappedIngredient> iIngredients) {
+    private boolean tickCraftingRelayInputs(AltarBlockEntity altar, List<WrappedIngredient> iIngredients) {
         //Start the surrounding stack intake past 66%
         int part = totalCraftingTime / 3;
         //Every input is evenly spread
@@ -259,7 +259,7 @@ public class ActiveSimpleAltarRecipe {
                         continue;
                     }
                     BlockPos at = MiscUtils.getRandomEntry(relays, rand);
-                    TileSpectralRelay tar = MiscUtils.getTileAt(altar.getLevel(), at, TileSpectralRelay.class, true);
+                    SpectralRelayBlockEntity tar = MiscUtils.getBlockEntityAt(altar.getLevel(), at, SpectralRelayBlockEntity.class, true);
                     if (tar == null) { // We were lied to. lol.
                         waitMissingInputs = true;
                         continue;
@@ -267,7 +267,7 @@ public class ActiveSimpleAltarRecipe {
                     found = new CraftingFocusStack(index, input, at);
                     this.focusStacks.add(found);
                 }
-                TileSpectralRelay tar = MiscUtils.getTileAt(altar.getLevel(), found.getRealPosition(), TileSpectralRelay.class, true);
+                SpectralRelayBlockEntity tar = MiscUtils.getBlockEntityAt(altar.getLevel(), found.getRealPosition(), SpectralRelayBlockEntity.class, true);
                 if (tar == null) {
                     waitMissingInputs = true;
                     continue;

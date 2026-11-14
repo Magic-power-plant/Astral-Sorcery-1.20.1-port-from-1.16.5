@@ -11,8 +11,8 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
@@ -119,13 +119,13 @@ public abstract class AltarRecipeEffect {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state);
+    public abstract void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state);
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight);
+    public abstract void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight);
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void onCraftingFinish(TileAltar altar, boolean isChaining);
+    public abstract void onCraftingFinish(AltarBlockEntity altar, boolean isChaining);
 
     @Override
     public boolean equals(Object o) {

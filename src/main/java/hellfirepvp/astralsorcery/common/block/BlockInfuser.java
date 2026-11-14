@@ -2,8 +2,8 @@ package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.properties.PropertiesMarble;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileInfuser;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -49,7 +49,7 @@ public class BlockInfuser extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(blockEntity instanceof TileInfuser infuser)) {
+        if (!(blockEntity instanceof InfuserBlockEntity infuser)) {
             return InteractionResult.PASS;
         }
 
@@ -105,7 +105,7 @@ public class BlockInfuser extends BaseEntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof TileInfuser infuser) {
+        if (blockEntity instanceof InfuserBlockEntity infuser) {
             return infuser.getItemInput().isEmpty() ? 0 : 15;
         }
         return 0;
@@ -124,14 +124,14 @@ public class BlockInfuser extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileInfuser(pos, state);
+        return new InfuserBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.INFUSER.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileInfuser infuser) {
+        return type == BlockEntityTypesAS.INFUSER.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof InfuserBlockEntity infuser) {
                 infuser.tick();
             }
         } : null;

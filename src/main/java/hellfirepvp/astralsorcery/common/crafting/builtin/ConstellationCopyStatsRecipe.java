@@ -17,8 +17,8 @@ import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ItemStackHandlerAS;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -87,7 +87,7 @@ public class ConstellationCopyStatsRecipe extends ConstellationBaseAverageStatsR
 
     @Nonnull
     @Override
-    public List<ItemStack> getOutputsForAltar(TileAltar altar) {
+    public List<ItemStack> getOutputsForAltar(AltarBlockEntity altar) {
         List<ItemStack> out = super.getOutputsForAltar(altar);
         out.forEach(stack -> copyConstellation(stack, wrapInventory(altar.getInventory())));
         return out;

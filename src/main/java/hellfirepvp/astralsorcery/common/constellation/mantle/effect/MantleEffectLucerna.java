@@ -59,17 +59,17 @@ public class MantleEffectLucerna extends MantleEffect {
             this.playEntityHighlight(player);
         }
         if (CONFIG.findSpawners.get() && rand.nextInt(10) == 0) {
-            this.playBlockHighlight(player, ColorsAS.MANTLE_LUCERNA_SPAWNER, (tileEntity) -> tileEntity instanceof SpawnerBlockEntity);
+            this.playBlockHighlight(player, ColorsAS.MANTLE_LUCERNA_SPAWNER, (blockEntity) -> blockEntity instanceof SpawnerBlockEntity);
         }
         if (CONFIG.findChests.get() && rand.nextInt(10) == 0) {
-            this.playBlockHighlight(player, ColorsAS.MANTLE_LUCERNA_INVENTORY, (tileEntity) -> tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent());
+            this.playBlockHighlight(player, ColorsAS.MANTLE_LUCERNA_INVENTORY, (blockEntity) -> blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent());
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     private void playBlockHighlight(Player player, Color highlightColor, Predicate<BlockEntity> test) {
         float chance = 0.9F;
-        Set<BlockPos> positions = BlockDiscoverer.searchForTileEntitiesAround(player.level(), player.blockPosition(), CONFIG.range.get(), test);
+        Set<BlockPos> positions = BlockDiscoverer.searchForBlockEntitiesAround(player.level(), player.blockPosition(), CONFIG.range.get(), test);
         for (BlockPos pos : positions) {
             if (rand.nextFloat() > chance) {
                 continue;

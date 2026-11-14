@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.block.base;
 
-import hellfirepvp.astralsorcery.common.tile.base.TileNetwork;
+import hellfirepvp.astralsorcery.common.blockentity.base.NetworkBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -31,7 +31,7 @@ public abstract class BlockStarlightNetwork extends BlockInventory {
     // 1.16.5: Block#onReplaced(BlockState, World, BlockPos, BlockState, boolean)
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state != newState) {
-            TileNetwork<?> te = MiscUtils.getTileAt(worldIn, pos, TileNetwork.class, true);
+            NetworkBlockEntity<?> te = MiscUtils.getBlockEntityAt(worldIn, pos, NetworkBlockEntity.class, true);
             if (te != null) {
                 te.onBreak();
             }

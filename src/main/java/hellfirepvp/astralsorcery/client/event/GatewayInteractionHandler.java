@@ -20,7 +20,7 @@ import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktRequestTeleport;
 import hellfirepvp.astralsorcery.common.network.play.client.PktRevokeGatewayAccess;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MapStream;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -79,14 +79,14 @@ public class GatewayInteractionHandler {
         if (node == null || !node.isLocked() || node.getOwner() == null || node.getAllowedUsers().isEmpty()) {
             return;
         }
-        TileCelestialGateway gateway = MiscUtils.getTileAt(world, Vector3.atEntityCorner(player).toBlockPos(), TileCelestialGateway.class, true);
+        CelestialGatewayBlockEntity gateway = MiscUtils.getBlockEntityAt(world, Vector3.atEntityCorner(player).toBlockPos(), CelestialGatewayBlockEntity.class, true);
         if (gateway == null || !gateway.hasMultiblock() || !gateway.doesSeeSky()) {
             return;
         }
 
         BlockPos clickedPos = event.getPos();
         MapStream.of(node.getAllowedUsers())
-                .filter(tpl -> TileCelestialGateway.getAllowedUserOffset(tpl.getA())
+                .filter(tpl -> CelestialGatewayBlockEntity.getAllowedUserOffset(tpl.getA())
                         .offset(node.getPos())
                         .below()
                         .equals(clickedPos))
@@ -114,7 +114,7 @@ public class GatewayInteractionHandler {
             return;
         }
 
-        TileCelestialGateway gateway = MiscUtils.getTileAt(world, Vector3.atEntityCorner(player).toBlockPos(), TileCelestialGateway.class, true);
+        CelestialGatewayBlockEntity gateway = MiscUtils.getBlockEntityAt(world, Vector3.atEntityCorner(player).toBlockPos(), CelestialGatewayBlockEntity.class, true);
         if (gateway == null || !gateway.hasMultiblock() || !gateway.doesSeeSky()) {
             focusingEntry = null;
             focusTicks = 0;

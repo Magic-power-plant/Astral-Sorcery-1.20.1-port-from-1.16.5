@@ -15,7 +15,7 @@ import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.perk.node.KeyPerk;
 import hellfirepvp.astralsorcery.common.perk.tick.PlayerTickPerk;
-import hellfirepvp.astralsorcery.common.tile.TileIlluminator;
+import hellfirepvp.astralsorcery.common.blockentity.IlluminatorBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
@@ -60,7 +60,7 @@ public class KeySpawnLights extends KeyPerk implements PlayerTickPerk {
                             rand.nextInt(radius) * (rand.nextBoolean() ? 1 : -1),
                             rand.nextInt(radius) * (rand.nextBoolean() ? 1 : -1));
                     if (MiscUtils.executeWithChunk(player.level(), pos, () -> {
-                        if (TileIlluminator.ILLUMINATOR_CHECK.test(player.level(), pos, player.level().getBlockState(pos)) &&
+                        if (IlluminatorBlockEntity.ILLUMINATOR_CHECK.test(player.level(), pos, player.level().getBlockState(pos)) &&
                                 AlignmentChargeHandler.INSTANCE.drainCharge(player, CONFIG.chargeCost.get(), true)) {
                             if (player.level().setBlock(pos, BlocksAS.FLARE_LIGHT.get().defaultBlockState(), 3)) {
                                 AlignmentChargeHandler.INSTANCE.drainCharge(player, CONFIG.chargeCost.get(), false);

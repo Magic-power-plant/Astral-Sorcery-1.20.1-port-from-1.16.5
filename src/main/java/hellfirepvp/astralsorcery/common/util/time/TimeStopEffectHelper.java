@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
-import hellfirepvp.astralsorcery.common.data.config.registry.TileAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -111,7 +111,7 @@ public class TimeStopEffectHelper {
                     Map<BlockPos, BlockEntity> map = ch.getBlockEntities();
                     for (Map.Entry<BlockPos, BlockEntity> teEntry : map.entrySet()) {
                         BlockEntity te = teEntry.getValue();
-                        if (TileAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(te) && te.getBlockPos().distSqr(position) <= range * range) {
+                        if (BlockEntityAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(te) && te.getBlockPos().distSqr(position) <= range * range) {
 
                             double x = te.getBlockPos().getX() + rand.nextFloat();
                             double y = te.getBlockPos().getY() + rand.nextFloat();

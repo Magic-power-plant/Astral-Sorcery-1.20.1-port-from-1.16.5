@@ -31,7 +31,7 @@ public interface MatchableState {
     BlockState getDescriptiveState(long tick);
 
     @Nullable
-    default BlockEntity createTileEntity(BlockGetter blockReader, BlockPos at, long tick) {
+    default BlockEntity createBlockEntity(BlockGetter blockReader, BlockPos at, long tick) {
         BlockState state = getDescriptiveState(tick);
         if (state.getBlock() instanceof EntityBlock entityBlock) {
             return entityBlock.newBlockEntity(at, state);

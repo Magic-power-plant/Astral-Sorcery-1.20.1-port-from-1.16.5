@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.structure.match.util.BlockArray;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
-import hellfirepvp.astralsorcery.common.tile.base.TileRequiresMultiblock;
+import hellfirepvp.astralsorcery.common.blockentity.base.RequiresMultiblockBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -119,13 +119,13 @@ public class ItemWand extends Item implements OverrideInteractItem {
                 return true;
             }
         }
-        WandInteractable wandTe = MiscUtils.getTileAt(world, pos, WandInteractable.class, true);
+        WandInteractable wandTe = MiscUtils.getBlockEntityAt(world, pos, WandInteractable.class, true);
         if (wandTe != null) {
             if (wandTe.onInteract(world, pos, player, face, player.isShiftKeyDown())) {
                 return true;
             }
         }
-        TileRequiresMultiblock mbTe = MiscUtils.getTileAt(world, pos, TileRequiresMultiblock.class, true);
+        RequiresMultiblockBlockEntity mbTe = MiscUtils.getBlockEntityAt(world, pos, RequiresMultiblockBlockEntity.class, true);
         if (mbTe != null) {
             StructureType type = mbTe.getRequiredStructureType();
             if (type != null && !type.getStructure().matches(world, pos)) {
@@ -152,12 +152,12 @@ public class ItemWand extends Item implements OverrideInteractItem {
         StructurePreview.newBuilder(world.dimension(), pos, type.getStructure())
                 .removeIfOutInDifferentWorld()
                 .andPersistOnlyIf((inWorld, at) -> MiscUtils.executeWithChunk(world, pos, () -> {
-                    TileRequiresMultiblock tileFound = MiscUtils.getTileAt(world, pos, TileRequiresMultiblock.class, true);
-                    if (tileFound == null) {
+                    RequiresMultiblockBlockEntity blockEntityFound = MiscUtils.getBlockEntityAt(world, pos, RequiresMultiblockBlockEntity.class, true);
+                    if (blockEntityFound == null) {
                         return false;
                     }
-                    return tileFound.getRequiredStructureType() != null &&
-                            tileFound.getRequiredStructureType().equals(type);
+                    return blockEntityFound.getRequiredStructureType() != null &&
+                            blockEntityFound.getRequiredStructureType().equals(type);
                 }, true))
                 .andPersistOnlyIf((inWorld, at) -> !type.getStructure().matches(world, pos))
                 .showBar(type.getDisplayName())

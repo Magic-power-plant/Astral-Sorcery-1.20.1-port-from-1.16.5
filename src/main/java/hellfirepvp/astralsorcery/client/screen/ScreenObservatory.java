@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.client.screen.base.ConstellationDiscoveryScreen;
 import hellfirepvp.astralsorcery.client.screen.base.SkyScreen;
-import hellfirepvp.astralsorcery.client.screen.base.TileConstellationDiscoveryScreen;
+import hellfirepvp.astralsorcery.client.screen.base.ConstellationDiscoveryBlockEntityScreen;
 import hellfirepvp.astralsorcery.client.screen.telescope.FullScreenDrawArea;
 import hellfirepvp.astralsorcery.client.screen.telescope.PlayerAngledConstellationInformation;
 import hellfirepvp.astralsorcery.client.util.*;
@@ -27,7 +27,7 @@ import hellfirepvp.astralsorcery.common.constellation.world.WorldContext;
 import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.event.EventFlags;
-import hellfirepvp.astralsorcery.common.tile.TileObservatory;
+import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -53,7 +53,7 @@ import java.util.*;
  */
 //1.16.5: IHasContainer<T> (getContainer()) -> 1.20.1: MenuAccess<T> (getMenu()); same single-method contract that
 //lets the screen be opened for a container by ScreenManager/MenuScreens.
-public class ScreenObservatory extends TileConstellationDiscoveryScreen<TileObservatory, ConstellationDiscoveryScreen.DrawArea> implements MenuAccess<ContainerObservatory> {
+public class ScreenObservatory extends ConstellationDiscoveryBlockEntityScreen<ObservatoryBlockEntity, ConstellationDiscoveryScreen.DrawArea> implements MenuAccess<ContainerObservatory> {
 
     private static final Random RAND = new Random();
     private static final int FRAME_TEXTURE_SIZE = 16;
@@ -70,8 +70,8 @@ public class ScreenObservatory extends TileConstellationDiscoveryScreen<TileObse
         //does still implement NamedInventoryTile, so this is the identical component.
         //1.16.5: Minecraft#getMainWindow() -> 1.20.1: Minecraft#getWindow();
         //        Window#getScaledHeight()/#getScaledWidth() -> Window#getGuiScaledHeight()/#getGuiScaledWidth()
-        super(container.getTileEntity(),
-                container.getTileEntity().getDisplayName(),
+        super(container.getBlockEntity(),
+                container.getBlockEntity().getDisplayName(),
                 Minecraft.getInstance().getWindow().getGuiScaledHeight() - FRAME_TEXTURE_SIZE * 2,
                 Minecraft.getInstance().getWindow().getGuiScaledWidth() - FRAME_TEXTURE_SIZE * 2);
         this.container = container;
@@ -79,7 +79,7 @@ public class ScreenObservatory extends TileConstellationDiscoveryScreen<TileObse
         //1.16.5: PlayerEntity -> 1.20.1: Player
         Player player = Minecraft.getInstance().player;
         if (player != null) {
-            TileObservatory observatory = this.getTile();
+            ObservatoryBlockEntity observatory = this.getBlockEntity();
             //1.16.5: Entity#rotationPitch/#rotationYaw -> 1.20.1: Entity#setXRot(float)/#setYRot(float);
             //        Entity#prevRotationPitch/#prevRotationYaw -> Entity#xRotO/#yRotO
             player.setXRot(observatory.observatoryPitch);
@@ -176,7 +176,7 @@ public class ScreenObservatory extends TileConstellationDiscoveryScreen<TileObse
     //1.16.5: MatrixStack -> 1.20.1: PoseStack
     private void drawObservatoryScreen(PoseStack renderStack, float pTicks) {
         //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
-        boolean canSeeSky = this.canObserverSeeSky(this.getTile().getBlockPos(), 2);
+        boolean canSeeSky = this.canObserverSeeSky(this.getBlockEntity().getBlockPos(), 2);
         double guiFactor = Minecraft.getInstance().getWindow().getGuiScale();
         //1.16.5: Entity#getPitch(float) -> 1.20.1: Entity#getViewXRot(float)
         float pitch = Minecraft.getInstance().player.getViewXRot(pTicks);

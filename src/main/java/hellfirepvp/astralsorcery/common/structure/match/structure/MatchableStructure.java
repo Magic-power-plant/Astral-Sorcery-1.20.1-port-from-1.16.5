@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.structure.match.structure;
 
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
-import hellfirepvp.astralsorcery.common.structure.match.tile.MatchableTile;
+import hellfirepvp.astralsorcery.common.structure.match.blockentity.MatchableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
@@ -44,15 +44,15 @@ public interface MatchableStructure extends Structure {
                                        @Nonnull BlockPos center,
                                        @Nonnull BlockPos centerOffset,
                                        @Nonnull BlockState comparing,
-                                       @Nullable BlockEntity tileEntity) {
+                                       @Nullable BlockEntity blockEntity) {
         if (!hasBlockAt(centerOffset)) {
             return false;
         }
         MatchableState state = getBlockStateAt(centerOffset);
-        MatchableTile tileMatch = getTileEntityAt(centerOffset);
+        MatchableBlockEntity blockEntityMatch = getBlockEntityAt(centerOffset);
         BlockPos absolute = center.offset(centerOffset);
         return state.matches(reader, absolute, comparing) &&
-                (tileEntity == null || tileMatch == null || tileMatch.matches(reader, absolute, tileEntity));
+                (blockEntity == null || blockEntityMatch == null || blockEntityMatch.matches(reader, absolute, blockEntity));
     }
 
     ResourceLocation getRegistryName();

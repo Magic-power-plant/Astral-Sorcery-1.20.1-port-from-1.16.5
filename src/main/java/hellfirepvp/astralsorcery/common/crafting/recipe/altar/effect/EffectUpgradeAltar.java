@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,7 +29,7 @@ public class EffectUpgradeAltar extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state) {
+    public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
         //1.16.5: Minecraft.getInstance().particles.addBlockDestroyEffects(pos, state)
         //1.20.1: the field is ParticleEngine 'particleEngine' and the method is named 'destroy'.
         ParticleEngine mgr = Minecraft.getInstance().particleEngine;
@@ -41,9 +41,9 @@ public class EffectUpgradeAltar extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
+    public void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onCraftingFinish(TileAltar altar, boolean isChaining) {}
+    public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {}
 }

@@ -7,8 +7,8 @@ import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.lib.AdvancementsAS;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktSyncPerkActivity;
 import hellfirepvp.astralsorcery.common.network.play.server.PktProgressionUpdate;
@@ -440,7 +440,7 @@ public class ResearchManager {
      * Port of 1.16.5 ResearchManager#informCraftedAltar: research progression for the crafted stack
      * plus the astralsorcery:altar_craft advancement trigger for the crafting player.
      */
-    public static void informCraftedAltar(@Nonnull TileAltar altar, @Nonnull ActiveAltarRecipe recipe, @Nonnull ItemStack crafted) {
+    public static void informCraftedAltar(@Nonnull AltarBlockEntity altar, @Nonnull ActiveAltarRecipe recipe, @Nonnull ItemStack crafted) {
         ServerPlayer crafter = recipe.tryGetCraftingPlayerServer(altar);
         if (crafter == null) {
             AstralSorcery.LOG.warn("Crafting finished, player that initialized crafting could not be found!");

@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.common.crafting.nojson.meltable.WorldMeltableRe
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 import hellfirepvp.astralsorcery.common.util.block.iterator.BlockPositionGenerator;
@@ -84,7 +84,7 @@ public class CEffectFornax extends CEffectAbstractList<ListEntries.PosEntry> {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         Vector3 motion = Vector3.random().multiply(0.04);
         //1.16.5: TileEntity#getPos() -> 1.20.1: BlockEntity#getBlockPos()
         if (pos.equals(pedestal.getBlockPos())) {

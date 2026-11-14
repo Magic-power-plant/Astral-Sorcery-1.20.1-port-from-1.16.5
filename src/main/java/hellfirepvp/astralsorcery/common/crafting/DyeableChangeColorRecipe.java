@@ -8,7 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.crafting;
 
-import hellfirepvp.astralsorcery.common.block.tile.BlockCelestialGateway;
+import hellfirepvp.astralsorcery.common.block.BlockCelestialGateway;
 import hellfirepvp.astralsorcery.common.item.wand.ItemIlluminationWand;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;

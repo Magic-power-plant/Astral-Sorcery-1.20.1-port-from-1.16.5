@@ -3,7 +3,7 @@ package hellfirepvp.astralsorcery.common.network.play.client;
 import hellfirepvp.astralsorcery.common.constellation.DrawnConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
-import hellfirepvp.astralsorcery.common.tile.TileRefractionTable;
+import hellfirepvp.astralsorcery.common.blockentity.RefractionTableBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;
@@ -100,8 +100,8 @@ public class PktEngraveGlass {
                     return;
                 }
                 ServerLevel world = server.getLevel(msg.dim);
-                TileRefractionTable table = MiscUtils.getTileAt(world, msg.pos,
-                        TileRefractionTable.class, false);
+                RefractionTableBlockEntity table = MiscUtils.getBlockEntityAt(world, msg.pos,
+                        RefractionTableBlockEntity.class, false);
                 if (table != null) {
                     table.engraveGlass(new ArrayList<>(msg.constellations.subList(
                             0, Math.min(3, msg.constellations.size()))));

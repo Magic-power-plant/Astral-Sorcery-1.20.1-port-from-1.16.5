@@ -20,7 +20,7 @@ import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.lib.WorldGenerationAS;
 import hellfirepvp.astralsorcery.common.perk.PerkConverter;
 import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
@@ -50,7 +50,7 @@ public class RegistryRegistries {
         BlocksAS.BLOCKS.register(modEventBus);
         ItemsAS.ITEMS.register(modEventBus);
         EntityTypesAS.ENTITIES.register(modEventBus);
-        TileEntityTypesAS.TILE_ENTITIES.register(modEventBus);
+        BlockEntityTypesAS.BLOCK_ENTITIES.register(modEventBus);
         MenuTypesAS.MENU_TYPES.register(modEventBus);
         SoundsAS.SOUNDS.register(modEventBus);
         EnchantmentsAS.ENCHANTMENTS.register(modEventBus);

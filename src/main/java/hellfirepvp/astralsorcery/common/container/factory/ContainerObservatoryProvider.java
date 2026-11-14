@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.container.factory;
 
 import hellfirepvp.astralsorcery.common.container.ContainerObservatory;
 import hellfirepvp.astralsorcery.common.lib.ContainerTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileObservatory;
+import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;
@@ -30,9 +30,9 @@ import javax.annotation.Nonnull;
  */
 public class ContainerObservatoryProvider extends CustomContainerProvider<ContainerObservatory> {
 
-    private final TileObservatory observatory;
+    private final ObservatoryBlockEntity observatory;
 
-    public ContainerObservatoryProvider(TileObservatory observatory) {
+    public ContainerObservatoryProvider(ObservatoryBlockEntity observatory) {
         super(ContainerTypesAS.OBSERVATORY.get());
         this.observatory = observatory;
     }
@@ -51,7 +51,7 @@ public class ContainerObservatoryProvider extends CustomContainerProvider<Contai
     private static ContainerObservatory createFromPacket(int windowId, Inventory plInventory, FriendlyByteBuf data) {
         BlockPos at = ByteBufUtils.readPos(data);
         Player player = plInventory.player;
-        TileObservatory observatory = MiscUtils.getTileAt(player.level(), at, TileObservatory.class, true);
+        ObservatoryBlockEntity observatory = MiscUtils.getBlockEntityAt(player.level(), at, ObservatoryBlockEntity.class, true);
         return new ContainerObservatory(observatory, windowId);
     }
 

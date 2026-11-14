@@ -3,9 +3,9 @@ package hellfirepvp.astralsorcery.common.loot;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import hellfirepvp.astralsorcery.common.block.tile.BlockCelestialGateway;
+import hellfirepvp.astralsorcery.common.block.BlockCelestialGateway;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -35,9 +35,9 @@ public class CopyGatewayColor extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
-        BlockEntity tile = context.getParam(LootContextParams.BLOCK_ENTITY);
-        if (tile instanceof TileCelestialGateway) {
-            ((TileCelestialGateway) tile).getColor().ifPresent(color -> {
+        BlockEntity blockEntity = context.getParam(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof CelestialGatewayBlockEntity) {
+            ((CelestialGatewayBlockEntity) blockEntity).getColor().ifPresent(color -> {
                 BlockCelestialGateway.setColor(stack, color);
             });
         }

@@ -35,8 +35,8 @@ public class WorldBlockPos extends BlockPos {
         });
     }
 
-    public static WorldBlockPos wrapTileEntity(BlockEntity tile) {
-        return new WorldBlockPos(tile.getLevel().dimension(), tile.getBlockPos(), type -> tile.getLevel());
+    public static WorldBlockPos wrapBlockEntity(BlockEntity blockEntity) {
+        return new WorldBlockPos(blockEntity.getLevel().dimension(), blockEntity.getBlockPos(), type -> blockEntity.getLevel());
     }
 
     public ResourceKey<Level> getWorldKey() {
@@ -108,10 +108,10 @@ public class WorldBlockPos extends BlockPos {
     }
 
     @Nullable
-    public <T extends BlockEntity> T getTileAt(Class<T> tileClass, boolean forceChunkLoad) {
+    public <T extends BlockEntity> T getBlockEntityAt(Class<T> blockEntityClass, boolean forceChunkLoad) {
         Level world = this.worldReference.getValue();
         if (world != null) {
-            return MiscUtils.getTileAt(world, this, tileClass, forceChunkLoad);
+            return MiscUtils.getBlockEntityAt(world, this, blockEntityClass, forceChunkLoad);
         }
         return null;
     }

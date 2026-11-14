@@ -4,7 +4,7 @@ import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
 import hellfirepvp.astralsorcery.common.structure.match.block.SimpleMatchableBlock;
 import hellfirepvp.astralsorcery.common.structure.match.block.SimpleMatchableBlockState;
 import hellfirepvp.astralsorcery.common.structure.match.structure.Structure;
-import hellfirepvp.astralsorcery.common.structure.match.tile.MatchableTile;
+import hellfirepvp.astralsorcery.common.structure.match.blockentity.MatchableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Block;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class BlockArray implements Structure {
 
     private final Map<BlockPos, MatchableState> blocks = new HashMap<>();
-    private final Map<BlockPos, MatchableTile<? extends BlockEntity>> tiles = new HashMap<>();
+    private final Map<BlockPos, MatchableBlockEntity<? extends BlockEntity>> blockEntities = new HashMap<>();
     private Vec3i min = new Vec3i(0, 0, 0);
     private Vec3i max = new Vec3i(0, 0, 0);
 
@@ -32,8 +32,8 @@ public class BlockArray implements Structure {
 
     @Nonnull
     @Override
-    public Map<BlockPos, ? extends MatchableTile<? extends BlockEntity>> getTileEntities() {
-        return Collections.unmodifiableMap(tiles);
+    public Map<BlockPos, ? extends MatchableBlockEntity<? extends BlockEntity>> getBlockEntities() {
+        return Collections.unmodifiableMap(blockEntities);
     }
 
     @Override
@@ -46,12 +46,12 @@ public class BlockArray implements Structure {
         return min;
     }
 
-    public void addTileEntity(MatchableTile<?> tile, int x, int y, int z) {
-        addTileEntity(tile, new BlockPos(x, y, z));
+    public void addBlockEntity(MatchableBlockEntity<?> blockEntity, int x, int y, int z) {
+        addBlockEntity(blockEntity, new BlockPos(x, y, z));
     }
 
-    public void addTileEntity(MatchableTile<?> tile, BlockPos pos) {
-        tiles.put(pos, tile);
+    public void addBlockEntity(MatchableBlockEntity<?> blockEntity, BlockPos pos) {
+        blockEntities.put(pos, blockEntity);
         updateSize(pos);
     }
 
@@ -90,7 +90,7 @@ public class BlockArray implements Structure {
 
     public void addAll(BlockArray other) {
         other.getContents().forEach((pos, state) -> addBlock(state, pos));
-        other.getTileEntities().forEach((pos, tile) -> addTileEntity(tile, pos));
+        other.getBlockEntities().forEach((pos, blockEntity) -> addBlockEntity(blockEntity, pos));
     }
 
     public void addBlockCube(BlockState state, int ox, int oy, int oz, int tx, int ty, int tz) {

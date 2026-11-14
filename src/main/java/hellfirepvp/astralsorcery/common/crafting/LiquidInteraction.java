@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import hellfirepvp.astralsorcery.common.crafting.serializer.LiquidInteractionSerializer;
-import hellfirepvp.astralsorcery.common.tile.TileChalice;
+import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.RegistryAccess;
@@ -85,7 +85,7 @@ public class LiquidInteraction implements Recipe<Container> {
     //drain(.., SIMULATE) probes with its own containsFluid(..) check whose tag comparison accepted any input
     //tag when the reactant had none - FluidStack#containsFluid requires the tags to match, so recipes keyed
     //on a tagless fluid could be consumed by a tagged one.
-    public boolean consumeInputs(TileChalice chalice1, TileChalice chalice2) {
+    public boolean consumeInputs(ChaliceBlockEntity chalice1, ChaliceBlockEntity chalice2) {
         FluidStack contained1 = chalice1.getTank().getFluid();
         FluidStack contained2 = chalice2.getTank().getFluid();
         if (!this.matches(contained1, contained2)) {

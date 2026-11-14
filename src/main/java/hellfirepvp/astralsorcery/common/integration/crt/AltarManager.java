@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.integration.crt;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipeGrid;
 import hellfirepvp.astralsorcery.common.crafting.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -46,7 +46,7 @@ import java.util.Map;
 // com.blamejared.crafttweaker.api.action.recipe.ActionAddRecipe.
 //TODO_PORT[AS-PKG-01]: 1.16.5 read the altar type from
 // hellfirepvp.astralsorcery.common.block.tile.altar.AltarType; this tree has it at
-// hellfirepvp.astralsorcery.common.tile.altar.AltarType, and AltarRecipeGrid moved from
+// hellfirepvp.astralsorcery.common.blockentity.altar.AltarType, and AltarRecipeGrid moved from
 // common.crafting.recipe.altar to common.crafting.
 public class AltarManager {
 

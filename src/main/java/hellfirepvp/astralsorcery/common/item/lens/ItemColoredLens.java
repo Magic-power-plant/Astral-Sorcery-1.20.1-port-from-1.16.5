@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.item.lens;
 
 import hellfirepvp.astralsorcery.common.item.base.client.ItemDynamicColor;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.tile.TileLens;
+import hellfirepvp.astralsorcery.common.blockentity.LensBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
 import net.minecraft.world.InteractionResult;
@@ -45,7 +45,7 @@ public abstract class ItemColoredLens extends Item implements ItemDynamicColor {
         Player player = ctx.getPlayer();
         Level world = ctx.getLevel();
         if (!world.isClientSide() && player != null) {
-            TileLens lens = MiscUtils.getTileAt(world, ctx.getClickedPos(), TileLens.class, false);
+            LensBlockEntity lens = MiscUtils.getBlockEntityAt(world, ctx.getClickedPos(), LensBlockEntity.class, false);
             if (lens != null) {
                 ItemStack held = ctx.getItemInHand();
                 LensColorType oldType = lens.setColorType(this.lensColorType);

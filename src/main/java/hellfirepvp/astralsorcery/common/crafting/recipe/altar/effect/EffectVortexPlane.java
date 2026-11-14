@@ -17,7 +17,7 @@ import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.ActiveAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,7 +34,7 @@ public class EffectVortexPlane extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state) {
+    public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
         //1.16.5 typed this against ActiveSimpleAltarRecipe; TileAltar in this tree still hands out the legacy
         //ActiveAltarRecipe, whose getEffectContained(int, Function) is the identical per-recipe effect cache.
         //VERIFY_PORT[AS-ALT-01]: revert to ActiveSimpleAltarRecipe once TileAltar#getActiveRecipe() is migrated.
@@ -100,9 +100,9 @@ public class EffectVortexPlane extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
+    public void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onCraftingFinish(TileAltar altar, boolean isChaining) {}
+    public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {}
 }

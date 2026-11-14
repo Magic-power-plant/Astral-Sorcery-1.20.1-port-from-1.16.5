@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.block;
 
 import hellfirepvp.astralsorcery.common.block.base.BlockStarlightNetwork;
 import hellfirepvp.astralsorcery.common.block.base.CustomItemBlock;
-import hellfirepvp.astralsorcery.common.block.tile.crystal.CollectorCrystalType;
+import hellfirepvp.astralsorcery.common.block.crystal.CollectorCrystalType;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
@@ -15,8 +15,8 @@ import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.item.block.ItemBlockCollectorCrystal;
 import hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS;
-import hellfirepvp.astralsorcery.common.lib.TileEntityTypesAS;
-import hellfirepvp.astralsorcery.common.tile.TileCollectorCrystal;
+import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
+import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -100,7 +100,7 @@ public abstract class BlockCollectorCrystal extends BlockStarlightNetwork implem
         CrystalAttributes.TooltipResult result = null;
         if (attr != null) {
             result = attr.addTooltip(toolTip, CalculationContext.Builder
-                    .withSource(new AttunedSourceInstance(CrystalPropertiesAS.Sources.SOURCE_TILE_COLLECTOR_CRYSTAL, cstItem.getAttunedConstellation(stack)))
+                    .withSource(new AttunedSourceInstance(CrystalPropertiesAS.Sources.SOURCE_COLLECTOR_CRYSTAL_BLOCK_ENTITY, cstItem.getAttunedConstellation(stack)))
                     .addUsage(CrystalPropertiesAS.Usages.USE_COLLECTOR_CRYSTAL)
                     .addUsage(CrystalPropertiesAS.Usages.USE_LENS_TRANSFER)
                     .build());
@@ -144,7 +144,7 @@ public abstract class BlockCollectorCrystal extends BlockStarlightNetwork implem
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
-        TileCollectorCrystal crystal = MiscUtils.getTileAt(world, pos, TileCollectorCrystal.class, false);
+        CollectorCrystalBlockEntity crystal = MiscUtils.getBlockEntityAt(world, pos, CollectorCrystalBlockEntity.class, false);
         if (crystal != null && crystal.isPlayerMade()) {
             int i = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
             return player.getDigSpeed(state, pos) / PLAYER_HARVEST_HARDNESS / i;
@@ -154,7 +154,7 @@ public abstract class BlockCollectorCrystal extends BlockStarlightNetwork implem
 
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
-        TileCollectorCrystal tcc = MiscUtils.getTileAt(world, pos, TileCollectorCrystal.class, true);
+        CollectorCrystalBlockEntity tcc = MiscUtils.getBlockEntityAt(world, pos, CollectorCrystalBlockEntity.class, true);
         Item i = stack.getItem();
         if (tcc != null && i instanceof ItemBlockCollectorCrystal) {
             ItemBlockCollectorCrystal ibcc = (ItemBlockCollectorCrystal) i;
@@ -183,14 +183,14 @@ public abstract class BlockCollectorCrystal extends BlockStarlightNetwork implem
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileCollectorCrystal(pos, state);
+        return new CollectorCrystalBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == TileEntityTypesAS.COLLECTOR_CRYSTAL.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
-            if (blockEntity instanceof TileCollectorCrystal crystal) {
+        return type == BlockEntityTypesAS.COLLECTOR_CRYSTAL.get() ? (tickerLevel, tickerPos, tickerState, blockEntity) -> {
+            if (blockEntity instanceof CollectorCrystalBlockEntity crystal) {
                 crystal.tick();
             }
         } : null;

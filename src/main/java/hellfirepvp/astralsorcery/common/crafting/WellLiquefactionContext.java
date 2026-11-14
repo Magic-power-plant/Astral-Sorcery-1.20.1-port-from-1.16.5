@@ -9,7 +9,7 @@
 package hellfirepvp.astralsorcery.common.crafting;
 
 import hellfirepvp.astralsorcery.common.crafting.helper.RecipeCraftingContext;
-import hellfirepvp.astralsorcery.common.tile.TileWell;
+import hellfirepvp.astralsorcery.common.blockentity.WellBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
@@ -28,7 +28,7 @@ public class WellLiquefactionContext extends RecipeCraftingContext<WellLiquefact
 
     private final ItemStack input;
 
-    public WellLiquefactionContext(TileWell well) {
+    public WellLiquefactionContext(WellBlockEntity well) {
         this(well.getCatalyst());
     }
 

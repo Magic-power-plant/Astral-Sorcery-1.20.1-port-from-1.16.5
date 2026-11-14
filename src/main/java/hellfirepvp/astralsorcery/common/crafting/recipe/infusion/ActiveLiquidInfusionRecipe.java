@@ -23,8 +23,8 @@ import hellfirepvp.astralsorcery.common.auxiliary.ChaliceHelper;
 //as a top-level class in common/crafting (tracked as TODO_PORT[AS-PKG-01]).
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.tile.TileChalice;
-import hellfirepvp.astralsorcery.common.tile.TileInfuser;
+import hellfirepvp.astralsorcery.common.blockentity.ChaliceBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.RecipeHelper;
@@ -102,7 +102,7 @@ public class ActiveLiquidInfusionRecipe {
                 .ifPresent(chalices -> chalices.forEach(chalice -> this.supportingChalices.add(chalice.getBlockPos())));
     }
 
-    public boolean matches(TileInfuser infuser) {
+    public boolean matches(InfuserBlockEntity infuser) {
         if (!this.getRecipeToCraft().matches(infuser, this.tryGetCraftingPlayerServer(), LogicalSide.SERVER)) {
             return false;
         }
@@ -121,7 +121,7 @@ public class ActiveLiquidInfusionRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void tickClient(TileInfuser infuser) {
+    public void tickClient(InfuserBlockEntity infuser) {
         //1.16.5: FluidAttributes.BUCKET_VOLUME - moved to FluidType.BUCKET_VOLUME in 1.20.1.
         FluidStack required = new FluidStack(this.getRecipeToCraft().getLiquidInput(), FluidType.BUCKET_VOLUME);
 
@@ -138,7 +138,7 @@ public class ActiveLiquidInfusionRecipe {
                             //common.crafting.ActiveLiquidInfusionRecipe (a sibling of this class, see
                             //TODO_PORT[AS-INF-04]); only getRecipeToCraft().getId() is read here, which both
                             //classes expose identically, so the refresh predicate is unchanged.
-                            .refresh(RefreshFunction.tileExistsAnd(infuser,
+                            .refresh(RefreshFunction.blockEntityExistsAnd(infuser,
                                     (tInfuser, fx) -> tInfuser.getActiveRecipe() != null &&
                                             recipeName.equals(tInfuser.getActiveRecipe().getRecipeToCraft().getId()))));
             ((FXOrbitalInfuserLiquid) orbitalLiquid).setActive();
@@ -158,7 +158,7 @@ public class ActiveLiquidInfusionRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playLiquidDrawEffect(TileInfuser infuser, FluidStack required) {
+    private void playLiquidDrawEffect(InfuserBlockEntity infuser, FluidStack required) {
         Collection<BlockPos> chalices = this.supportingChalices;
         if (chalices.isEmpty()) {
             return;
@@ -198,7 +198,7 @@ public class ActiveLiquidInfusionRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playLiquidEffect(TileInfuser infuser, FluidStack required) {
+    private void playLiquidEffect(InfuserBlockEntity infuser, FluidStack required) {
         //1.16.5: TileInfuser#getRandomInfuserOffset() returned a Vector3; this tree's TileInfuser returns the
         //same absolute position as a vanilla Vec3, so it is wrapped back into a (freshly allocated, hence
         //safely mutable) Vector3 before applyRandomOffset mutates it.
@@ -216,8 +216,8 @@ public class ActiveLiquidInfusionRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void playLiquidPoolEffect(TileInfuser infuser, FluidStack required) {
-        List<BlockPos> posList = TileInfuser.getLiquidOffsets().stream()
+    private void playLiquidPoolEffect(InfuserBlockEntity infuser, FluidStack required) {
+        List<BlockPos> posList = InfuserBlockEntity.getLiquidOffsets().stream()
                 //1.16.5: BlockPos#add(Vec3i) - renamed to offset(Vec3i) in 1.20.1.
                 .map(pos -> pos.offset(infuser.getBlockPos()))
                 .collect(Collectors.toList());
@@ -247,7 +247,7 @@ public class ActiveLiquidInfusionRecipe {
         ((FXOrbitalInfuserLiquid) orbitalLiquid).requestRemoval();
     }
 
-    public void createItemOutputs(TileInfuser infuser, Consumer<ItemStack> output) {
+    public void createItemOutputs(InfuserBlockEntity infuser, Consumer<ItemStack> output) {
         //TODO_PORT[AS-INF-01]: 1.16.5 called ResearchManager.informCraftedInfuser(infuser, this, stack)
         // (1.16.5 common/crafting/recipe/infusion/ActiveLiquidInfusionRecipe.java:235). This tree's
         // common/data/research/ResearchManager has no informCraftedInfuser at all (it only ported
@@ -270,7 +270,7 @@ public class ActiveLiquidInfusionRecipe {
     //See createItemOutputs: verbatim body of 1.16.5 ResearchManager#informCraftedInfuser
     //(1.16.5 common/data/research/ResearchManager.java:503-512), which does not trigger any advancement -
     //unlike informCraftedAltar - and only forwards to informCrafted.
-    private void informCraftedInfuser(@Nonnull TileInfuser infuser, @Nonnull ItemStack crafted) {
+    private void informCraftedInfuser(@Nonnull InfuserBlockEntity infuser, @Nonnull ItemStack crafted) {
         Player crafter = this.tryGetCraftingPlayerServer();
         if (!(crafter instanceof ServerPlayer)) {
             //1.16.5: AstralSorcery.log - the logger field is named LOG in this tree.
@@ -284,7 +284,7 @@ public class ActiveLiquidInfusionRecipe {
         ResearchManager.informCrafted(crafter, crafted);
     }
 
-    public void consumeInputs(TileInfuser infuser) {
+    public void consumeInputs(InfuserBlockEntity infuser) {
         //TODO_PORT[AS-INF-02]: 1.16.5 called the three-argument
         // ItemUtils.decrementItem(Supplier<ItemStack>, Consumer<ItemStack> setIntoInventory,
         // Consumer<ItemStack> handleExcess) (1.16.5 common/util/item/ItemUtils.java:83), which shrank the
@@ -300,14 +300,14 @@ public class ActiveLiquidInfusionRecipe {
                 infuser::dropItemOnTop);
     }
 
-    public void consumeFluidsInput(TileInfuser infuser) {
+    public void consumeFluidsInput(InfuserBlockEntity infuser) {
         float chaliceSupplied = 0F;
         if (!this.supportingChalices.isEmpty()) {
             FluidStack required = this.getChaliceRequiredFluidInput();
-            Optional<List<TileChalice>> chalices = ChaliceHelper.findNearbyChalicesCombined(infuser.getLevel(), infuser.getBlockPos(), required, CHALICE_DISTANCE);
+            Optional<List<ChaliceBlockEntity>> chalices = ChaliceHelper.findNearbyChalicesCombined(infuser.getLevel(), infuser.getBlockPos(), required, CHALICE_DISTANCE);
             if (chalices.isPresent()) {
                 FluidStack left = required.copy();
-                for (TileChalice chalice : chalices.get()) {
+                for (ChaliceBlockEntity chalice : chalices.get()) {
                     left.shrink(chalice.getTank().drain(left, IFluidHandler.FluidAction.EXECUTE).getAmount());
                     if (left.isEmpty()) {
                         break;
@@ -325,7 +325,7 @@ public class ActiveLiquidInfusionRecipe {
         LiquidInfusion infusion = this.getRecipeToCraft();
         float chance = infusion.getConsumptionChance() * (1F - chaliceSupplied);
         if (infusion.doesConsumeMultipleFluids()) {
-            for (BlockPos at : TileInfuser.getLiquidOffsets()) {
+            for (BlockPos at : InfuserBlockEntity.getLiquidOffsets()) {
                 if (rand.nextFloat() < chance) {
                     //1.16.5: World#setBlockState -> Level#setBlock, Block#getDefaultState ->
                     //defaultBlockState, and Constants.BlockFlags.DEFAULT_AND_RERENDER (11) is
@@ -334,7 +334,7 @@ public class ActiveLiquidInfusionRecipe {
                 }
             }
         } else {
-            BlockPos at = MiscUtils.getRandomEntry(TileInfuser.getLiquidOffsets(), rand).offset(infuser.getBlockPos());
+            BlockPos at = MiscUtils.getRandomEntry(InfuserBlockEntity.getLiquidOffsets(), rand).offset(infuser.getBlockPos());
             if (rand.nextFloat() < chance) {
                 infuser.getLevel().setBlock(at, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
             }
@@ -345,7 +345,7 @@ public class ActiveLiquidInfusionRecipe {
         int amount = Math.round(FluidType.BUCKET_VOLUME * recipeToCraft.getConsumptionChance());
         amount *= 0.75; //Bonus for using chalices
 
-        amount = recipeToCraft.doesConsumeMultipleFluids() ? amount * TileInfuser.getLiquidOffsets().size() : amount;
+        amount = recipeToCraft.doesConsumeMultipleFluids() ? amount * InfuserBlockEntity.getLiquidOffsets().size() : amount;
         return new FluidStack(this.getRecipeToCraft().getLiquidInput(), amount);
     }
 

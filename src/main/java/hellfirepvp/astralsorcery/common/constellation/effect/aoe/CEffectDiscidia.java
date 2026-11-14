@@ -21,7 +21,7 @@ import hellfirepvp.astralsorcery.common.data.config.registry.TechnicalEntityRegi
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
-import hellfirepvp.astralsorcery.common.tile.TileRitualPedestal;
+import hellfirepvp.astralsorcery.common.blockentity.RitualPedestalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.DamageUtil;
 import hellfirepvp.astralsorcery.common.util.block.ILocatable;
 import hellfirepvp.astralsorcery.common.util.damage.DamageSourceUtil;
@@ -62,7 +62,7 @@ public class CEffectDiscidia extends ConstellationEffectEntityCollect<LivingEnti
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void playClientEffect(Level world, BlockPos pos, TileRitualPedestal pedestal, float alphaMultiplier, boolean extended) {
+    public void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended) {
         Vector3 playAt = new Vector3(pos).add(0.5, 0.5, 0.5);
         //1.16.5: TileEntity#getPos -> 1.20.1: BlockEntity#getBlockPos
         if (pos.equals(pedestal.getBlockPos())) {

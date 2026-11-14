@@ -32,7 +32,7 @@ public class SpectralToolBreakBlockGoal extends SpectralToolGoal {
 
     private BlockPredicate breakableSimpleBlocks() {
         return (world, pos, state) -> {
-            return MiscUtils.getTileAt(world, pos, BlockEntity.class, false) == null &&
+            return MiscUtils.getBlockEntityAt(world, pos, BlockEntity.class, false) == null &&
                     pos.getY() >= this.getEntity().getStartPosition().getY() &&
                     !state.isAir() &&
                     state.getDestroySpeed(world, pos) != -1 &&

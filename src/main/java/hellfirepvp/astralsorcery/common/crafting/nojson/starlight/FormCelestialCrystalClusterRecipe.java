@@ -22,7 +22,7 @@ import hellfirepvp.astralsorcery.common.item.ItemStardust;
 import hellfirepvp.astralsorcery.common.item.crystal.ItemCrystalBase;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialCrystals;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialCrystalsBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;
@@ -102,7 +102,7 @@ public class FormCelestialCrystalClusterRecipe extends LiquidStarlightRecipe {
 
                 // 1.16.5 World#setBlockState(BlockPos, BlockState) is Level#setBlockAndUpdate(BlockPos, BlockState)
                 if (world.setBlockAndUpdate(at, BlocksAS.CELESTIAL_CRYSTAL_CLUSTER.get().defaultBlockState())) {
-                    TileCelestialCrystals cluster = MiscUtils.getTileAt(world, at, TileCelestialCrystals.class, true);
+                    CelestialCrystalsBlockEntity cluster = MiscUtils.getBlockEntityAt(world, at, CelestialCrystalsBlockEntity.class, true);
                     if (cluster != null) {
                         CrystalAttributes attr = ((CrystalAttributeItem) crystalFound.getItem()).getAttributes(crystalFound);
                         ItemStack targetCrystal = new ItemStack(ItemsAS.CELESTIAL_CRYSTAL.get());

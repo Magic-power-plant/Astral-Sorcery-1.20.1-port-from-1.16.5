@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.active.Active
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.entity.EntityUtils;
@@ -48,7 +48,7 @@ public class AttunePlayerRecipe extends AttunementRecipe<ActivePlayerAttunementR
     }
 
     @Override
-    public boolean canStartCrafting(TileAttunementAltar altar) {
+    public boolean canStartCrafting(AttunementAltarBlockEntity altar) {
         Level world = altar.getLevel();
         if (DayTimeHelper.isNight(world)) {
             return findEligiblePlayer(altar) != null;
@@ -58,7 +58,7 @@ public class AttunePlayerRecipe extends AttunementRecipe<ActivePlayerAttunementR
 
     @Override
     @Nonnull
-    public ActivePlayerAttunementRecipe createRecipe(TileAttunementAltar altar) {
+    public ActivePlayerAttunementRecipe createRecipe(AttunementAltarBlockEntity altar) {
         ServerPlayer player = findEligiblePlayer(altar);
         return new ActivePlayerAttunementRecipe(this, (IMajorConstellation) altar.getActiveConstellation(), player.getUUID());
     }
@@ -66,7 +66,7 @@ public class AttunePlayerRecipe extends AttunementRecipe<ActivePlayerAttunementR
     @Override
     @Nonnull
     @OnlyIn(Dist.CLIENT)
-    public ActivePlayerAttunementRecipe deserialize(TileAttunementAltar altar, CompoundTag nbt, @Nullable ActivePlayerAttunementRecipe previousInstance) {
+    public ActivePlayerAttunementRecipe deserialize(AttunementAltarBlockEntity altar, CompoundTag nbt, @Nullable ActivePlayerAttunementRecipe previousInstance) {
         ActivePlayerAttunementRecipe recipe = new ActivePlayerAttunementRecipe(this, nbt);
         if (previousInstance != null) {
             recipe.cameraHack = previousInstance.cameraHack;
@@ -75,7 +75,7 @@ public class AttunePlayerRecipe extends AttunementRecipe<ActivePlayerAttunementR
     }
 
     @Nullable
-    private static ServerPlayer findEligiblePlayer(TileAttunementAltar altar) {
+    private static ServerPlayer findEligiblePlayer(AttunementAltarBlockEntity altar) {
         if (!(altar.getActiveConstellation() instanceof IMajorConstellation)) {
             return null;
         }

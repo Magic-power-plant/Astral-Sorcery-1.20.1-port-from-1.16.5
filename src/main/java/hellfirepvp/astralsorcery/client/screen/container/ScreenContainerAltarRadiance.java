@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.container.ContainerAltarTrait;
 import hellfirepvp.astralsorcery.common.crafting.AltarRecipe;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -97,7 +97,7 @@ public class ScreenContainerAltarRadiance extends ScreenContainerAltar<Container
             });
         }
 
-        TileAltar altar = this.getMenu().getTileEntity();
+        AltarBlockEntity altar = this.getMenu().getBlockEntity();
         IConstellation c = altar.getFocusedConstellation();
         if (c != null && altar.hasMultiblock() && ResearchHelper.getClientProgress().hasConstellationDiscovered(c)) {
             rand.setSeed(0x61FF25A5B7C24109L);

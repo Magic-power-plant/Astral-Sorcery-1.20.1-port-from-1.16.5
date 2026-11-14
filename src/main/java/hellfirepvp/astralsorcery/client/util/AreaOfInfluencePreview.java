@@ -13,7 +13,7 @@ import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXCube;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.ITickHandler;
-import hellfirepvp.astralsorcery.common.tile.base.TileAreaOfInfluence;
+import hellfirepvp.astralsorcery.common.blockentity.base.AreaOfInfluenceBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.Minecraft;
@@ -44,37 +44,37 @@ public class AreaOfInfluencePreview implements ITickHandler {
     private static final float sizeCube1 = 1.25F, sizeCube2 = 1.35F;
 
     //1.16.5: RegistryKey<World> -> 1.20.1: ResourceKey<Level>
-    private ResourceKey<Level> tileDimension = null;
-    private BlockPos tilePosition = null;
+    private ResourceKey<Level> blockEntityDimension = null;
+    private BlockPos blockEntityPosition = null;
     private FXCube effect1 = null, effect2 = null;
 
     private AreaOfInfluencePreview() {}
 
-    public void showOrRemoveIdentical(TileAreaOfInfluence aoeTile) {
-        if (this.tileDimension == aoeTile.getDimension() && aoeTile.getEffectOriginPosition().equals(this.tilePosition)) {
+    public void showOrRemoveIdentical(AreaOfInfluenceBlockEntity aoeBlockEntity) {
+        if (this.blockEntityDimension == aoeBlockEntity.getDimension() && aoeBlockEntity.getEffectOriginPosition().equals(this.blockEntityPosition)) {
             this.clearClient();
             return;
         }
-        this.show(aoeTile);
+        this.show(aoeBlockEntity);
     }
 
-    public void show(TileAreaOfInfluence aoeTile) {
+    public void show(AreaOfInfluenceBlockEntity aoeBlockEntity) {
         //1.16.5: TileEntity -> 1.20.1: BlockEntity
-        if (!(aoeTile instanceof BlockEntity)) {
+        if (!(aoeBlockEntity instanceof BlockEntity)) {
             return;
         }
-        this.tileDimension = aoeTile.getDimension();
-        this.tilePosition = aoeTile.getEffectOriginPosition();
+        this.blockEntityDimension = aoeBlockEntity.getDimension();
+        this.blockEntityPosition = aoeBlockEntity.getEffectOriginPosition();
     }
 
     public void clearClient() {
-        this.tileDimension = null;
-        this.tilePosition = null;
+        this.blockEntityDimension = null;
+        this.blockEntityPosition = null;
     }
 
     @Override
     public void tick(TickEvent.Type type, Object... context) {
-        if (tileDimension == null || tilePosition == null) {
+        if (blockEntityDimension == null || blockEntityPosition == null) {
             this.removeEffects();
             return;
         }
@@ -87,33 +87,33 @@ public class AreaOfInfluencePreview implements ITickHandler {
         }
         //1.16.5: World#getDimensionKey() -> 1.20.1: Level#dimension()
         ResourceKey<Level> clientDimType = clientWorld.dimension();
-        if (!clientDimType.equals(this.tileDimension)) {
+        if (!clientDimType.equals(this.blockEntityDimension)) {
             this.clearClient();
             this.removeEffects();
             return;
         }
-        TileAreaOfInfluence aoeTile = MiscUtils.getTileAt(clientWorld, this.tilePosition, TileAreaOfInfluence.class, true);
-        if (aoeTile != null && aoeTile.providesEffect() && shouldContinueEffect(aoeTile)) {
-            this.effect1 = uptickEffect(this.effect1, sizeCube1, aoeTile);
-            this.effect2 = uptickEffect(this.effect2, sizeCube2, aoeTile);
+        AreaOfInfluenceBlockEntity aoeBlockEntity = MiscUtils.getBlockEntityAt(clientWorld, this.blockEntityPosition, AreaOfInfluenceBlockEntity.class, true);
+        if (aoeBlockEntity != null && aoeBlockEntity.providesEffect() && shouldContinueEffect(aoeBlockEntity)) {
+            this.effect1 = uptickEffect(this.effect1, sizeCube1, aoeBlockEntity);
+            this.effect2 = uptickEffect(this.effect2, sizeCube2, aoeBlockEntity);
         } else {
-            this.effect1 = downtickEffect(this.effect1, sizeCube1, aoeTile);
-            this.effect2 = downtickEffect(this.effect2, sizeCube2, aoeTile);
+            this.effect1 = downtickEffect(this.effect1, sizeCube1, aoeBlockEntity);
+            this.effect2 = downtickEffect(this.effect2, sizeCube2, aoeBlockEntity);
             if (this.effect1 == null && this.effect2 == null) {
                 clearClient();
             }
         }
     }
 
-    private boolean shouldContinueEffect(TileAreaOfInfluence aoeTile) {
+    private boolean shouldContinueEffect(AreaOfInfluenceBlockEntity aoeBlockEntity) {
         if (Minecraft.getInstance().player == null) {
             return false;
         }
-        float effectRadius = aoeTile.getRadius();
+        float effectRadius = aoeBlockEntity.getRadius();
         if (effectRadius <= 0F) {
             return false;
         }
-        Vector3 offset = aoeTile.getEffectPosition();
+        Vector3 offset = aoeBlockEntity.getEffectPosition();
         double distance = offset.distance(Minecraft.getInstance().player);
         if (distance > effectRadius * 3) {
             return false;
@@ -121,10 +121,10 @@ public class AreaOfInfluencePreview implements ITickHandler {
         return distance <= 48;
     }
 
-    private FXCube downtickEffect(@Nullable FXCube cube, float sizeMultiplier, @Nullable TileAreaOfInfluence aoeTile) {
+    private FXCube downtickEffect(@Nullable FXCube cube, float sizeMultiplier, @Nullable AreaOfInfluenceBlockEntity aoeBlockEntity) {
         if (cube != null && !cube.isRemoved()) {
-            if (aoeTile != null) {
-                updateEffect(cube, sizeMultiplier, aoeTile);
+            if (aoeBlockEntity != null) {
+                updateEffect(cube, sizeMultiplier, aoeBlockEntity);
             }
             //1.16.5: MathHelper#clamp -> 1.20.1: Mth#clamp
             cube.setAlphaMultiplier(Mth.clamp(cube.getAlphaMultiplier() - alphaTick, 0F, 0.75F));
@@ -135,40 +135,40 @@ public class AreaOfInfluencePreview implements ITickHandler {
         return cube;
     }
 
-    private FXCube uptickEffect(@Nullable FXCube cube, float sizeMultiplier, TileAreaOfInfluence aoeTile) {
+    private FXCube uptickEffect(@Nullable FXCube cube, float sizeMultiplier, AreaOfInfluenceBlockEntity aoeBlockEntity) {
         if (cube != null) {
             if (cube.isRemoved()) {
                 EffectHelper.refresh(cube, EffectTemplatesAS.CUBE_AREA_OF_EFFECT);
             }
             cube.setAlphaMultiplier(Mth.clamp(cube.getAlphaMultiplier() + alphaTick, 0F, 0.75F));
-            updateEffect(cube, sizeMultiplier, aoeTile);
+            updateEffect(cube, sizeMultiplier, aoeBlockEntity);
         } else {
-            cube = createCube(sizeMultiplier, aoeTile);
+            cube = createCube(sizeMultiplier, aoeBlockEntity);
         }
         return cube;
     }
 
-    private void updateEffect(FXCube cube, float sizeMultiplier, TileAreaOfInfluence aoeTile) {
-        Color c = aoeTile.getEffectColor();
+    private void updateEffect(FXCube cube, float sizeMultiplier, AreaOfInfluenceBlockEntity aoeBlockEntity) {
+        Color c = aoeBlockEntity.getEffectColor();
         if (c != null) {
             cube.color(VFXColorFunction.constant(c));
         } else {
             cube.color(VFXColorFunction.WHITE);
         }
-        cube.setScaleMultiplier(aoeTile.getRadius() * sizeMultiplier);
-        cube.setPosition(aoeTile.getEffectPosition());
+        cube.setScaleMultiplier(aoeBlockEntity.getRadius() * sizeMultiplier);
+        cube.setPosition(aoeBlockEntity.getEffectPosition());
     }
 
-    private FXCube createCube(float sizeMultiplier, TileAreaOfInfluence aoeTile) {
+    private FXCube createCube(float sizeMultiplier, AreaOfInfluenceBlockEntity aoeBlockEntity) {
         FXCube cube = EffectHelper.of(EffectTemplatesAS.CUBE_AREA_OF_EFFECT)
-                .spawn(aoeTile.getEffectPosition())
+                .spawn(aoeBlockEntity.getEffectPosition())
                 .tumble()
                 .setTumbleIntensityMultiplier(0.06F)
                 .setAlphaMultiplier(2 * alphaTick)
                 .alpha((fx, alpha, pTicks) -> alpha)
                 .color(VFXColorFunction.WHITE)
                 .refresh(fx -> canRefresh((FXCube) fx));
-        updateEffect(cube, sizeMultiplier, aoeTile);
+        updateEffect(cube, sizeMultiplier, aoeBlockEntity);
         return cube;
     }
 

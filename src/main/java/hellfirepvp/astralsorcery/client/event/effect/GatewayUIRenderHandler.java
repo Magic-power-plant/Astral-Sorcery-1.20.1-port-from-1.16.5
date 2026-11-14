@@ -18,7 +18,7 @@ import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.data.world.GatewayCache;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
-import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
+import hellfirepvp.astralsorcery.common.blockentity.CelestialGatewayBlockEntity;
 import hellfirepvp.astralsorcery.common.util.ColorUtils;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -83,11 +83,11 @@ public class GatewayUIRenderHandler implements ITickHandler {
             return true;
         }
         Level world = Minecraft.getInstance().level;
-        TileCelestialGateway gateway;
+        CelestialGatewayBlockEntity gateway;
         if (world == null ||
                 this.currentUI.getVisibleTicks() <= 0 ||
                 !this.currentUI.getDimType().equals(world.dimension()) ||
-                (gateway = MiscUtils.getTileAt(world, this.currentUI.getPos(), TileCelestialGateway.class, true)) == null ||
+                (gateway = MiscUtils.getBlockEntityAt(world, this.currentUI.getPos(), CelestialGatewayBlockEntity.class, true)) == null ||
                 !gateway.doesSeeSky() ||
                 !gateway.hasMultiblock()) {
             this.currentUI = null;
@@ -142,7 +142,7 @@ public class GatewayUIRenderHandler implements ITickHandler {
         float alpha = Mth.clamp(1F - ((float) (distance / 2D)), 0F, 1F);
 
         node.getAllowedUsers().forEach((index, playerRef) -> {
-            BlockPos drawPos = TileCelestialGateway.getAllowedUserOffset(index).offset(node.getPos());
+            BlockPos drawPos = CelestialGatewayBlockEntity.getAllowedUserOffset(index).offset(node.getPos());
             Vector3 at = new Vector3(drawPos)
                     .add(0.5, 0.001, 0.5)
                     .subtract(RenderingVectorUtils.getStandardTranslationRemovalVector(pTicks));

@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.container.slot;
 
 import hellfirepvp.astralsorcery.common.item.base.IConstellationFocus;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -13,9 +13,9 @@ import javax.annotation.Nonnull;
 // Reference: 1.16.5 SlotConstellationFocus. The slot is backed by TileAltar#getFocusItem, not by handler slot 100.
 public class SlotConstellationFocus extends SlotItemHandler {
 
-    private final TileAltar altar;
+    private final AltarBlockEntity altar;
 
-    public SlotConstellationFocus(IItemHandler itemHandler, TileAltar altar, int xPosition, int yPosition) {
+    public SlotConstellationFocus(IItemHandler itemHandler, AltarBlockEntity altar, int xPosition, int yPosition) {
         super(itemHandler, 100, xPosition, yPosition);
         this.altar = altar;
     }

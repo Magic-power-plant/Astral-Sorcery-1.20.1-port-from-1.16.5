@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS;
 import hellfirepvp.astralsorcery.common.lib.LootAS;
-import hellfirepvp.astralsorcery.common.tile.TileCollectorCrystal;
+import hellfirepvp.astralsorcery.common.blockentity.CollectorCrystalBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -51,7 +51,7 @@ public class MarkerManagerAS {
         if (box.isInside(pos) && world.getBlockState(pos).getBlock() != BlocksAS.ROCK_COLLECTOR_CRYSTAL.get()) {
             world.setBlock(pos, BlocksAS.ROCK_COLLECTOR_CRYSTAL.get().defaultBlockState(), 3);
 
-            TileCollectorCrystal tcc = MiscUtils.getTileAt(world, pos, TileCollectorCrystal.class, true);
+            CollectorCrystalBlockEntity tcc = MiscUtils.getBlockEntityAt(world, pos, CollectorCrystalBlockEntity.class, true);
             if (tcc != null) {
                 IMajorConstellation cst = MiscUtils.getRandomEntry(ConstellationRegistry.getMajorConstellations(), rand);
                 tcc.setAttributes(CrystalPropertiesAS.WORLDGEN_SHRINE_COLLECTOR_ATTRIBUTES);

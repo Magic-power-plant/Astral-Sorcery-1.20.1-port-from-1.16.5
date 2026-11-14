@@ -1,8 +1,8 @@
 package hellfirepvp.astralsorcery.common.container;
 
-import hellfirepvp.astralsorcery.common.tile.TileObservatory;
-import hellfirepvp.astralsorcery.common.tile.altar.AltarType;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.ObservatoryBlockEntity;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.lib.MenuTypesAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
@@ -62,12 +62,12 @@ public class ContainerProviders {
         public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
             Level world = player.level();
             BlockEntity be = world.getBlockEntity(pos);
-            if (be instanceof TileAltar tileAltar) {
+            if (be instanceof AltarBlockEntity altarBlockEntity) {
                 return switch (altarType) {
-                    case DISCOVERY -> new ContainerAltarDiscovery(id, inv, tileAltar);
-                    case ATTUNEMENT -> new ContainerAltarAttunement(id, inv, tileAltar);
-                    case CONSTELLATION -> new ContainerAltarConstellation(id, inv, tileAltar);
-                    case RADIANCE -> new ContainerAltarTrait(id, inv, tileAltar);
+                    case DISCOVERY -> new ContainerAltarDiscovery(id, inv, altarBlockEntity);
+                    case ATTUNEMENT -> new ContainerAltarAttunement(id, inv, altarBlockEntity);
+                    case CONSTELLATION -> new ContainerAltarConstellation(id, inv, altarBlockEntity);
+                    case RADIANCE -> new ContainerAltarTrait(id, inv, altarBlockEntity);
                 };
             }
             return null;
@@ -100,8 +100,8 @@ public class ContainerProviders {
         public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
             Level world = player.level();
             BlockEntity be = world.getBlockEntity(pos);
-            if (be instanceof TileAltar tileAltar) {
-                return new ContainerAltarDiscovery(id, inv, tileAltar);
+            if (be instanceof AltarBlockEntity altarBlockEntity) {
+                return new ContainerAltarDiscovery(id, inv, altarBlockEntity);
             }
             return null;
         }
@@ -131,7 +131,7 @@ public class ContainerProviders {
 
         @Override
         public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
-            TileObservatory obs = MiscUtils.getTileAt(player.level(), pos, TileObservatory.class, true);
+            ObservatoryBlockEntity obs = MiscUtils.getBlockEntityAt(player.level(), pos, ObservatoryBlockEntity.class, true);
             return obs != null ? new ContainerObservatory(obs, id) : null;
         }
 

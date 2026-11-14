@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class MiscUtils {
 
     @Nullable
-    public static <T> T getTileAt(BlockGetter world, BlockPos pos, Class<T> tileClass, boolean forceChunkLoad) {
+    public static <T> T getBlockEntityAt(BlockGetter world, BlockPos pos, Class<T> blockEntityClass, boolean forceChunkLoad) {
         if (world == null || pos == null) return null;
         if (world instanceof Level) {
             if (!((Level) world).isLoaded(pos) && !forceChunkLoad) {
@@ -52,7 +52,7 @@ public class MiscUtils {
         }
         BlockEntity te = world.getBlockEntity(pos);
         if (te == null) return null;
-        if (tileClass.isInstance(te)) return (T) te;
+        if (blockEntityClass.isInstance(te)) return (T) te;
         return null;
     }
 

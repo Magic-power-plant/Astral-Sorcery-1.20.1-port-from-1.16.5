@@ -29,7 +29,7 @@ import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktAttunePlayerConstellation;
-import hellfirepvp.astralsorcery.common.tile.TileAttunementAltar;
+import hellfirepvp.astralsorcery.common.blockentity.AttunementAltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.sound.SoundHelper;
@@ -80,7 +80,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @Override
-    public boolean matches(TileAttunementAltar altar) {
+    public boolean matches(AttunementAltarBlockEntity altar) {
         if (!super.matches(altar)) {
             return false;
         }
@@ -89,7 +89,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @Override
-    public void startCrafting(TileAttunementAltar altar) {
+    public void startCrafting(AttunementAltarBlockEntity altar) {
         Player player = altar.getLevel().getPlayerByUUID(this.playerUUID);
         if (player != null && player.isAlive()) {
             Vector3 offset = new Vector3(altar).add(0.5F, 1.2F, 0.5F);
@@ -100,12 +100,12 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @Override
-    public void stopCrafting(TileAttunementAltar altar) {
+    public void stopCrafting(AttunementAltarBlockEntity altar) {
 
     }
 
     @Override
-    public void finishRecipe(TileAttunementAltar altar) {
+    public void finishRecipe(AttunementAltarBlockEntity altar) {
         Player player = altar.getLevel().getPlayerByUUID(this.playerUUID);
         if (player != null) {
             ResearchManager.setAttunedConstellation(player, this.constellation);
@@ -113,7 +113,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @Override
-    public void doTick(LogicalSide side, TileAttunementAltar altar) {
+    public void doTick(LogicalSide side, AttunementAltarBlockEntity altar) {
         if (side.isServer()) {
             Player player = altar.getLevel().getPlayerByUUID(this.playerUUID);
             if (player != null) {
@@ -136,7 +136,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void doEffectTick(TileAttunementAltar altar) {
+    private void doEffectTick(AttunementAltarBlockEntity altar) {
         IConstellation cst = altar.getActiveConstellation();
         if (cst == null) {
             return;
@@ -322,7 +322,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void doClientSetup(TileAttunementAltar altar) {
+    private void doClientSetup(AttunementAltarBlockEntity altar) {
         if (this.cameraHack == null &&
                 Minecraft.getInstance().player != null &&
                 Minecraft.getInstance().player.getUUID().equals(this.getPlayerUUID())) {
@@ -374,7 +374,7 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @OnlyIn(Dist.CLIENT)
-    private ICameraStopListener createAttunementListener(TileAttunementAltar altar) {
+    private ICameraStopListener createAttunementListener(AttunementAltarBlockEntity altar) {
         BlockPos at = altar.getBlockPos();
         return () -> {
             if (this.cameraHack != null) {
@@ -389,13 +389,13 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
     }
 
     @Override
-    public boolean isFinished(TileAttunementAltar altar) {
+    public boolean isFinished(AttunementAltarBlockEntity altar) {
         return this.getTick() >= DURATION_PLAYER_ATTUNEMENT;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void stopEffects(TileAttunementAltar altar) {
+    public void stopEffects(AttunementAltarBlockEntity altar) {
         if (this.cameraHack != null) {
             ClientCameraManager.INSTANCE.removeTransformer((ICameraTransformer) this.cameraHack);
         }

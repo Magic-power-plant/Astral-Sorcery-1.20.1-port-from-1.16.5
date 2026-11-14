@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.crafting.recipe;
 
 import hellfirepvp.astralsorcery.common.crafting.LiquidInfusion;
 import hellfirepvp.astralsorcery.common.crafting.helper.RecipeCraftingContext;
-import hellfirepvp.astralsorcery.common.tile.TileInfuser;
+import hellfirepvp.astralsorcery.common.blockentity.InfuserBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.IItemHandler;
@@ -29,17 +29,17 @@ import net.minecraftforge.items.IItemHandler;
 //recipe is the divergent top-level common/crafting/LiquidInfusion (TODO_PORT[AS-INF-04]).
 public class LiquidInfusionContext extends RecipeCraftingContext<LiquidInfusion, IItemHandler> {
 
-    private final TileInfuser infuser;
+    private final InfuserBlockEntity infuser;
     private final Player crafter;
     private final LogicalSide side;
 
-    public LiquidInfusionContext(TileInfuser infuser, Player crafter, LogicalSide side) {
+    public LiquidInfusionContext(InfuserBlockEntity infuser, Player crafter, LogicalSide side) {
         this.infuser = infuser;
         this.crafter = crafter;
         this.side = side;
     }
 
-    public TileInfuser getInfuser() {
+    public InfuserBlockEntity getInfuser() {
         return infuser;
     }
 

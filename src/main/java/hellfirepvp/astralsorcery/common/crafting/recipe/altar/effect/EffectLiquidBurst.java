@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,7 +33,7 @@ public class EffectLiquidBurst extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTick(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state) {
+    public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
         if (state == ActiveSimpleAltarRecipe.CraftingState.ACTIVE &&
                 getClientTick() % 10 == 0 &&
                 rand.nextBoolean()) {
@@ -80,9 +80,9 @@ public class EffectLiquidBurst extends AltarRecipeEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onTESR(TileAltar altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
+    public void onTESR(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state, PoseStack renderStack, MultiBufferSource buffer, float pTicks, int combinedLight) {}
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void onCraftingFinish(TileAltar altar, boolean isChaining) {}
+    public void onCraftingFinish(AltarBlockEntity altar, boolean isChaining) {}
 }

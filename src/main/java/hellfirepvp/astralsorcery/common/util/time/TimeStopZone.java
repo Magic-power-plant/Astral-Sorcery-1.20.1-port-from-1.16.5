@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.util.time;
 
-import hellfirepvp.astralsorcery.common.data.config.registry.TileAccelerationBlacklistRegistry;
+import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +34,7 @@ public class TimeStopZone {
 
     private boolean active = true;
 
-    private final List<BlockEntity> cachedTiles = new LinkedList<>();
+    private final List<BlockEntity> cachedBlockEntities = new LinkedList<>();
 
     TimeStopZone(EntityTargetController ctrl, float range, BlockPos offset, Level world, int tickLivespan) {
         this.targetController = ctrl;
@@ -60,9 +60,9 @@ public class TimeStopZone {
                     Map<BlockPos, BlockEntity> map = ch.getBlockEntities();
                     for (Map.Entry<BlockPos, BlockEntity> teEntry : map.entrySet()) {
                         BlockEntity te = teEntry.getValue();
-                        if (TileAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(te) &&
+                        if (BlockEntityAccelerationBlacklistRegistry.INSTANCE.canBeInfluenced(te) &&
                                 te.getBlockPos().distSqr(offset) <= range * range) {
-                            safeCacheTile(te);
+                            safeCacheBlockEntity(te);
                             te.setRemoved();
                         }
                     }
@@ -71,15 +71,15 @@ public class TimeStopZone {
         }
     }
 
-    private void safeCacheTile(BlockEntity te) {
+    private void safeCacheBlockEntity(BlockEntity te) {
         if (te == null) return;
 
-        for (BlockEntity tile : cachedTiles) {
-            if (tile.getBlockPos().equals(te.getBlockPos())) {
+        for (BlockEntity blockEntity : cachedBlockEntities) {
+            if (blockEntity.getBlockPos().equals(te.getBlockPos())) {
                 return;
             }
         }
-        cachedTiles.add(te);
+        cachedBlockEntities.add(te);
     }
 
     public void setTicksToLive(int ticksToLive) {
@@ -87,7 +87,7 @@ public class TimeStopZone {
     }
 
     void stopEffect() {
-        for (BlockEntity cached : cachedTiles) {
+        for (BlockEntity cached : cachedBlockEntities) {
             BlockState state = world.getBlockState(cached.getBlockPos());
             if (state.hasBlockEntity()) {
                 BlockEntity te = world.getBlockEntity(cached.getBlockPos());
@@ -96,7 +96,7 @@ public class TimeStopZone {
                 }
             }
         }
-        this.cachedTiles.clear();
+        this.cachedBlockEntities.clear();
         this.active = false;
     }
 

@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.common.block.base;
 
 import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
-import hellfirepvp.astralsorcery.common.constellation.ConstellationTile;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationBlockEntity;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeTile;
+import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,13 +28,13 @@ public abstract class BlockCrystalContainer extends BaseEntityBlock {
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         ItemStack stack = super.getCloneItemStack(state, target, world, pos, player);
         if (stack.getItem() instanceof CrystalAttributeItem) {
-            CrystalAttributeTile cat = MiscUtils.getTileAt(world, pos, CrystalAttributeTile.class, true);
+            CrystalAttributeBlockEntity cat = MiscUtils.getBlockEntityAt(world, pos, CrystalAttributeBlockEntity.class, true);
             if (cat != null) {
                 ((CrystalAttributeItem) stack.getItem()).setAttributes(stack, cat.getAttributes());
             }
         }
         if (stack.getItem() instanceof ConstellationItem) {
-            ConstellationTile ct = MiscUtils.getTileAt(world, pos, ConstellationTile.class, true);
+            ConstellationBlockEntity ct = MiscUtils.getBlockEntityAt(world, pos, ConstellationBlockEntity.class, true);
             if (ct != null) {
                 ((ConstellationItem) stack.getItem()).setAttunedConstellation(stack, ct.getAttunedConstellation());
                 ((ConstellationItem) stack.getItem()).setTraitConstellation(stack, ct.getTraitConstellation());
@@ -47,13 +47,13 @@ public abstract class BlockCrystalContainer extends BaseEntityBlock {
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         Item i = stack.getItem();
         if (i instanceof CrystalAttributeItem) {
-            CrystalAttributeTile cat = MiscUtils.getTileAt(world, pos, CrystalAttributeTile.class, true);
+            CrystalAttributeBlockEntity cat = MiscUtils.getBlockEntityAt(world, pos, CrystalAttributeBlockEntity.class, true);
             if (cat != null) {
                 cat.setAttributes(((CrystalAttributeItem) i).getAttributes(stack));
             }
         }
         if (i instanceof ConstellationItem) {
-            ConstellationTile ct = MiscUtils.getTileAt(world, pos, ConstellationTile.class, true);
+            ConstellationBlockEntity ct = MiscUtils.getBlockEntityAt(world, pos, ConstellationBlockEntity.class, true);
             if (ct != null) {
                 ct.setAttunedConstellation(((ConstellationItem) i).getAttunedConstellation(stack));
                 ct.setTraitConstellation(((ConstellationItem) i).getTraitConstellation(stack));

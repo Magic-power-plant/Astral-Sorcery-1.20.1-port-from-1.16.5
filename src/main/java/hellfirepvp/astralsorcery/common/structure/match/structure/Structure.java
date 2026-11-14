@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.structure.match.structure;
 
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
-import hellfirepvp.astralsorcery.common.structure.match.tile.MatchableTile;
+import hellfirepvp.astralsorcery.common.structure.match.blockentity.MatchableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,7 +19,7 @@ public interface Structure {
     Map<BlockPos, ? extends MatchableState> getContents();
 
     @Nonnull
-    Map<BlockPos, ? extends MatchableTile<? extends BlockEntity>> getTileEntities();
+    Map<BlockPos, ? extends MatchableBlockEntity<? extends BlockEntity>> getBlockEntities();
 
     Vec3i getMaximumOffset();
 
@@ -37,16 +37,16 @@ public interface Structure {
         return Objects.requireNonNullElse(getContents().get(offset), MatchableState.AIR);
     }
 
-    default boolean hasTileAt(BlockPos offset) {
-        return getTileEntities().containsKey(offset);
+    default boolean hasBlockEntityAt(BlockPos offset) {
+        return getBlockEntities().containsKey(offset);
     }
 
     @Nullable
-    default MatchableTile<? extends BlockEntity> getTileEntityAt(BlockPos offset) {
-        if (!hasTileAt(offset)) {
+    default MatchableBlockEntity<? extends BlockEntity> getBlockEntityAt(BlockPos offset) {
+        if (!hasBlockEntityAt(offset)) {
             return null;
         }
-        return getTileEntities().get(offset);
+        return getBlockEntities().get(offset);
     }
 
     default List<Map.Entry<BlockPos, ? extends MatchableState>> getStructureSlice(int yOffset) {

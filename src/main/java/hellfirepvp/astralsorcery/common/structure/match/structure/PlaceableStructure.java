@@ -1,7 +1,7 @@
 package hellfirepvp.astralsorcery.common.structure.match.structure;
 
 import hellfirepvp.astralsorcery.common.structure.match.block.MatchableState;
-import hellfirepvp.astralsorcery.common.structure.match.tile.MatchableTile;
+import hellfirepvp.astralsorcery.common.structure.match.blockentity.MatchableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.LevelAccessor;
@@ -43,10 +43,10 @@ public interface PlaceableStructure extends Structure {
             }
 
             BlockEntity placed = world.getBlockEntity(at);
-            if (placed != null && hasTileAt(entry.getKey())) {
-                MatchableTile tile = getTileEntityAt(entry.getKey());
-                if (tile != null) {
-                    tile.postPlacement(placed, world, entry.getKey());
+            if (placed != null && hasBlockEntityAt(entry.getKey())) {
+                MatchableBlockEntity blockEntity = getBlockEntityAt(entry.getKey());
+                if (blockEntity != null) {
+                    blockEntity.postPlacement(placed, world, entry.getKey());
                 }
             }
         }

@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.container.factory;
 
 import hellfirepvp.astralsorcery.common.container.ContainerAltarConstellation;
 import hellfirepvp.astralsorcery.common.lib.ContainerTypesAS;
-import hellfirepvp.astralsorcery.common.tile.altar.TileAltar;
+import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import net.minecraft.core.BlockPos;
@@ -30,9 +30,9 @@ import javax.annotation.Nonnull;
  */
 public class ContainerAltarConstellationProvider extends CustomContainerProvider<ContainerAltarConstellation> {
 
-    private final TileAltar ta;
+    private final AltarBlockEntity ta;
 
-    public ContainerAltarConstellationProvider(TileAltar ta) {
+    public ContainerAltarConstellationProvider(AltarBlockEntity ta) {
         super(ContainerTypesAS.ALTAR_CONSTELLATION.get());
         this.ta = ta;
     }
@@ -51,7 +51,7 @@ public class ContainerAltarConstellationProvider extends CustomContainerProvider
     private static ContainerAltarConstellation createFromPacket(int id, Inventory plInventory, FriendlyByteBuf data) {
         BlockPos at = ByteBufUtils.readPos(data);
         Player player = plInventory.player;
-        TileAltar ta = MiscUtils.getTileAt(player.level(), at, TileAltar.class, true);
+        AltarBlockEntity ta = MiscUtils.getBlockEntityAt(player.level(), at, AltarBlockEntity.class, true);
         return new ContainerAltarConstellation(id, plInventory, ta);
     }
 

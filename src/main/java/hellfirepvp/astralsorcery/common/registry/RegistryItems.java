@@ -8,8 +8,8 @@
 
 package hellfirepvp.astralsorcery.common.registry;
 
-import hellfirepvp.astralsorcery.common.block.tile.BlockCelestialCrystalCluster;
-import hellfirepvp.astralsorcery.common.block.tile.BlockGemCrystalCluster;
+import hellfirepvp.astralsorcery.common.block.BlockCelestialCrystalCluster;
+import hellfirepvp.astralsorcery.common.block.BlockGemCrystalCluster;
 import hellfirepvp.astralsorcery.common.item.ItemInfusedGlass;
 import hellfirepvp.astralsorcery.common.item.ItemKnowledgeShare;
 import hellfirepvp.astralsorcery.common.item.ItemResonator;
