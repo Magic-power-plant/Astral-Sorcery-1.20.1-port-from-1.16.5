@@ -21,6 +21,15 @@ public final class Effects {
                 "effect builder");
     }
 
+    /** Resolve immutable data using an explicitly selected backend; no global backend installation. */
+    @Nonnull
+    public static <T extends EffectHandle> EffectBuilder<? extends T> of(
+            @Nonnull EffectSpec spec, @Nonnull EffectSpecBackend<T> backend) {
+        Objects.requireNonNull(spec, "spec");
+        return Objects.requireNonNull(Objects.requireNonNull(backend, "backend").createEffectBuilder(spec),
+                "effect builder");
+    }
+
     public static <T extends EffectHandle> void refresh(@Nonnull T effect, @Nonnull EffectTemplate<T> template) {
         Objects.requireNonNull(effect, "effect");
         Objects.requireNonNull(template, "template");

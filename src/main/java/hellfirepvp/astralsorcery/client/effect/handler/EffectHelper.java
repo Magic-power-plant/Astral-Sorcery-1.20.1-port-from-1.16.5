@@ -19,7 +19,9 @@ import net.minecraft.core.Vec3i;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * This class is part of the Astral Sorcery Mod
@@ -50,8 +52,23 @@ public final class EffectHelper {
 
     public static class Builder<T extends EntityVisualFX> extends EffectProperties<T> implements EffectBuilder<T> {
 
+        private final Consumer<? super T> initializer;
+
         public Builder(BatchRenderContext<T> ctx) {
+            this(ctx, effect -> {});
+        }
+
+        public Builder(BatchRenderContext<T> ctx, Consumer<? super T> initializer) {
             super(ctx);
+            this.initializer = Objects.requireNonNull(initializer, "initializer");
+        }
+
+        /** Create and fully configure an unsubmitted particle; lifecycle activation belongs to the registrar. */
+        @Nonnull
+        public T createParticle(@Nonnull Vector3 spawnPos) {
+            T effect = this.getContext().makeParticle(Objects.requireNonNull(spawnPos, "spawnPos").clone());
+            initializer.accept(effect);
+            return effect;
         }
 
         @Override
@@ -78,7 +95,7 @@ public final class EffectHelper {
         @Nonnull
         public T spawn(@Nonnull Vector3 spawnPos) {
             this.setPosition(spawnPos.toBlockPos());
-            return EffectRegistrar.registerFX(this.getContext().makeParticle(spawnPos), this);
+            return EffectRegistrar.registerFX(this.createParticle(spawnPos), this);
         }
 
     }

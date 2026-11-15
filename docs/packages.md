@@ -383,7 +383,7 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.data.world.cache`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/package-info.java) | 世界缓存域、缓存管理与异步 IO 调度。 |
 | [`common.data.world.cache.base`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/base/package-info.java) | 全局及分区世界数据的基类和区段描述。 |
 | [`common.effect.mob`](../src/main/java/hellfirepvp/astralsorcery/common/effect/mob/package-info.java) | 实体状态效果、事件行为与图标名称；绘制由客户端扩展负责。 |
-| [`common.effect.visual`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/package-info.java) | 无客户端依赖的视觉门面、创建与生命周期能力契约。 |
+| [`common.effect.visual`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/package-info.java) | 无客户端依赖的 EffectSpec 数据描述、视觉门面、创建与生命周期能力契约。 |
 | [`common.enchantment`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/package-info.java) | 夜视、灼热及玩家 tick 附魔实现。 |
 | [`common.enchantment.amulet`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/amulet/package-info.java) | 附魔护符的附魔选择、随机化与玩家效果管理。 |
 | [`common.enchantment.dynamic`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/dynamic/package-info.java) | 运行时动态附魔类型与计算辅助。 |

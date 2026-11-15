@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.client.effect.source;
-import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
-import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.client.effect.ClientEffectSpecs;
 import hellfirepvp.astralsorcery.common.data.config.registry.BlockEntityAccelerationBlacklistRegistry;
 import hellfirepvp.astralsorcery.common.effect.visual.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectSpec;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectTemplateIds;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
@@ -25,6 +25,8 @@ import hellfirepvp.astralsorcery.common.util.time.TimeStopZone;
 
 public final class TimeStopEffects {
     private static final Random rand = new Random();
+    private static final EffectSpec PARTICLE = EffectSpec.builder(EffectTemplateIds.GENERIC_PARTICLE)
+            .alphaMode(EffectSpec.AlphaMode.FADE_OUT).color(0xFFFFFF).build();
 
     @OnlyIn(Dist.CLIENT)
     public static void playEntityParticles(LivingEntity e) {
@@ -42,12 +44,9 @@ public final class TimeStopEffects {
 
     @OnlyIn(Dist.CLIENT)
     static void playParticles(double x, double y, double z) {
-        Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
-                .spawn(new Vector3(x, y, z))
-                .alpha(VFXAlphaFunction.FADE_OUT)
-                .color(VFXColorFunction.WHITE)
-                .setScaleMultiplier(0.3F + rand.nextFloat() * 0.5F)
-                .setMaxAge(40 + rand.nextInt(20));
+        EffectSpec spec = PARTICLE.toBuilder().scale(0.3F + rand.nextFloat() * 0.5F)
+                .maxAge(40 + rand.nextInt(20)).build();
+        Effects.of(spec, ClientEffectSpecs.REGISTRY).spawn(new Vector3(x, y, z));
     }
 
     @OnlyIn(Dist.CLIENT)

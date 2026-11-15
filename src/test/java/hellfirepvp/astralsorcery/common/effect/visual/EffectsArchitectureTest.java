@@ -17,7 +17,10 @@ class EffectsArchitectureTest {
 
     private static final String API = "hellfirepvp.astralsorcery.common.effect.visual.";
     private static final List<String> TYPES = List.of(
-            "Effects", "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource");
+            "Effects", "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource",
+            "EffectSpec", "EffectSpec$Properties", "EffectSpec$Vector", "EffectSpec$Beam",
+            "EffectSpec$AlphaMode", "EffectSpec$ScaleMode", "EffectSpec$Builder",
+            "EffectSpecCodecs", "EffectSpecBackend", "EffectTemplateIds");
 
     @Test
     void commonFacadeLoadsAndResolvesItsSignaturesWithClientClassesDenied() throws Exception {
@@ -33,7 +36,7 @@ class EffectsArchitectureTest {
                     attemptedClientLoads.add(name);
                     throw new ClassNotFoundException("Client classes denied: " + name);
                 }
-                if (TYPES.stream().anyMatch(type -> name.equals(API + type))) {
+                if (name.startsWith(API)) {
                     Class<?> loaded = findLoadedClass(name);
                     if (loaded == null) loaded = findClass(name);
                     if (resolve) resolveClass(loaded);
@@ -46,6 +49,8 @@ class EffectsArchitectureTest {
                 Class<?> type = Class.forName(API + name, true, loader);
                 assertSame(loader, type.getClassLoader());
                 type.getGenericInterfaces();
+                for (var field : type.getDeclaredFields()) field.getGenericType();
+                for (var constructor : type.getDeclaredConstructors()) constructor.getGenericParameterTypes();
                 for (var method : type.getDeclaredMethods()) {
                     method.getGenericParameterTypes();
                     method.getGenericReturnType();
@@ -54,6 +59,29 @@ class EffectsArchitectureTest {
                 assertNoClientSymbols(type);
             }
             assertTrue(attemptedClientLoads.isEmpty(), attemptedClientLoads.toString());
+        }
+    }
+
+    @Test
+    void nestedDataCanInitializeBeforeTheOuterSpec() throws Exception {
+        var location = Effects.class.getProtectionDomain().getCodeSource().getLocation();
+        for (String entry : List.of("EffectSpec$Properties", "EffectSpec$Vector", "EffectSpec$Beam",
+                "EffectSpec$AlphaMode", "EffectSpec$ScaleMode")) {
+            try (URLClassLoader loader = new URLClassLoader(new java.net.URL[]{location}, Effects.class.getClassLoader()) {
+                @Override
+                protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                    if (name.startsWith(API)) {
+                        Class<?> loaded = findLoadedClass(name);
+                        if (loaded == null) loaded = findClass(name);
+                        if (resolve) resolveClass(loaded);
+                        return loaded;
+                    }
+                    return super.loadClass(name, resolve);
+                }
+            }) {
+                assertNotNull(Class.forName(API + entry, true, loader).getField("CODEC").get(null));
+                assertNotNull(Class.forName(API + "EffectSpec", true, loader).getField("CODEC").get(null));
+            }
         }
     }
 

@@ -9,12 +9,12 @@
 package hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
-import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
-import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
+import hellfirepvp.astralsorcery.client.effect.ClientEffectSpecs;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.effect.visual.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectSpec;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectTemplateIds;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,6 +29,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public class EffectAltarDefaultSparkle extends AltarRecipeEffect {
 
+    private static final EffectSpec SPARKLE = EffectSpec.builder(EffectTemplateIds.GENERIC_PARTICLE)
+            .alphaMode(EffectSpec.AlphaMode.FADE_OUT).color(0xFFFFFF).build();
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public void onTick(AltarBlockEntity altar, ActiveSimpleAltarRecipe.CraftingState state) {
@@ -38,11 +41,8 @@ public class EffectAltarDefaultSparkle extends AltarRecipeEffect {
 
         for (int i = 0; i < 1; i++) {
             Vector3 at = altarPos.clone().add(-scale + rand.nextFloat() * edgeScale, 0.02, -scale + rand.nextFloat() * edgeScale);
-            Effects.of(EffectTemplatesAS.GENERIC_PARTICLE)
-                    .spawn(at)
-                    .alpha(VFXAlphaFunction.FADE_OUT)
-                    .color(VFXColorFunction.WHITE)
-                    .setScaleMultiplier(0.1F + rand.nextFloat() * 0.2F);
+            Effects.of(SPARKLE.toBuilder().scale(0.1F + rand.nextFloat() * 0.2F).build(),
+                    ClientEffectSpecs.REGISTRY).spawn(at);
         }
     }
 

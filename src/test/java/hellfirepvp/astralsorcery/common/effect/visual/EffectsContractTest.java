@@ -101,6 +101,29 @@ class EffectsContractTest {
         }));
     }
 
+    @Test
+    void dataDescriptionsUseExplicitBackendsAndRetainSpawnOptions() {
+        RecordingTemplate template = new RecordingTemplate();
+        EffectSpec spec = EffectSpec.builder(EffectTemplateIds.GENERIC_PARTICLE).maxAge(75).build();
+        EffectSpecBackend<RecordingEffect> backend = received -> {
+            assertSame(spec, received);
+            return template.createEffectBuilder();
+        };
+        UUID owner = UUID.randomUUID();
+        RecordingEffect effect = Effects.of(spec, backend).setOwner(owner).setIgnoreLimit(true)
+                .spawn(new Vector3(2, 3, 4));
+        assertSame(effect, template.spawned);
+        assertEquals(owner, template.builder.owner);
+        assertTrue(template.builder.ignoreLimit);
+        assertTrue(effect.isRemoved());
+        assertThrows(NullPointerException.class, () -> Effects.of(null, backend));
+        assertThrows(NullPointerException.class, () -> Effects.of(spec, null));
+        assertThrows(NullPointerException.class, () -> Effects.of(spec, ignored -> null));
+        IllegalArgumentException failure = new IllegalArgumentException("unknown template");
+        assertSame(failure, assertThrows(IllegalArgumentException.class,
+                () -> Effects.of(spec, ignored -> { throw failure; })));
+    }
+
     // A separate backend proves the facade has no dependency on the game's renderer or singleton.
     private abstract static class RecordingHandle implements EffectHandle {
         boolean removed = true;
