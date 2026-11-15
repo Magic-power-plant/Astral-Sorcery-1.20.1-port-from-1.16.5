@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class EffectsArchitectureTest {
 
     private static final String API = "hellfirepvp.astralsorcery.common.effect.visual.";
+    private static final String SPEC = "hellfirepvp.astralsorcery.common.effect.visual.spec.";
     private static final List<String> TYPES = List.of(
-            "Effects", "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource",
+            "Effects", "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource");
+    private static final List<String> SPEC_TYPES = List.of(
             "EffectSpec", "EffectSpec$Properties", "EffectSpec$Vector", "EffectSpec$Beam",
             "EffectSpec$AlphaMode", "EffectSpec$ScaleMode", "EffectSpec$Builder",
             "EffectSpecCodecs", "EffectSpecBackend", "EffectTemplateIds");
@@ -36,7 +38,7 @@ class EffectsArchitectureTest {
                     attemptedClientLoads.add(name);
                     throw new ClassNotFoundException("Client classes denied: " + name);
                 }
-                if (name.startsWith(API)) {
+                if (name.startsWith(API) || name.startsWith(SPEC)) {
                     Class<?> loaded = findLoadedClass(name);
                     if (loaded == null) loaded = findClass(name);
                     if (resolve) resolveClass(loaded);
@@ -58,6 +60,17 @@ class EffectsArchitectureTest {
                 for (var parameter : type.getTypeParameters()) parameter.getBounds();
                 assertNoClientSymbols(type);
             }
+            for (String name : SPEC_TYPES) {
+                Class<?> type = Class.forName(SPEC + name, true, loader);
+                assertSame(loader, type.getClassLoader());
+                type.getGenericInterfaces();
+                for (var field : type.getDeclaredFields()) field.getGenericType();
+                for (var method : type.getDeclaredMethods()) {
+                    method.getGenericParameterTypes();
+                    method.getGenericReturnType();
+                }
+                assertNoClientSymbols(type);
+            }
             assertTrue(attemptedClientLoads.isEmpty(), attemptedClientLoads.toString());
         }
     }
@@ -70,7 +83,7 @@ class EffectsArchitectureTest {
             try (URLClassLoader loader = new URLClassLoader(new java.net.URL[]{location}, Effects.class.getClassLoader()) {
                 @Override
                 protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-                    if (name.startsWith(API)) {
+                    if (name.startsWith(API) || name.startsWith(SPEC)) {
                         Class<?> loaded = findLoadedClass(name);
                         if (loaded == null) loaded = findClass(name);
                         if (resolve) resolveClass(loaded);
@@ -79,8 +92,8 @@ class EffectsArchitectureTest {
                     return super.loadClass(name, resolve);
                 }
             }) {
-                assertNotNull(Class.forName(API + entry, true, loader).getField("CODEC").get(null));
-                assertNotNull(Class.forName(API + "EffectSpec", true, loader).getField("CODEC").get(null));
+                assertNotNull(Class.forName(SPEC + entry, true, loader).getField("CODEC").get(null));
+                assertNotNull(Class.forName(SPEC + "EffectSpec", true, loader).getField("CODEC").get(null));
             }
         }
     }

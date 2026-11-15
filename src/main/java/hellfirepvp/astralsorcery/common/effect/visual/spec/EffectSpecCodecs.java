@@ -1,4 +1,4 @@
-package hellfirepvp.astralsorcery.common.effect.visual;
+package hellfirepvp.astralsorcery.common.effect.visual.spec;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;

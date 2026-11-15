@@ -1,4 +1,4 @@
-package hellfirepvp.astralsorcery.common.effect.visual;
+package hellfirepvp.astralsorcery.common.effect.visual.spec;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

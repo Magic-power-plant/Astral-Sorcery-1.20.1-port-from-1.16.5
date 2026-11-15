@@ -16,14 +16,14 @@ import net.minecraft.util.Tuple;
 
 import java.util.*;
 
-public class DataLightConnections extends AbstractData {
+public class LightConnectionsData extends AbstractData {
 
     private final Map<ResourceKey<Level>, Map<BlockPos, Set<BlockPos>>> serverPosBuffer = new HashMap<>();
 
     private final Map<ResourceKey<Level>, LinkedList<Tuple<LightConnection, Boolean>>> serverChangeBuffer = new HashMap<>();
     private final Set<ResourceKey<Level>> dimensionClearBuffer = new HashSet<>();
 
-    private DataLightConnections(ResourceLocation key) {
+    private LightConnectionsData(ResourceLocation key) {
         super(key);
     }
 
@@ -137,15 +137,15 @@ public class DataLightConnections extends AbstractData {
         this.serverChangeBuffer.clear();
     }
 
-    public static class Provider extends AbstractDataProvider<DataLightConnections, ClientLightConnections> {
+    public static class Provider extends AbstractDataProvider<LightConnectionsData, ClientLightConnections> {
 
         public Provider(ResourceLocation key) {
             super(key);
         }
 
         @Override
-        public DataLightConnections provideServerData() {
-            return new DataLightConnections(getKey());
+        public LightConnectionsData provideServerData() {
+            return new LightConnectionsData(getKey());
         }
 
         @Override

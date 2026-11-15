@@ -3,8 +3,8 @@ package hellfirepvp.astralsorcery.client.effect;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXLightbeam;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
-import hellfirepvp.astralsorcery.common.effect.visual.EffectSpec;
-import hellfirepvp.astralsorcery.common.effect.visual.EffectTemplateIds;
+import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpec;
+import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectTemplateIds;
 
 /** Client-only built-in bindings. Constructing the registry does not dereference render assets. */
 public final class ClientEffectSpecs {

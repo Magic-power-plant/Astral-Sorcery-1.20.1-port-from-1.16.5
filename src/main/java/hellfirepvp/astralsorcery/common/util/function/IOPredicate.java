@@ -1,7 +1,5 @@
 package hellfirepvp.astralsorcery.common.util.function;
 
-import hellfirepvp.astralsorcery.common.util.collection.AlternatingSet;
-
 import java.io.IOException;
 
 /**
@@ -11,7 +9,7 @@ import java.io.IOException;
  * Created by HellFirePvP
  * Date: 22.08.2019 / 19:35
  *
- * Embedded from ObserverLib (hellfirepvp.observerlib.common.util.IOPredicate); required by {@link AlternatingSet#forEach}.
+ * Embedded from ObserverLib (hellfirepvp.observerlib.common.util.IOPredicate); consumed by AlternatingSet.
  */
 public interface IOPredicate<T> {
 

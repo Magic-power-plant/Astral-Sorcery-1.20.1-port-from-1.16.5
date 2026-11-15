@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.crystal.CrystalCalculations;
 import hellfirepvp.astralsorcery.common.block.base.BlockStarlightRecipient;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.data.sync.server.DataLightBlockEndpoints;
-import hellfirepvp.astralsorcery.common.data.sync.server.DataLightConnections;
+import hellfirepvp.astralsorcery.common.data.sync.server.LightConnectionsData;
 import hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource;
 import hellfirepvp.astralsorcery.common.starlight.WorldNetworkHandler;
 import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode;
@@ -42,7 +42,7 @@ public class TransmissionChain {
     public static void buildNetworkChain(Level world, TransmissionWorldHandler handle, IIndependentStarlightSource source, WorldNetworkHandler netHandler, BlockPos sourcePos) {
         TransmissionChain chain = buildFromSource(netHandler, sourcePos);
         handle.updateNetworkChainData(world, chain, source, netHandler, sourcePos);
-        SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_CONNECTIONS, DataLightConnections.class, data -> {
+        SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_CONNECTIONS, LightConnectionsData.class, data -> {
             data.updateNewConnectionsThreaded(netHandler.getWorld().dimension(), chain.getFoundConnections());
         });
         SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_BLOCK_ENDPOINTS, DataLightBlockEndpoints.class, data -> {

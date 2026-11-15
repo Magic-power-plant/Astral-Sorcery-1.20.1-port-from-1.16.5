@@ -1,5 +1,9 @@
 package hellfirepvp.astralsorcery.common.effect.visual;
 
+import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpec;
+import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpecBackend;
+import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectTemplateIds;
+
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;
 import org.junit.jupiter.api.Test;

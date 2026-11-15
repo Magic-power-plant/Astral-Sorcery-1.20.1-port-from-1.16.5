@@ -5,8 +5,8 @@
 
 ## 覆盖范围与统计口径
 
-截至 2026-11-15，`src/main/java` 下有 **271 个实际声明包**、1,377 个业务 Java 源文件，
-每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 55、公共实现 210、Mixin 2。
+截至 2026-11-15，`src/main/java` 下有 **272 个实际声明包**、1,393 个业务 Java 源文件，
+每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 55、公共实现 211、Mixin 2。
 
 - 根命名空间为 `hellfirepvp.astralsorcery`；以源文件的 package 声明为准，并核对目录路径。
 - 只给直接包含 Java 类型的生产源码包编写包文档。仅组织子目录而没有直接类型的目录不创建空包。
@@ -227,7 +227,7 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 - 客户端颜色查询、循环音效、向量顶点提交、客户端 reach 钩子、天击与时间冻结粒子迁入 client；公共侧只保留数值/状态逻辑以及现有侧代理入口。RegistryBlockRenderTypes 仅由客户端装配。
 - 伴随实体的 full 快照不消费 diff；按拥有者发送的差量替换过时实体，退出、删除和关闭效果会清理渲染监听。注册 ID、effectClass 枚举名称、NBT 键与同步通道 ID 均保持不变。旧加速黑名单的完整类名与类名前缀通过显式映射继续识别，序列化保留用户原始配置。内部 Java 包路径发生变化，附属源码应更新 import。
 - RegistryBlockEntityTypes 迁至 client.registry；类型声明仍归 common.lib.BlockEntityTypesAS，15 个渲染绑定只从 ClientProxy 的 mod-bus 事件安装。
-- common.effect 拆成 mob 与 visual，各有独立包文档。mob 保留玩法状态效果；visual 保留无客户端依赖的门面与能力。状态图标绘制迁至 client.effect.MobEffectIconRenderer，仅保留 Forge initializeClient 桥；详见 [效果边界](effects-facade.md)。
+- common.effect 拆成 mob 与 visual，各有独立包文档；visual.spec 单独拥有 EffectSpec、模板标识、编解码和后端能力。mob 保留玩法状态效果；visual 保留无客户端依赖的门面与能力。状态图标绘制迁至 client.effect.MobEffectIconRenderer，仅保留 Forge initializeClient 桥；详见 [效果边界](effects-facade.md)。
 - 删除无生产引用的 common.crafting.recipe.infusion.ActiveLiquidInfusionRecipe 及孤立包文档，保留 InfuserBlockEntity 使用的 common.crafting.ActiveLiquidInfusionRecipe，不变更 NBT 或配方行为。
 - 此次未扩展到整个 common 的渲染迁移；物品渲染能力、祭坛配方视觉效果及部分设备的历史客户端方法仍沿已有调用边界运行。
 
@@ -302,7 +302,7 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`client.util.sound`](../src/main/java/hellfirepvp/astralsorcery/client/util/sound/package-info.java) | 本地播放、淡入淡出及定位循环音效。 |
 | [`client.util.word`](../src/main/java/hellfirepvp/astralsorcery/client/util/word/package-info.java) | 中英文随机词语和名称生成。 |
 
-### 公共实现（208）
+### 公共实现（211）
 
 | 包 | 职责 |
 | --- | --- |
@@ -405,7 +405,8 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.data.world.cache`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/package-info.java) | 世界缓存域、缓存管理与异步 IO 调度。 |
 | [`common.data.world.cache.base`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/base/package-info.java) | 全局及分区世界数据的基类和区段描述。 |
 | [`common.effect.mob`](../src/main/java/hellfirepvp/astralsorcery/common/effect/mob/package-info.java) | 实体状态效果、事件行为与图标名称；绘制由客户端扩展负责。 |
-| [`common.effect.visual`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/package-info.java) | 无客户端依赖的 EffectSpec 数据描述、视觉门面、创建与生命周期能力契约。 |
+| [`common.effect.visual`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/package-info.java) | 无客户端依赖的视觉门面、创建与生命周期能力契约。 |
+| [`common.effect.visual.spec`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/spec/package-info.java) | EffectSpec 不可变数据描述、模板标识、编解码和后端能力契约。 |
 | [`common.enchantment`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/package-info.java) | 夜视、灼热及玩家 tick 附魔实现。 |
 | [`common.enchantment.amulet`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/amulet/package-info.java) | 附魔护符的附魔选择、随机化与玩家效果管理。 |
 | [`common.enchantment.dynamic`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/dynamic/package-info.java) | 运行时动态附魔类型与计算辅助。 |

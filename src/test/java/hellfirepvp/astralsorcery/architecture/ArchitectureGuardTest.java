@@ -9,6 +9,7 @@ import javax.lang.model.element.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,53 @@ class ArchitectureGuardTest {
     static void parseProductionSources() throws Exception {
         sources = JavaSourceTree.production();
         assertFalse(sources.isEmpty(), "Production scan must not pass vacuously");
+    }
+
+    @Test
+    void packageIndexCountsMatchTheProductionTree() throws Exception {
+        Map<Path, List<JavaSourceTree.Source>> packages = new LinkedHashMap<>();
+        for (var source : sources) packages.computeIfAbsent(source.path().getParent(), ignored -> new ArrayList<>()).add(source);
+        long businessFiles = sources.stream().filter(source ->
+                !source.path().getFileName().toString().equals("package-info.java") && !source.types().isEmpty()).count();
+        String documentation = Files.readString(Path.of("docs/packages.md"));
+        var counts = Pattern.compile("有 \\*\\*(\\d+) 个实际声明包\\*\\*、([\\d,]+) 个业务 Java 源文件").matcher(documentation);
+        assertTrue(counts.find(), "packages.md must publish package and source-file counts");
+        assertEquals(packages.size(), Integer.parseInt(counts.group(1)), "packages.md package count is stale");
+        assertEquals(businessFiles, Long.parseLong(counts.group(2).replace(",", "")),
+                "packages.md business Java source count is stale");
+    }
+
+    @Test
+    void packageIndexSectionCountsMatchTheDeclaredPackages() throws Exception {
+        Map<String, Integer> expected = new LinkedHashMap<>();
+        expected.put("入口与扩展 API", 0);
+        expected.put("客户端", 0);
+        expected.put("公共实现", 0);
+        expected.put("Mixin", 0);
+        Set<String> seenPackages = new HashSet<>();
+        for (var source : sources) {
+            if (source.path().getFileName().toString().equals("package-info.java") || source.types().isEmpty()) continue;
+            String pkg = source.tree().getPackageName().toString();
+            if (!seenPackages.add(pkg)) continue;
+            String section = pkg.equals(ROOT) || pkg.equals(ROOT + ".api") || pkg.startsWith(ROOT + ".api.") ? "入口与扩展 API"
+                    : pkg.equals(ROOT + ".client") || pkg.startsWith(ROOT + ".client.") ? "客户端"
+                    : pkg.equals(ROOT + ".common") || pkg.startsWith(ROOT + ".common.") ? "公共实现"
+                    : pkg.equals(ROOT + ".mixin") || pkg.startsWith(ROOT + ".mixin.") ? "Mixin" : null;
+            assertNotNull(section, "Uncategorized package: " + pkg);
+            expected.compute(section, (ignored, count) -> count + 1);
+        }
+        String documentation = Files.readString(Path.of("docs/packages.md"));
+        for (var entry : expected.entrySet()) {
+            var section = Pattern.compile("(?m)^### " + Pattern.quote(entry.getKey()) + "（(\\d+)）$")
+                    .matcher(documentation);
+            assertTrue(section.find(), "Missing package-index section: " + entry.getKey());
+            int start = section.end();
+            var next = Pattern.compile("(?m)^### ").matcher(documentation);
+            int end = next.find(start) ? next.start() : documentation.length();
+            int rows = (int) Pattern.compile("(?m)^\\| \\[`").matcher(documentation.substring(start, end)).results().count();
+            assertEquals(entry.getValue(), Integer.parseInt(section.group(1)), entry.getKey() + " heading count is stale");
+            assertEquals(entry.getValue(), rows, entry.getKey() + " package-index rows are stale");
+        }
     }
 
     @Test
@@ -65,6 +113,16 @@ class ArchitectureGuardTest {
                 Path target = JavaSourceTree.ROOT.resolve(matcher.group(1).replace('.', '/') + ".java");
                 assertTrue(Files.isRegularFile(target), source.path() + " has a stale @see: " + matcher.group(1));
             }
+        }
+    }
+
+    @Test
+    void utilityPackageDependenciesRemainAcyclic() {
+        String functionPackage = ROOT + ".common.util.function";
+        for (var source : sources) {
+            if (!source.tree().getPackageName().toString().equals(functionPackage)) continue;
+            assertFalse(source.text().contains("hellfirepvp.astralsorcery.common.util.collection"),
+                    "util.function must not depend on util.collection: " + source.path());
         }
     }
 

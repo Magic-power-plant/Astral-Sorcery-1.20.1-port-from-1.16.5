@@ -138,7 +138,7 @@ public class SyncDataHolder implements ITickHandler {
     }
 
     public static void initialize() {
-        register(new DataLightConnections.Provider(DATA_LIGHT_CONNECTIONS));
+        register(new LightConnectionsData.Provider(DATA_LIGHT_CONNECTIONS));
         register(new DataLightBlockEndpoints.Provider(DATA_LIGHT_BLOCK_ENDPOINTS));
         register(new DataTimeFreezeEffects.Provider(DATA_TIME_FREEZE_EFFECTS));
         register(new DataTimeFreezeEntities.Provider(DATA_TIME_FREEZE_ENTITIES));

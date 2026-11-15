@@ -17,7 +17,7 @@ import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissio
 import hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.data.sync.server.DataLightBlockEndpoints;
-import hellfirepvp.astralsorcery.common.data.sync.server.DataLightConnections;
+import hellfirepvp.astralsorcery.common.data.sync.server.LightConnectionsData;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -198,7 +198,7 @@ public class TransmissionWorldHandler {
                     }
                 }
             }
-            SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_CONNECTIONS, DataLightConnections.class, data -> {
+            SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_CONNECTIONS, LightConnectionsData.class, data -> {
                 data.removeOldConnectionsThreaded(dim, knownChain.getFoundConnections());
             });
             SyncDataHolder.executeServer(SyncDataHolder.DATA_LIGHT_BLOCK_ENDPOINTS, DataLightBlockEndpoints.class, data -> {

@@ -1,4 +1,7 @@
-package hellfirepvp.astralsorcery.common.effect.visual;
+package hellfirepvp.astralsorcery.common.effect.visual.spec;
+
+import hellfirepvp.astralsorcery.common.effect.visual.EffectBuilder;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectHandle;
 
 /** Resolves a data description to a fresh spawn builder; implementations own rendering and validation. */
 @FunctionalInterface
