@@ -69,6 +69,27 @@ class ExtensionRegistryContractTest {
         } finally { executor.shutdownNow(); }
     }
 
+    @Test void reservedExtensionIdsNeverInvokeFactoriesButBuiltinIdsRemainSupported() {
+        for (String namespace : List.of("minecraft", "astralsorcery")) {
+            ResourceLocation reserved = ResourceLocation.fromNamespaceAndPath(namespace, "entry");
+            assertThrows(IllegalArgumentException.class, () -> registry.registerExtensionFactory(
+                    reserved, () -> { fail("Reserved factory ran"); return "invalid"; }));
+            assertNull(registry.get(reserved));
+            registry.register(reserved, "builtin");
+            assertEquals("builtin", registry.get(reserved));
+        }
+    }
+
+    @Test void extensionFactoriesRemainAtomicRetryableAndFrozen() {
+        assertThrows(NullPointerException.class, () -> registry.registerExtensionFactory(key, () -> null));
+        assertTrue(registry.keys().isEmpty());
+        registry.registerExtension(key, "valid");
+        assertThrows(IllegalArgumentException.class, () -> registry.registerExtension(key, "duplicate"));
+        registry.freeze();
+        assertThrows(IllegalStateException.class, () -> registry.registerExtension(key, "late"));
+        assertEquals("valid", registry.get(key));
+    }
+
     @Test void reentrantFactoryCannotOverwriteAnEntry() {
         assertThrows(IllegalArgumentException.class, () -> registry.registerFactory(key, () -> {
             registry.register(key, "nested"); return "outer";

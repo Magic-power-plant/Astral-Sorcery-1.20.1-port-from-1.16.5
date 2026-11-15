@@ -17,6 +17,12 @@ public final class SyncDataRegistry {
         REGISTRY.registerFactory(key, () -> new RegisteredSyncData<>(key, provider));
     }
 
+    static void registerExtension(SyncDataProvider<?, ?> provider) {
+        Objects.requireNonNull(provider, "provider");
+        ResourceLocation key = Objects.requireNonNull(provider.getKey(), "provider key");
+        REGISTRY.registerExtensionFactory(key, () -> new RegisteredSyncData<>(key, provider));
+    }
+
     public static Collection<ResourceLocation> getKnownKeys() {
         return REGISTRY.keys();
     }

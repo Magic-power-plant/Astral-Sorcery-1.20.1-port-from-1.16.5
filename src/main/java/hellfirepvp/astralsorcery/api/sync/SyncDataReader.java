@@ -2,7 +2,10 @@ package hellfirepvp.astralsorcery.api.sync;
 
 import net.minecraft.nbt.CompoundTag;
 
-/** Stateless decoder called on the receiving client's game thread. */
+/**
+ * Stateless decoder called on the receiving client's game thread. Input is read-only; copy retained tags.
+ * Implementers validate payload schemas and bounds. Java API version checks do not negotiate payloads.
+ */
 public interface SyncDataReader<C> {
     /** Replace prior state. Treat input as read-only and copy retained data. */
     void readFromIncomingFullSync(C data, CompoundTag compound);

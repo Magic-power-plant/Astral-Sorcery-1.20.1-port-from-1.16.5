@@ -54,6 +54,11 @@ public class SyncDataHolder implements ITickHandler {
         synchronized (lock) { SyncDataRegistry.register(provider); }
     }
 
+    /** Internal bridge used by the namespaced extension registration event. */
+    public static void registerExtension(SyncDataProvider<?, ?> provider) {
+        synchronized (lock) { SyncDataRegistry.registerExtension(provider); }
+    }
+
     public static <T extends AbstractData> void executeServer(ResourceLocation key, Class<T> typeHint, Consumer<T> function) {
         computeServer(key, typeHint, data -> { function.accept(data); return null; });
     }

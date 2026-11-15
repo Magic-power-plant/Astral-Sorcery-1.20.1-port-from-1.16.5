@@ -96,17 +96,81 @@ class SyncDataRegistrationTest {
         assertThrows(UnsupportedOperationException.class, () -> SyncDataRegistry.getKnownKeys().clear());
     }
 
+    @Test void successfulRegistrationConstructsEachProductExactlyOnce() {
+        Provider provider = new Provider(key);
+        event.registerSyncData(provider);
+        SyncDataHolder.computeServer(key, ServerState.class, state -> state.value);
+        SyncDataHolder.computeClient(key, ClientState.class, state -> state.value);
+        SyncDataHolder.getReader(key);
+        SyncDataHolder.getReader(key);
+        assertEquals(1, provider.serverFactoryCalls);
+        assertEquals(1, provider.clientFactoryCalls);
+        assertEquals(1, provider.readerFactoryCalls);
+    }
+
+    @Test void nullServerAndClientProductsNeverPublishAndTheSameIdCanBeRetried() {
+        Provider nullServer = new Provider(key);
+        nullServer.server = null;
+        assertThrows(NullPointerException.class, () -> event.registerSyncData(nullServer));
+        assertNull(SyncDataRegistry.getProvider(key));
+        assertEquals(0, nullServer.clientFactoryCalls);
+        Provider nullClient = new Provider(key);
+        nullClient.nullClient = true;
+        assertThrows(NullPointerException.class, () -> event.registerSyncData(nullClient));
+        assertNull(SyncDataRegistry.getProvider(key));
+        assertEquals(0, nullClient.readerFactoryCalls);
+        event.registerSyncData(new Provider(key));
+        assertNotNull(SyncDataRegistry.getProvider(key));
+    }
+
+    @Test void unknownChannelsNeverInvokeCallbacksAndWrongTypesFailBeforeCallbacks() {
+        assertTrue(SyncDataHolder.computeServer(key, ServerState.class, state -> fail()).isEmpty());
+        assertTrue(SyncDataHolder.computeClient(key, ClientState.class, state -> fail()).isEmpty());
+        SyncDataHolder.executeServer(key, ServerState.class, state -> fail());
+        SyncDataHolder.executeClient(key, ClientState.class, state -> fail());
+        event.registerSyncData(new Provider(key));
+        assertThrows(ClassCastException.class, () -> SyncDataHolder.executeClient(
+                key, OtherClientState.class, state -> fail()));
+        assertThrows(ClassCastException.class, () -> SyncDataHolder.computeClient(
+                key, OtherClientState.class, state -> fail()));
+        assertThrows(ClassCastException.class, () -> SyncDataHolder.executeServer(
+                key, OtherServerState.class, state -> fail()));
+        assertThrows(ClassCastException.class, () -> SyncDataHolder.computeServer(
+                key, OtherServerState.class, state -> fail()));
+    }
+
+    @Test void nullCallbackResultsAreEmptyAndSnapshotsDoNotTrackLaterRegistrations() {
+        var keysBefore = SyncDataRegistry.getKnownKeys();
+        event.registerSyncData(new Provider(key));
+        assertFalse(keysBefore.contains(key));
+        assertTrue(SyncDataRegistry.getKnownKeys().contains(key));
+        assertTrue(SyncDataHolder.computeServer(key, ServerState.class, state -> null).isEmpty());
+        assertTrue(SyncDataHolder.computeClient(key, ClientState.class, state -> null).isEmpty());
+    }
+
+    private static final class OtherClientState extends ClientData<OtherClientState> {
+        public void clear(ResourceKey<Level> dim) {}
+        public void clearClient() {}
+    }
+
+    private abstract static class OtherServerState extends AbstractData {
+        OtherServerState(ResourceLocation key) { super(key); }
+    }
+
     private static final class Provider implements SyncDataProvider<ServerState, ClientState> {
         final ResourceLocation key;
         ServerState server;
         final ClientState client = new ClientState();
         int serverFactoryCalls;
+        int clientFactoryCalls;
+        int readerFactoryCalls;
+        boolean nullClient;
         boolean nullReader;
         Provider(ResourceLocation key) { this.key = key; this.server = new ServerState(key); }
         public ResourceLocation getKey() { return key; }
         public ServerState provideServerData() { serverFactoryCalls++; return server; }
-        public ClientState provideClientData() { return client; }
-        public SyncDataReader<ClientState> createReader() { return nullReader ? null : new Reader(); }
+        public ClientState provideClientData() { clientFactoryCalls++; return nullClient ? null : client; }
+        public SyncDataReader<ClientState> createReader() { readerFactoryCalls++; return nullReader ? null : new Reader(); }
     }
 
     private static final class ServerState extends AbstractData {

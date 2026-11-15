@@ -47,6 +47,46 @@ class NetworkExtensionRegistrationTest {
                 new NamedProvider(new ResourceLocation("astralsorcery", "reserved"))));
     }
 
+    @Test void sourceIdIsReadOnceAndTheValidatedKeyIsThePublishedKey() {
+        ResourceLocation id = ResourceLocation.parse("exampleaddon:captured_source");
+        int[] reads = {0};
+        SourceClassRegistry.SourceProvider provider = new SourceClassRegistry.SourceProvider() {
+            public IIndependentStarlightSource provideEmptySource() { throw new AssertionError(); }
+            public ResourceLocation getIdentifier() {
+                return reads[0]++ == 0 ? id : ResourceLocation.parse("minecraft:invalid_source");
+            }
+        };
+        new RegisterAstralSorceryExtensionsEvent().registerSource(provider);
+        assertEquals(1, reads[0]);
+        assertSame(provider, SourceClassRegistry.getProvider(id));
+        assertNull(SourceClassRegistry.getProvider(ResourceLocation.parse("minecraft:invalid_source")));
+    }
+
+    @Test void transmissionIdIsReadOnceAndReservedIdsAreRejectedWithoutConstructingNodes() {
+        ResourceLocation id = ResourceLocation.parse("exampleaddon:captured_transmission");
+        int[] reads = {0};
+        TransmissionProvider provider = new TransmissionProvider(id) {
+            public ResourceLocation getIdentifier() {
+                return reads[0]++ == 0 ? id : ResourceLocation.parse("minecraft:invalid_transmission");
+            }
+            public IPrismTransmissionNode get() { throw new AssertionError(); }
+        };
+        RegisterAstralSorceryExtensionsEvent event = new RegisterAstralSorceryExtensionsEvent();
+        event.registerTransmission(provider);
+        assertEquals(1, reads[0]);
+        assertSame(provider, TransmissionClassRegistry.getProvider(id));
+        assertNull(TransmissionClassRegistry.getProvider(ResourceLocation.parse("minecraft:invalid_transmission")));
+        for (String namespace : java.util.List.of("minecraft", "astralsorcery")) {
+            NamedProvider reserved = new NamedProvider(ResourceLocation.fromNamespaceAndPath(namespace, "reserved"));
+            assertThrows(IllegalArgumentException.class, () -> event.registerTransmission(reserved));
+            assertEquals(0, reserved.creations);
+            assertThrows(IllegalArgumentException.class, () -> event.registerSource(new SourceClassRegistry.SourceProvider() {
+                public ResourceLocation getIdentifier() { return reserved.getIdentifier(); }
+                public IIndependentStarlightSource provideEmptySource() { throw new AssertionError(); }
+            }));
+        }
+    }
+
     private static final class NamedProvider extends TransmissionProvider {
         int creations;
         NamedProvider(ResourceLocation id) { super(id); }

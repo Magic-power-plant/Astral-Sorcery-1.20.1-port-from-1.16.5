@@ -4,6 +4,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApiVersionContractTest {
+    @Test void versionTextAndNumbersDescribeTheSameContract() {
+        assertEquals(AstralSorceryApi.MAJOR + "." + AstralSorceryApi.MINOR, AstralSorceryApi.VERSION);
+        assertTrue(AstralSorceryApi.supports(AstralSorceryApi.MAJOR, AstralSorceryApi.MINOR));
+        assertFalse(AstralSorceryApi.supports(-1, 0));
+        assertThrows(IllegalStateException.class, () -> AstralSorceryApi.requireVersion(1, -1));
+    }
+
     @Test void requiresTheSameMajorAndAnAvailableMinor() {
         assertTrue(AstralSorceryApi.supports(1, 0));
         assertFalse(AstralSorceryApi.supports(0, 0));

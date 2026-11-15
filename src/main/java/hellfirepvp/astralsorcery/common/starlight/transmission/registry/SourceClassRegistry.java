@@ -31,6 +31,12 @@ public class SourceClassRegistry {
         providerMap.register(provider.getIdentifier(), provider);
     }
 
+    /** Internal bridge for the namespaced extension event; legacy registration remains available. */
+    public static void registerExtension(SourceProvider provider) {
+        Objects.requireNonNull(provider, "provider");
+        providerMap.registerExtension(provider.getIdentifier(), provider);
+    }
+
     public static void freeze() {
         providerMap.freeze();
     }

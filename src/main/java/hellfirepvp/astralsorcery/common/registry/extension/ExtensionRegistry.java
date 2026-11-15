@@ -32,6 +32,20 @@ public final class ExtensionRegistry<T> {
         entries.put(id, value);
     }
 
+    /** Validates the same captured identifier that is used as the registry key. */
+    public synchronized void registerExtension(ResourceLocation id, T value) {
+        registerExtensionFactory(id, () -> value);
+    }
+
+    public synchronized void registerExtensionFactory(ResourceLocation id, Supplier<? extends T> factory) {
+        Objects.requireNonNull(id, "extension identifier");
+        checkAvailable(id);
+        if ("astralsorcery".equals(id.getNamespace()) || "minecraft".equals(id.getNamespace())) {
+            throw new IllegalArgumentException("Extensions must use their own namespace: " + id);
+        }
+        registerFactory(id, factory);
+    }
+
     private void checkAvailable(ResourceLocation id) {
         if (frozen) throw new IllegalStateException(name + " registration is closed: " + id);
         if (entries.containsKey(id)) throw new IllegalArgumentException(name + " duplicate identifier: " + id);
