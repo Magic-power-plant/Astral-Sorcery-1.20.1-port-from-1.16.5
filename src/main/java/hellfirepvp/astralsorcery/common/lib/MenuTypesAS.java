@@ -13,7 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-// Six menu types retain their existing serialized identifiers; screen bindings live in RegistryMenuTypes.
+// Six menu types retain their existing serialized identifiers; screen bindings live in client.registry.RegistryMenuTypes.
 public class MenuTypesAS {
 
     private MenuTypesAS() {}

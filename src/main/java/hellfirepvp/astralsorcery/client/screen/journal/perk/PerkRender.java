@@ -10,6 +10,7 @@ package hellfirepvp.astralsorcery.client.screen.journal.perk;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hellfirepvp.astralsorcery.common.perk.AllocationStatus;
+import hellfirepvp.astralsorcery.common.perk.tree.PerkTreePoint;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +33,7 @@ public interface PerkRender {
     // Rendered with pos_tex_color
     @Nullable
     @OnlyIn(Dist.CLIENT)
-    public Rectangle.Float renderPerkAtBatch(BatchPerkContext drawCtx, PoseStack renderStack,
+    public Rectangle.Float renderPerkAtBatch(PerkTreePoint<?> point, BatchPerkContext drawCtx, PoseStack renderStack,
                                              AllocationStatus status, long spriteOffsetTick, float pTicks,
                                              float x, float y, float zLevel, float scale);
 

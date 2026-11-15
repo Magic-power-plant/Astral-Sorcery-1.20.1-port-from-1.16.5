@@ -41,7 +41,6 @@ public class ItemTome extends Item implements PerkExperienceRevealer {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         if (world.isClientSide() && !player.isShiftKeyDown()) {
-            // BLOCKED_PORT[AS-ITM-05]: depends on AS-UI-01 (GuiType#deserialize returns null and ClientProxy has no client-side openGui override yet, so the journal does not open)
             AstralSorcery.getProxy().openGui(player, GuiType.TOME);
         } else if (!world.isClientSide() && player.isShiftKeyDown() && hand == InteractionHand.MAIN_HAND && player instanceof ServerPlayer serverPlayer) {
             ContainerProviders.TomeProvider provider = new ContainerProviders.TomeProvider(player.getItemInHand(hand), player.getInventory().selected);

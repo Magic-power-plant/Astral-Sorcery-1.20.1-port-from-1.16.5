@@ -167,6 +167,28 @@ Gradle 编译检查 Java 包声明，但不验证全部 Javadoc 语义；编辑�
 
 运行 `./gradlew.bat test --offline` 会同时执行全局守卫、注册数据和生命周期回归测试。
 
+### common → client 依赖边界
+
+`architecture.ClientImportsArchitectureTest` 使用同一 Java 17 语法树扫描 `common` 子树，覆盖普通导入、
+静态导入、通配导入及代码中的全限定引用；注释、字符串和名字相似的包不会误报。
+客户端前缀包括 `hellfirepvp.astralsorcery.client`、`net.minecraft.client`、`net.minecraftforge.client`、
+`com.mojang.blaze3d` 和 `org.lwjgl`。
+
+- `common` 根包、`common.registry` 全子树、`common.perk.tree` 全子树，以及已经清理的
+  `AllocationStatus`、`ResearchNode`、`PktOpenGui` 是硬禁区，不能通过基线豁免。
+- 其余历史依赖逐条记录在 `src/test/resources/architecture/client-imports.baseline`，以源码路径和引用为键。
+  新增依赖、已消除但未删除的基线条目、重复条目都会失败。测试不自动更新基线；差异输出到
+  `build/reports/architecture/client-imports.actual` 供审阅，清理后只删除对应旧条目。
+- 四种 Perk 树节点只存身份、位置、尺寸和星座关联。`client.screen.journal.perk.PerkRenderRegistry`
+  负责类型查表与最近父类回退；客户端渲染器声明分组并提供批次绘制、动态物品／星座覆盖层。
+  扩展节点应在客户端初始化、首次建立 journal 批次前调用 `register`，重复绑定会被拒绝。
+- `GuiType` 保留原有枚举顺序和 NBT 协议，`client.screen.GuiScreens` 负责构造屏幕。
+  `RegistryMenuTypes`、颜色、物品模型属性和实体渲染绑定均位于 `client.registry`；
+  菜单和物品模型属性在客户端 setup 的 `enqueueWork` 中注册。
+
+相关回归测试覆盖无客户端类的模型链接、命中框与光晕缩放、扩展分派、GUI 包编码、
+六种菜单与十二种实体渲染器绑定，以及研究节点的精灵数据。
+
 可在 PowerShell 中快速检查覆盖（缺失和孤立文档均视为失败）：
 
 ```powershell

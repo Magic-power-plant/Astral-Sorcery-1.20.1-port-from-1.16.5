@@ -45,6 +45,7 @@ public class PerkRenderGroup {
     }
 
     public void batchRegister(BatchPerkContext ctx) {
+        addedGroups.clear();
         for (AbstractRenderableTexture tex : underlyingTextures.keySet()) {
             addedGroups.add(ctx.addContext(tex, underlyingTextures.get(tex)));
         }

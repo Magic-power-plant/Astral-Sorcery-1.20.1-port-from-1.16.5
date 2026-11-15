@@ -472,6 +472,9 @@ public class CommonProxy {
         this.scheduleDelayed(r, 0);
     }
 
+    /** Client GUI entry point; a dedicated server has no screen to open. */
+    public void openGuiClient(GuiType type, net.minecraft.nbt.CompoundTag data) {}
+
     public void openGui(Player player, GuiType type, Object... data) {
         if (player instanceof ServerPlayer sp) {
             PktOpenGui pkt = new PktOpenGui(type, type.serializeArguments(data));

@@ -30,6 +30,8 @@ import hellfirepvp.astralsorcery.client.screen.helper.SizeHandler;
 import hellfirepvp.astralsorcery.client.screen.journal.overlay.ScreenJournalOverlayPerkStatistics;
 import hellfirepvp.astralsorcery.client.screen.journal.perk.BatchPerkContext;
 import hellfirepvp.astralsorcery.client.screen.journal.perk.DynamicPerkRender;
+import hellfirepvp.astralsorcery.client.screen.journal.perk.PerkRender;
+import hellfirepvp.astralsorcery.client.screen.journal.perk.PerkRenderRegistry;
 import hellfirepvp.astralsorcery.client.screen.journal.perk.PerkRenderGroup;
 import hellfirepvp.astralsorcery.client.screen.journal.perk.PerkTreeSizeHandler;
 import hellfirepvp.astralsorcery.client.util.RenderingDrawUtils;
@@ -158,12 +160,12 @@ public class ScreenJournalPerkTree extends ScreenJournal {
                 searchContext = drawBuffer.addContext(SpritesAS.SPR_PERK_SEARCH, BatchPerkContext.PRIORITY_OVERLAY);
                 sealContext = drawBuffer.addContext(SpritesAS.SPR_PERK_SEAL, BatchPerkContext.PRIORITY_FOREGROUND);
 
-                List<PerkRenderGroup> groups = Lists.newArrayList();
+                Set<PerkRenderGroup> groups = new LinkedHashSet<>();
                 //1.16.5 iterated the Collection<PerkTreePoint<?>> PerkTree#getPerkPoints returned; this tree's
                 //PerkTree maps that very collection to its perks, so the point is recovered through
                 //AbstractPerk#getPoint() - the same cached instance, in the same iteration order.
                 for (AbstractPerk perk : PerkTree.PERK_TREE.getPerkPoints(LogicalSide.CLIENT)) {
-                    perk.getPoint().addGroups(groups);
+                    PerkRenderRegistry.INSTANCE.get(perk.getPoint()).addGroups(groups);
                 }
                 for (PerkRenderGroup group : groups) {
                     group.batchRegister(drawBuffer);
@@ -669,11 +671,12 @@ public class ScreenJournalPerkTree extends ScreenJournal {
 
         float scale = this.sizeHandler.getScalingFactor();
         AllocationStatus status = perkPoint.getPerk().getPerkStatus(Minecraft.getInstance().player, LogicalSide.CLIENT);
-        Rectangle.Float drawSize = perkPoint.renderPerkAtBatch(ctx, renderStack, status, effectTick, pTicks, offset.x, offset.y, this.getGuiZLevel(), scale);
+        PerkRender renderer = PerkRenderRegistry.INSTANCE.get(perkPoint);
+        Rectangle.Float drawSize = renderer.renderPerkAtBatch(perkPoint, ctx, renderStack, status, effectTick, pTicks, offset.x, offset.y, this.getGuiZLevel(), scale);
 
-        if (perkPoint instanceof DynamicPerkRender) {
+        if (renderer instanceof DynamicPerkRender dynamic) {
             outRenderDynamic.add(() ->
-                    ((DynamicPerkRender) perkPoint).renderAt(status, renderStack, effectTick, pTicks, offset.x, offset.y, this.getGuiZLevel(), scale));
+                    dynamic.renderAt(perkPoint, status, renderStack, effectTick, pTicks, offset.x, offset.y, this.getGuiZLevel(), scale));
         }
 
         if (drawSize == null) {

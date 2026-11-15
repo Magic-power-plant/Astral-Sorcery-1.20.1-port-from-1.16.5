@@ -15,6 +15,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.resource.AssetLoader;
+import hellfirepvp.astralsorcery.client.resource.AssetLibrary;
 import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
 import hellfirepvp.astralsorcery.client.resource.query.TextureQuery;
 import hellfirepvp.astralsorcery.client.screen.base.WidthHeightScreen;
@@ -56,6 +57,8 @@ public class ScreenJournalClusterRenderer {
     // frame. 1.16.5 never reassigns that field (there is no setter), so every node resolves to exactly this query -
     // it is inlined here to keep the render identical until ResearchNode regains the member.
     private static final TextureQuery NODE_BACKGROUND_TEXTURE = new TextureQuery(AssetLoader.TextureLocation.GUI, "research_frame_wood");
+
+    private final Map<ResearchNode.SpriteIcon, SpriteSheetResource> spriteTextures = new HashMap<>();
 
     private ProgressionSizeHandler progressionSizeHandler;
     private ResearchProgression progression;
@@ -250,7 +253,8 @@ public class ScreenJournalClusterRenderer {
                 float b = (col.getBlue() / 255F) * alpha;
                 float a = (col.getAlpha() / 255F) * alpha;
 
-                SpriteSheetResource res = node.getSpriteTexture().resolveSprite();
+                SpriteSheetResource res = spriteTextures.computeIfAbsent(node.getSpriteTexture(), icon ->
+                        new SpriteSheetResource(AssetLibrary.loadTexture(icon.texture()), icon.rows(), icon.columns()));
                 res.getResource().bindTexture();
                 Tuple<Float, Float> uvTexture = res.getUVOffset(ClientScheduler.getClientTick());
 

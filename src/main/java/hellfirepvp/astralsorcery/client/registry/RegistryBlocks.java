@@ -6,9 +6,7 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package hellfirepvp.astralsorcery.common.registry;
-
-import hellfirepvp.astralsorcery.common.util.data.NameUtil;
+package hellfirepvp.astralsorcery.client.registry;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
 import hellfirepvp.astralsorcery.common.block.base.BlockDynamicColor;
@@ -59,7 +57,8 @@ import java.util.stream.Collectors;
 // BlocksAS#registerBlockWithItem instead hands every BlockItem a bare `new Item.Properties()`, so those per-block
 // overrides are currently dropped. Fixing that means changing common/lib/BlocksAS (reported as an external change),
 // not this class.
-public class RegistryBlocks {
+@OnlyIn(Dist.CLIENT)
+public final class RegistryBlocks {
 
     private RegistryBlocks() {}
 

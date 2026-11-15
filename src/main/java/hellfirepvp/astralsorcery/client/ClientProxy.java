@@ -42,7 +42,11 @@ import hellfirepvp.astralsorcery.common.ITickHandler;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.perk.AbstractPerk;
 import hellfirepvp.astralsorcery.common.perk.PerkTree;
-import hellfirepvp.astralsorcery.common.registry.*;
+import hellfirepvp.astralsorcery.client.registry.RegistryBlocks;
+import hellfirepvp.astralsorcery.client.registry.RegistryEntityRenderers;
+import hellfirepvp.astralsorcery.client.registry.RegistryItemModels;
+import hellfirepvp.astralsorcery.client.registry.RegistryMenuTypes;
+import hellfirepvp.astralsorcery.client.screen.GuiScreens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -136,12 +140,12 @@ public class ClientProxy extends CommonProxy {
     public void attachLifecycle(IEventBus modEventBus) {
         super.attachLifecycle(modEventBus);
 
-        modEventBus.addListener(RegistryItems::registerColors);
+        modEventBus.addListener(RegistryItemModels::registerColors);
         modEventBus.addListener(RegistryBlocks::registerColors);
         modEventBus.addListener(this::onClientSetup);
         // 1.16.5 called RegistryEntityTypes.initClient()/RegistryTileEntities.initClient() from onClientSetup;
         // in 1.20.1 renderer registration is the dedicated mod-bus EntityRenderersEvent.RegisterRenderers
-        modEventBus.addListener(RegistryEntityTypes::initClient);
+        modEventBus.addListener(RegistryEntityRenderers::initClient);
         modEventBus.addListener(RegistryBlockEntityTypes::initClient);
         modEventBus.addListener(this::registerReloadListeners);
         // 1.16.5 attached the starry player layers from onClientSetup by reaching into the skin map;
@@ -226,10 +230,9 @@ public class ClientProxy extends CommonProxy {
         this.clientScheduler.addRunnable(r, tickDelay);
     }
 
-    // 1.16.5 CommonProxy declared openGuiClient(GuiType, CompoundNBT); the 1.20.1 CommonProxy does not (yet),
-    // so this cannot carry @Override.
+    @Override
     public void openGuiClient(GuiType type, CompoundTag data) {
-        Screen toOpen = type.deserialize(data);
+        Screen toOpen = GuiScreens.deserialize(type, data);
         if (toOpen != null) {
             // 1.16.5: Minecraft#displayGuiScreen -> 1.20.1: Minecraft#setScreen
             Minecraft.getInstance().setScreen(toOpen);
@@ -246,10 +249,12 @@ public class ClientProxy extends CommonProxy {
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {
-        RegistryMenuTypes.initClient();
-        RegistryBlockRenderTypes.initBlocks();
-        RegistryBlockRenderTypes.initFluids();
-        RegistryItems.registerItemProperties();
+        event.enqueueWork(() -> {
+            RegistryMenuTypes.initClient();
+            RegistryBlockRenderTypes.initBlocks();
+            RegistryBlockRenderTypes.initFluids();
+            RegistryItemModels.registerItemProperties();
+        });
     }
 
     // 1.16.5 did this inline in onClientSetup:

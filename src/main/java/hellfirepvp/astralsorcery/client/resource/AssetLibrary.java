@@ -39,6 +39,7 @@ public class AssetLibrary implements ResourceManagerReloadListener {
     private static boolean reloading = false;
 
     private static final Map<AssetLoader.SubLocation, Map<String, AbstractRenderableTexture>> loadedTextures = new HashMap<>();
+    private static final Map<ResourceLocation, BindableResource> namedTextures = new HashMap<>();
     private static final Map<ResourceLocation, GeneratedResource> dynamicTextures = new HashMap<>();
     private static final List<ReloadableResource> reloadableResources = new ArrayList<>();
 
@@ -57,6 +58,15 @@ public class AssetLibrary implements ResourceManagerReloadListener {
                 .computeIfAbsent(name, str -> AssetLoader.loadTexture(location, str));
         reloadableResources.add((ReloadableResource) resource);
         return resource;
+    }
+
+    /** Resolves a data-only texture identifier using the same reload lifecycle as named assets. */
+    public static AbstractRenderableTexture loadTexture(ResourceLocation texture) {
+        return namedTextures.computeIfAbsent(texture, key -> {
+            BindableResource resource = new BindableResource(key.toString());
+            reloadableResources.add(resource);
+            return resource;
+        });
     }
 
     public static GeneratedResource loadGeneratedResource(ResourceLocation key, Supplier<BufferedImage> imageGenerator, boolean blur) {

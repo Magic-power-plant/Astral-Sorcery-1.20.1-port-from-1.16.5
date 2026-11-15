@@ -6,7 +6,7 @@
  * For further details, see the License file there.
  ******************************************************************************/
 
-package hellfirepvp.astralsorcery.common.registry;
+package hellfirepvp.astralsorcery.client.registry;
 
 import hellfirepvp.astralsorcery.client.screen.ScreenObservatory;
 import hellfirepvp.astralsorcery.client.screen.container.ScreenContainerAltarAttunement;
@@ -23,7 +23,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /** Client screen bindings for the menu types declared by MenuTypesAS. */
-public class RegistryMenuTypes {
+@OnlyIn(Dist.CLIENT)
+public final class RegistryMenuTypes {
 
     private RegistryMenuTypes() {}
 

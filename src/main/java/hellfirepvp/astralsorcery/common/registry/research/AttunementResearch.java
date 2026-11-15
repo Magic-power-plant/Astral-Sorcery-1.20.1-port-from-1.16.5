@@ -8,8 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.registry.research;
 
-import hellfirepvp.astralsorcery.client.resource.AssetLoader;
-import hellfirepvp.astralsorcery.client.resource.query.SpriteQuery;
+import net.minecraft.resources.ResourceLocation;
 import hellfirepvp.astralsorcery.common.data.research.ResearchNode;
 import hellfirepvp.astralsorcery.common.data.research.ResearchProgression;
 import hellfirepvp.astralsorcery.common.item.ItemResonator;
@@ -183,10 +182,8 @@ final class AttunementResearch {
                 .addPage(text("PED_ACCEL.4"))
                 .register(ResearchProgression.ATTUNEMENT);
 
-        //AS-REG-01 (resolved): ResearchNode now declares the (SpriteQuery, String, float, float) constructor, so
-        //the only sprite-rendered node in the tree is expressible again.
-        //(1.16.5 common/registry/RegistryResearch.java:482-486)
-        ResearchNode resAlignmentCharge = new ResearchNode(new SpriteQuery(AssetLoader.TextureLocation.EFFECT, 6, 8, "relay_flare"),
+        // Sprite-sheet metadata is shared; the journal resolves the texture on the client.
+        ResearchNode resAlignmentCharge = new ResearchNode(new ResearchNode.SpriteIcon(ResourceLocation.parse("astralsorcery:textures/effect/relay_flare.png"), 6, 8),
                 "QUICK_CHARGE", 0.75F, 4.5F)
                 .addPage(text("QUICK_CHARGE.1"))
                 .addPage(text("QUICK_CHARGE.2"))

@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.network.play.server;
 
 import hellfirepvp.astralsorcery.common.GuiType;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
-import net.minecraft.client.Minecraft;
+import hellfirepvp.astralsorcery.AstralSorcery;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,10 +48,7 @@ public class PktOpenGui {
         GuiType[] values = GuiType.values();
         if (packet.guiType >= 0 && packet.guiType < values.length) {
             GuiType type = values[packet.guiType];
-            net.minecraft.client.gui.screens.Screen screen = type.deserialize(packet.data);
-            if (screen != null) {
-                Minecraft.getInstance().setScreen(screen);
-            }
+            AstralSorcery.getProxy().openGuiClient(type, packet.data);
         }
     }
 }

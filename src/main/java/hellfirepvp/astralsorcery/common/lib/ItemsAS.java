@@ -69,7 +69,7 @@ public class ItemsAS {
     // Six ids that used to be registered here are gone: knowledge_share_empty, knowledge_share_written,
     // resonator_liquid, resonator_starlight, resonator_structure and infused_glass_engraved. They are not items in
     // either reference version - they are the *model override targets* named by the `written` / `upgrade` /
-    // `engraved` ItemProperties registered in RegistryItems#registerItemProperties, i.e. the alternate models
+    // `engraved` ItemProperties registered in RegistryItemModels#registerItemProperties, i.e. the alternate models
     // models/item/knowledge_share.json, resonator.json and infused_glass.json switch to. Registering them as items
     // produced six phantom entries with no lang key (they rendered as "item.astralsorcery.knowledge_share_empty")
     // and no code or recipe ever referenced them. Three more - attunement_parchment, manifold_crystal and

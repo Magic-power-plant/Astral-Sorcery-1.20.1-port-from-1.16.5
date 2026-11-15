@@ -8,11 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.perk;
 
-import hellfirepvp.astralsorcery.client.lib.SpritesAS;
-import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
@@ -48,34 +44,6 @@ public enum AllocationStatus {
 
     public boolean isAllocated() {
         return this == ALLOCATED || this == GRANTED;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public SpriteSheetResource getPerkTreeSprite() {
-        switch (this) {
-            case GRANTED:
-            case ALLOCATED:
-                return SpritesAS.SPR_PERK_ACTIVE;
-            case UNLOCKABLE:
-                return SpritesAS.SPR_PERK_ACTIVATEABLE;
-            case UNALLOCATED:
-            default:
-                return SpritesAS.SPR_PERK_INACTIVE;
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public SpriteSheetResource getPerkTreeHaloSprite() {
-        switch (this) {
-            case GRANTED:
-            case ALLOCATED:
-                return SpritesAS.SPR_PERK_HALO_ACTIVE;
-            case UNLOCKABLE:
-                return SpritesAS.SPR_PERK_HALO_ACTIVATEABLE;
-            case UNALLOCATED:
-            default:
-                return SpritesAS.SPR_PERK_HALO_INACTIVE;
-        }
     }
 
     public Color getPerkConnectionColor() {

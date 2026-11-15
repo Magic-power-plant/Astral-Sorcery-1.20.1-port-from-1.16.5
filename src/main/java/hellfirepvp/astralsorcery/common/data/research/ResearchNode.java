@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.common.data.research;
 
-import hellfirepvp.astralsorcery.client.resource.query.SpriteQuery;
+import net.minecraft.resources.ResourceLocation;
 import hellfirepvp.astralsorcery.common.auxiliary.book.BookLookupRegistry;
 import hellfirepvp.astralsorcery.common.data.journal.JournalPage;
 import net.minecraft.network.chat.Component;
@@ -23,11 +23,7 @@ public class ResearchNode {
     private final String unlocName;
 
     private ItemStack[] renderItemStacks;
-    //AS-REG-01: the sprite-rendered node variant of 1.16.5 ResearchNode.java:40-47. SpriteQuery/TextureQuery are
-    //client classes but annotate only their render METHODS with @OnlyIn(Dist.CLIENT), not the class itself - the
-    //same arrangement as 1.16.5 - so holding them on this common class is dist-safe: a dedicated server loads the
-    //class and never calls the stripped methods (only ScreenJournalClusterRenderer does).
-    private SpriteQuery renderSpriteQuery;
+    private SpriteIcon renderSpriteIcon;
     private Color textureColorHint = new Color(0xFFFFFFFF, true);
 
     private final List<ResearchNode> connectionsTo = new ArrayList<>();
@@ -66,9 +62,9 @@ public class ResearchNode {
 
     //1.16.5 ResearchNode.java:83-86. The only NodeRenderType.TEXTURE_SPRITE producer; without it that enum
     //constant was unreachable and the QUICK_CHARGE node could not be expressed.
-    public ResearchNode(SpriteQuery query, String unlocName, float renderPosX, float renderPosZ) {
+    public ResearchNode(SpriteIcon icon, String unlocName, float renderPosX, float renderPosZ) {
         this(NodeRenderType.TEXTURE_SPRITE, unlocName, renderPosX, renderPosZ);
-        this.renderSpriteQuery = query;
+        this.renderSpriteIcon = Objects.requireNonNull(icon);
     }
 
     //1.16.5 ResearchNode.java:115-118 / :135-137
@@ -81,8 +77,8 @@ public class ResearchNode {
         return textureColorHint;
     }
 
-    public SpriteQuery getSpriteTexture() {
-        return renderSpriteQuery;
+    public SpriteIcon getSpriteTexture() {
+        return renderSpriteIcon;
     }
 
     public ResearchNode addSourceConnectionFrom(ResearchNode node) {
@@ -162,6 +158,14 @@ public class ResearchNode {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    /** A sprite-sheet description, with no resource loading or rendering behavior. */
+    public record SpriteIcon(ResourceLocation texture, int rows, int columns) {
+        public SpriteIcon {
+            Objects.requireNonNull(texture, "texture");
+            if (rows <= 0 || columns <= 0) throw new IllegalArgumentException("Sprite dimensions must be positive");
+        }
     }
 
     public static enum NodeRenderType {
