@@ -4,7 +4,7 @@
  * <p>RegistryBootstrap 统一绑定 DeferredRegister 和自定义注册事件；RegistriesAS 保存唯一句柄。
  * RegistryView 定义查询能力，AbstractBootstrapRegistry 封装构造至发布的状态，
  * ForgeRegistryHandle 适配 Forge。配置重载与扩展事件窗口不共用此一次性生命周期。
- * 渲染绑定仍只能从客户端入口调用。</p>
+ * 方块实体类型由 common.lib.BlockEntityTypesAS 声明，渲染器由 client.registry.RegistryBlockEntityTypes 绑定。</p>
  *
  * @see hellfirepvp.astralsorcery.common.registry.RegistryBootstrap
  * @see hellfirepvp.astralsorcery.common.registry.RegistryView

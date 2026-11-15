@@ -17,7 +17,7 @@ import hellfirepvp.astralsorcery.common.constellation.effect.base.CEffectAbstrac
 import hellfirepvp.astralsorcery.common.constellation.effect.base.ListEntries;
 import hellfirepvp.astralsorcery.common.data.config.base.ConfiguredBlockStateList;
 import hellfirepvp.astralsorcery.common.data.config.registry.OreBlockRarityRegistry;
-import hellfirepvp.astralsorcery.common.effect.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.Effects;
 import hellfirepvp.astralsorcery.common.event.PlayerAffectionFlags;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;

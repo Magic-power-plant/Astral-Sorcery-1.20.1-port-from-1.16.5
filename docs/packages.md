@@ -5,7 +5,7 @@
 
 ## 覆盖范围与统计口径
 
-截至 2026-11-14，`src/main/java` 下有 **269 个实际声明包**、1,382 个业务 Java 源文件，
+截至 2026-11-15，`src/main/java` 下有 **269 个实际声明包**、1,382 个业务 Java 源文件，
 每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 55、公共实现 208、Mixin 2。
 
 - 根命名空间为 `hellfirepvp.astralsorcery`；以源文件的 package 声明为准，并核对目录路径。
@@ -71,7 +71,7 @@
   单人集成服务器同时存在两个逻辑侧，不能以“正在客户端进程中运行”代替服务端权限校验。
 - `client` 是客户端表现层；`common` 并不保证所有成员都可在服务端调用。
   历史例外包括 `common.item.base.client` 与 `common.crafting.recipe.altar.effect`。
-  赞助者外观 provider 和 `RegistryBlockRenderTypes` 已迁至 client。新代码须沿用明确的客户端调用路径，不扩散这些依赖。
+  赞助者外观 provider、`RegistryBlockRenderTypes` 和 `RegistryBlockEntityTypes` 已迁至 client。新代码须沿用明确的客户端调用路径，不扩散这些依赖。
 - `common.data.sync.client` 的 client 表示同步镜像用途，**不是**物理客户端专属类。
   同步注册会在专用服务器创建这些数据和 reader；它们不能依赖 Minecraft 客户端渲染类。
 - 本次包文档不引入 `@OnlyIn`、非空默认值或其他包级注解，也不以注释代替实际的加载隔离。
@@ -187,6 +187,9 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 - 原 common.base.patreon 拆为 common.patreon.data / effect / entity / manager 与 client.patreon 的 provider / effect / entity / manager。共享枚举不构造客户端 provider，网络 reader 不等待赞助者目录下载，也不受视觉配置过滤。
 - 客户端颜色查询、循环音效、向量顶点提交、客户端 reach 钩子、天击与时间冻结粒子迁入 client；公共侧只保留数值/状态逻辑以及现有侧代理入口。RegistryBlockRenderTypes 仅由客户端装配。
 - 伴随实体的 full 快照不消费 diff；按拥有者发送的差量替换过时实体，退出、删除和关闭效果会清理渲染监听。注册 ID、effectClass 枚举名称、NBT 键与同步通道 ID 均保持不变。旧加速黑名单的完整类名与类名前缀通过显式映射继续识别，序列化保留用户原始配置。内部 Java 包路径发生变化，附属源码应更新 import。
+- RegistryBlockEntityTypes 迁至 client.registry；类型声明仍归 common.lib.BlockEntityTypesAS，15 个渲染绑定只从 ClientProxy 的 mod-bus 事件安装。
+- common.effect 拆成 mob 与 visual，各有独立包文档。mob 保留玩法状态效果；visual 保留无客户端依赖的门面与能力。状态图标绘制迁至 client.effect.MobEffectIconRenderer，仅保留 Forge initializeClient 桥；详见 [效果边界](effects-facade.md)。
+- 删除无生产引用的 common.crafting.recipe.infusion.ActiveLiquidInfusionRecipe 及孤立包文档，保留 InfuserBlockEntity 使用的 common.crafting.ActiveLiquidInfusionRecipe，不变更 NBT 或配方行为。
 - 此次未扩展到整个 common 的渲染迁移；物品渲染能力、祭坛配方视觉效果及部分设备的历史客户端方法仍沿已有调用边界运行。
 
 ## 包索引
@@ -208,7 +211,7 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`client.constellation`](../src/main/java/hellfirepvp/astralsorcery/client/constellation/package-info.java) | 星座背景与星图绘制信息。 |
 | [`client.data.config`](../src/main/java/hellfirepvp/astralsorcery/client/data/config/package-info.java) | 客户端配置规格与配置装配。 |
 | [`client.data.config.entry`](../src/main/java/hellfirepvp/astralsorcery/client/data/config/entry/package-info.java) | 渲染选项与客户端配置条目。 |
-| [`client.effect`](../src/main/java/hellfirepvp/astralsorcery/client/effect/package-info.java) | 视觉特效类型、属性和特效实例基类。 |
+| [`client.effect`](../src/main/java/hellfirepvp/astralsorcery/client/effect/package-info.java) | 视觉特效类型、属性、实例基类与状态效果图标绘制。 |
 | [`client.effect.context`](../src/main/java/hellfirepvp/astralsorcery/client/effect/context/package-info.java) | 各类特效的批量绘制上下文。 |
 | [`client.effect.context.base`](../src/main/java/hellfirepvp/astralsorcery/client/effect/context/base/package-info.java) | 批量特效渲染上下文的公共基类。 |
 | [`client.effect.function`](../src/main/java/hellfirepvp/astralsorcery/client/effect/function/package-info.java) | 特效透明度、颜色、位移与缩放等变化函数契约。 |
@@ -228,7 +231,7 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`client.patreon.entity`](../src/main/java/hellfirepvp/astralsorcery/client/patreon/entity/package-info.java) | 由同步伴随实体驱动的客户端粒子和模型。 |
 | [`client.patreon.manager`](../src/main/java/hellfirepvp/astralsorcery/client/patreon/manager/package-info.java) | 客户端赞助效果、tick 回调和渲染资源清理。 |
 | [`client.patreon.provider`](../src/main/java/hellfirepvp/astralsorcery/client/patreon/provider/package-info.java) | 仅客户端解析和建立赞助者视觉效果。 |
-| [`client.registry`](../src/main/java/hellfirepvp/astralsorcery/client/registry/package-info.java) | 纹理、精灵、按键和特效等客户端注册流程。 |
+| [`client.registry`](../src/main/java/hellfirepvp/astralsorcery/client/registry/package-info.java) | 纹理、精灵、按键、特效与方块实体渲染器等客户端注册流程。 |
 | [`client.render`](../src/main/java/hellfirepvp/astralsorcery/client/render/package-info.java) | 渲染状态构建、OBJ 绘制与缓冲能力。 |
 | [`client.render.blockentity`](../src/main/java/hellfirepvp/astralsorcery/client/render/blockentity/package-info.java) | 模组方块实体的客户端渲染器。 |
 | [`client.render.entity`](../src/main/java/hellfirepvp/astralsorcery/client/render/entity/package-info.java) | 模组实体与掉落物的客户端渲染器。 |
@@ -340,7 +343,6 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.crafting.recipe`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/recipe/package-info.java) | 门控配方、祭坛配方与转化和注入上下文。 |
 | [`common.crafting.recipe.altar`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/recipe/altar/package-info.java) | 简单祭坛配方的活动执行实例。 |
 | [`common.crafting.recipe.altar.effect`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/recipe/altar/effect/package-info.java) | 祭坛制作过程的光束、粒子与聚焦表现效果。 |
-| [`common.crafting.recipe.infusion`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/recipe/infusion/package-info.java) | 液体注入配方的活动执行实例。 |
 | [`common.crafting.recipe.interaction.jei`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/recipe/interaction/jei/package-info.java) | 流体交互结果在 JEI 中的展示适配。 |
 | [`common.crafting.serializer`](../src/main/java/hellfirepvp/astralsorcery/common/crafting/serializer/package-info.java) | 祭坛、聚星缸、注入、流体交互和转化配方序列化。 |
 | [`common.crystal`](../src/main/java/hellfirepvp/astralsorcery/common/crystal/package-info.java) | 水晶属性、生成、计算及物品和方块实体属性能力。 |
@@ -363,7 +365,8 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.data.world`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/package-info.java) | 星门、晶矿、星光与存储网络的世界缓存数据。 |
 | [`common.data.world.cache`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/package-info.java) | 世界缓存域、缓存管理与异步 IO 调度。 |
 | [`common.data.world.cache.base`](../src/main/java/hellfirepvp/astralsorcery/common/data/world/cache/base/package-info.java) | 全局及分区世界数据的基类和区段描述。 |
-| [`common.effect`](../src/main/java/hellfirepvp/astralsorcery/common/effect/package-info.java) | 流血、免死与掉落修正等状态效果。 |
+| [`common.effect.mob`](../src/main/java/hellfirepvp/astralsorcery/common/effect/mob/package-info.java) | 实体状态效果、事件行为与图标名称；绘制由客户端扩展负责。 |
+| [`common.effect.visual`](../src/main/java/hellfirepvp/astralsorcery/common/effect/visual/package-info.java) | 无客户端依赖的视觉门面、创建与生命周期能力契约。 |
 | [`common.enchantment`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/package-info.java) | 夜视、灼热及玩家 tick 附魔实现。 |
 | [`common.enchantment.amulet`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/amulet/package-info.java) | 附魔护符的附魔选择、随机化与玩家效果管理。 |
 | [`common.enchantment.dynamic`](../src/main/java/hellfirepvp/astralsorcery/common/enchantment/dynamic/package-info.java) | 运行时动态附魔类型与计算辅助。 |

@@ -62,7 +62,7 @@ public class VanishingBlockEntity extends TickableBlockEntity {
         for (int i = 0; i < 3; i++) {
             if (rand.nextFloat() < 0.07F) {
                 Vector3 at = new Vector3(worldPosition).add(0.5F, 0.5F, 0.5F).add(Vector3.random());
-                hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle p = hellfirepvp.astralsorcery.common.effect.Effects.of(hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS.GENERIC_PARTICLE)
+                hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle p = hellfirepvp.astralsorcery.common.effect.visual.Effects.of(hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS.GENERIC_PARTICLE)
                         .spawn(at)
                         .setScaleMultiplier(0.15F + rand.nextFloat() * 0.1F)
                         .alpha(hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction.PYRAMID)

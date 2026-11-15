@@ -14,7 +14,7 @@ import hellfirepvp.astralsorcery.client.effect.vfx.FXCrystal;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.resource.AssetLoader;
 import hellfirepvp.astralsorcery.client.resource.query.TextureQuery;
-import hellfirepvp.astralsorcery.common.effect.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.Effects;
 import java.awt.*;
 
 /**

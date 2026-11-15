@@ -23,7 +23,7 @@ import hellfirepvp.astralsorcery.client.util.ColorizationHelper;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
 import hellfirepvp.astralsorcery.common.auxiliary.ChaliceHelper;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.effect.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.Effects;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.blockentity.fountain.ChaliceBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.infusion.InfuserBlockEntity;
@@ -71,26 +71,9 @@ import java.util.stream.Collectors;
  * Created by HellFirePvP
  * Date: 09.11.2019 / 11:24
  */
-//TODO_PORT[AS-PKG-01]: 1.16.5 calls this common/crafting/recipe/infusion/ActiveLiquidInfusionRecipe. Not
-//moved because the package layout is a tree-wide decision.
-//TODO_PORT[AS-INF-04]: this tree carries two parallel active-infusion classes. The reference-faithful port of
-//1.16.5's ActiveLiquidInfusionRecipe lives at common/crafting/recipe/infusion/ActiveLiquidInfusionRecipe;
-//this class is the divergent *live* one - common/tile/TileInfuser holds, ticks and serializes it. The two are
-//siblings, not sub/supertypes, so they cannot be merged from inside this slice. Structural differences
-//against 1.16.5, all of them pinned by out-of-lane callers:
-// - The constructor is (TileInfuser, LiquidInfusion, UUID) rather than 1.16.5's
-//   (World, BlockPos, LiquidInfusion, UUID), because common/tile/TileInfuser.java:155 builds it that way.
-//   The private findChalices(Level, BlockPos) below keeps the reference signature.
-// - finish(TileInfuser) has no 1.16.5 counterpart: 1.16.5 ran its body inline in
-//   TileInfuser#finishRecipe (1.16.5 common/tile/TileInfuser.java:210-213 plus the sound and the known-recipe
-//   bookkeeping on lines 217/228). common/tile/TileInfuser.java:119 calls finish(this), so the aggregation
-//   stays and carries the reference bodies.
-// - getProgress() has no 1.16.5 counterpart either (1.16.5 TileInfuser rendered off getTicksCrafting() /
-//   getTotalCraftingTime() directly); common/tile/TileInfuser.java:110 calls it, so it stays.
-// - deserialize takes the RecipeManager as a parameter instead of pulling it from
-//   common/util/RecipeHelper#getRecipeManager, because common/tile/TileInfuser.java:304/317 hands its
-//   level's manager in. The reference's "previous active recipe" parameter is restored as an overload so the
-//   client orbital effect survives a re-read (1.16.5 TileInfuser.java:327).
+// Canonical active infusion state, owned, ticked and serialized by InfuserBlockEntity.
+// The unused recipe.infusion duplicate was removed. Keep the live constructor, finish/getProgress
+// helpers and explicit RecipeManager deserialization; none of these change the persisted NBT schema.
 public class ActiveLiquidInfusionRecipe {
 
     private static final Random rand = new Random();
@@ -106,7 +89,7 @@ public class ActiveLiquidInfusionRecipe {
     private Object orbitalLiquid = null;
 
     //1.16.5 signature: (World world, BlockPos center, LiquidInfusion recipeToCraft, UUID playerCraftingUUID).
-    //See the TODO_PORT[AS-INF-04] note above - common/tile/TileInfuser.java:155 pins this shape. The extra
+    //InfuserBlockEntity owns this live state and supplies the level and position. The extra
     //level null-check has no 1.16.5 counterpart; BlockEntity#getLevel() is @Nullable in 1.20.1 and the tile is
     //constructed before it is added to a level, so the lookup is skipped rather than NPE-ing there.
     public ActiveLiquidInfusionRecipe(InfuserBlockEntity infuser, LiquidInfusion recipeToCraft, UUID playerCraftingUUID) {
@@ -284,8 +267,7 @@ public class ActiveLiquidInfusionRecipe {
         // dropping the research progression the 1.16.5 wrapper body
         // (1.16.5 common/data/research/ResearchManager.java:503-512) is inlined below against the public
         // ResearchManager#informCrafted; move it back into ResearchManager#informCraftedInfuser once that
-        // method exists. The reference-faithful sibling
-        // common/crafting/recipe/infusion/ActiveLiquidInfusionRecipe carries the identical treatment.
+        // method exists.
         Consumer<ItemStack> informer = stack -> this.informCraftedInfuser(infuser, stack);
 
         ItemStack inputStack = infuser.getItemInput();
@@ -413,7 +395,7 @@ public class ActiveLiquidInfusionRecipe {
     }
 
     /**
-     * No 1.16.5 counterpart - see the TODO_PORT[AS-INF-04] note on the class. 1.16.5's TileInfuser tracked the
+     * Live infuser progress accessor. 1.16.5's TileInfuser tracked the
      * progress bar off getTicksCrafting() / getTotalCraftingTime() itself; this tree's
      * common/tile/TileInfuser.java:110 asks the active recipe for it instead.
      */
@@ -530,9 +512,7 @@ public class ActiveLiquidInfusionRecipe {
     public CompoundTag serialize() {
         //1.16.5 wrote each chalice position through NBTHelper.writeBlockPosToNBT (bposX/bposY/bposZ ints);
         //the previous implementation of this method used a single packed "pos" long instead. Both halves of
-        //the round trip live in this class, so the reference format is restored - it also keeps this class
-        //save-compatible with its reference-faithful sibling
-        //common/crafting/recipe/infusion/ActiveLiquidInfusionRecipe.
+        //the round trip live in this class; retain the historical coordinate keys for existing saves.
         ListTag chalicePositions = new ListTag();
         this.supportingChalices.forEach(pos -> chalicePositions.add(NBTHelper.writeBlockPosToNBT(pos, new CompoundTag())));
 

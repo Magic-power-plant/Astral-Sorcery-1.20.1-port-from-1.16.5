@@ -1,9 +1,9 @@
 package hellfirepvp.astralsorcery.common.lib;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.common.effect.EffectBleed;
-import hellfirepvp.astralsorcery.common.effect.EffectCheatDeath;
-import hellfirepvp.astralsorcery.common.effect.EffectDropModifier;
+import hellfirepvp.astralsorcery.common.effect.mob.EffectBleed;
+import hellfirepvp.astralsorcery.common.effect.mob.EffectCheatDeath;
+import hellfirepvp.astralsorcery.common.effect.mob.EffectDropModifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.client.effect;
 
 import hellfirepvp.astralsorcery.client.effect.function.RefreshFunction;
 import hellfirepvp.astralsorcery.client.util.RenderingUtils;
-import hellfirepvp.astralsorcery.common.effect.EffectHandle;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectHandle;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 
 import javax.annotation.Nullable;

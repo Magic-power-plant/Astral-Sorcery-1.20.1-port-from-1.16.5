@@ -8,6 +8,7 @@
 
 package hellfirepvp.astralsorcery.client;
 
+import hellfirepvp.astralsorcery.client.registry.RegistryBlockEntityTypes;
 import hellfirepvp.astralsorcery.client.registry.RegistryBlockRenderTypes;
 
 import hellfirepvp.astralsorcery.AstralSorcery;

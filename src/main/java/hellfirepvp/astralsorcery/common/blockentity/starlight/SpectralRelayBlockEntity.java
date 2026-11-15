@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 //1.16.5 keeps this block in common.block.tile; this tree places blocks directly under common.block.
 import hellfirepvp.astralsorcery.common.block.BlockSpectralRelay;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
-import hellfirepvp.astralsorcery.common.effect.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.Effects;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;

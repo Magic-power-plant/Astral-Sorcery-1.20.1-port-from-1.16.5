@@ -7,7 +7,7 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXRenderOffsetFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXScaleFunction;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
-import hellfirepvp.astralsorcery.common.effect.Effects;
+import hellfirepvp.astralsorcery.common.effect.visual.Effects;
 import hellfirepvp.astralsorcery.common.lib.EntityTypesAS;
 import hellfirepvp.astralsorcery.common.util.data.ASDataSerializers;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;

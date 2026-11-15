@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.registry;
 import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
-import hellfirepvp.astralsorcery.common.effect.EffectCustomTexture;
+import hellfirepvp.astralsorcery.common.effect.mob.EffectCustomTexture;
 import hellfirepvp.astralsorcery.common.lib.EffectsAS;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

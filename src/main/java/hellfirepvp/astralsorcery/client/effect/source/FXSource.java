@@ -13,7 +13,7 @@ import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
-import hellfirepvp.astralsorcery.common.effect.EffectSource;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectSource;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 
 import java.util.function.Function;

@@ -13,7 +13,7 @@ import hellfirepvp.astralsorcery.client.effect.EffectType;
 import hellfirepvp.astralsorcery.client.effect.EntityVisualFX;
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.source.FXSource;
-import hellfirepvp.astralsorcery.common.effect.EffectBuilder;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectBuilder;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.core.Vec3i;
 
