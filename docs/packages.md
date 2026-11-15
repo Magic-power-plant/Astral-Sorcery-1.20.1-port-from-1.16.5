@@ -5,8 +5,8 @@
 
 ## 覆盖范围与统计口径
 
-截至 2026-11-15，`src/main/java` 下有 **269 个实际声明包**、1,382 个业务 Java 源文件，
-每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 55、公共实现 208、Mixin 2。
+截至 2026-11-15，`src/main/java` 下有 **271 个实际声明包**、1,377 个业务 Java 源文件，
+每个包配套一份 `package-info.java`。按根命名空间划分：入口 1、API 3、客户端 55、公共实现 210、Mixin 2。
 
 - 根命名空间为 `hellfirepvp.astralsorcery`；以源文件的 package 声明为准，并核对目录路径。
 - 只给直接包含 Java 类型的生产源码包编写包文档。仅组织子目录而没有直接类型的目录不创建空包。
@@ -150,6 +150,23 @@ package hellfirepvp.astralsorcery.api.sync;
 本次包迁移同时修改赞助者同步与客户端生命周期；使用 `test` 检查工厂隔离、快照、差量及清理，不能用编译代替行为验证。
 Gradle 编译检查 Java 包声明，但不验证全部 Javadoc 语义；编辑包含类型链接或 HTML 的注释时还应检查 Javadoc 诊断。
 
+### 全局架构守卫
+
+`architecture.ArchitectureGuardTest` 遍历整个 `src/main/java`，使用 Java 17 编译器的语法树，
+不解析游戏依赖、不加载 FML，也不把注释中的历史名称当成代码依赖。它检查：
+
+- 包声明与目录一致、根命名空间一致、有实际类型的包有且仅有一份包文档，禁止孤立文档；
+- 包文档中指向本项目类型的 `@see` 链接仍有目标源码；
+- `common.block` 中禁止无行为、仅把构造参数原样传给父类的具体子类；有配置参数、能力接口、字段或行为的实现保留；
+- 已退役的 primer、占位注册类和重复 holder 不得以声明或代码依赖形式回归；
+- `common.registry` 及子包的单文件上限为 300 行，`RegistryConstellations` / `RegistryResearch` 入口上限为 60 行。
+  阈值包括注释和空行；扩充内容时按职责拆分，不能把旧大类搬进另一个辅助类。
+
+包覆盖检查从 `PatreonArchitectureTest` 移至全局测试。赞助者、效果、API 与渲染器的加载侧测试仍留在各自领域，
+这些结构守卫不声称所有历史 `common` 代码均已消除客户端依赖。
+
+运行 `./gradlew.bat test --offline` 会同时执行全局守卫、注册数据和生命周期回归测试。
+
 可在 PowerShell 中快速检查覆盖（缺失和孤立文档均视为失败）：
 
 ```powershell
@@ -281,12 +298,12 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.block.altar`](../src/main/java/hellfirepvp/astralsorcery/common/block/altar/package-info.java) | 各阶合成祭坛方块及其交互差异。 |
 | [`common.block.base`](../src/main/java/hellfirepvp/astralsorcery/common/block/base/package-info.java) | 方块复用基类及库存、网络和物品形态能力。 |
 | [`common.block.base.template`](../src/main/java/hellfirepvp/astralsorcery/common/block/base/template/package-info.java) | 大理石、灌注木、植被和阶梯等方块模板。 |
-| [`common.block.blackmarble`](../src/main/java/hellfirepvp/astralsorcery/common/block/blackmarble/package-info.java) | 炭黑大理石建筑方块及纹理变体。 |
+| [`common.block.blackmarble`](../src/main/java/hellfirepvp/astralsorcery/common/block/blackmarble/package-info.java) | 炭黑大理石柱的柱型、含水状态与轮廓。 |
 | [`common.block.crystal`](../src/main/java/hellfirepvp/astralsorcery/common/block/crystal/package-info.java) | 聚能水晶方块与水晶种类标识。 |
 | [`common.block.foliage`](../src/main/java/hellfirepvp/astralsorcery/common/block/foliage/package-info.java) | 模组发光植被方块。 |
 | [`common.block.fountain`](../src/main/java/hellfirepvp/astralsorcery/common/block/fountain/package-info.java) | 万象泉引口及流体、矿物、漩涡模式方块。 |
-| [`common.block.infusedwood`](../src/main/java/hellfirepvp/astralsorcery/common/block/infusedwood/package-info.java) | 灌注木建筑方块与装饰变体。 |
-| [`common.block.marble`](../src/main/java/hellfirepvp/astralsorcery/common/block/marble/package-info.java) | 大理石建筑方块与装饰变体。 |
+| [`common.block.infusedwood`](../src/main/java/hellfirepvp/astralsorcery/common/block/infusedwood/package-info.java) | 灌注木柱的柱型、含水状态与轮廓。 |
+| [`common.block.marble`](../src/main/java/hellfirepvp/astralsorcery/common/block/marble/package-info.java) | 大理石柱的柱型、含水状态与轮廓。 |
 | [`common.block.ore`](../src/main/java/hellfirepvp/astralsorcery/common/block/ore/package-info.java) | 海蓝宝石、水晶和星辉金属矿物方块。 |
 | [`common.block.properties`](../src/main/java/hellfirepvp/astralsorcery/common/block/properties/package-info.java) | 玻璃、大理石、木材等方块属性组合。 |
 | [`common.block.util`](../src/main/java/hellfirepvp/astralsorcery/common/block/util/package-info.java) | 方块位置、匹配、几何和搜索辅助。 |
@@ -430,7 +447,9 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 | [`common.perk.type`](../src/main/java/hellfirepvp/astralsorcery/common/perk/type/package-info.java) | 移动、攻击、抗性及效果强度等星能力属性类型。 |
 | [`common.perk.type.vanilla`](../src/main/java/hellfirepvp/astralsorcery/common/perk/type/vanilla/package-info.java) | 星能力属性与原版实体属性的映射适配。 |
 | [`common.registry`](../src/main/java/hellfirepvp/astralsorcery/common/registry/package-info.java) | 公共内容、配方、世界生成及领域对象的注册装配。 |
+| [`common.registry.constellation`](../src/main/java/hellfirepvp/astralsorcery/common/registry/constellation/package-info.java) | 内建星座几何、显现规律、仪式特性和署名物品的分阶段装配。 |
 | [`common.registry.extension`](../src/main/java/hellfirepvp/astralsorcery/common/registry/extension/package-info.java) | 扩展注册窗口与可冻结、重复键校验的注册表设施。 |
+| [`common.registry.research`](../src/main/java/hellfirepvp/astralsorcery/common/registry/research/package-info.java) | 研究章节节点、页面、物品查询和章节内连接装配。 |
 | [`common.starlight`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/package-info.java) | 星光源、接收器、传输能力与世界网络入口。 |
 | [`common.starlight.network`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/network/package-info.java) | 星光网络连接、拓扑、区块跟踪与更新调度。 |
 | [`common.starlight.network.handler`](../src/main/java/hellfirepvp/astralsorcery/common/starlight/network/handler/package-info.java) | 星光网络驱动的方块转化处理。 |

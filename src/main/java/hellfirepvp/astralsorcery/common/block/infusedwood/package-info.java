@@ -1,9 +1,10 @@
 /**
- * 灌注木建筑方块与装饰变体。
+ * 灌注木柱的柱型、含水状态与轮廓。
  *
- * <p>复用灌注木模板；星能液转化规则归 common.crafting.nojson.starlight。</p>
+ * <p>仅保留有状态或行为的方块实现；普通装饰变体由 BlocksAS 的工厂直接创建，资源 ID 不变。</p>
  *
- * @see hellfirepvp.astralsorcery.common.block.infusedwood.BlockInfusedWood
+ * @see hellfirepvp.astralsorcery.common.block.infusedwood.BlockInfusedWoodColumn
+ * @see hellfirepvp.astralsorcery.common.lib.BlocksAS
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.block.infusedwood;

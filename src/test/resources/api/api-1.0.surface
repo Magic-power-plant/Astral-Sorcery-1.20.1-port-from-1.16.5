@@ -1,0 +1,168 @@
+# Reviewed Java API 1.0 surface on Minecraft 1.20.1 / Forge.
+# Descriptors, generic signatures, access, parents and bridge methods are compatibility constraints.
+# Add compatible members without removing baseline rows; incompatible changes require a major-version review.
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataProvider#createReader 1025 ()Lhellfirepvp/astralsorcery/api/sync/SyncDataReader; ()Lhellfirepvp/astralsorcery/api/sync/SyncDataReader<TC;>; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataProvider#getKey 1025 ()Lnet/minecraft/resources/ResourceLocation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataProvider#provideClientData 1025 ()Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData; ()TC; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataProvider#provideServerData 1025 ()Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData; ()TS; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataReader#readFromIncomingDiff 1025 (Ljava/lang/Object;Lnet/minecraft/nbt/CompoundTag;)V (TC;Lnet/minecraft/nbt/CompoundTag;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataReader#readFromIncomingFullSync 1025 (Ljava/lang/Object;Lnet/minecraft/nbt/CompoundTag;)V (TC;Lnet/minecraft/nbt/CompoundTag;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataWriter#writeAllDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataWriter#writeDiffDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncTarget#markForUpdate 1025 ()V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#getAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#getTraitConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IMinorConstellation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#setAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#setTraitConstellation 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/constellation/IMinorConstellation;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem#getGeneratedPropertyTiers 1025 ()I - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem#getMaxPropertyTiers 1025 ()I - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem#getAttributes 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem#setAttributes 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#clear 1025 (Lnet/minecraft/resources/ResourceKey;)V (Lnet/minecraft/resources/ResourceKey<Lnet/minecraft/world/level/Level;>;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#clearServer 1025 ()V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#writeAllDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#writeDiffDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#createReader 1025 ()Lhellfirepvp/astralsorcery/common/data/sync/base/ClientDataReader; ()Lhellfirepvp/astralsorcery/common/data/sync/base/ClientDataReader<TC;>; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#provideClientData 1025 ()Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData; ()TC; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#provideServerData 1025 ()Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData; ()TT; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientData#clear 1025 (Lnet/minecraft/resources/ResourceKey;)V (Lnet/minecraft/resources/ResourceKey<Lnet/minecraft/world/level/Level;>;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientData#clearClient 1025 ()V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader#readFromIncomingDiff 1025 (Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData;Lnet/minecraft/nbt/CompoundTag;)V (TC;Lnet/minecraft/nbt/CompoundTag;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader#readFromIncomingFullSync 1025 (Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData;Lnet/minecraft/nbt/CompoundTag;)V (TC;Lnet/minecraft/nbt/CompoundTag;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#getProvider 1025 ()Lhellfirepvp/astralsorcery/common/starlight/transmission/registry/SourceClassRegistry$SourceProvider; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#getStarlightType 1025 ()Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#produceStarlightTick 1025 (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;)F - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#readFromNBT 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#threadedUpdateProximity 1025 (Lnet/minecraft/core/BlockPos;Ljava/util/Map;)V (Lnet/minecraft/core/BlockPos;Ljava/util/Map<Lnet/minecraft/core/BlockPos;Lhellfirepvp/astralsorcery/common/starlight/IIndependentStarlightSource;>;)V -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#writeToNBT 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightReceiver#provideEndpoint 1025 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionReceiver; (Lnet/minecraft/core/BlockPos;)TT; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#markChainRebuilt 1025 ()V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#needsToRefreshNetworkChain 1025 ()Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#provideNewSourceNode 1025 ()Lhellfirepvp/astralsorcery/common/starlight/IIndependentStarlightSource; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#provideSourceNode 1025 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionSource; (Lnet/minecraft/core/BlockPos;)TT; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission#getTrPos 1025 ()Lnet/minecraft/core/BlockPos; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission#getTrWorld 1025 ()Lnet/minecraft/world/level/Level; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission#provideTransmissionNode 1025 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode; (Lnet/minecraft/core/BlockPos;)TT; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getLocationPos 1025 ()Lnet/minecraft/core/BlockPos; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getProvider 1025 ()Lhellfirepvp/astralsorcery/common/starlight/transmission/registry/TransmissionProvider; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getSources 1025 ()Ljava/util/List; ()Ljava/util/List<Lnet/minecraft/core/BlockPos;>; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#notifyBlockChange 1025 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#notifyLink 1025 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#notifySourceLink 1025 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#notifySourceUnlink 1025 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#notifyUnlink 1025 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#queryNext 1025 (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List; (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List<Lhellfirepvp/astralsorcery/common/starlight/transmission/NodeConnection<Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>;>; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#readFromNBT 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#writeToNBT 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionNode#queryNextNode 1025 (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Lhellfirepvp/astralsorcery/common/starlight/transmission/NodeConnection; (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Lhellfirepvp/astralsorcery/common/starlight/transmission/NodeConnection<Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver#onStarlightReceive 1025 (Lnet/minecraft/world/level/Level;Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation;D)V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionSource#provideNewIndependentSource 1025 (Lhellfirepvp/astralsorcery/common/starlight/IStarlightSource;)Lhellfirepvp/astralsorcery/common/starlight/IIndependentStarlightSource; (Lhellfirepvp/astralsorcery/common/starlight/IStarlightSource<*>;)Lhellfirepvp/astralsorcery/common/starlight/IIndependentStarlightSource; -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry$SourceProvider#getIdentifier 1025 ()Lnet/minecraft/resources/ResourceLocation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry$SourceProvider#provideEmptySource 1025 ()Lhellfirepvp/astralsorcery/common/starlight/IIndependentStarlightSource; - -
+FIELD hellfirepvp.astralsorcery.api.AstralSorceryApi#MAJOR 25 I - versioned
+FIELD hellfirepvp.astralsorcery.api.AstralSorceryApi#MINOR 25 I - versioned
+FIELD hellfirepvp.astralsorcery.api.AstralSorceryApi#VERSION 25 Ljava/lang/String; - versioned
+FIELD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#rand 25 Ljava/util/Random; - null
+FIELD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#EMPTY 25 Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes; - null
+FIELD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#rand 25 Ljava/util/Random; - null
+METHOD hellfirepvp.astralsorcery.api.AstralSorceryApi#requireVersion 9 (II)V - -
+METHOD hellfirepvp.astralsorcery.api.AstralSorceryApi#supports 9 (II)Z - -
+METHOD hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent#<init> 1 ()V - -
+METHOD hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent#finishDispatch 17 ()V - -
+METHOD hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent#registerSource 1 (Lhellfirepvp/astralsorcery/common/starlight/transmission/registry/SourceClassRegistry$SourceProvider;)V - -
+METHOD hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent#registerSyncData 1 (Lhellfirepvp/astralsorcery/api/sync/SyncDataProvider;)V (Lhellfirepvp/astralsorcery/api/sync/SyncDataProvider<**>;)V -
+METHOD hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent#registerTransmission 1 (Lhellfirepvp/astralsorcery/common/starlight/transmission/registry/TransmissionProvider;)V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#computeClient 9 (Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class;Ljava/util/function/Function;)Ljava/util/Optional; <T:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TT;>;V:Ljava/lang/Object;>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class<TT;>;Ljava/util/function/Function<TT;TV;>;)Ljava/util/Optional<TV;>; -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#computeServer 9 (Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class;Ljava/util/function/Function;)Ljava/util/Optional; <T:Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData;V:Ljava/lang/Object;>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class<TT;>;Ljava/util/function/Function<TT;TV;>;)Ljava/util/Optional<TV;>; -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#executeClient 9 (Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class;Ljava/util/function/Consumer;)V <T:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TT;>;>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class<TT;>;Ljava/util/function/Consumer<TT;>;)V -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#executeServer 9 (Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class;Ljava/util/function/Consumer;)V <T:Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData;>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/Class<TT;>;Ljava/util/function/Consumer<TT;>;)V -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#getReader 9 (Lnet/minecraft/resources/ResourceLocation;)Lhellfirepvp/astralsorcery/common/data/sync/base/ClientDataReader; <T:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TT;>;>(Lnet/minecraft/resources/ResourceLocation;)Lhellfirepvp/astralsorcery/common/data/sync/base/ClientDataReader<TT;>; -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#register 9 (Lhellfirepvp/astralsorcery/api/sync/SyncDataProvider;)V (Lhellfirepvp/astralsorcery/api/sync/SyncDataProvider<**>;)V -
+METHOD hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder#register 9 (Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractDataProvider;)V (Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractDataProvider<+Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData;+Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData;>;)V -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#<init> 4 (Lnet/minecraft/resources/ResourceLocation;)V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#getKey 17 ()Lnet/minecraft/resources/ResourceLocation; - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractData#markDirty 17 ()V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#<init> 1 (Lnet/minecraft/resources/ResourceLocation;)V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#createReader 1 ()Lhellfirepvp/astralsorcery/api/sync/SyncDataReader; - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider#getKey 17 ()Lnet/minecraft/resources/ResourceLocation; - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientData#<init> 1 ()V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader#<init> 1 ()V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader#readFromIncomingDiff 1 (Ljava/lang/Object;Lnet/minecraft/nbt/CompoundTag;)V - -
+METHOD hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader#readFromIncomingFullSync 1 (Ljava/lang/Object;Lnet/minecraft/nbt/CompoundTag;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#providesAutoLink 1 ()Z - -
+METHOD hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource#updateFromBlockEntity 1 (Lnet/minecraft/world/level/block/entity/BlockEntity;)Z <T:Lnet/minecraft/world/level/block/entity/BlockEntity;>(TT;)Z -
+METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightReceiver#provideTransmissionNode 1 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode; - -
+METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightReceiver#provideTransmissionNode 1 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionReceiver; (Lnet/minecraft/core/BlockPos;)TT; -
+METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#provideTransmissionNode 1 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode; - -
+METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightSource#provideTransmissionNode 1 (Lnet/minecraft/core/BlockPos;)Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionSource; (Lnet/minecraft/core/BlockPos;)TT; -
+METHOD hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission#getNode 1 ()Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode; ()TT; -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getPosition 1 ()Lnet/minecraft/core/BlockPos; - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getTransmissionConsumptionMultiplier 1 ()F - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getTransmissionEfficiency 1 ()F - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getTransmissionProperties 1 ()Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes; - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getTransmissionRange 1 ()F - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#getTransmissionThroughputMultiplier 1 ()F - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#markDirty 1 (Lnet/minecraft/world/level/Level;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#needsTransmissionUpdate 1 ()Z - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#needsUpdate 1 ()Z - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#onTransmissionTick 1 (Lnet/minecraft/world/level/Level;FLhellfirepvp/astralsorcery/common/constellation/IWeakConstellation;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#postLoad 1 (Lnet/minecraft/world/level/LevelAccessor;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#providesAutoLink 1 ()Z - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#update 1 (Lnet/minecraft/world/level/Level;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode#updateFromBlockEntity 1 (Lnet/minecraft/world/level/block/entity/BlockEntity;)Z <T:Lnet/minecraft/world/level/block/entity/BlockEntity;>(TT;)Z -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionNode#queryNext 1 (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List; (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List<Lhellfirepvp/astralsorcery/common/starlight/transmission/NodeConnection<Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>;>; -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver#notifyLink 1 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver#notifyUnlink 1 (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver#queryNext 1 (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List; (Lhellfirepvp/astralsorcery/common/starlight/WorldNetworkHandler;)Ljava/util/List<Lhellfirepvp/astralsorcery/common/starlight/transmission/NodeConnection<Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>;>; -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionSource#updateFromBlockEntity 1 (Lnet/minecraft/world/level/block/entity/BlockEntity;)Z <T:Lnet/minecraft/world/level/block/entity/BlockEntity;>(TT;)Z -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider#<init> 4 ()V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider#<init> 4 (Lnet/minecraft/resources/ResourceLocation;)V - -
+METHOD hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider#getIdentifier 1 ()Lnet/minecraft/resources/ResourceLocation; - -
+PARENTS hellfirepvp.astralsorcery.api.AstralSorceryApi java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent net/minecraftforge/eventbus/api/Event -
+PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataProvider java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataReader java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataWriter java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.api.sync.SyncTarget java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.constellation.ConstellationItem java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem java/lang/Object hellfirepvp/astralsorcery/common/crystal/CrystalAttributeItem
+PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder java/lang/Object hellfirepvp/astralsorcery/common/ITickHandler
+PARENTS hellfirepvp.astralsorcery.common.data.sync.base.AbstractData java/lang/Object hellfirepvp/astralsorcery/api/sync/SyncDataWriter
+PARENTS hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider java/lang/Object hellfirepvp/astralsorcery/api/sync/SyncDataProvider
+PARENTS hellfirepvp.astralsorcery.common.data.sync.base.ClientData java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader java/lang/Object hellfirepvp/astralsorcery/api/sync/SyncDataReader
+PARENTS hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.starlight.IStarlightReceiver java/lang/Object hellfirepvp/astralsorcery/common/starlight/IStarlightTransmission
+PARENTS hellfirepvp.astralsorcery.common.starlight.IStarlightSource java/lang/Object hellfirepvp/astralsorcery/common/starlight/IStarlightTransmission
+PARENTS hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionNode java/lang/Object hellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver java/lang/Object hellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionSource java/lang/Object hellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry$SourceProvider java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider java/lang/Object java/util/function/Supplier
+TYPE hellfirepvp.astralsorcery.api.AstralSorceryApi 17 -
+TYPE hellfirepvp.astralsorcery.api.event.RegisterAstralSorceryExtensionsEvent 17 -
+TYPE hellfirepvp.astralsorcery.api.sync.SyncDataProvider 1537 <S:Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData;C:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TC;>;>Ljava/lang/Object;
+TYPE hellfirepvp.astralsorcery.api.sync.SyncDataReader 1537 <C:Ljava/lang/Object;>Ljava/lang/Object;
+TYPE hellfirepvp.astralsorcery.api.sync.SyncDataWriter 1537 -
+TYPE hellfirepvp.astralsorcery.api.sync.SyncTarget 1537 -
+TYPE hellfirepvp.astralsorcery.common.constellation.ConstellationItem 1537 -
+TYPE hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem 1537 -
+TYPE hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem 1537 -
+TYPE hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder 1 -
+TYPE hellfirepvp.astralsorcery.common.data.sync.base.AbstractData 1025 -
+TYPE hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider 1025 <T:Lhellfirepvp/astralsorcery/common/data/sync/base/AbstractData;C:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TC;>;>Ljava/lang/Object;Lhellfirepvp/astralsorcery/api/sync/SyncDataProvider<TT;TC;>;
+TYPE hellfirepvp.astralsorcery.common.data.sync.base.ClientData 1025 <C:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TC;>;>Ljava/lang/Object;
+TYPE hellfirepvp.astralsorcery.common.data.sync.base.ClientDataReader 1025 <C:Lhellfirepvp/astralsorcery/common/data/sync/base/ClientData<TC;>;>Ljava/lang/Object;Lhellfirepvp/astralsorcery/api/sync/SyncDataReader<TC;>;
+TYPE hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.IStarlightReceiver 1537 <T::Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionReceiver;>Ljava/lang/Object;Lhellfirepvp/astralsorcery/common/starlight/IStarlightTransmission<TT;>;
+TYPE hellfirepvp.astralsorcery.common.starlight.IStarlightSource 1537 <T::Lhellfirepvp/astralsorcery/common/starlight/transmission/ITransmissionSource;>Ljava/lang/Object;Lhellfirepvp/astralsorcery/common/starlight/IStarlightTransmission<TT;>;
+TYPE hellfirepvp.astralsorcery.common.starlight.IStarlightTransmission 1537 <T::Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>Ljava/lang/Object;
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionNode 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionReceiver 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.ITransmissionSource 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry$SourceProvider 1537 -
+TYPE hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionProvider 1025 Ljava/lang/Object;Ljava/util/function/Supplier<Lhellfirepvp/astralsorcery/common/starlight/transmission/IPrismTransmissionNode;>;

@@ -1,9 +1,10 @@
 /**
- * 炭黑大理石建筑方块及纹理变体。
+ * 炭黑大理石柱的柱型、含水状态与轮廓。
  *
- * <p>复用方块模板和属性定义，不在装饰方块中引入设备生命周期。</p>
+ * <p>仅保留有状态或行为的方块实现；普通装饰变体由 BlocksAS 的工厂直接创建，资源 ID 不变。</p>
  *
- * @see hellfirepvp.astralsorcery.common.block.blackmarble.BlockBlackMarbleRaw
+ * @see hellfirepvp.astralsorcery.common.block.blackmarble.BlockBlackMarblePillar
+ * @see hellfirepvp.astralsorcery.common.lib.BlocksAS
  * @see "仓库 docs/packages.md"
  */
 package hellfirepvp.astralsorcery.common.block.blackmarble;

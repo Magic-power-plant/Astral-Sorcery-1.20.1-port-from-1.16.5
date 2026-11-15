@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PatreonArchitectureTest {
@@ -72,26 +71,6 @@ class PatreonArchitectureTest {
                     }
                 }
             }
-        }
-    }
-
-    @Test void packageDeclarationsAndPackageDocumentationMatchSourceLayout() throws Exception {
-        Path root = Path.of("src/main/java");
-        Map<Path, List<Path>> packages = new HashMap<>();
-        Pattern declaration = Pattern.compile("(?m)^package\\s+([\\w.]+)\\s*;");
-        try (var files = Files.walk(root)) {
-            for (Path source : files.filter(p -> p.toString().endsWith(".java")).toList()) {
-                String text = Files.readString(source, StandardCharsets.UTF_8);
-                var matcher = declaration.matcher(text);
-                assertTrue(matcher.find(), source.toString());
-                assertEquals(root.relativize(source.getParent()).toString().replace('\\', '.'), matcher.group(1), source.toString());
-                packages.computeIfAbsent(source.getParent(), key -> new ArrayList<>()).add(source);
-            }
-        }
-        for (var entry : packages.entrySet()) {
-            assertTrue(entry.getValue().stream().anyMatch(p -> p.getFileName().toString().equals("package-info.java")),
-                    "Missing package documentation: " + entry.getKey());
-            assertTrue(entry.getValue().size() > 1, "Orphan package documentation: " + entry.getKey());
         }
     }
 }
