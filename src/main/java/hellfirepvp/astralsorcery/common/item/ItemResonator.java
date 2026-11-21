@@ -16,7 +16,7 @@ import hellfirepvp.astralsorcery.client.util.AreaOfInfluencePreview;
 import hellfirepvp.astralsorcery.common.constellation.world.DayTimeHelper;
 import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
-import hellfirepvp.astralsorcery.common.effect.visual.Effects;
+import hellfirepvp.astralsorcery.api.effect.Effects;
 import hellfirepvp.astralsorcery.common.item.base.OverrideInteractItem;
 import hellfirepvp.astralsorcery.common.item.base.CreativeTabItem;
 import hellfirepvp.astralsorcery.common.lib.CapabilitiesAS;

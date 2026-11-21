@@ -13,6 +13,7 @@ import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.block.util.BlockMatchInformation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -84,10 +85,10 @@ public class BlockTransmutationManager {
         //BLOCKED_PORT[AS-INT-03]: 1.16.5: name = fixRecipeName(name);
         IWeakConstellation weakConstellation = null;
         if (constellationKey != null) {
-            if (!RegistriesAS.CONSTELLATIONS.containsKey(constellationKey)) {
+            if (ConstellationRegistry.getConstellation(constellationKey) == null) {
                 throw new IllegalArgumentException("Invalid constellation key: \"" + constellationKey + "\"");
             }
-            IConstellation constellation = RegistriesAS.CONSTELLATIONS.getValue(constellationKey);
+            IConstellation constellation = ConstellationRegistry.getConstellation(constellationKey);
             if (constellation instanceof IWeakConstellation) {
                 weakConstellation = (IWeakConstellation) constellation;
             } else {

@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
+import hellfirepvp.astralsorcery.api.effect.EffectSpec;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;

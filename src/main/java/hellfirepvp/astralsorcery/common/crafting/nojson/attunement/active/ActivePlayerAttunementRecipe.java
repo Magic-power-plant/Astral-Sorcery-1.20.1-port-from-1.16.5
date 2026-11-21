@@ -24,10 +24,11 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunePlayerRecipe;
 import hellfirepvp.astralsorcery.common.crafting.nojson.attunement.AttunementRecipe;
 import hellfirepvp.astralsorcery.common.data.research.ResearchManager;
-import hellfirepvp.astralsorcery.common.effect.visual.Effects;
+import hellfirepvp.astralsorcery.api.effect.Effects;
 import hellfirepvp.astralsorcery.common.event.helper.EventHelperInvulnerability;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.client.PktAttunePlayerConstellation;
@@ -420,6 +421,6 @@ public class ActivePlayerAttunementRecipe extends AttunementRecipe.Active<Attune
         super.readFromNBT(nbt);
 
         this.playerUUID = nbt.getUUID("playerUUID");
-        this.constellation = (IMajorConstellation) RegistriesAS.CONSTELLATIONS.getValue(new ResourceLocation(nbt.getString("constellation")));
+        this.constellation = (IMajorConstellation) ConstellationRegistry.getConstellation(new ResourceLocation(nbt.getString("constellation")));
     }
 }

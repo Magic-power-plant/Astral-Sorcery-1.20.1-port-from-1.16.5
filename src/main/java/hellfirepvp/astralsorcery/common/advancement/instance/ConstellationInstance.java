@@ -8,6 +8,7 @@ import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
@@ -92,7 +93,7 @@ public class ConstellationInstance extends AbstractCriterionTriggerInstance {
         for (int idx = 0; idx < constellationNames.size(); idx++) {
             JsonElement element = constellationNames.get(idx);
             String key = element.getAsString();
-            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(ResourceLocation.parse(key));
+            IConstellation cst = ConstellationRegistry.getConstellation(ResourceLocation.parse(key));
             if (cst == null) {
                 throw new IllegalArgumentException(String.format("Unknown constellation: %s - at constellations[%s]", key, idx));
             }

@@ -1,6 +1,8 @@
 package hellfirepvp.astralsorcery.common.constellation.engraving;
 
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.api.constellation.IApplicableItemEffect;
+import hellfirepvp.astralsorcery.api.constellation.IEngravingEffect;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.item.base.TypeEnchantableItem;
 import hellfirepvp.astralsorcery.common.lib.ColorsAS;
@@ -27,7 +29,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class EngravingEffect {
+public class EngravingEffect implements IEngravingEffect {
 
     private final ResourceLocation registryName;
     private final List<ApplicableEffect> effects = new ArrayList<>();
@@ -56,9 +58,7 @@ public class EngravingEffect {
                 .collect(Collectors.toList());
     }
 
-    public static interface ApplicableEffect {
-        boolean supports(@Nonnull ItemStack stack);
-        ItemStack apply(@Nonnull ItemStack stack, float percent, Random rand);
+    public static interface ApplicableEffect extends IApplicableItemEffect {
     }
 
     public static class ModifierEffect implements ApplicableEffect {

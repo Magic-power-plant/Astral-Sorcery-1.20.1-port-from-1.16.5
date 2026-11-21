@@ -10,6 +10,7 @@ package hellfirepvp.astralsorcery.common.perk;
 
 import com.google.common.collect.Lists;
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
+import hellfirepvp.astralsorcery.api.perk.IPerkConverter;
 import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.source.ModifierSource;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
@@ -32,7 +33,7 @@ import java.util.Objects;
  * Created by HellFirePvP
  * Date: 08.08.2019 / 17:28
  */
-public abstract class PerkConverter {
+public abstract class PerkConverter implements IPerkConverter {
 
     private final ResourceLocation registryName;
 
@@ -167,4 +168,3 @@ public abstract class PerkConverter {
 
     }
 }
-

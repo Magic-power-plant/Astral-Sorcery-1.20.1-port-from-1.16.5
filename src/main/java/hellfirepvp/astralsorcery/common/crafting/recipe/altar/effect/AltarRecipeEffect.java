@@ -14,6 +14,7 @@ import hellfirepvp.astralsorcery.common.crafting.recipe.altar.ActiveSimpleAltarR
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarBlockEntity;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import hellfirepvp.astralsorcery.api.crafting.IAltarRecipeEffectRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,7 +33,7 @@ import java.util.Random;
  */
 //1.16.5 extended ForgeRegistryEntry<AltarRecipeEffect> for its registry name; that class is gone in 1.20.1,
 //so the registry name is tracked locally - same convention as CustomRecipeSerializer/StructureType in this tree.
-public abstract class AltarRecipeEffect {
+public abstract class AltarRecipeEffect implements IAltarRecipeEffectRenderer {
 
     protected static final int INDEX_NOISE_PLANE_LAYER1 = 0;
     protected static final int INDEX_NOISE_PLANE_LAYER2 = 1;

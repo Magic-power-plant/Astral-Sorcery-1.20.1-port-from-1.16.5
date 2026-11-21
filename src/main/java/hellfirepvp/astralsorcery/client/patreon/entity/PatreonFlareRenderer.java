@@ -19,7 +19,7 @@ import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
 import hellfirepvp.astralsorcery.client.resource.query.SpriteQuery;
 import hellfirepvp.astralsorcery.common.patreon.effect.FlareColor;
 import hellfirepvp.astralsorcery.common.patreon.effect.PatreonEffect;
-import hellfirepvp.astralsorcery.common.effect.visual.Effects;
+import hellfirepvp.astralsorcery.api.effect.Effects;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;

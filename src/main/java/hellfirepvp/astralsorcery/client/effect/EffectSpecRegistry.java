@@ -5,8 +5,8 @@ import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXScaleFunction;
 import hellfirepvp.astralsorcery.client.effect.handler.EffectHelper;
-import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpec;
-import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpecBackend;
+import hellfirepvp.astralsorcery.api.effect.EffectSpec;
+import hellfirepvp.astralsorcery.api.effect.EffectSpecBackend;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.Color;

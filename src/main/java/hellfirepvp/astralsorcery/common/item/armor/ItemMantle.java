@@ -22,6 +22,7 @@ import hellfirepvp.astralsorcery.common.item.base.client.ItemDynamicColor;
 import hellfirepvp.astralsorcery.common.lib.ConstellationsAS;
 import hellfirepvp.astralsorcery.common.lib.PerkAttributeTypesAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.perk.modifier.DynamicAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.modifier.PerkAttributeModifier;
 import hellfirepvp.astralsorcery.common.perk.source.provider.equipment.EquipmentAttributeModifierProvider;
@@ -83,7 +84,7 @@ public class ItemMantle extends ArmorItem implements ItemDynamicColor, Constella
     @Override
     public void fillCreativeTab(CreativeModeTab.Output output) {
         output.accept(new ItemStack(this));
-        for (IConstellation cst : RegistriesAS.CONSTELLATIONS.getValues()) {
+        for (IConstellation cst : ConstellationRegistry.getAllConstellations()) {
             if (!(cst instanceof IWeakConstellation)) {
                 continue;
             }

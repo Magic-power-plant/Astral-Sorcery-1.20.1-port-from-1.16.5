@@ -1,6 +1,7 @@
 package hellfirepvp.astralsorcery.common.data.research;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.perk.IPlayerPerkData;
 import hellfirepvp.astralsorcery.common.perk.AbstractPerk;
 import hellfirepvp.astralsorcery.common.perk.PerkLevelManager;
 import hellfirepvp.astralsorcery.common.perk.PerkTree;
@@ -24,7 +25,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PlayerPerkData {
+public class PlayerPerkData implements IPlayerPerkData {
 
     private Set<ResourceLocation> freePointTokens = new HashSet<>();
     private Map<AbstractPerk, AppliedPerk> perks = new HashMap<>();

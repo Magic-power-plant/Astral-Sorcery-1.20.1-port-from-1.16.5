@@ -60,6 +60,10 @@ public final class ExtensionRegistry<T> {
         return List.copyOf(entries.keySet());
     }
 
+    public synchronized List<T> getAll() {
+        return List.copyOf(entries.values());
+    }
+
     public synchronized void freeze() {
         frozen = true;
     }

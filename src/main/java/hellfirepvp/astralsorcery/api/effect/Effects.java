@@ -1,7 +1,9 @@
-package hellfirepvp.astralsorcery.common.effect.visual;
+package hellfirepvp.astralsorcery.api.effect;
 
-import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpec;
-import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpecBackend;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectBuilder;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectHandle;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectTemplate;
+import hellfirepvp.astralsorcery.common.effect.visual.EffectSource;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;

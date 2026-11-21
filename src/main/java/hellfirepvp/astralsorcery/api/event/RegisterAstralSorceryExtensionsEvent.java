@@ -1,6 +1,8 @@
 package hellfirepvp.astralsorcery.api.event;
 
 import hellfirepvp.astralsorcery.api.sync.SyncDataProvider;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
+import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.SourceClassRegistry;
 import hellfirepvp.astralsorcery.common.starlight.transmission.registry.TransmissionClassRegistry;
@@ -48,5 +50,17 @@ public final class RegisterAstralSorceryExtensionsEvent extends Event {
     public void registerSyncData(SyncDataProvider<?, ?> provider) {
         requireOpen();
         SyncDataHolder.registerExtension(provider);
+    }
+
+    /** Registers a constellation under an ID in the calling addon's namespace. */
+    public void registerConstellation(IConstellation constellation) {
+        requireOpen();
+        java.util.Objects.requireNonNull(constellation, "constellation");
+        net.minecraft.resources.ResourceLocation id = java.util.Objects.requireNonNull(
+                constellation.getRegistryName(), "constellation ID");
+        if ("astralsorcery".equals(id.getNamespace()) || "minecraft".equals(id.getNamespace())) {
+            throw new IllegalArgumentException("Extensions must use their own namespace: " + id);
+        }
+        ConstellationRegistry.registerExtension(constellation);
     }
 }

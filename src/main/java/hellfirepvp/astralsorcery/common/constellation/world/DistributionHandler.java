@@ -74,7 +74,7 @@ public class DistributionHandler {
         }
         int phaseCount = MoonPhase.values().length;
 
-        for (IConstellation cst : RegistriesAS.CONSTELLATIONS) {
+        for (IConstellation cst : ConstellationRegistry.getAllConstellations()) {
             if (cst instanceof IWeakConstellation) {
                 MoonPhase offsetPhase = this.ctx.getConstellationHandler().getOffset(cst);
                 if (offsetPhase == null) {

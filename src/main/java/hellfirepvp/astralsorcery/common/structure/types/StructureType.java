@@ -1,6 +1,7 @@
 package hellfirepvp.astralsorcery.common.structure.types;
 
 import hellfirepvp.astralsorcery.common.structure.match.util.PatternBlockArray;
+import hellfirepvp.astralsorcery.api.structure.IStructureType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +9,7 @@ import net.minecraft.world.level.BlockGetter;
 
 import java.util.function.Supplier;
 
-public class StructureType {
+public class StructureType implements IStructureType {
 
     private final ResourceLocation registryName;
     private final Supplier<PatternBlockArray> structureSupplier;

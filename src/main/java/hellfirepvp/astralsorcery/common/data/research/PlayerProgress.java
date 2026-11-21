@@ -1,6 +1,7 @@
 package hellfirepvp.astralsorcery.common.data.research;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.progression.IPlayerProgression;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IMajorConstellation;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PlayerProgress {
+public class PlayerProgress implements IPlayerProgression {
     private final List<ResourceLocation> knownConstellations = new ArrayList<>();
     private final List<ResourceLocation> seenConstellations = new ArrayList<>();
     private final List<ResourceLocation> storedConstellationPapers = new ArrayList<>();

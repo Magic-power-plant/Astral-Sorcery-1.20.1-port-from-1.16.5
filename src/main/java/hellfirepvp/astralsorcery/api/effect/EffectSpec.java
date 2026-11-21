@@ -1,4 +1,4 @@
-package hellfirepvp.astralsorcery.common.effect.visual.spec;
+package hellfirepvp.astralsorcery.api.effect;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Objects;
 import java.util.Optional;
 
-import static hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpecCodecs.*;
+import static hellfirepvp.astralsorcery.api.effect.EffectSpecCodecs.*;
 
 /**
  * Immutable, serializable description of one visual effect. No renderer, callback, world or lifecycle

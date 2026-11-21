@@ -20,7 +20,12 @@ import net.minecraftforge.fml.LogicalSide;
  * Date: 31.03.2020 / 20:45
  */
 //Each ModifierSource should be a AttributeModifierProvider in some way or subclass.
-public interface ModifierSource {
+public interface ModifierSource extends hellfirepvp.astralsorcery.api.perk.source.ModifierSource {
+
+    @Override
+    default boolean isEqual(hellfirepvp.astralsorcery.api.perk.source.ModifierSource other) {
+        return other instanceof ModifierSource source && isEqual(source);
+    }
 
     boolean canApplySource(Player player, LogicalSide dist);
 
@@ -37,4 +42,3 @@ public interface ModifierSource {
     default ResourceLocation getProviderKey() { return null; }
 
 }
-

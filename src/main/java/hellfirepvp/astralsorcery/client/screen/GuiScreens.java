@@ -12,6 +12,7 @@ import hellfirepvp.astralsorcery.common.GuiType;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournalProgression;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.blockentity.refraction.RefractionTableBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.observation.TelescopeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -47,7 +48,7 @@ public final class GuiScreens {
             switch (type) {
                 case CONSTELLATION_PAPER:
                     //Resolved exactly as 1.16.5 does, so the lookup failure mode stays identical.
-                    IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(ResourceLocation.parse(data.getString("cst")));
+                    IConstellation cst = ConstellationRegistry.getConstellation(ResourceLocation.parse(data.getString("cst")));
                     //AS-GUI-01 (resolved): the BLOCKED note here claimed ScreenConstellationPaper was "an empty
                     //stub without that constructor". Stale - it is 166 lines and declares
                     //ScreenConstellationPaper(IConstellation) at :51.

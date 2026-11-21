@@ -21,6 +21,7 @@ import hellfirepvp.astralsorcery.common.crafting.BlockTransmutation.BlockMatchIn
 import hellfirepvp.astralsorcery.common.lib.RecipeSerializersAS;
 import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.block.util.BlockStateHelper;
 import hellfirepvp.astralsorcery.common.util.data.ByteBufUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
@@ -83,7 +84,7 @@ public class BlockTransmutationSerializer extends CustomRecipeSerializer<BlockTr
             //1.16.5: new ResourceLocation(String) - deprecated in this Forge version, ResourceLocation.parse
             //is the replacement and throws the very same ResourceLocationException on a malformed id.
             ResourceLocation cstKey = ResourceLocation.parse(GsonHelper.getAsString(json, "constellation"));
-            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(cstKey);
+            IConstellation cst = ConstellationRegistry.getConstellation(cstKey);
             if (cst == null) {
                 throw new JsonSyntaxException(String.format("Unknown constellation %s!", cstKey.toString()));
             }
@@ -110,7 +111,7 @@ public class BlockTransmutationSerializer extends CustomRecipeSerializer<BlockTr
         //1.20.1, so the registry name is written/read explicitly and resolved against the same registry the
         //value came from - identical wire content (a ResourceLocation) and identical result.
         IWeakConstellation cst = ByteBufUtils.readOptional(buffer,
-                buf -> (IWeakConstellation) RegistriesAS.CONSTELLATIONS.getValue(ByteBufUtils.readResourceLocation(buf)));
+                buf -> (IWeakConstellation) ConstellationRegistry.getConstellation(ByteBufUtils.readResourceLocation(buf)));
         BlockTransmutation tr = new BlockTransmutation(recipeId, output, starlight, cst);
         matchInformation.forEach(tr::addInputOption);
         tr.setOutputDisplay(display);

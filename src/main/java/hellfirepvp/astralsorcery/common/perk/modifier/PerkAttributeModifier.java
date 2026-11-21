@@ -13,6 +13,8 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.perk.IPerkAttributeModifier;
+import hellfirepvp.astralsorcery.api.progression.IPlayerProgression;
 import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.perk.PerkConverter;
@@ -37,7 +39,7 @@ import java.util.Objects;
  * Created by HellFirePvP
  * Date: 08.08.2019 / 17:25
  */
-public class PerkAttributeModifier {
+public class PerkAttributeModifier implements IPerkAttributeModifier {
 
     private static long counter = 0;
 
@@ -133,6 +135,14 @@ public class PerkAttributeModifier {
         return getRawValue();
     }
 
+    @Override
+    public float getValue(Player player, IPlayerProgression progression) {
+        if (!(progression instanceof PlayerProgress progress)) {
+            throw new IllegalArgumentException("Unsupported player progression implementation");
+        }
+        return getValue(player, progress);
+    }
+
     @OnlyIn(Dist.CLIENT)
     public float getValueForDisplay(Player player, PlayerProgress progress) {
         return getValue(player, progress);
@@ -197,4 +207,3 @@ public class PerkAttributeModifier {
         return Objects.hashCode(this.comparisonKey);
     }
 }
-

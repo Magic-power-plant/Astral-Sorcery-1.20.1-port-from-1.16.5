@@ -1,6 +1,6 @@
 package hellfirepvp.astralsorcery.client.effect;
 
-import hellfirepvp.astralsorcery.common.effect.visual.spec.EffectSpec;
+import hellfirepvp.astralsorcery.api.effect.EffectSpec;
 
 /** Template-specific geometry capability. Common visual properties are applied by the registry first. */
 public interface EffectSpecAdapter<T extends EntityVisualFX> {

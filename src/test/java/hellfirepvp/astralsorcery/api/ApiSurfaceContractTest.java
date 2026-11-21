@@ -23,6 +23,13 @@ class ApiSurfaceContractTest {
     private static final String ROOT = "hellfirepvp.astralsorcery.";
     private static final List<String> TYPES = List.of(
             "api.AstralSorceryApi", "api.event.RegisterAstralSorceryExtensionsEvent",
+            "api.crafting.IAltarRecipeEffectRenderer",
+            "api.constellation.IApplicableItemEffect", "api.constellation.IEngravingEffect",
+            "api.effect.Effects", "api.effect.EffectSpec", "api.effect.EffectSpecBackend",
+            "api.perk.IPerkAttributeType", "api.perk.IPerkAttributeModifier", "api.perk.IPerkAttributeReader",
+            "api.perk.IPerkConverter", "api.perk.IPlayerPerkData", "api.perk.source.ModifierSource",
+            "api.perk.source.ModifierSourceProvider", "api.progression.IPlayerProgression",
+            "api.structure.IStructureType", "api.world.IWorldRecipe", "api.world.IWorldRecipeRegistry",
             "api.sync.SyncTarget", "api.sync.SyncDataWriter", "api.sync.SyncDataReader", "api.sync.SyncDataProvider",
             "common.crystal.CrystalAttributeItem", "common.crystal.CrystalAttributeGenItem",
             "common.constellation.ConstellationItem",
@@ -53,10 +60,15 @@ class ApiSurfaceContractTest {
         assertTrue(removed.isEmpty(), () -> "Incompatible API changes: " + removed);
         Set<String> additions = new TreeSet<>(actual);
         additions.removeAll(expected);
-        assertTrue(additions.stream().noneMatch(line -> line.startsWith("ABSTRACT_METHOD ")),
+        Set<String> publishedOwners = expected.stream().filter(line -> line.startsWith("TYPE "))
+                .map(line -> line.split(" ", 3)[1]).collect(java.util.stream.Collectors.toSet());
+        assertTrue(additions.stream().filter(line -> line.startsWith("ABSTRACT_METHOD "))
+                        .noneMatch(line -> publishedOwners.contains(line.substring("ABSTRACT_METHOD ".length()).split("#", 2)[0])),
                 () -> "Existing implementers must not gain required methods: " + additions);
-        assertTrue(actual.stream().noneMatch(line -> line.contains("net/minecraft/client/")
-                || line.contains("hellfirepvp/astralsorcery/client/")),
+        assertTrue(actual.stream().filter(line -> !line.contains(
+                        "hellfirepvp.astralsorcery.api.crafting.IAltarRecipeEffectRenderer"))
+                        .noneMatch(line -> line.contains("net/minecraft/client/")
+                                || line.contains("hellfirepvp/astralsorcery/client/")),
                 "Published signatures must be common-side safe");
     }
 

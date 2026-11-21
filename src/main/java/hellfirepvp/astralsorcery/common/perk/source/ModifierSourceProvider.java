@@ -28,14 +28,13 @@ import java.util.UUID;
  * Created by HellFirePvP
  * Date: 01.04.2020 / 18:20
  */
-public abstract class ModifierSourceProvider<T extends ModifierSource> {
-
-    private final ResourceLocation key;
+public abstract class ModifierSourceProvider<T extends ModifierSource>
+        extends hellfirepvp.astralsorcery.api.perk.source.ModifierSourceProvider<T> {
 
     private final Map<UUID, Map<ResourceLocation, T>> cachedSources = new HashMap<>();
 
     protected ModifierSourceProvider(ResourceLocation key) {
-        this.key = key;
+        super(key);
     }
 
     protected abstract void update(ServerPlayer Player);
@@ -91,8 +90,4 @@ public abstract class ModifierSourceProvider<T extends ModifierSource> {
         this.setModifier(player, identifier, source);
     }
 
-    public final ResourceLocation getKey() {
-        return key;
-    }
 }
-

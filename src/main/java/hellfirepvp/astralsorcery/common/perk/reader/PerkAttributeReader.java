@@ -9,6 +9,7 @@
 package hellfirepvp.astralsorcery.common.perk.reader;
 
 import hellfirepvp.astralsorcery.common.perk.PerkAttributeMap;
+import hellfirepvp.astralsorcery.api.perk.IPerkAttributeReader;
 import hellfirepvp.astralsorcery.common.perk.type.ModifierType;
 import hellfirepvp.astralsorcery.common.perk.type.PerkAttributeType;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,7 @@ import java.text.DecimalFormat;
  * Created by HellFirePvP
  * Date: 09.08.2019 / 07:47
  */
-public abstract class PerkAttributeReader {
+public abstract class PerkAttributeReader implements IPerkAttributeReader {
 
     private static final DecimalFormat percentageFormat = new DecimalFormat("0.00");
 
@@ -88,4 +89,3 @@ public abstract class PerkAttributeReader {
     }
 
 }
-

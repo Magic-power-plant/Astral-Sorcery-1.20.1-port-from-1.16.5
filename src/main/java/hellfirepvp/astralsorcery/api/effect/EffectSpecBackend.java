@@ -1,4 +1,4 @@
-package hellfirepvp.astralsorcery.common.effect.visual.spec;
+package hellfirepvp.astralsorcery.api.effect;
 
 import hellfirepvp.astralsorcery.common.effect.visual.EffectBuilder;
 import hellfirepvp.astralsorcery.common.effect.visual.EffectHandle;

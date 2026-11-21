@@ -20,6 +20,7 @@ import hellfirepvp.astralsorcery.common.crafting.helper.CustomRecipeSerializer;
 import hellfirepvp.astralsorcery.common.crafting.recipe.SimpleAltarRecipe;
 import hellfirepvp.astralsorcery.common.crafting.recipe.altar.effect.AltarRecipeEffect;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AltarType;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.JsonHelper;
@@ -87,7 +88,7 @@ public class SimpleAltarRecipeSerializer extends CustomRecipeSerializer<SimpleAl
 
         if (GsonHelper.isValidNode(json, "focus_constellation")) {
             ResourceLocation key = parseId(GsonHelper.getAsString(json, "focus_constellation"));
-            IConstellation cst = RegistriesAS.CONSTELLATIONS.getValue(key);
+            IConstellation cst = ConstellationRegistry.getConstellation(key);
             if (cst == null) {
                 throw new JsonSyntaxException("Unknown constellation " + key.toString());
             }

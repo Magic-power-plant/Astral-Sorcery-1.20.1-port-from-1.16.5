@@ -1,5 +1,6 @@
 package hellfirepvp.astralsorcery.common.effect.visual;
 
+import hellfirepvp.astralsorcery.api.effect.Effects;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,14 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EffectsArchitectureTest {
 
-    private static final String API = "hellfirepvp.astralsorcery.common.effect.visual.";
-    private static final String SPEC = "hellfirepvp.astralsorcery.common.effect.visual.spec.";
+    private static final String API = "hellfirepvp.astralsorcery.api.effect.";
+    private static final String COMMON = "hellfirepvp.astralsorcery.common.effect.visual.";
     private static final List<String> TYPES = List.of(
-            "Effects", "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource");
+            "EffectHandle", "EffectBuilder", "EffectTemplate", "EffectSource");
     private static final List<String> SPEC_TYPES = List.of(
+            "Effects",
             "EffectSpec", "EffectSpec$Properties", "EffectSpec$Vector", "EffectSpec$Beam",
             "EffectSpec$AlphaMode", "EffectSpec$ScaleMode", "EffectSpec$Builder",
-            "EffectSpecCodecs", "EffectSpecBackend", "EffectTemplateIds");
+            "EffectSpecCodecs", "EffectSpecBackend");
 
     @Test
     void commonFacadeLoadsAndResolvesItsSignaturesWithClientClassesDenied() throws Exception {
@@ -38,7 +40,7 @@ class EffectsArchitectureTest {
                     attemptedClientLoads.add(name);
                     throw new ClassNotFoundException("Client classes denied: " + name);
                 }
-                if (name.startsWith(API) || name.startsWith(SPEC)) {
+                if (name.startsWith(API) || name.startsWith(COMMON)) {
                     Class<?> loaded = findLoadedClass(name);
                     if (loaded == null) loaded = findClass(name);
                     if (resolve) resolveClass(loaded);
@@ -48,7 +50,7 @@ class EffectsArchitectureTest {
             }
         }) {
             for (String name : TYPES) {
-                Class<?> type = Class.forName(API + name, true, loader);
+                Class<?> type = Class.forName(COMMON + name, true, loader);
                 assertSame(loader, type.getClassLoader());
                 type.getGenericInterfaces();
                 for (var field : type.getDeclaredFields()) field.getGenericType();
@@ -61,7 +63,7 @@ class EffectsArchitectureTest {
                 assertNoClientSymbols(type);
             }
             for (String name : SPEC_TYPES) {
-                Class<?> type = Class.forName(SPEC + name, true, loader);
+                Class<?> type = Class.forName(API + name, true, loader);
                 assertSame(loader, type.getClassLoader());
                 type.getGenericInterfaces();
                 for (var field : type.getDeclaredFields()) field.getGenericType();
@@ -83,7 +85,7 @@ class EffectsArchitectureTest {
             try (URLClassLoader loader = new URLClassLoader(new java.net.URL[]{location}, Effects.class.getClassLoader()) {
                 @Override
                 protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-                    if (name.startsWith(API) || name.startsWith(SPEC)) {
+                    if (name.startsWith(API)) {
                         Class<?> loaded = findLoadedClass(name);
                         if (loaded == null) loaded = findClass(name);
                         if (resolve) resolveClass(loaded);
@@ -92,8 +94,8 @@ class EffectsArchitectureTest {
                     return super.loadClass(name, resolve);
                 }
             }) {
-                assertNotNull(Class.forName(SPEC + entry, true, loader).getField("CODEC").get(null));
-                assertNotNull(Class.forName(SPEC + "EffectSpec", true, loader).getField("CODEC").get(null));
+                assertNotNull(Class.forName(API + entry, true, loader).getField("CODEC").get(null));
+                assertNotNull(Class.forName(API + "EffectSpec", true, loader).getField("CODEC").get(null));
             }
         }
     }

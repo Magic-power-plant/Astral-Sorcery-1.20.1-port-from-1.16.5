@@ -39,12 +39,16 @@ public final class ExtensionRegistration {
             }
         } finally {
             try {
-                freezeTransmission.run();
+                hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry.freezeExtensions();
             } finally {
                 try {
-                    freezeSource.run();
+                    freezeTransmission.run();
                 } finally {
-                    freezeSync.run();
+                    try {
+                        freezeSource.run();
+                    } finally {
+                        freezeSync.run();
+                    }
                 }
             }
         }
