@@ -44,7 +44,7 @@ public class MantleEffectDiscidia extends MantleEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {
+    public void tickClient(Player player) {
         super.tickClient(player);
 
         float effChance = 0.1F;

@@ -31,7 +31,7 @@ import hellfirepvp.astralsorcery.common.lib.StructureTypesAS;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.astralsorcery.common.blockentity.base.AreaOfInfluenceBlockEntity;
-import hellfirepvp.astralsorcery.common.blockentity.base.network.ReceiverBlockEntity;
+import hellfirepvp.astralsorcery.api.StarlightReceiverBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverRitualPedestal;
 import hellfirepvp.astralsorcery.common.util.math.EffectIncrementer;
 import hellfirepvp.astralsorcery.common.util.collection.MapStream;
@@ -70,7 +70,7 @@ import java.util.stream.Collectors;
  * Created by HellFirePvP
  * Date: 09.07.2019 / 19:25
  */
-public class RitualPedestalBlockEntity extends ReceiverBlockEntity<StarlightReceiverRitualPedestal> implements CrystalAttributeBlockEntity, AreaOfInfluenceBlockEntity {
+public class RitualPedestalBlockEntity extends StarlightReceiverBlockEntity<StarlightReceiverRitualPedestal> implements CrystalAttributeBlockEntity, AreaOfInfluenceBlockEntity {
 
     public static final BlockPos RITUAL_ANCHOR_OFFEST = new BlockPos(0, 5, 0);
     public static final Set<BlockPos> RITUAL_CIRCLE_OFFSETS;

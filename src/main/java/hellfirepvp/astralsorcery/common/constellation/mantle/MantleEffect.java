@@ -9,6 +9,7 @@
 package hellfirepvp.astralsorcery.common.constellation.mantle;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.IMantleEffect;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXFacingParticle;
@@ -49,7 +50,7 @@ import java.util.function.Consumer;
  * Created by HellFirePvP
  * Date: 17.02.2020 / 20:13
  */
-public abstract class MantleEffect implements ITickHandler {
+public abstract class MantleEffect implements ITickHandler, IMantleEffect {
 
     protected static final Random rand = new Random();
 
@@ -88,8 +89,9 @@ public abstract class MantleEffect implements ITickHandler {
 
     protected void tickServer(Player player) {}
 
+    @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {}
+    public void tickClient(Player player) {}
 
     protected boolean usesTickMethods() {
         return false;

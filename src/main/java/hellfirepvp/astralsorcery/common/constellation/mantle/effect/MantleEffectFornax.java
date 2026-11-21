@@ -58,7 +58,7 @@ public class MantleEffectFornax extends MantleEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {
+    public void tickClient(Player player) {
         super.tickClient(player);
 
         if (player.isOnFire()) {

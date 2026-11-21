@@ -72,7 +72,7 @@ public class MantleEffectVicio extends MantleEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {
+    public void tickClient(Player player) {
         super.tickClient(player);
 
         // 1.16.5: PlayerEntity#isElytraFlying() -> 1.20.1: LivingEntity#isFallFlying()

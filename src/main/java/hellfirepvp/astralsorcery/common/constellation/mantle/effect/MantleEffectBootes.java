@@ -78,7 +78,7 @@ public class MantleEffectBootes extends MantleEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {
+    public void tickClient(Player player) {
         super.tickClient(player);
         this.playCapeSparkles(player, 0.15F);
     }

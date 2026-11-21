@@ -27,7 +27,7 @@ import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
 import hellfirepvp.astralsorcery.common.blockentity.starlight.SpectralRelayBlockEntity;
-import hellfirepvp.astralsorcery.common.blockentity.base.network.ReceiverBlockEntity;
+import hellfirepvp.astralsorcery.api.StarlightReceiverBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverAltar;
 import hellfirepvp.astralsorcery.common.item.util.ItemStackHandlerAS;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
@@ -74,7 +74,7 @@ import java.util.*;
  * Created by HellFirePvP
  * Date: 12.08.2019 / 19:53
  */
-public class AltarBlockEntity extends ReceiverBlockEntity<StarlightReceiverAltar> implements WandInteractable {
+public class AltarBlockEntity extends StarlightReceiverBlockEntity<StarlightReceiverAltar> implements WandInteractable {
 
     private float posDistribution = -1;
 

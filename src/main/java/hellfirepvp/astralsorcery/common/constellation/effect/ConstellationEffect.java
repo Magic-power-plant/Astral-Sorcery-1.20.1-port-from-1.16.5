@@ -9,6 +9,7 @@
 package hellfirepvp.astralsorcery.common.constellation.effect;
 
 import hellfirepvp.astralsorcery.AstralSorcery;
+import hellfirepvp.astralsorcery.api.IConstellationEffect;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.function.VFXColorFunction;
 import hellfirepvp.astralsorcery.client.lib.EffectTemplatesAS;
@@ -48,7 +49,7 @@ import java.util.Random;
  * Created by HellFirePvP
  * Date: 05.06.2019 / 22:07
  */
-public abstract class ConstellationEffect {
+public abstract class ConstellationEffect implements IConstellationEffect {
 
     protected static final Random rand = new Random();
     protected static final AABB BOX = new AABB(0, 0, 0, 1, 1, 1);
@@ -70,9 +71,7 @@ public abstract class ConstellationEffect {
         return this.needsChunkToBeLoaded;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public abstract void playClientEffect(Level world, BlockPos pos, RitualPedestalBlockEntity pedestal, float alphaMultiplier, boolean extended);
-
+    @Override
     public abstract boolean playEffect(Level world, BlockPos pos, ConstellationEffectProperties properties, @Nullable IMinorConstellation trait);
 
     @Nullable

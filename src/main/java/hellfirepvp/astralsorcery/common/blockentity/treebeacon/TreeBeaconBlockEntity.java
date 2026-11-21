@@ -24,7 +24,7 @@ import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.common.network.PacketChannel;
 import hellfirepvp.astralsorcery.common.network.play.server.PktPlayEffect;
 import hellfirepvp.astralsorcery.common.blockentity.base.AreaOfInfluenceBlockEntity;
-import hellfirepvp.astralsorcery.common.blockentity.base.network.ReceiverBlockEntity;
+import hellfirepvp.astralsorcery.api.StarlightReceiverBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverTreeBeacon;
 import hellfirepvp.astralsorcery.common.util.time.CalendarUtils;
 import hellfirepvp.astralsorcery.common.util.collection.MapStream;
@@ -69,7 +69,7 @@ import java.util.function.Supplier;
  * Created by HellFirePvP
  * Date: 04.09.2020 / 19:57
  */
-public class TreeBeaconBlockEntity extends ReceiverBlockEntity<StarlightReceiverTreeBeacon> implements AreaOfInfluenceBlockEntity {
+public class TreeBeaconBlockEntity extends StarlightReceiverBlockEntity<StarlightReceiverTreeBeacon> implements AreaOfInfluenceBlockEntity {
 
     private final Map<BlockPos, Integer> treeComponents = new HashMap<>();
     private UUID playerUUID = null;

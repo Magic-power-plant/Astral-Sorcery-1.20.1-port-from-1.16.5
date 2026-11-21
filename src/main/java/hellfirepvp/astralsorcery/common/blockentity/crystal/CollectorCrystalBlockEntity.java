@@ -27,7 +27,7 @@ import hellfirepvp.astralsorcery.common.starlight.IIndependentStarlightSource;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.SimpleTransmissionSourceNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.base.crystal.IndependentCrystalSource;
 import hellfirepvp.astralsorcery.common.structure.types.StructureType;
-import hellfirepvp.astralsorcery.common.blockentity.base.network.SourceBlockEntity;
+import hellfirepvp.astralsorcery.api.StarlightSourceBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.util.nbt.NBTHelper;
@@ -50,7 +50,7 @@ import java.util.UUID;
  * Created by HellFirePvP
  * Date: 10.08.2019 / 19:55
  */
-public class CollectorCrystalBlockEntity extends SourceBlockEntity<SimpleTransmissionSourceNode> implements CrystalAttributeBlockEntity, ConstellationBlockEntity {
+public class CollectorCrystalBlockEntity extends StarlightSourceBlockEntity<SimpleTransmissionSourceNode> implements CrystalAttributeBlockEntity, ConstellationBlockEntity {
 
     public static final BlockPos[] OFFSETS_LIQUID_STARLIGHT = new BlockPos[] {
             new BlockPos(-1, -4, -1),

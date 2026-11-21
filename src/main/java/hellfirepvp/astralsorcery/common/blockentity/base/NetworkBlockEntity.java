@@ -8,6 +8,7 @@
 
 package hellfirepvp.astralsorcery.common.blockentity.base;
 
+import hellfirepvp.astralsorcery.api.IStarlightNetworkMember;
 import hellfirepvp.astralsorcery.common.starlight.WorldNetworkHandler;
 import hellfirepvp.astralsorcery.common.starlight.transmission.IPrismTransmissionNode;
 import hellfirepvp.astralsorcery.common.starlight.transmission.TransmissionNetworkHelper;
@@ -26,7 +27,7 @@ import java.util.Random;
  * Created by HellFirePvP
  * Date: 03.08.2016 / 18:12
  */
-public abstract class NetworkBlockEntity<T extends IPrismTransmissionNode> extends TickableBlockEntity {
+public abstract class NetworkBlockEntity<T extends IPrismTransmissionNode> extends TickableBlockEntity implements IStarlightNetworkMember {
 
     protected static final Random rand = new Random();
     private boolean isNetworkInformed = false;
@@ -69,6 +70,7 @@ public abstract class NetworkBlockEntity<T extends IPrismTransmissionNode> exten
                 if (!TransmissionNetworkHelper.isBlockEntityInNetwork(this)) {
                     TransmissionNetworkHelper.informNetworkBlockEntityPlacement(this);
                 }
+                this.onNetworkJoin(this.getLevel(), this.getBlockPos());
                 this.isNetworkInformed = true;
             }
 
@@ -91,6 +93,9 @@ public abstract class NetworkBlockEntity<T extends IPrismTransmissionNode> exten
     public void markForUpdate() {
         super.markForUpdate();
         this.needsNetworkSync = true;
+        if (this.getLevel() != null) {
+            this.onNetworkDirty(this.getLevel(), this.getBlockPos());
+        }
     }
 
     protected void preventNetworkSync() {
@@ -110,6 +115,9 @@ public abstract class NetworkBlockEntity<T extends IPrismTransmissionNode> exten
 
         if (this.getLevel() == null || this.getLevel().isClientSide()) {
             return;
+        }
+        if (this.isNetworkInformed) {
+            this.onNetworkLeave(this.getLevel(), this.getBlockPos());
         }
         TransmissionNetworkHelper.informNetworkBlockEntityRemoval(this);
         this.isNetworkInformed = false;

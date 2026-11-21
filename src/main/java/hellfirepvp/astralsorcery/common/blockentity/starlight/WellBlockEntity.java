@@ -5,7 +5,7 @@ import hellfirepvp.astralsorcery.common.crafting.WellLiquefactionContext;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
-import hellfirepvp.astralsorcery.common.blockentity.base.network.ReceiverBlockEntity;
+import hellfirepvp.astralsorcery.api.StarlightReceiverBlockEntity;
 import hellfirepvp.astralsorcery.common.blockentity.network.StarlightReceiverWell;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.blockentity.capability.FluidTankAccess;
@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 //registered in TransmissionClassRegistry - had no producer at all, so a placed well never joined the network and
 //receiveStarlight(double) was never called by anything. The well could only ever accumulate its own passive
 //collectStarlight() gain, never starlight relayed from a collector crystal.
-public class WellBlockEntity extends ReceiverBlockEntity<StarlightReceiverWell> {
+public class WellBlockEntity extends StarlightReceiverBlockEntity<StarlightReceiverWell> {
 
     public static final String TAG_STARLIGHT_BUFFER = "starlightBuffer";
     public static final String TAG_CATALYST = "catalyst";

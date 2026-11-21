@@ -50,7 +50,7 @@ public class MantleEffectOctans extends MantleEffect {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void tickClient(Player player) {
+    public void tickClient(Player player) {
         super.tickClient(player);
 
         float chance = 0.1F;
