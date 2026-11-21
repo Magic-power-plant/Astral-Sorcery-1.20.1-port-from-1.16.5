@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.crafting.builtin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
+import hellfirepvp.astralsorcery.api.constellation.ConstellationItem;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationRegistry;
 import hellfirepvp.astralsorcery.common.constellation.IConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;

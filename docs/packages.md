@@ -5,7 +5,7 @@
 
 ## 覆盖范围与统计口径
 
-截至 2026-11-21，`src/main/java` 下有 **280 个实际声明包**、1,413 个业务 Java 源文件，
+截至 2026-11-21，`src/main/java` 下有 **281 个实际声明包**、1,416 个业务 Java 源文件，
 每个包配套一份 `package-info.java`。API 契约按领域拆分为分类子包。
 
 - 根命名空间为 `hellfirepvp.astralsorcery`；以源文件的 package 声明为准，并核对目录路径。
@@ -233,13 +233,14 @@ Write-Output ('生产包: {0}; 包文档: {1}' -f $packages.Count, $infos.Count)
 
 ## 包索引
 
-### 入口与扩展 API（12）
+### 入口与扩展 API（13）
 
 | 包 | 职责 |
 | --- | --- |
 | [`（根包）`](../src/main/java/hellfirepvp/astralsorcery/package-info.java) | Astral Sorcery 模组入口与 Mixin 配置连接。 |
 | [`api`](../src/main/java/hellfirepvp/astralsorcery/api/package-info.java) | 面向附属模组的扩展 API 版本入口。 |
 | [`api.constellation`](../src/main/java/hellfirepvp/astralsorcery/api/constellation/package-info.java) | 星座蚀刻效果与物品应用能力。 |
+| [`api.crystal`](../src/main/java/hellfirepvp/astralsorcery/api/crystal/package-info.java) | 扩展物品的晶体属性读写与属性层级生成能力。 |
 | [`api.crafting`](../src/main/java/hellfirepvp/astralsorcery/api/crafting/package-info.java) | 祭坛配方效果的客户端渲染回调。 |
 | [`api.effect`](../src/main/java/hellfirepvp/astralsorcery/api/effect/package-info.java) | 不可变视觉效果描述、创建门面与后端能力。 |
 | [`api.event`](../src/main/java/hellfirepvp/astralsorcery/api/event/package-info.java) | 统一扩展注册事件及 constellation、transmission、source、sync 注册入口。 |

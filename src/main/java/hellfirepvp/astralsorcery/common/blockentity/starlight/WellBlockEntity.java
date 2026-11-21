@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.blockentity.starlight;
 
 import hellfirepvp.astralsorcery.common.crafting.WellLiquefaction;
 import hellfirepvp.astralsorcery.common.crafting.WellLiquefactionContext;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
+import hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.lib.BlockEntityTypesAS;
 import hellfirepvp.astralsorcery.api.StarlightReceiverBlockEntity;

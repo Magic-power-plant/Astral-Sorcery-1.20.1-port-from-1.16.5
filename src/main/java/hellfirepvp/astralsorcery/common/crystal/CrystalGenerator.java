@@ -61,20 +61,20 @@ public class CrystalGenerator {
 
     @Nonnull
     public static CrystalAttributes upgradeProperties(ItemStack stack, Random random) {
-        if (!(stack.getItem() instanceof CrystalAttributeItem)) {
+        if (!(stack.getItem() instanceof hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem)) {
             return generateNewAttributes(stack, random);
         }
-        CrystalAttributes attr = ((CrystalAttributeItem) stack.getItem()).getAttributes(stack);
+        CrystalAttributes attr = ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem) stack.getItem()).getAttributes(stack);
         if (attr == null) {
             return generateNewAttributes(stack, random);
         }
-        if (!(stack.getItem() instanceof CrystalAttributeGenItem)) {
+        if (!(stack.getItem() instanceof hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem)) {
             return attr;
         }
         int existing = attr.getTotalTierLevel();
         int expected = Mth.clamp(existing + 1,
-                ((CrystalAttributeGenItem) stack.getItem()).getGeneratedPropertyTiers(),
-                ((CrystalAttributeGenItem) stack.getItem()).getMaxPropertyTiers());
+                ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem) stack.getItem()).getGeneratedPropertyTiers(),
+                ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem) stack.getItem()).getMaxPropertyTiers());
         int generate = expected - attr.getTotalTierLevel();
 
         CrystalAttributes.Builder builder = CrystalAttributes.Builder.newBuilder(false);
@@ -114,8 +114,8 @@ public class CrystalGenerator {
     @Nonnull
     public static CrystalAttributes generateNewAttributes(ItemStack item, Random random) {
         int toGenerate = 4;
-        if (item.getItem() instanceof CrystalAttributeGenItem) {
-            toGenerate = ((CrystalAttributeGenItem) item.getItem()).getGeneratedPropertyTiers();
+        if (item.getItem() instanceof hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem) {
+            toGenerate = ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem) item.getItem()).getGeneratedPropertyTiers();
         }
         return generateNewAttributes(toGenerate, random);
     }

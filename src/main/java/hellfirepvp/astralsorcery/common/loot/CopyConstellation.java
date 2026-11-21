@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
+import hellfirepvp.astralsorcery.api.constellation.ConstellationItem;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationBlockEntity;
 import hellfirepvp.astralsorcery.common.constellation.IMinorConstellation;
 import hellfirepvp.astralsorcery.common.constellation.IWeakConstellation;

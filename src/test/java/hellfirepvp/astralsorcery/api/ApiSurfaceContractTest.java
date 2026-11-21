@@ -24,7 +24,8 @@ class ApiSurfaceContractTest {
     private static final List<String> TYPES = List.of(
             "api.AstralSorceryApi", "api.event.RegisterAstralSorceryExtensionsEvent",
             "api.crafting.IAltarRecipeEffectRenderer",
-            "api.constellation.IApplicableItemEffect", "api.constellation.IEngravingEffect",
+            "api.constellation.ConstellationItem", "api.constellation.IApplicableItemEffect", "api.constellation.IEngravingEffect",
+            "api.crystal.CrystalAttributeItem", "api.crystal.CrystalAttributeGenItem",
             "api.effect.Effects", "api.effect.EffectSpec", "api.effect.EffectSpecBackend",
             "api.perk.IPerkAttributeType", "api.perk.IPerkAttributeModifier", "api.perk.IPerkAttributeReader",
             "api.perk.IPerkConverter", "api.perk.IPlayerPerkData", "api.perk.source.ModifierSource",

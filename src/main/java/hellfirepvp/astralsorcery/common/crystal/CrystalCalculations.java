@@ -98,8 +98,8 @@ public class CrystalCalculations {
 
     // Range: 1.0 - 11.56 (Multiplier)
     public static int getToolDurability(int durability, ItemStack tool) {
-        if (tool.getItem() instanceof CrystalAttributeItem) {
-            CrystalAttributes attr = ((CrystalAttributeItem) tool.getItem()).getAttributes(tool);
+        if (tool.getItem() instanceof hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem) {
+            CrystalAttributes attr = ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem) tool.getItem()).getAttributes(tool);
             if (attr != null) {
                 durability = getToolDurability(durability, attr);
             }
@@ -116,8 +116,8 @@ public class CrystalCalculations {
 
     // Range: 1.0 - 3.895 (Multiplier)
     public static float getToolEfficiency(float efficiency, ItemStack tool) {
-        if (tool.getItem() instanceof CrystalAttributeItem) {
-            CrystalAttributes attr = ((CrystalAttributeItem) tool.getItem()).getAttributes(tool);
+        if (tool.getItem() instanceof hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem) {
+            CrystalAttributes attr = ((hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem) tool.getItem()).getAttributes(tool);
             if (attr != null) {
                 efficiency = getToolEfficiency(efficiency, attr);
             }

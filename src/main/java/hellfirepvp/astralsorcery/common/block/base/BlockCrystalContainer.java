@@ -1,8 +1,8 @@
 package hellfirepvp.astralsorcery.common.block.base;
 
-import hellfirepvp.astralsorcery.common.constellation.ConstellationItem;
+import hellfirepvp.astralsorcery.api.constellation.ConstellationItem;
 import hellfirepvp.astralsorcery.common.constellation.ConstellationBlockEntity;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
+import hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeBlockEntity;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import net.minecraft.core.BlockPos;

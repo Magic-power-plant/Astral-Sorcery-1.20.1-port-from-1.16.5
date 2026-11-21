@@ -8,8 +8,18 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PublishedExtensionContractsTest {
+
+    @Test void legacyItemCapabilitiesRemainApiCapabilities() {
+        assertTrue(hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem.class
+                .isAssignableFrom(hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem.class));
+        assertTrue(hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem.class
+                .isAssignableFrom(hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem.class));
+        assertTrue(hellfirepvp.astralsorcery.api.constellation.ConstellationItem.class
+                .isAssignableFrom(hellfirepvp.astralsorcery.common.constellation.ConstellationItem.class));
+    }
 
     @Test void extensionPointExposesLookupKeysAndItsKey() {
         ResourceLocation id = new ResourceLocation("example", "entry");

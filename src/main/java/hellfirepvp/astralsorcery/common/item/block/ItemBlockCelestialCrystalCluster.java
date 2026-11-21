@@ -10,7 +10,7 @@ package hellfirepvp.astralsorcery.common.item.block;
 
 import hellfirepvp.astralsorcery.common.CommonProxy;
 import hellfirepvp.astralsorcery.common.block.BlockCelestialCrystalCluster;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem;
+import hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalGenerator;
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;

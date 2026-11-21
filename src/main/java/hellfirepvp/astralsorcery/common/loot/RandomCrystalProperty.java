@@ -2,7 +2,7 @@ package hellfirepvp.astralsorcery.common.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem;
+import hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalGenerator;
 import hellfirepvp.astralsorcery.common.lib.LootAS;

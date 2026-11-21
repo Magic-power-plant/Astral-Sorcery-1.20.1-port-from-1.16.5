@@ -11,7 +11,7 @@ package hellfirepvp.astralsorcery.common.item.tool;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import hellfirepvp.astralsorcery.common.crystal.CalculationContext;
-import hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem;
+import hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem;
 import hellfirepvp.astralsorcery.common.crystal.CrystalAttributes;
 import hellfirepvp.astralsorcery.common.crystal.CrystalCalculations;
 import hellfirepvp.astralsorcery.common.lib.CrystalPropertiesAS;

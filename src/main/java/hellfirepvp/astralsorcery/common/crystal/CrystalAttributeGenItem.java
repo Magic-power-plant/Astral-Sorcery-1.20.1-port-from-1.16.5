@@ -1,8 +1,12 @@
 package hellfirepvp.astralsorcery.common.crystal;
 
-public interface CrystalAttributeGenItem extends CrystalAttributeItem {
+@Deprecated
+public interface CrystalAttributeGenItem extends CrystalAttributeItem,
+        hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem {
 
+    @Override
     int getGeneratedPropertyTiers();
 
+    @Override
     int getMaxPropertyTiers();
 }

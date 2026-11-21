@@ -10,6 +10,14 @@ ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataReader#readFromIncomi
 ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataWriter#writeAllDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
 ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncDataWriter#writeDiffDataToPacket 1025 (Lnet/minecraft/nbt/CompoundTag;)V - -
 ABSTRACT_METHOD hellfirepvp.astralsorcery.api.sync.SyncTarget#markForUpdate 1025 ()V - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.constellation.ConstellationItem#getAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.constellation.ConstellationItem#getTraitConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IMinorConstellation; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.constellation.ConstellationItem#setAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.constellation.ConstellationItem#setTraitConstellation 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/constellation/IMinorConstellation;)Z - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem#getGeneratedPropertyTiers 1025 ()I - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem#getMaxPropertyTiers 1025 ()I - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem#getAttributes 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes; - -
+ABSTRACT_METHOD hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem#setAttributes 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/crystal/CrystalAttributes;)V - -
 ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#getAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation; - -
 ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#getTraitConstellation 1025 (Lnet/minecraft/world/item/ItemStack;)Lhellfirepvp/astralsorcery/common/constellation/IMinorConstellation; - -
 ABSTRACT_METHOD hellfirepvp.astralsorcery.common.constellation.ConstellationItem#setAttunedConstellation 1025 (Lnet/minecraft/world/item/ItemStack;Lhellfirepvp/astralsorcery/common/constellation/IWeakConstellation;)Z - -
@@ -124,9 +132,12 @@ PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataProvider java/lang/Object -
 PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataReader java/lang/Object -
 PARENTS hellfirepvp.astralsorcery.api.sync.SyncDataWriter java/lang/Object -
 PARENTS hellfirepvp.astralsorcery.api.sync.SyncTarget java/lang/Object -
-PARENTS hellfirepvp.astralsorcery.common.constellation.ConstellationItem java/lang/Object -
-PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem java/lang/Object hellfirepvp/astralsorcery/common/crystal/CrystalAttributeItem
-PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.common.constellation.ConstellationItem java/lang/Object hellfirepvp/astralsorcery/api/constellation/ConstellationItem
+PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem java/lang/Object hellfirepvp/astralsorcery/common/crystal/CrystalAttributeItem,hellfirepvp/astralsorcery/api/crystal/CrystalAttributeGenItem
+PARENTS hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem java/lang/Object hellfirepvp/astralsorcery/api/crystal/CrystalAttributeItem
+PARENTS hellfirepvp.astralsorcery.api.constellation.ConstellationItem java/lang/Object -
+PARENTS hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem java/lang/Object hellfirepvp/astralsorcery/api/crystal/CrystalAttributeItem
+PARENTS hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem java/lang/Object -
 PARENTS hellfirepvp.astralsorcery.common.data.sync.SyncDataHolder java/lang/Object hellfirepvp/astralsorcery/common/ITickHandler
 PARENTS hellfirepvp.astralsorcery.common.data.sync.base.AbstractData java/lang/Object hellfirepvp/astralsorcery/api/sync/SyncDataWriter
 PARENTS hellfirepvp.astralsorcery.common.data.sync.base.AbstractDataProvider java/lang/Object hellfirepvp/astralsorcery/api/sync/SyncDataProvider
@@ -148,6 +159,9 @@ TYPE hellfirepvp.astralsorcery.api.sync.SyncDataProvider 1537 <S:Lhellfirepvp/as
 TYPE hellfirepvp.astralsorcery.api.sync.SyncDataReader 1537 <C:Ljava/lang/Object;>Ljava/lang/Object;
 TYPE hellfirepvp.astralsorcery.api.sync.SyncDataWriter 1537 -
 TYPE hellfirepvp.astralsorcery.api.sync.SyncTarget 1537 -
+TYPE hellfirepvp.astralsorcery.api.constellation.ConstellationItem 1537 -
+TYPE hellfirepvp.astralsorcery.api.crystal.CrystalAttributeGenItem 1537 -
+TYPE hellfirepvp.astralsorcery.api.crystal.CrystalAttributeItem 1537 -
 TYPE hellfirepvp.astralsorcery.common.constellation.ConstellationItem 1537 -
 TYPE hellfirepvp.astralsorcery.common.crystal.CrystalAttributeGenItem 1537 -
 TYPE hellfirepvp.astralsorcery.common.crystal.CrystalAttributeItem 1537 -
