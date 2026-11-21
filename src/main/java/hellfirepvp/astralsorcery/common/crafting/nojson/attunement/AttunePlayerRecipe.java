@@ -17,7 +17,6 @@ import hellfirepvp.astralsorcery.common.data.research.PlayerProgress;
 import hellfirepvp.astralsorcery.common.data.research.ProgressionTier;
 import hellfirepvp.astralsorcery.common.data.research.ResearchHelper;
 import hellfirepvp.astralsorcery.common.blockentity.altar.AttunementAltarBlockEntity;
-import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import hellfirepvp.astralsorcery.common.entity.util.EntityUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -93,7 +92,7 @@ public class AttunePlayerRecipe extends AttunementRecipe<ActivePlayerAttunementR
     }
 
     public static boolean isEligablePlayer(ServerPlayer player, IConstellation attuneTo) {
-        if (player != null && player.isAlive() && !MiscUtils.isPlayerFakeMP(player) && !player.isShiftKeyDown()) {
+        if (player != null && player.isAlive() && !player.isShiftKeyDown()) {
             PlayerProgress prog = ResearchHelper.getProgress(player, LogicalSide.SERVER);
 
             return prog.isValid() &&
