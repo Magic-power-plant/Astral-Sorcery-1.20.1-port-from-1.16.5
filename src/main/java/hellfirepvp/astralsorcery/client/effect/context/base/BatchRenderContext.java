@@ -21,6 +21,7 @@ import hellfirepvp.astralsorcery.client.render.IDrawRenderTypeBuffer;
 import hellfirepvp.astralsorcery.client.resource.AbstractRenderableTexture;
 import hellfirepvp.astralsorcery.client.resource.BlockAtlasTexture;
 import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
+import hellfirepvp.astralsorcery.client.util.Blending;
 import hellfirepvp.astralsorcery.client.util.draw.RenderInfo;
 import hellfirepvp.astralsorcery.client.util.draw.RenderTypeDecorator;
 import hellfirepvp.astralsorcery.common.effect.visual.EffectBuilder;
@@ -111,7 +112,7 @@ public class BatchRenderContext<T extends EntityVisualFX> extends OrderSortable 
             // 1.16.5 additionally toggled RenderSystem.enableTexture()/disableTexture() around the binds; the fixed-function
             // texture toggle no longer exists in 1.20.1, binding the texture into shader sampler 0 is sufficient.
             drawType = RenderTypeDecorator.wrapSetup(this.getRenderType(),
-                    () -> this.getSprite().bindTexture(),
+                    () -> this.getSprite().bindForRendering(spriteBlending()),
                     () -> BlockAtlasTexture.getInstance().bindTexture());
         }
         VertexConsumer buf = drawBuffer.getBuffer(drawType);
@@ -131,6 +132,10 @@ public class BatchRenderContext<T extends EntityVisualFX> extends OrderSortable 
 
     public RenderType getRenderType() {
         return renderType;
+    }
+
+    protected Blending spriteBlending() {
+        return Blending.DEFAULT;
     }
 
     @Override

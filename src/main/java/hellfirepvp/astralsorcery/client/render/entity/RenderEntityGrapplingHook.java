@@ -75,9 +75,7 @@ public class RenderEntityGrapplingHook extends EntityRenderer<EntityGrapplingHoo
         RenderSystem.disableCull();
 
         //Main grappling hook sprite
-        SpritesAS.SPR_GRAPPLING_HOOK.bindTexture();
-
-        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+        RenderingUtils.drawSprite(SpritesAS.SPR_GRAPPLING_HOOK, Blending.DEFAULT, buf -> {
             RenderingDrawUtils.renderFacingSpriteVB(buf, matrixStack,
                     entityPos.getX(), entityPos.getY(), entityPos.getZ(),
                     1.3F, 0F,

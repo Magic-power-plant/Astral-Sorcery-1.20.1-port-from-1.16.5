@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.util;
 
+import hellfirepvp.astralsorcery.client.resource.SpriteSheetResource;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
@@ -234,6 +236,13 @@ public class RenderingUtils {
         renderStack.translate(x, y, z);
         fn.accept(renderStack);
         renderStack.popPose();
+    }
+
+    public static void drawSprite(SpriteSheetResource sprite, Blending blending, Consumer<BufferBuilder> geometry) {
+        draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buffer -> {
+            sprite.bindForRendering(blending);
+            geometry.accept(buffer);
+        });
     }
 
     public static void draw(int drawMode, VertexFormat format, Consumer<BufferBuilder> fn) {

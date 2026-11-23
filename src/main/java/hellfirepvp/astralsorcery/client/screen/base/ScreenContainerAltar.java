@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.screen.base;
 
+import hellfirepvp.astralsorcery.client.util.Blending;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -137,11 +139,10 @@ public abstract class ScreenContainerAltar<T extends ContainerAltarBase> extends
 
         if (percFilled > 0) {
             SpriteSheetResource spriteStarlight = SpritesAS.SPR_STARLIGHT_STORE;
-            spriteStarlight.getResource().bindTexture();
 
             int tick = altar.getTicksExisted();
             Tuple<Float, Float> uvOffset = spriteStarlight.getUVOffset(tick);
-            RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+            RenderingUtils.drawSprite(spriteStarlight, Blending.DEFAULT, buf -> {
                 RenderingGuiUtils.rect(buf, renderStack, leftPos + offsetX, topPos + offsetZ, this.getBlitOffset(), (int) (width * percFilled), height)
                         .tex(uvOffset.getA(), uvOffset.getB(), spriteStarlight.getULength() * percFilled, spriteStarlight.getVLength())
                         .color(barColor)
@@ -161,7 +162,7 @@ public abstract class ScreenContainerAltar<T extends ContainerAltarBase> extends
                         int from = (int) (width * percFilled);
                         int to = (int) (width * percReq);
 
-                        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+                        RenderingUtils.drawSprite(spriteStarlight, Blending.DEFAULT, buf -> {
                             RenderingGuiUtils.rect(buf, renderStack, leftPos + offsetX + from, topPos + offsetZ, this.getBlitOffset(), to, height)
                                     .tex(uvOffset.getA() + spriteStarlight.getULength() * percFilled, uvOffset.getB(), spriteStarlight.getULength() * percReq, spriteStarlight.getVLength())
                                     .color(0.2F, 0.5F, 1.0F, 0.4F)

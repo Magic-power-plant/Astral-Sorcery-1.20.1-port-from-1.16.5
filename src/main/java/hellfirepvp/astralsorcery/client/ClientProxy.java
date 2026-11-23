@@ -20,6 +20,7 @@ import hellfirepvp.astralsorcery.client.event.effect.EffectRenderEventHandler;
 import hellfirepvp.astralsorcery.client.event.effect.LightbeamRenderHelper;
 import hellfirepvp.astralsorcery.client.registry.RegistryKeyBindings;
 import hellfirepvp.astralsorcery.client.render.entity.layer.StarryLayerRenderer;
+import hellfirepvp.astralsorcery.client.render.EffectCurveShader;
 import hellfirepvp.astralsorcery.client.resource.AssetLibrary;
 import hellfirepvp.astralsorcery.client.resource.AssetPreLoader;
 import hellfirepvp.astralsorcery.client.screen.journal.ScreenJournal;
@@ -143,6 +144,7 @@ public class ClientProxy extends CommonProxy {
         modEventBus.addListener(RegistryItemModels::registerColors);
         modEventBus.addListener(RegistryBlocks::registerColors);
         modEventBus.addListener(this::onClientSetup);
+        modEventBus.addListener(EffectCurveShader::register);
         // 1.16.5 called RegistryEntityTypes.initClient()/RegistryTileEntities.initClient() from onClientSetup;
         // in 1.20.1 renderer registration is the dedicated mod-bus EntityRenderersEvent.RegisterRenderers
         modEventBus.addListener(RegistryEntityRenderers::initClient);

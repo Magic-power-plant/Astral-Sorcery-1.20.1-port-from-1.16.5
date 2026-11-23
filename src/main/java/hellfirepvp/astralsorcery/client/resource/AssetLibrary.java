@@ -54,16 +54,19 @@ public class AssetLibrary implements ResourceManagerReloadListener {
         if (name.endsWith(".png")) {
             throw new IllegalArgumentException("Tried to loadTexture with appended .png from the AssetLibrary!");
         }
-        AbstractRenderableTexture resource = loadedTextures.computeIfAbsent(location, l -> new HashMap<>())
-                .computeIfAbsent(name, str -> AssetLoader.loadTexture(location, str));
-        reloadableResources.add((ReloadableResource) resource);
-        return resource;
+        return loadedTextures.computeIfAbsent(location, key -> new HashMap<>())
+                .computeIfAbsent(name, key -> loadTexture(AssetLoader.textureId(location, key)));
+    }
+
+    public static AbstractRenderableTexture loadCurveTexture(String... path) {
+        return loadTexture(AssetLoader.TextureLocation.EFFECT, path);
     }
 
     /** Resolves a data-only texture identifier using the same reload lifecycle as named assets. */
     public static AbstractRenderableTexture loadTexture(ResourceLocation texture) {
         return namedTextures.computeIfAbsent(texture, key -> {
-            BindableResource resource = new BindableResource(key.toString());
+            BindableResource resource = key.getNamespace().equals(AstralSorcery.MODID) && key.getPath().startsWith("textures/effect/")
+                    ? new CurveTextureResource(key.toString()) : new BindableResource(key.toString());
             reloadableResources.add(resource);
             return resource;
         });

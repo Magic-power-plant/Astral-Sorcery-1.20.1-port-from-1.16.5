@@ -26,11 +26,6 @@ public class AssetLoader {
     private AssetLoader() {}
 
     @OnlyIn(Dist.CLIENT)
-    protected static BindableResource load(AssetLocation location, SubLocation subLocation, String name, String suffix) {
-        return new BindableResource(buildResourceString(location, subLocation, name, suffix));
-    }
-
-    @OnlyIn(Dist.CLIENT)
     private static String buildResourceString(AssetLocation location, SubLocation subLocation, String name, String suffix) {
         if (name.endsWith(suffix)) { //In case of derp.
             name = name.substring(0, name.length() - suffix.length());
@@ -46,8 +41,8 @@ public class AssetLoader {
     }
 
     @OnlyIn(Dist.CLIENT)
-    protected static BindableResource loadTexture(TextureLocation location, String name) {
-        return load(AssetLocation.TEXTURES, location, name, ".png");
+    static ResourceLocation textureId(TextureLocation location, String name) {
+        return ResourceLocation.parse(buildResourceString(AssetLocation.TEXTURES, location, name, ".png"));
     }
 
     @OnlyIn(Dist.CLIENT)

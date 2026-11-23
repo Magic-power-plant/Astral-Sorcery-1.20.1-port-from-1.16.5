@@ -179,7 +179,6 @@ public class ScreenRefractionTable extends BlockEntityScreen<RefractionTableBloc
             return;
         }
 
-        SpritesAS.SPR_HALO_INFUSION.bindTexture();
         Tuple<Float, Float> uvFrame = SpritesAS.SPR_HALO_INFUSION.getUVOffset(ClientScheduler.getClientTick());
 
         float scale = 160F;
@@ -195,7 +194,7 @@ public class ScreenRefractionTable extends BlockEntityScreen<RefractionTableBloc
         renderStack.scale(-scale / 2, -scale / 2, 1);
 
         //1.16.5: DefaultVertexFormats -> 1.20.1: com.mojang.blaze3d.vertex.DefaultVertexFormat
-        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+        RenderingUtils.drawSprite(SpritesAS.SPR_HALO_INFUSION, Blending.DEFAULT, buf -> {
             RenderingGuiUtils.rect(buf, renderStack, this)
                     .dim(scale, scale)
                     .color(1F, 1F, 1F, this.getBlockEntity().getRunProgress())

@@ -69,8 +69,12 @@ public class BindableResource extends AbstractRenderableTexture.Full implements 
             return resource;
         }
         //1.16.5: TextureManager.loadTexture(ResourceLocation, Texture) -> 1.20.1: TextureManager.register(...)
-        mgr.register(this.getKey(), new SimpleTexture(new ResourceLocation(this.getPath())));
+        mgr.register(this.getKey(), new SimpleTexture(resolveTextureLocation()));
         return mgr.getTexture(this.getKey(), null);
+    }
+
+    protected ResourceLocation resolveTextureLocation() {
+        return ResourceLocation.parse(this.path);
     }
 
     @Override

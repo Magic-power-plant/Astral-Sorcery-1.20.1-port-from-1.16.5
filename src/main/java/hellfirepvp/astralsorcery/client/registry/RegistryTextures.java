@@ -10,6 +10,7 @@ package hellfirepvp.astralsorcery.client.registry;
 
 import static hellfirepvp.astralsorcery.client.lib.TexturesAS.*;
 import static hellfirepvp.astralsorcery.client.resource.AssetLibrary.loadTexture;
+import static hellfirepvp.astralsorcery.client.resource.AssetLibrary.loadCurveTexture;
 import static hellfirepvp.astralsorcery.client.resource.AssetLoader.TextureLocation.*;
 
 /**
@@ -119,36 +120,36 @@ public class RegistryTextures {
 
         TEX_PARTICLE_SMALL          = loadTexture(EFFECT, "particle_small");
         TEX_PARTICLE_LARGE          = loadTexture(EFFECT, "particle_large");
-        TEX_CRYSTAL_EFFECT_1        = loadTexture(EFFECT, "crystal_burst_effect_1");
-        TEX_CRYSTAL_EFFECT_2        = loadTexture(EFFECT, "crystal_burst_effect_2");
-        TEX_CRYSTAL_EFFECT_3        = loadTexture(EFFECT, "crystal_burst_effect_3");
-        TEX_GEM_CRYSTAL_BURST       = loadTexture(EFFECT, "gem_crystal_burst");
-        TEX_GEM_CRYSTAL_BURST_SKY   = loadTexture(EFFECT, "gem_crystal_burst_sky");
-        TEX_GEM_CRYSTAL_BURST_DAY   = loadTexture(EFFECT, "gem_crystal_burst_day");
-        TEX_GEM_CRYSTAL_BURST_NIGHT = loadTexture(EFFECT, "gem_crystal_burst_night");
-        TEX_COLLECTOR_EFFECT        = loadTexture(EFFECT, "collector_crystal_burst");
-        TEX_CRAFT_BURST             = loadTexture(EFFECT, "craft_burst");
-        TEX_CRAFT_FLARE             = loadTexture(EFFECT, "craft_flare");
-        TEX_RELAY_FLARE             = loadTexture(EFFECT, "relay_flare");
-        TEX_ATTUNEMENT_FLARE        = loadTexture(EFFECT, "attunement_flare");
-        TEX_ENTITY_FLARE            = loadTexture(EFFECT, "entity_flare");
-        TEX_GRAPPLING_HOOK          = loadTexture(EFFECT, "grappling_hook");
+        TEX_CRYSTAL_EFFECT_1        = loadCurveTexture("crystal_burst_effect_1");
+        TEX_CRYSTAL_EFFECT_2        = loadCurveTexture("crystal_burst_effect_2");
+        TEX_CRYSTAL_EFFECT_3        = loadCurveTexture("crystal_burst_effect_3");
+        TEX_GEM_CRYSTAL_BURST       = loadCurveTexture("gem_crystal_burst");
+        TEX_GEM_CRYSTAL_BURST_SKY   = loadCurveTexture("gem_crystal_burst_sky");
+        TEX_GEM_CRYSTAL_BURST_DAY   = loadCurveTexture("gem_crystal_burst_day");
+        TEX_GEM_CRYSTAL_BURST_NIGHT = loadCurveTexture("gem_crystal_burst_night");
+        TEX_COLLECTOR_EFFECT        = loadCurveTexture("collector_crystal_burst");
+        TEX_CRAFT_BURST             = loadCurveTexture("craft_burst");
+        TEX_CRAFT_FLARE             = loadCurveTexture("craft_flare");
+        TEX_RELAY_FLARE             = loadCurveTexture("relay_flare");
+        TEX_ATTUNEMENT_FLARE        = loadCurveTexture("attunement_flare");
+        TEX_ENTITY_FLARE            = loadCurveTexture("entity_flare");
+        TEX_GRAPPLING_HOOK          = loadCurveTexture("grappling_hook");
         TEX_AREA_OF_EFFECT_CUBE     = loadTexture(EFFECT, "area_of_effect_cube");
-        TEX_HALO_INFUSION           = loadTexture(EFFECT, "halo_infusion");
-        TEX_HALO_RITUAL             = loadTexture(EFFECT, "halo_ritual");
-        TEX_FOUNTAIN_LIQUID         = loadTexture(EFFECT, "fountain_liquid");
-        TEX_FOUNTAIN_VORTEX         = loadTexture(EFFECT, "fountain_vortex");
-        TEX_DAZZLING_AURA           = loadTexture(EFFECT, "dazzling_aura");
+        TEX_HALO_INFUSION           = loadCurveTexture("halo_infusion");
+        TEX_HALO_RITUAL             = loadCurveTexture("halo_ritual");
+        TEX_FOUNTAIN_LIQUID         = loadCurveTexture("fountain_liquid");
+        TEX_FOUNTAIN_VORTEX         = loadCurveTexture("fountain_vortex");
+        TEX_DAZZLING_AURA           = loadCurveTexture("dazzling_aura");
 
         TEX_LIGHTNING_PART      = loadTexture(EFFECT, "lightning_part");
-        TEX_LIGHTBEAM           = loadTexture(EFFECT, "lightbeam");
-        TEX_LIGHTBEAM_TRANSFER  = loadTexture(EFFECT, "lightbeam_transfer");
+        TEX_LIGHTBEAM           = loadCurveTexture("lightbeam");
+        TEX_LIGHTBEAM_TRANSFER  = loadCurveTexture("lightbeam_transfer");
 
         TEX_MODEL_CRYSTAL_WHITE = loadTexture(MODEL, "crystal_white");
         TEX_MODEL_CRYSTAL_BLUE  = loadTexture(MODEL, "crystal_blue");
         TEX_MODEL_CELESTIAL_WINGS = loadTexture(MODEL, "celestial_wings_background");
 
-        TEX_STARLIGHT_STORE = loadTexture(EFFECT, "starlight_storage");
+        TEX_STARLIGHT_STORE = loadCurveTexture("starlight_storage");
     }
 
 }

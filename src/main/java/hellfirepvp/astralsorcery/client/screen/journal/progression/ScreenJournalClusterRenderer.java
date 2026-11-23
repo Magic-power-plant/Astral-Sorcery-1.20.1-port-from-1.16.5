@@ -255,7 +255,6 @@ public class ScreenJournalClusterRenderer {
 
                 SpriteSheetResource res = spriteTextures.computeIfAbsent(node.getSpriteTexture(), icon ->
                         new SpriteSheetResource(AssetLibrary.loadTexture(icon.texture()), icon.rows(), icon.columns()));
-                res.getResource().bindTexture();
                 Tuple<Float, Float> uvTexture = res.getUVOffset(ClientScheduler.getClientTick());
 
                 renderStack.pushPose();
@@ -267,7 +266,7 @@ public class ScreenJournalClusterRenderer {
                 //selected explicitly, as every other textured draw in this port does.
                 RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 
-                RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+                RenderingUtils.drawSprite(res, Blending.DEFAULT, buf -> {
                     //1.16.5: MatrixStack#getLast()#getMatrix() -> 1.20.1: PoseStack#last()#pose()
                     Matrix4f matr = renderStack.last().pose();
                     buf.vertex(matr, pxWH, zoomedWH - pxWH, zLevel)

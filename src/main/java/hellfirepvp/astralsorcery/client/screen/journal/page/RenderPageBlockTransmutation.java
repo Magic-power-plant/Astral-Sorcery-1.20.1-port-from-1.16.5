@@ -70,14 +70,13 @@ public class RenderPageBlockTransmutation extends RenderPageRecipeTemplate {
         float renderY = y + 73;
         this.renderExpectedIngredientInput(renderStack, renderX, renderY + 80, z, 1.2F, 0, this.inputOptions);
 
-        SpritesAS.SPR_LIGHTBEAM.bindTexture();
 
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         Blending.ADDITIVE_ALPHA.apply();
 
         //1.16.5: DefaultVertexFormats -> 1.20.1: DefaultVertexFormat
-        RenderingUtils.draw(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX, buf -> {
+        RenderingUtils.drawSprite(SpritesAS.SPR_LIGHTBEAM, Blending.ADDITIVE_ALPHA, buf -> {
             RenderingGuiUtils.rect(buf, renderStack, renderX - 15, renderY + 10, z, 50, 120)
                     .tex(SpritesAS.SPR_LIGHTBEAM)
                     .draw();

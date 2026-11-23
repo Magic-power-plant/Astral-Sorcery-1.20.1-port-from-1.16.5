@@ -8,6 +8,8 @@
 
 package hellfirepvp.astralsorcery.client.effect.context;
 
+import hellfirepvp.astralsorcery.client.util.Blending;
+
 import hellfirepvp.astralsorcery.client.effect.context.base.BatchRenderContext;
 import hellfirepvp.astralsorcery.client.effect.function.VFXAlphaFunction;
 import hellfirepvp.astralsorcery.client.effect.vfx.FXLightbeam;
@@ -27,4 +29,8 @@ public class RenderContextLightbeam extends BatchRenderContext<FXLightbeam> {
         super(sprite, RenderTypesAS.EFFECT_FX_LIGHTBEAM, (ctx, pos) -> new FXLightbeam(pos).alpha(VFXAlphaFunction.PYRAMID));
     }
 
+    @Override
+    protected Blending spriteBlending() {
+        return Blending.ADDITIVE_ALPHA;
+    }
 }
