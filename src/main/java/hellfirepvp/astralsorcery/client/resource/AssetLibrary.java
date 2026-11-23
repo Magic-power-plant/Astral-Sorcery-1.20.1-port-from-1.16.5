@@ -39,7 +39,7 @@ public class AssetLibrary implements ResourceManagerReloadListener {
     private static boolean reloading = false;
 
     private static final Map<AssetLoader.SubLocation, Map<String, AbstractRenderableTexture>> loadedTextures = new HashMap<>();
-    private static final Map<ResourceLocation, BindableResource> namedTextures = new HashMap<>();
+    private static final Map<ResourceLocation, AbstractRenderableTexture> namedTextures = new HashMap<>();
     private static final Map<ResourceLocation, GeneratedResource> dynamicTextures = new HashMap<>();
     private static final List<ReloadableResource> reloadableResources = new ArrayList<>();
 
@@ -58,15 +58,12 @@ public class AssetLibrary implements ResourceManagerReloadListener {
                 .computeIfAbsent(name, key -> loadTexture(AssetLoader.textureId(location, key)));
     }
 
-    public static AbstractRenderableTexture loadCurveTexture(String... path) {
-        return loadTexture(AssetLoader.TextureLocation.EFFECT, path);
-    }
-
     /** Resolves a data-only texture identifier using the same reload lifecycle as named assets. */
     public static AbstractRenderableTexture loadTexture(ResourceLocation texture) {
         return namedTextures.computeIfAbsent(texture, key -> {
-            BindableResource resource = key.getNamespace().equals(AstralSorcery.MODID) && key.getPath().startsWith("textures/effect/")
-                    ? new CurveTextureResource(key.toString()) : new BindableResource(key.toString());
+            ProceduralEffect effect = ProceduralEffect.forSprite(key);
+            if (effect != null) return new ProceduralEffectResource(key, effect);
+            BindableResource resource = new BindableResource(key.toString());
             reloadableResources.add(resource);
             return resource;
         });

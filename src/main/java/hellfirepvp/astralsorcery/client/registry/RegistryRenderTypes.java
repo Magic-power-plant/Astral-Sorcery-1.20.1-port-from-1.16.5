@@ -99,7 +99,7 @@ public class RegistryRenderTypes {
         EFFECT_FX_LIGHTBEAM = createType("effect_fx_lightbeam", DefaultVertexFormat.POSITION_COLOR_TEX,
                 RenderStateBuilder.builder()
                         .shader(GameRenderer::getPositionColorTexShader)
-                        .texture(TexturesAS.TEX_LIGHTBEAM)
+                        .disableTexture()
                         .blend(Blending.ADDITIVE_ALPHA)
                         .disableCull()
                         .disableDepthMask()
@@ -121,7 +121,7 @@ public class RegistryRenderTypes {
         EFFECT_FX_BURST = createType("effect_fx_burst", DefaultVertexFormat.POSITION_COLOR_TEX,
                 RenderStateBuilder.builder()
                         .shader(GameRenderer::getPositionColorTexShader)
-                        .altasTexture()
+                        .disableTexture()
                         .blend(Blending.DEFAULT)
                         .disableCull()
                         .disableDepthMask()
@@ -130,7 +130,7 @@ public class RegistryRenderTypes {
         EFFECT_FX_DYNAMIC_TEXTURE_SPRITE = createType("effect_fx_dynamic_texture_sprite", DefaultVertexFormat.POSITION_COLOR_TEX,
                 RenderStateBuilder.builder()
                         .shader(GameRenderer::getPositionColorTexShader)
-                        .altasTexture()
+                        .disableTexture()
                         .blend(Blending.DEFAULT)
                         .alpha(0.0001F)
                         .disableCull()
@@ -140,7 +140,7 @@ public class RegistryRenderTypes {
         EFFECT_FX_TEXTURE_SPRITE = createType("effect_fx_texture_sprite", DefaultVertexFormat.POSITION_COLOR_TEX,
                 RenderStateBuilder.builder()
                         .shader(GameRenderer::getPositionColorTexShader)
-                        .altasTexture()
+                        .disableTexture()
                         .blend(Blending.DEFAULT)
                         .alpha(0.0001F)
                         .disableCull()

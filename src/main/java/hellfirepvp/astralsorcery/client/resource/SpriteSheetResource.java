@@ -11,8 +11,10 @@ package hellfirepvp.astralsorcery.client.resource;
 import hellfirepvp.astralsorcery.client.ClientScheduler;
 import hellfirepvp.astralsorcery.client.effect.EntityComplexFX;
 import hellfirepvp.astralsorcery.client.util.Blending;
+import hellfirepvp.astralsorcery.client.util.draw.RenderTypeDecorator;
 import hellfirepvp.astralsorcery.common.util.data.NameUtil;
 import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 
@@ -59,10 +61,18 @@ public class SpriteSheetResource extends AbstractRenderableTexture {
     }
 
     public void bindForRendering(Blending blending) {
-        this.bindTexture();
-        if (this.resource instanceof SpriteMaterial material) {
-            material.applySpriteShader(blending);
+        if (resource instanceof SpriteMaterial material) {
+            material.bind(blending);
+        } else {
+            bindTexture();
         }
+    }
+
+    public RenderTypeDecorator renderType(RenderType base, Blending blending) {
+        if (this.resource instanceof SpriteMaterial material) {
+            return RenderTypeDecorator.wrapSetup(base, () -> material.bind(blending), () -> {});
+        }
+        return RenderTypeDecorator.wrapSetup(base, this::bindTexture, BlockAtlasTexture.getInstance()::bindTexture);
     }
 
     @Override
